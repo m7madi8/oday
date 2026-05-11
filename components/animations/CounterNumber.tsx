@@ -52,6 +52,11 @@ export function CounterNumber({
     [decimals],
   );
 
+  const zeroText = useMemo(
+    () => `${prefix}${formatter.format(0)}${suffix}`,
+    [formatter, prefix, suffix],
+  );
+
   const finalText = useMemo(
     () => `${prefix}${formatter.format(targetNumber)}${suffix}`,
     [formatter, prefix, suffix, targetNumber],
@@ -64,7 +69,7 @@ export function CounterNumber({
       }
 
       const count = { value: 0 };
-      valueRef.current.textContent = `${prefix}${formatter.format(0)}${suffix}`;
+      valueRef.current.textContent = zeroText;
 
       const trigger = ScrollTrigger.create({
         trigger: triggerRef?.current ?? valueRef.current,
@@ -110,6 +115,7 @@ export function CounterNumber({
         start,
         delay,
         formatter,
+        zeroText,
         triggerRef,
       ],
       enabled,
@@ -120,5 +126,11 @@ export function CounterNumber({
     return <span className={className}>{finalText}</span>;
   }
 
-  return <span ref={valueRef} className={className} />;
+  // Render a visible default value immediately to avoid "empty" counters
+  // during GSAP/ScrollTrigger loading or if the trigger never fires.
+  return (
+    <span ref={valueRef} className={className}>
+      {finalText}
+    </span>
+  );
 }

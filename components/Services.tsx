@@ -274,7 +274,9 @@ function ServiceCard({
       transition={{ duration: reduceMotion ? 0 : 0.58, ease: [0.16, 1, 0.3, 1] }}
       onMouseEnter={onActivate}
       onFocusCapture={onActivate}
-      onTouchStart={onActivate}
+      // Ensure it works on touch too (not only hover).
+      onPointerDown={onActivate}
+      onClick={onActivate}
       tabIndex={0}
     >
       <div className="relative aspect-[16/10] overflow-hidden">
