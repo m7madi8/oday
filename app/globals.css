@@ -1,0 +1,235 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Material-style dark canvas (≈ #121212) */
+  --bg-primary: #121212;
+  --bg-secondary: #1a1a1a;
+  --bg-card: #1e1e1e;
+  --accent-gold: #c9a66b;
+  --accent-gold-dim: rgba(201, 166, 107, 0.22);
+  --text-primary: #f2efe8;
+  --text-secondary: #c9c2b6;
+  --text-muted: #8f8a82;
+  --border: rgba(255, 255, 255, 0.1);
+  /* Self-hosted stack: avoids next/font Google fetch (breaks behind broken TLS / MITM proxies). */
+  --font-cormorant-garamond: ui-serif, Georgia, "Times New Roman", Times, serif;
+  --font-dm-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-outfit: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-cormorant: var(--font-cormorant-garamond);
+  --font-dm: var(--font-dm-sans);
+  /* Hero: equal inset on all sides; nav floats over image. --hero-nav-stack = menu offset below pill */
+  --hero-gutter: 0.5rem;
+  /* Nudge nav + open menu down */
+  --hero-nav-offset: 0.875rem;
+  /* Distance from viewport top to below compact bar (py-2.5 + h-9 + top offset share) */
+  --hero-nav-stack: calc(var(--hero-gutter) + var(--hero-nav-offset) + 3.5rem);
+}
+
+@media (min-width: 640px) {
+  :root {
+    --hero-gutter: 0.625rem;
+  }
+}
+
+@media (min-width: 768px) {
+  :root {
+    --hero-gutter: 0.75rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --hero-gutter: 0.75rem;
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--hero-nav-stack) + var(--hero-gutter));
+  }
+
+  body {
+    @apply antialiased;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-dm);
+    font-weight: 300;
+    letter-spacing: 0.02em;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background-color: var(--accent-gold-dim);
+    color: var(--text-primary);
+  }
+
+  :focus-visible {
+    outline: 1px solid var(--accent-gold);
+    outline-offset: 3px;
+  }
+}
+
+/* Custom scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent-gold) var(--bg-secondary);
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+*::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    var(--accent-gold) 0%,
+    #c3985a 100%
+  );
+  border-radius: 999px;
+  border: 2px solid var(--bg-secondary);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-gold);
+}
+
+/* Mobile menu overlay: hide scrollbar (inherits global * scrollbar styling otherwise). */
+.nav-menu-layer {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.nav-menu-layer::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+/* Grain texture - base noise; opacity animated in GrainOverlay */
+@keyframes grain-breathe {
+  0%,
+  100% {
+    opacity: 0.02;
+  }
+  50% {
+    opacity: 0.04;
+  }
+}
+
+.grain-layer {
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  animation: grain-breathe 8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grain-layer {
+    animation: none;
+    opacity: 0.025;
+  }
+}
+
+@keyframes hero-headline-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-cta-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.hero-enter-headline {
+  animation: hero-headline-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+}
+
+.hero-enter-cta {
+  animation: hero-cta-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.4s both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-enter-headline,
+  .hero-enter-cta {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Site-wide typographic polish inside main landmark (no motion; respects existing shadows on components). */
+#main-content :where(h1, h2, h3, h4, p, li, .label-upper) {
+  text-rendering: optimizeLegibility;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  #main-content :where(h1, h2, h3, h4) {
+    transition:
+      text-shadow 0.45s ease,
+      transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  #main-content :where(p, .label-upper) {
+    transition:
+      color 0.35s ease,
+      opacity 0.35s ease;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: var(--font-cormorant);
+  }
+
+  .font-body {
+    font-family: var(--font-dm);
+  }
+
+  .heading-display {
+    font-family: var(--font-cormorant);
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    font-size: clamp(4rem, 10vw, 8rem);
+  }
+
+  .label-upper {
+    font-family: var(--font-dm);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-size: 0.6875rem;
+    font-weight: 400;
+  }
+
+  .divider-gold {
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(185, 138, 75, 0.35),
+      transparent
+    );
+  }
+
+  .border-gold-soft {
+    border-color: rgba(185, 138, 75, 0.3);
+  }
+}
