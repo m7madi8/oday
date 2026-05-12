@@ -5,7 +5,7 @@ import { GrainOverlay } from "@/components/GrainOverlay";
 import { Navigation } from "@/components/Navigation";
 
 export const metadata: Metadata = {
-  title: "OD Studio | Architecture, Engineering, Market Impact",
+  title: "OD STUDIO",
   description:
     "OD Studio delivers architecture and engineering solutions that elevate asset value, accelerate approvals, and strengthen market positioning.",
 };

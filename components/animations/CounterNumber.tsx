@@ -71,11 +71,19 @@ export function CounterNumber({
       const count = { value: 0 };
       valueRef.current.textContent = zeroText;
 
+      const triggerEl = triggerRef?.current ?? valueRef.current;
+
       const trigger = ScrollTrigger.create({
-        trigger: triggerRef?.current ?? valueRef.current,
+        trigger: triggerEl,
         start,
         once: true,
+        invalidateOnRefresh: true,
         onEnter: () => {
+          count.value = 0;
+          if (valueRef.current) {
+            valueRef.current.textContent = zeroText;
+          }
+
           const tween = gsap.to(count, {
             value: targetNumber,
             duration,
@@ -95,6 +103,11 @@ export function CounterNumber({
               valueRef.current.textContent = `${prefix}${formatter.format(
                 rounded,
               )}${suffix}`;
+            },
+            onComplete: () => {
+              if (valueRef.current) {
+                valueRef.current.textContent = finalText;
+              }
             },
           });
 
@@ -116,6 +129,7 @@ export function CounterNumber({
         delay,
         formatter,
         zeroText,
+        finalText,
         triggerRef,
       ],
       enabled,
@@ -126,11 +140,11 @@ export function CounterNumber({
     return <span className={className}>{finalText}</span>;
   }
 
-  // Render a visible default value immediately to avoid "empty" counters
-  // during GSAP/ScrollTrigger loading or if the trigger never fires.
+  // Start at zero so the count-up is visible; ScrollTrigger snaps to final
+  // value if the section is already past the start on refresh.
   return (
-    <span ref={valueRef} className={className}>
-      {finalText}
+    <span ref={valueRef} className={className} suppressHydrationWarning>
+      {zeroText}
     </span>
   );
 }

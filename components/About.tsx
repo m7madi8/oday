@@ -76,30 +76,46 @@ export function About() {
               style={{ transformOrigin: "left center" }}
             />
 
-            <div ref={statsRowRef}>
-              <GsapStaggerReveal className="mt-9 flex flex-wrap items-stretch">
-                {stats.map((stat, idx) => (
-                  <div
-                    key={stat.label}
-                    data-reveal-item
-                    className={`px-4 py-1 md:px-6 ${idx < stats.length - 1 ? "border-r border-gold/28" : ""}`}
-                  >
-                    <p className="font-display text-[2.2rem] italic leading-none text-ink-primary md:text-[2.5rem]">
-                      <CounterNumber
-                        targetNumber={stat.target}
-                        suffix={stat.suffix}
-                        triggerRef={statsRowRef}
-                        delay={reduce ? 0 : idx * 0.14}
-                        duration={1.75}
-                        enabled={!reduce}
-                        start="top 88%"
-                      />
-                    </p>
-                    <p className="label-upper mt-2 text-ink-muted">{stat.label}</p>
-                  </div>
-                ))}
-              </GsapStaggerReveal>
-            </div>
+            <motion.div
+              ref={statsRowRef}
+              className="mt-9 flex flex-wrap items-stretch"
+              initial={reduce ? false : { opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.4, margin: "0px 0px -8% 0px" }}
+              transition={{
+                duration: reduce ? 0 : 0.7,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+            >
+              {stats.map((stat, idx) => (
+                <motion.div
+                  key={stat.label}
+                  className={`px-4 py-1 md:px-6 ${idx < stats.length - 1 ? "border-r border-gold/28" : ""}`}
+                  initial={reduce ? false : { opacity: 0, y: 18 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.35 }}
+                  transition={{
+                    duration: reduce ? 0 : 0.55,
+                    delay: reduce ? 0 : 0.08 + idx * 0.07,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                >
+                  <p className="font-display text-[2.2rem] italic leading-none text-ink-primary md:text-[2.5rem] tabular-nums tracking-tight">
+                    <CounterNumber
+                      targetNumber={stat.target}
+                      suffix={stat.suffix}
+                      triggerRef={statsRowRef}
+                      delay={reduce ? 0 : 0.22 + idx * 0.16}
+                      duration={reduce ? 0 : 2.15}
+                      ease="expo.out"
+                      start="top 80%"
+                      enabled={!reduce}
+                    />
+                  </p>
+                  <p className="label-upper mt-2 text-ink-muted">{stat.label}</p>
+                </motion.div>
+              ))}
+            </motion.div>
 
             <GsapStaggerReveal className="mt-10 space-y-3.5" start="top 88%" stagger={0.1}>
               {pillars.map((title, idx) => (

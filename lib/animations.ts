@@ -66,9 +66,9 @@ export const cardTiltDefaults = {
 } as const;
 
 export const counterDefaults = {
-  duration: 2.5,
-  start: "top 85%",
-  ease: "power2.out",
+  duration: 2.35,
+  start: "top 82%",
+  ease: "expo.out",
 } as const;
 
 export const drawLineDefaults = {
