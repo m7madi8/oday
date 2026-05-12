@@ -18,7 +18,7 @@ const stats = [
 ] as const;
 
 const pillars = [
-  "Commercial Strategy",
+  "Design Strategy",
   "Technical Authority",
   "Execution Control",
 ] as const;

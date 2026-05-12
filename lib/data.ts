@@ -28,9 +28,9 @@ export const navLinks = [
   { href: "#contact", label: "Contact" },
 ] as const;
 
-export type ProjectCategory = "Residential" | "Commercial" | "Cultural";
+export type ProjectCategory = "Residential" | "Cultural";
 
-export const projectFilters = ["All", "Residential", "Commercial", "Cultural"] as const;
+export const projectFilters = ["All", "Residential", "Cultural"] as const;
 export type ProjectFilter = (typeof projectFilters)[number];
 
 export interface Project {
@@ -56,18 +56,8 @@ export const projects: Project[] = [
     imageAlt: "Luxury interior lounge with sculpted ceiling details",
   },
   {
-    id: "p2",
-    orderLabel: "02",
-    title: "North Gate Business Hub",
-    country: "Ramallah, Palestine",
-    tag: "Commercial Campus",
-    category: "Commercial",
-    image: aboutImage,
-    imageAlt: "Contemporary architecture and landscape composition",
-  },
-  {
     id: "p3",
-    orderLabel: "03",
+    orderLabel: "02",
     title: "Seafront Culture House",
     country: "Bethlehem, Palestine",
     tag: "Cultural Destination",
@@ -76,18 +66,8 @@ export const projects: Project[] = [
     imageAlt: "Premium interior environment with warm lighting",
   },
   {
-    id: "p4",
-    orderLabel: "04",
-    title: "The Foundry Offices",
-    country: "Hebron, Palestine",
-    tag: "Workplace Retrofit",
-    category: "Commercial",
-    image: aboutImage,
-    imageAlt: "Architectural courtyard with curated landscape",
-  },
-  {
     id: "p5",
-    orderLabel: "05",
+    orderLabel: "03",
     title: "Crescent Museum Annex",
     country: "Ramallah, Palestine",
     tag: "Cultural Expansion",
@@ -97,7 +77,7 @@ export const projects: Project[] = [
   },
   {
     id: "p6",
-    orderLabel: "06",
+    orderLabel: "04",
     title: "Cliffline Signature Villas",
     country: "Nablus, Palestine",
     tag: "Residential Collection",
@@ -111,7 +91,7 @@ export const hero = {
   titleLine1: "Design",
   titleLine2Words: ["That", "Drives", "Value"],
   description:
-    "Interior, Landscape, and Exterior design with precision-focused delivery for high-value projects.",
+    "Interior, landscape, exterior, architecture drone, and architecture AI — precision-focused delivery for high-value projects.",
   image:
     "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1920&q=80",
   imageAlt: "Luxury interior with sculpted ceiling and large windows",
@@ -138,9 +118,9 @@ export const about = {
   logoSub: "STUDIO",
   strengths: [
     {
-      title: "Commercial Strategy",
+      title: "Design Strategy",
       description:
-        "Every concept starts with target users, market positioning, and asset value goals.",
+        "Every concept starts with spatial intent, material identity, and buildable clarity.",
       icon: Layers3,
     },
     {
@@ -225,7 +205,7 @@ export const processSteps: ProcessStep[] = [
     step: "01",
     title: "Align",
     description:
-      "Business goals, audience profile, and project constraints are defined in one strategic brief.",
+      "Project goals, lifestyle profile, and site constraints are defined in one strategic brief.",
   },
   {
     step: "02",
@@ -258,7 +238,7 @@ export const faqItems: FaqItem[] = [
     id: "faq1",
     question: "What project types are the best fit for your team?",
     answer:
-      "High-end residential, commercial headquarters, cultural destinations, and mixed-use developments where quality and positioning are critical.",
+      "Luxury residences and villas, cultural destinations, and landscape-led estates where interior, exterior, and outdoor design quality are critical.",
   },
   {
     id: "faq2",

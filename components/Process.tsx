@@ -50,7 +50,7 @@ export function Process() {
             </h2>
 
             <p className="mx-auto mt-7 max-w-2xl text-pretty text-sm leading-[1.75] text-ink-secondary md:mt-8 md:text-[0.95rem]">
-              A premium, stage-gated framework that aligns commercial goals, design quality, and construction control from day one.
+              A premium, stage-gated framework that aligns project goals, design quality, and construction control from day one.
             </p>
 
             <div className="mt-9 flex flex-wrap items-center justify-center gap-2.5 md:mt-10 md:gap-3">
