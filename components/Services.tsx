@@ -283,13 +283,24 @@ function ServiceCard({
               </span>
             ))}
           </div>
-          <div className="mt-4">
+          <div
+            className="mt-4 flex flex-wrap gap-2"
+            onClick={(e) => e.stopPropagation()}
+            onPointerDown={(e) => e.stopPropagation()}
+          >
             <Link
-              href="#contact"
-              className="inline-flex items-center gap-2 rounded-full border border-gold/40 px-4 py-2 text-[11px] uppercase tracking-[0.16em] text-ink-primary transition-colors hover:bg-gold/15 hover:border-gold/55"
-              aria-label={`Start ${service.title} service`}
+              href={`/request/${service.slug}`}
+              className="inline-flex flex-1 min-w-[8.5rem] items-center justify-center gap-2 rounded-full border border-gold/50 bg-gold/12 px-4 py-2.5 text-[11px] uppercase tracking-[0.14em] text-ink-primary transition-colors hover:bg-gold/22 sm:flex-initial"
+              aria-label={`Request ${service.title}`}
             >
-              Explore Service <span aria-hidden>→</span>
+              Request
+            </Link>
+            <Link
+              href={`/projects?service=${encodeURIComponent(service.slug)}`}
+              className="inline-flex flex-1 min-w-[8.5rem] items-center justify-center gap-2 rounded-full border border-gold/35 px-4 py-2.5 text-[11px] uppercase tracking-[0.14em] text-ink-primary transition-colors hover:border-gold/55 hover:bg-gold/10 sm:flex-initial"
+              aria-label={`${service.title} project gallery`}
+            >
+              Gallery
             </Link>
           </div>
         </RevealChildren>

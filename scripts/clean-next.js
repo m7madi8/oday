@@ -3,7 +3,8 @@ const fs = require("fs");
 const path = require("path");
 const { execSync } = require("child_process");
 
-const nextDir = path.join(__dirname, "..", ".next");
+const root = path.join(__dirname, "..");
+const dirs = [path.join(root, ".next"), path.join(root, ".next-dev")];
 
 function sleepSyncMs(ms) {
   try {
@@ -21,15 +22,17 @@ function sleepSyncMs(ms) {
 
 for (let attempt = 0; attempt < 6; attempt++) {
   try {
-    if (fs.existsSync(nextDir)) {
-      fs.rmSync(nextDir, { recursive: true, force: true });
+    for (const dir of dirs) {
+      if (fs.existsSync(dir)) {
+        fs.rmSync(dir, { recursive: true, force: true });
+        process.stdout.write(`Removed ${dir}\n`);
+      }
     }
-    process.stdout.write(`Removed ${nextDir}\n`);
     process.exit(0);
   } catch (e) {
     if (attempt === 5) {
       process.stderr.write(
-        `Could not remove .next (stop npm run dev / other Node using this folder, then retry).\n${String(e)}\n`,
+        `Could not remove .next / .next-dev (stop npm run dev / other Node using this folder, then retry).\n${String(e)}\n`,
       );
       process.exit(1);
     }

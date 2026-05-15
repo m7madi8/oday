@@ -1,9 +1,12 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 /**
- * Windows: stops Node listeners on ports 3000–3010, then runs `next dev`.
- * Use `--clear-next` after errors like "Cannot find module './NNN.js'" (stale `.next`):
+ * Windows: stops Node listeners on ports 3000–3010, then runs `next dev` (webpack).
+ * Dev output goes to `.next-dev` (see next.config.mjs + NEXT_DEV_DIST) so it does not
+ * fight with `next build` / `.next` — fewer stale chunk errors on Windows.
+ * (Turbopack + custom distDir caused ENOENT manifest errors on some setups.)
+ * Use `--clear-next` after errors like "Cannot find module './NNN.js'":
  *   npm run dev:clean
- * Other OS: starts `next dev` only (no port kill). Pass `--clear-next` to wipe `.next` first.
+ * Other OS: starts dev only (no port kill). Pass `--clear-next` to wipe `.next` + `.next-dev`.
  */
 const { execSync, spawn } = require("child_process");
 const path = require("path");
@@ -58,6 +61,7 @@ function sleepSyncMs(ms) {
 
 const root = path.join(__dirname, "..");
 const nextDir = path.join(root, ".next");
+const nextDevDir = path.join(root, ".next-dev");
 
 if (clearNext) {
   const fs = require("fs");
@@ -66,15 +70,17 @@ if (clearNext) {
   }
   for (let attempt = 0; attempt < 6; attempt++) {
     try {
-      if (fs.existsSync(nextDir)) {
-        fs.rmSync(nextDir, { recursive: true, force: true });
-        process.stdout.write(`Removed ${nextDir}\n`);
+      for (const dir of [nextDir, nextDevDir]) {
+        if (fs.existsSync(dir)) {
+          fs.rmSync(dir, { recursive: true, force: true });
+          process.stdout.write(`Removed ${dir}\n`);
+        }
       }
       break;
     } catch (e) {
       if (attempt === 5) {
         process.stderr.write(
-          `Could not remove .next (file may be locked). Close terminals using this project, then run: npm run clean\n${String(e)}\n`,
+          `Could not remove .next / .next-dev (file may be locked). Close terminals using this project, then run: npm run clean\n${String(e)}\n`,
         );
         process.exit(1);
       }
@@ -89,6 +95,7 @@ const child = spawn(process.execPath, [nextCli, "dev"], {
   cwd: root,
   stdio: "inherit",
   shell: false,
+  env: { ...process.env, NEXT_DEV_DIST: "1" },
 });
 
 child.on("exit", (code, signal) => {

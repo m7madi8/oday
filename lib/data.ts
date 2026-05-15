@@ -10,6 +10,7 @@ import {
   MonitorPlay,
 } from "lucide-react";
 import aboutImage from "@/imgs/about.jpg";
+import ceoPortrait from "@/imgs/ceo.jpg";
 import exteriorImage from "@/imgs/exterior.jpg";
 import interiorImage from "@/imgs/interior.jpg";
 
@@ -22,7 +23,7 @@ export const site = {
 export const navLinks = [
   { href: "#about", label: "Studio" },
   { href: "#services", label: "Solutions" },
-  { href: "#projects", label: "Case Studies" },
+  { href: "/projects", label: "Case Studies" },
   { href: "#process", label: "Execution" },
   { href: "#faq", label: "FAQ" },
   { href: "#contact", label: "Contact" },
@@ -30,8 +31,22 @@ export const navLinks = [
 
 export type ProjectCategory = "Residential" | "Cultural";
 
-export const projectFilters = ["All", "Residential", "Cultural"] as const;
-export type ProjectFilter = (typeof projectFilters)[number];
+export const serviceSlugs = [
+  "interior",
+  "landscape",
+  "exterior",
+  "architecture-drone",
+  "architecture-ai",
+] as const;
+
+export type ServiceSlug = (typeof serviceSlugs)[number];
+
+export const projectServiceFilters = ["All", ...serviceSlugs] as const;
+export type ProjectServiceFilter = (typeof projectServiceFilters)[number];
+
+/** @deprecated Use projectServiceFilters for gallery filtering */
+export const projectFilters = projectServiceFilters;
+export type ProjectFilter = ProjectServiceFilter;
 
 export interface Project {
   id: string;
@@ -40,50 +55,291 @@ export interface Project {
   country: string;
   tag: string;
   category: ProjectCategory;
+  serviceSlug: ServiceSlug;
   image: string | StaticImageData;
   imageAlt: string;
 }
 
 export const projects: Project[] = [
+  // Interior (5)
   {
-    id: "p1",
+    id: "in-1",
     orderLabel: "01",
     title: "Palm Crown Residence",
     country: "Nablus, Palestine",
     tag: "Ultra-Luxury Residence",
     category: "Residential",
+    serviceSlug: "interior",
     image: interiorImage,
     imageAlt: "Luxury interior lounge with sculpted ceiling details",
   },
   {
-    id: "p3",
+    id: "in-2",
     orderLabel: "02",
-    title: "Seafront Culture House",
-    country: "Bethlehem, Palestine",
-    tag: "Cultural Destination",
-    category: "Cultural",
-    image: interiorImage,
-    imageAlt: "Premium interior environment with warm lighting",
-  },
-  {
-    id: "p5",
-    orderLabel: "03",
-    title: "Crescent Museum Annex",
+    title: "Velvet Atrium Lobby",
     country: "Ramallah, Palestine",
-    tag: "Cultural Expansion",
+    tag: "Hospitality Interior",
     category: "Cultural",
-    image: interiorImage,
-    imageAlt: "Interior spatial composition for cultural experience",
+    serviceSlug: "interior",
+    image: aboutImage,
+    imageAlt: "Grand lobby with double-height glazing and stone floors",
   },
   {
-    id: "p6",
+    id: "in-3",
+    orderLabel: "03",
+    title: "Lunar Spa Suites",
+    country: "Bethlehem, Palestine",
+    tag: "Wellness Interior",
+    category: "Residential",
+    serviceSlug: "interior",
+    image: exteriorImage,
+    imageAlt: "Spa suite interior with warm minimal lighting",
+  },
+  {
+    id: "in-4",
     orderLabel: "04",
+    title: "Boardroom One",
+    country: "Ramallah, Palestine",
+    tag: "Executive Workspace",
+    category: "Cultural",
+    serviceSlug: "interior",
+    image: interiorImage,
+    imageAlt: "Executive boardroom with tailored joinery",
+  },
+  {
+    id: "in-5",
+    orderLabel: "05",
+    title: "Marble Gallery Kitchen",
+    country: "Jericho, Palestine",
+    tag: "Residential Kitchen",
+    category: "Residential",
+    serviceSlug: "interior",
+    image: aboutImage,
+    imageAlt: "Open kitchen with marble island and pendant lighting",
+  },
+  // Landscape (5)
+  {
+    id: "ls-1",
+    orderLabel: "01",
     title: "Cliffline Signature Villas",
     country: "Nablus, Palestine",
     tag: "Residential Collection",
     category: "Residential",
+    serviceSlug: "landscape",
     image: aboutImage,
     imageAlt: "Architectural landscaping with modern villa context",
+  },
+  {
+    id: "ls-2",
+    orderLabel: "02",
+    title: "Olive Grove Courtyard",
+    country: "Ramallah, Palestine",
+    tag: "Courtyard Garden",
+    category: "Cultural",
+    serviceSlug: "landscape",
+    image: interiorImage,
+    imageAlt: "Courtyard garden with olive trees and stone paving",
+  },
+  {
+    id: "ls-3",
+    orderLabel: "03",
+    title: "Linear Reflecting Pools",
+    country: "Bethlehem, Palestine",
+    tag: "Water Feature",
+    category: "Residential",
+    serviceSlug: "landscape",
+    image: exteriorImage,
+    imageAlt: "Reflecting pool alongside contemporary architecture",
+  },
+  {
+    id: "ls-4",
+    orderLabel: "04",
+    title: "Terraced Hillside Estate",
+    country: "Nablus, Palestine",
+    tag: "Terraced Landscape",
+    category: "Residential",
+    serviceSlug: "landscape",
+    image: exteriorImage,
+    imageAlt: "Terraced garden following natural slope",
+  },
+  {
+    id: "ls-5",
+    orderLabel: "05",
+    title: "Arrival Forecourt Plaza",
+    country: "Ramallah, Palestine",
+    tag: "Public Realm",
+    category: "Cultural",
+    serviceSlug: "landscape",
+    image: aboutImage,
+    imageAlt: "Formal arrival plaza with integrated planting",
+  },
+  // Exterior (5)
+  {
+    id: "ex-1",
+    orderLabel: "01",
+    title: "Glass Veil Tower",
+    country: "Ramallah, Palestine",
+    tag: "Facade Study",
+    category: "Residential",
+    serviceSlug: "exterior",
+    image: exteriorImage,
+    imageAlt: "Contemporary tower facade with glass rhythm",
+  },
+  {
+    id: "ex-2",
+    orderLabel: "02",
+    title: "Limestone Villa Massing",
+    country: "Bethlehem, Palestine",
+    tag: "Villa Exterior",
+    category: "Residential",
+    serviceSlug: "exterior",
+    image: interiorImage,
+    imageAlt: "Limestone-clad villa with deep overhangs",
+  },
+  {
+    id: "ex-3",
+    orderLabel: "03",
+    title: "Brise-Soleil Office Block",
+    country: "Nablus, Palestine",
+    tag: "Solar Shading",
+    category: "Cultural",
+    serviceSlug: "exterior",
+    image: exteriorImage,
+    imageAlt: "Office facade with horizontal brise-soleil",
+  },
+  {
+    id: "ex-4",
+    orderLabel: "04",
+    title: "Corten Gatehouse",
+    country: "Jericho, Palestine",
+    tag: "Entry Pavilion",
+    category: "Residential",
+    serviceSlug: "exterior",
+    image: aboutImage,
+    imageAlt: "Corten steel entry pavilion at dusk",
+  },
+  {
+    id: "ex-5",
+    orderLabel: "05",
+    title: "Seafront Culture House",
+    country: "Bethlehem, Palestine",
+    tag: "Cultural Destination",
+    category: "Cultural",
+    serviceSlug: "exterior",
+    image: interiorImage,
+    imageAlt: "Cultural building exterior at golden hour",
+  },
+  // Architecture Drone (5)
+  {
+    id: "dr-1",
+    orderLabel: "01",
+    title: "Site Topo Ortho-Mosaic",
+    country: "Ramallah, Palestine",
+    tag: "Aerial Survey",
+    category: "Residential",
+    serviceSlug: "architecture-drone",
+    image: exteriorImage,
+    imageAlt: "Aerial perspective over construction site",
+  },
+  {
+    id: "dr-2",
+    orderLabel: "02",
+    title: "Tower Crane Progress Ring",
+    country: "Nablus, Palestine",
+    tag: "Progress Capture",
+    category: "Residential",
+    serviceSlug: "architecture-drone",
+    image: interiorImage,
+    imageAlt: "Drone view of high-rise under construction",
+  },
+  {
+    id: "dr-3",
+    orderLabel: "03",
+    title: "Coastal Masterplan Flyover",
+    country: "Gaza, Palestine",
+    tag: "Masterplan Film",
+    category: "Cultural",
+    serviceSlug: "architecture-drone",
+    image: aboutImage,
+    imageAlt: "Urban coastline from elevated drone angle",
+  },
+  {
+    id: "dr-4",
+    orderLabel: "04",
+    title: "Heritage Roof Documentation",
+    country: "Bethlehem, Palestine",
+    tag: "Heritage Scan",
+    category: "Cultural",
+    serviceSlug: "architecture-drone",
+    image: aboutImage,
+    imageAlt: "Close aerial documentation of historic roofscape",
+  },
+  {
+    id: "dr-5",
+    orderLabel: "05",
+    title: "Solar Farm Layout QA",
+    country: "Jericho, Palestine",
+    tag: "Infrastructure",
+    category: "Residential",
+    serviceSlug: "architecture-drone",
+    image: exteriorImage,
+    imageAlt: "Wide aerial over solar array alignment",
+  },
+  // Architecture AI (5)
+  {
+    id: "ai-1",
+    orderLabel: "01",
+    title: "Optioneering Massing Study",
+    country: "Ramallah, Palestine",
+    tag: "Generative Massing",
+    category: "Residential",
+    serviceSlug: "architecture-ai",
+    image: interiorImage,
+    imageAlt: "Digital massing study overlay on site model",
+  },
+  {
+    id: "ai-2",
+    orderLabel: "02",
+    title: "Facade Pattern Optimizer",
+    country: "Nablus, Palestine",
+    tag: "Performance Facade",
+    category: "Cultural",
+    serviceSlug: "architecture-ai",
+    image: exteriorImage,
+    imageAlt: "Parametric facade pattern visualization",
+  },
+  {
+    id: "ai-3",
+    orderLabel: "03",
+    title: "Daylight Scenario Lab",
+    country: "Bethlehem, Palestine",
+    tag: "Simulation",
+    category: "Residential",
+    serviceSlug: "architecture-ai",
+    image: interiorImage,
+    imageAlt: "Interior daylight simulation heat map",
+  },
+  {
+    id: "ai-4",
+    orderLabel: "04",
+    title: "Crescent Museum Annex",
+    country: "Ramallah, Palestine",
+    tag: "Cultural Expansion",
+    category: "Cultural",
+    serviceSlug: "architecture-ai",
+    image: interiorImage,
+    imageAlt: "Museum expansion concept visualization",
+  },
+  {
+    id: "ai-5",
+    orderLabel: "05",
+    title: "Carbon Lite Structure Pack",
+    country: "Ramallah, Palestine",
+    tag: "Structural AI Assist",
+    category: "Residential",
+    serviceSlug: "architecture-ai",
+    image: exteriorImage,
+    imageAlt: "Structural diagram with optimization overlays",
   },
 ];
 
@@ -92,8 +348,7 @@ export const hero = {
   titleLine2Words: ["That", "Drives", "Value"],
   description:
     "Interior, landscape, exterior, architecture drone, and architecture AI — precision-focused delivery for high-value projects.",
-  image:
-    "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1920&q=80",
+  image: exteriorImage,
   imageAlt: "Modern desert villa at sunset with infinity pool and mountain backdrop",
   stats: [
     { label: "Projects", value: 180, suffix: "+" },
@@ -111,9 +366,13 @@ export interface Strength {
 
 export const about = {
   sectionNumber: "01",
-  heading: "Built for Serious Developers",
-  intro:
-    "OD Studio integrates architecture, interiors, and technical engineering in one accountable team built for premium real-estate outcomes.",
+  snapshotEyebrow: "Company snapshot",
+  snapshotSub: "Key figures and operating focus",
+  headlinePrimary: "Built for Serious",
+  headlineAccent: "Developers",
+  /** Single ~30-word company snapshot for the About column. */
+  introParagraph:
+    "Architecture, interiors, and engineering sit with one accountable OD Studio team, built for serious developers who demand bankable documentation, coordinated delivery, and premium outcomes without siloed consultants or excuse chains.",
   logoWordmark: "OD",
   logoSub: "STUDIO",
   strengths: [
@@ -138,13 +397,14 @@ export const about = {
   ] satisfies Strength[],
   directorName: "Oday Abu Doha",
   directorRole: "Founder & Design Director",
-  image:
-    "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1000&q=80",
-  imageAlt: "Modern architectural courtyard with water feature and landscaped garden",
+  directorPortrait: ceoPortrait,
+  directorPortraitAlt:
+    "Portrait of Oday Abu Doha, founder and design director of OD Studio",
 };
 
 export interface ServiceItem {
   id: string;
+  slug: ServiceSlug;
   orderLabel: string;
   title: string;
   description: string;
@@ -154,6 +414,7 @@ export interface ServiceItem {
 export const services: ServiceItem[] = [
   {
     id: "s1",
+    slug: "interior",
     orderLabel: "01",
     title: "Interior",
     description:
@@ -162,6 +423,7 @@ export const services: ServiceItem[] = [
   },
   {
     id: "s2",
+    slug: "landscape",
     orderLabel: "02",
     title: "Landscape",
     description:
@@ -170,6 +432,7 @@ export const services: ServiceItem[] = [
   },
   {
     id: "s3",
+    slug: "exterior",
     orderLabel: "03",
     title: "Exterior",
     description:
@@ -178,6 +441,7 @@ export const services: ServiceItem[] = [
   },
   {
     id: "s4",
+    slug: "architecture-drone",
     orderLabel: "04",
     title: "Architecture Drone",
     description:
@@ -186,6 +450,7 @@ export const services: ServiceItem[] = [
   },
   {
     id: "s5",
+    slug: "architecture-ai",
     orderLabel: "05",
     title: "Architecture AI",
     description:
@@ -193,6 +458,24 @@ export const services: ServiceItem[] = [
     icon: Layers3,
   },
 ];
+
+export function isValidServiceSlug(value: string): value is ServiceSlug {
+  return (serviceSlugs as readonly string[]).includes(value);
+}
+
+export function getServiceBySlug(slug: string) {
+  return services.find((s) => s.slug === slug);
+}
+
+export function getProjectsByServiceSlug(slug: ServiceSlug) {
+  return projects.filter((p) => p.serviceSlug === slug);
+}
+
+export function serviceFilterLabel(filter: ProjectServiceFilter): string {
+  if (filter === "All") return "All";
+  const svc = services.find((s) => s.slug === filter);
+  return svc?.title ?? filter;
+}
 
 export interface ProcessStep {
   step: string;
@@ -265,7 +548,7 @@ export interface Testimonial {
   name: string;
   role: string;
   quote: string;
-  image: string;
+  image: string | StaticImageData;
   imageAlt: string;
 }
 
@@ -276,8 +559,7 @@ export const testimonials: Testimonial[] = [
     role: "CEO, Meridian Developments",
     quote:
       "OD Studio reframed our project as a premium market product, and the positioning impact was immediate.",
-    image:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80",
+    image: interiorImage,
     imageAlt: "Portrait of Elena Marchetti",
   },
   {
@@ -286,8 +568,7 @@ export const testimonials: Testimonial[] = [
     role: "Managing Partner, Axis Properties",
     quote:
       "Their technical discipline saved months in coordination while keeping the design intent exactly where it needed to be.",
-    image:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80",
+    image: exteriorImage,
     imageAlt: "Portrait of James Okonkwo",
   },
   {
@@ -296,8 +577,7 @@ export const testimonials: Testimonial[] = [
     role: "Director, Atelier Hospitality Group",
     quote:
       "From concept to launch assets, they gave us a brand-level design story that directly improved client confidence.",
-    image:
-      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&q=80",
+    image: aboutImage,
     imageAlt: "Portrait of Sofia Lindqvist",
   },
 ];
@@ -341,21 +621,21 @@ export const footer = {
     { href: "#top", label: "Home" },
     { href: "#about", label: "About" },
     { href: "#services", label: "Services" },
-    { href: "#projects", label: "Journal" },
+    { href: "/projects", label: "Gallery" },
     { href: "#contact", label: "Contact" },
   ] as const,
   homepageLinks: [
     { href: "#about", label: "Studio" },
-    { href: "#projects", label: "Case Studies" },
+    { href: "/projects", label: "Case Studies" },
     { href: "#services", label: "Solutions" },
     { href: "#contact", label: "Contact" },
   ],
   categoryLinks: [
-    { href: "#services", label: "Interior" },
-    { href: "#services", label: "Landscape" },
-    { href: "#services", label: "Exterior" },
-    { href: "#services", label: "Architecture Drone" },
-    { href: "#services", label: "Architecture AI" },
+    { href: "/projects?service=interior", label: "Interior" },
+    { href: "/projects?service=landscape", label: "Landscape" },
+    { href: "/projects?service=exterior", label: "Exterior" },
+    { href: "/projects?service=architecture-drone", label: "Architecture Drone" },
+    { href: "/projects?service=architecture-ai", label: "Architecture AI" },
   ],
   social: [
     { label: "Facebook", href: "https://facebook.com", icon: "facebook" as const },

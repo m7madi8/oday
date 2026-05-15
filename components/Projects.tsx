@@ -5,6 +5,7 @@ import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import {
   projectFilters,
   projects,
+  serviceFilterLabel,
   type ProjectFilter,
 } from "@/lib/data";
 import { revealInView } from "@/lib/motion-viewport";
@@ -42,10 +43,10 @@ export function Projects() {
 
   const filtered = useMemo(() => {
     if (filter === "All") return projects;
-    return projects.filter((p) => p.category === filter);
+    return projects.filter((p) => p.serviceSlug === filter);
   }, [filter]);
 
-  const display = filtered.slice(0, 4);
+  const display = filtered.slice(0, 6);
 
   return (
     <section
@@ -65,12 +66,18 @@ export function Projects() {
             <p className="mt-5 max-w-xl text-sm leading-relaxed text-ink-secondary md:text-base">
               A focused selection of high-impact developments crafted to lift market value, user appeal, and long-term asset performance.
             </p>
+            <Link
+              href="/projects"
+              className="mt-6 inline-flex items-center gap-2 font-outfit text-xs font-medium uppercase tracking-[0.18em] text-gold transition-opacity hover:opacity-85"
+            >
+              View full gallery <span aria-hidden>→</span>
+            </Link>
           </div>
 
           <div
             className="flex flex-wrap gap-3"
             role="tablist"
-            aria-label="Filter projects by category"
+            aria-label="Filter projects by service line"
           >
             {projectFilters.map((tab) => (
               <button
@@ -86,7 +93,7 @@ export function Projects() {
                 }`}
                 onClick={() => setFilter(tab)}
               >
-                {tab}
+                {serviceFilterLabel(tab)}
               </button>
             ))}
           </div>
@@ -167,6 +174,7 @@ function ProjectCard({
 
   return (
     <motion.article
+      id={project.id}
       className={`group relative min-h-[280px] overflow-hidden rounded-lg border border-gold/25 bg-bg-card ${span}`}
       initial={{ opacity: reduceMotion ? 1 : 0, y: reduceMotion ? 0 : 40 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -183,8 +191,12 @@ function ProjectCard({
             : "polygon(0 0, 94% 0, 100% 8%, 100% 100%, 0 100%)",
       }}
     >
-      <Link href="#contact" className="absolute inset-0 z-10" aria-label={`Request details about ${project.title}`}>
-        <span className="sr-only">Request details about {project.title}</span>
+      <Link
+        href={`/projects?service=${encodeURIComponent(project.serviceSlug)}`}
+        className="absolute inset-0 z-10"
+        aria-label={`View ${project.title} in gallery`}
+      >
+        <span className="sr-only">View {project.title} in gallery</span>
       </Link>
 
       <span className="pointer-events-none absolute left-6 top-6 z-[2] font-display text-lg italic text-gold">

@@ -86,7 +86,7 @@ const mainLinks = [
   { href: "#top", label: "Home" },
   { href: "#about", label: "About" },
   { href: "#services", label: "Services" },
-  { href: "#projects", label: "Journal" },
+  { href: "/projects", label: "Gallery" },
 ] as const;
 
 const secondaryLinks = [
@@ -137,27 +137,21 @@ export function Navigation() {
               open ? "scale-[0.982] opacity-[0.93]" : "scale-100 opacity-100"
             }`}
           >
-            {open ? (
-              <span className="label-upper shrink-0 text-sm tracking-[0.22em] text-white/90 sm:text-base">
-                Menu
-              </span>
-            ) : (
-              <Link
-                href="#top"
-                className="flex shrink-0 items-center transition-opacity duration-200 hover:opacity-90"
-                aria-label="OD Studio home"
-              >
-                <Image
-                  src={brandLogo}
-                  alt="OD Studio"
-                  height={72}
-                  width={288}
-                  className="h-[72px] w-auto max-w-[min(360px,calc(100vw-9.5rem))]"
-                  priority
-                  sizes="(max-width: 768px) 320px, 360px"
-                />
-              </Link>
-            )}
+            <Link
+              href="#top"
+              className="flex shrink-0 items-center transition-opacity duration-200 hover:opacity-90"
+              aria-label="OD Studio home"
+            >
+              <Image
+                src={brandLogo}
+                alt="OD Studio"
+                height={72}
+                width={288}
+                className="h-[72px] w-auto max-w-[min(360px,calc(100vw-9.5rem))]"
+                priority
+                sizes="(max-width: 768px) 320px, 360px"
+              />
+            </Link>
 
             <button
               type="button"

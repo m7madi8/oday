@@ -97,7 +97,7 @@ export function Hero() {
                 className="pointer-events-auto absolute bottom-[clamp(2.25rem,6vw,3.75rem)] right-[clamp(1.25rem,4vw,3.75rem)] max-sm:right-5"
               >
                 <Link
-                  href="#projects"
+                  href="/projects"
                   className={frostedCta}
                   aria-label="See all projects"
                 >

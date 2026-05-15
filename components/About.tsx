@@ -1,26 +1,19 @@
 "use client";
 
 import { CounterNumber } from "@/components/animations/CounterNumber";
-import { GsapStaggerReveal } from "@/components/animations/GsapStaggerReveal";
 import { RevealChildren } from "@/components/animations/RevealChildren";
 import { RevealText } from "@/components/animations/RevealText";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import { motion, useReducedMotion } from "@/components/ClientMotion";
 import { revealInView } from "@/lib/motion-viewport";
+import { about as studioAbout } from "@/lib/data";
 import Image from "next/image";
 import { useRef } from "react";
-import aboutSectionImage from "@/imgs/about.jpg";
 
 const stats = [
   { target: 180, suffix: "+", label: "Projects" },
   { target: 8, suffix: "", label: "Years" },
   { target: 91, suffix: "%", label: "Repeat clients" },
-] as const;
-
-const pillars = [
-  "Design Strategy",
-  "Technical Authority",
-  "Execution Control",
 ] as const;
 
 export function About() {
@@ -33,13 +26,13 @@ export function About() {
       className="relative overflow-hidden bg-bg-primary py-20 md:py-24"
     >
       <RevealChildren
-        className="relative mx-auto grid w-full max-w-7xl gap-8 px-5 md:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)] md:px-10 lg:gap-10"
+        className="relative mx-auto grid w-full max-w-7xl gap-8 px-5 md:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)] md:px-10 lg:gap-12"
         stagger={0.09}
       >
         <ScrollReveal
           as="article"
           dramatic
-          className="flex flex-col justify-between rounded-xl border border-white/[0.08] bg-bg-card/90 p-7 md:p-9 lg:p-10"
+          className="flex min-h-0 flex-col justify-between rounded-xl border border-white/[0.08] bg-bg-card/90 p-7 md:min-h-[min(100%,520px)] md:p-9 lg:min-h-[560px] lg:p-10"
         >
           <div>
             <header className="border-b border-white/[0.1] pb-5 md:pb-6">
@@ -49,9 +42,9 @@ export function About() {
                 viewport={revealInView}
                 transition={{ duration: reduce ? 0 : 0.45, ease: [0.16, 1, 0.3, 1] }}
               >
-                <p className="label-upper tracking-[0.22em] text-gold/85">Company snapshot</p>
+                <p className="label-upper tracking-[0.22em] text-gold/85">{studioAbout.snapshotEyebrow}</p>
                 <p className="mt-2 font-outfit text-[0.6875rem] font-normal tracking-[0.08em] text-ink-muted">
-                  Key figures and operating focus
+                  {studioAbout.snapshotSub}
                 </p>
               </motion.div>
             </header>
@@ -97,41 +90,52 @@ export function About() {
             </motion.div>
 
             <motion.p
-              className="mt-8 max-w-xl text-[0.9375rem] leading-[1.65] text-ink-secondary md:mt-9 md:text-base md:leading-[1.7]"
+              className="mt-8 max-w-2xl text-[0.9375rem] font-medium leading-[1.65] text-ink-secondary md:mt-9 md:text-base md:leading-[1.72]"
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={revealInView}
               transition={{ duration: reduce ? 0 : 0.55, delay: reduce ? 0 : 0.04, ease: [0.22, 1, 0.36, 1] }}
             >
-              Architecture, interiors, and engineering — one accountable team.
+              {studioAbout.introParagraph}
             </motion.p>
 
-            <h2 className="mt-6 font-display text-[clamp(1.85rem,4.2vw,3.25rem)] font-normal italic leading-[1.06] text-ink-primary md:mt-7">
+            <h2 className="mt-7 font-display text-[clamp(1.85rem,4.2vw,3.25rem)] font-normal italic leading-[1.06] text-ink-primary md:mt-8">
               <RevealText as="span" className="block" splitByWords wordStagger={0.06} duration={0.85}>
-                Built for Serious
+                {studioAbout.headlinePrimary}
               </RevealText>{" "}
               <RevealText as="span" className="text-gold/90" splitByWords wordStagger={0.07} duration={0.85} delay={0.12}>
-                Developers
+                {studioAbout.headlineAccent}
               </RevealText>
             </h2>
 
             <div className="mt-5 h-px w-full max-w-[4.5rem] bg-gold/35" aria-hidden />
 
-            <GsapStaggerReveal
-              className="mt-7 border-l border-gold/35 pl-5 md:mt-8 md:pl-6"
-              start="top 88%"
-              stagger={0.08}
+            <motion.ul
+              className="mt-8 space-y-0 border-t border-white/[0.1] pt-8 md:mt-9 md:pt-9"
+              initial={{ opacity: 0, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={revealInView}
+              transition={{ duration: reduce ? 0 : 0.5, delay: reduce ? 0 : 0.08 }}
             >
-              {pillars.map((title) => (
-                <div
+              {studioAbout.strengths.map(({ title, description, icon: Icon }) => (
+                <li
                   key={title}
-                  data-reveal-item
-                  className="border-b border-white/[0.06] py-3 font-outfit text-[13px] font-medium tracking-[0.06em] text-ink-primary last:border-b-0 last:pb-0 first:pt-0"
+                  className="flex gap-4 border-b border-white/[0.06] py-5 first:pt-0 last:border-b-0 last:pb-0 md:gap-5 md:py-6"
                 >
-                  {title}
-                </div>
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-gold/28 bg-bg-primary/80 text-gold md:h-12 md:w-12">
+                    <Icon className="h-5 w-5" aria-hidden />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="font-outfit text-[0.9375rem] font-semibold tracking-[0.04em] text-ink-primary md:text-base">
+                      {title}
+                    </p>
+                    <p className="mt-1.5 text-[0.8125rem] leading-[1.6] text-ink-secondary md:text-[0.84375rem] md:leading-[1.62]">
+                      {description}
+                    </p>
+                  </div>
+                </li>
               ))}
-            </GsapStaggerReveal>
+            </motion.ul>
           </div>
 
           <motion.div
@@ -142,34 +146,34 @@ export function About() {
             transition={{ duration: reduce ? 0 : 0.58, delay: reduce ? 0 : 0.06 }}
           >
             <p className="font-display text-[1.9rem] italic leading-none text-ink-primary md:text-[2.2rem]">
-              Oday Abu Doha
+              {studioAbout.directorName}
             </p>
             <p
               className="label-upper mt-2 text-ink-muted"
               style={{ fontVariantCaps: "all-small-caps" }}
             >
-              Founder &amp; Design Director
+              {studioAbout.directorRole}
             </p>
           </motion.div>
         </ScrollReveal>
 
-        <ScrollReveal dramatic delay={0.06} className="relative min-h-[340px] overflow-hidden rounded-2xl border border-gold/25 md:min-h-[460px] md:self-stretch">
+        <ScrollReveal dramatic delay={0.06} className="relative min-h-[380px] overflow-hidden rounded-2xl border border-gold/25 md:min-h-[min(100%,560px)] md:self-stretch lg:min-h-[560px]">
           <Image
-            src={aboutSectionImage}
-            alt="OD Studio premium architectural project"
+            src={studioAbout.directorPortrait}
+            alt={studioAbout.directorPortraitAlt}
             fill
-            className="object-cover"
+            className="object-cover object-[50%_18%]"
             sizes="(max-width: 1024px) 100vw, 44vw"
             priority
           />
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(18,18,18,0.72)_0%,rgba(18,18,18,0.28)_42%,rgba(18,18,18,0)_68%)]"
+            className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(18,18,18,0.35)_0%,rgba(18,18,18,0.12)_40%,transparent_75%)]"
           />
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#1e1913]/28 to-transparent" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#12100c]/75 to-transparent" />
 
-          <p className="absolute bottom-6 right-6 border-l-2 border-gold bg-bg-primary/72 px-3 py-2 text-[0.6rem] uppercase tracking-[0.18em] text-ink-primary backdrop-blur-[1px]">
-            OD Studio - Premium Real Estate
+          <p className="absolute bottom-6 right-6 max-w-[14rem] border-l-2 border-gold bg-bg-primary/78 px-3 py-2 text-[0.6rem] uppercase leading-snug tracking-[0.18em] text-ink-primary shadow-lg backdrop-blur-sm md:max-w-none md:px-3.5 md:py-2.5">
+            {studioAbout.directorName} — {studioAbout.logoWordmark} {studioAbout.logoSub}
           </p>
         </ScrollReveal>
       </RevealChildren>
