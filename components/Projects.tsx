@@ -8,7 +8,7 @@ import {
   type ProjectFilter,
 } from "@/lib/data";
 import { revealInView } from "@/lib/motion-viewport";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "@/components/ClientMotion";
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";

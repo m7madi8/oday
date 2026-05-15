@@ -4,7 +4,7 @@ import { RevealChildren } from "@/components/animations/RevealChildren";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import { processSteps } from "@/lib/data";
 import { revealInView, softInView } from "@/lib/motion-viewport";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion } from "@/components/ClientMotion";
 const executionPillars = ["Strategy", "Engineering", "Delivery"] as const;
 
 export function Process() {

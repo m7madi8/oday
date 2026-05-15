@@ -3,7 +3,7 @@
 import { RevealChildren } from "@/components/animations/RevealChildren";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import { faqItems } from "@/lib/data";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "@/components/ClientMotion";
 import { useId, useState } from "react";
 
 export function FAQ() {

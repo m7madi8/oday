@@ -5,7 +5,7 @@ import {
   createMaskRevealTransition,
 } from "@/lib/animations";
 import { revealInView } from "@/lib/motion-viewport";
-import { motion } from "framer-motion";
+import { motion } from "@/components/ClientMotion";
 import { useMemo } from "react";
 
 type RevealTag = "h1" | "h2" | "h3" | "h4" | "p" | "span" | "div";

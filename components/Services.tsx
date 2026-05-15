@@ -4,7 +4,7 @@ import { RevealChildren } from "@/components/animations/RevealChildren";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import { services } from "@/lib/data";
 import { revealInView } from "@/lib/motion-viewport";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion } from "@/components/ClientMotion";
 import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 import { useState } from "react";

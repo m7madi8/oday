@@ -1,7 +1,7 @@
 "use client";
 
 import { testimonials } from "@/lib/data";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion } from "@/components/ClientMotion";
 import Image from "next/image";
 import { Quote, Star } from "lucide-react";
 import { useEffect, useRef, useState } from "react";

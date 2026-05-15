@@ -2,7 +2,7 @@
 
 import { animationEasing } from "@/lib/animations";
 import { revealInView } from "@/lib/motion-viewport";
-import { motion, useReducedMotion, type HTMLMotionProps } from "framer-motion";
+import { motion, useReducedMotion, type HTMLMotionProps } from "@/components/ClientMotion";
 
 type ScrollRevealProps = Omit<HTMLMotionProps<"div">, "initial" | "whileInView" | "viewport"> & {
   delay?: number;

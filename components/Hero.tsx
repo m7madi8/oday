@@ -5,7 +5,7 @@ import { hero } from "@/lib/data";
 import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
-import { useReducedMotion } from "framer-motion";
+import { useReducedMotion } from "@/components/ClientMotion";
 import heroImage from "@/imgs/exterior.jpg";
 
 const frostedCta =

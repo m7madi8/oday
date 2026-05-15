@@ -5,7 +5,7 @@ import {
   useMotionValue,
   useSpring,
   useReducedMotion,
-} from "framer-motion";
+} from "@/components/ClientMotion";
 import { useEffect, useState } from "react";
 
 export function CustomCursor() {

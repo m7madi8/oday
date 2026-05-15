@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion } from "@/components/ClientMotion";
 
 export function GrainOverlay() {
   const reduceMotion = useReducedMotion();

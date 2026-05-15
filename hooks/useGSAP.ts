@@ -1,3 +1,5 @@
+"use client";
+
 import { scrollTriggerDefaults } from "@/lib/animations";
 import {
   type DependencyList,

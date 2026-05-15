@@ -1,7 +1,7 @@
 "use client";
 
 import { revealInView } from "@/lib/motion-viewport";
-import { motion, useReducedMotion, type HTMLMotionProps } from "framer-motion";
+import { motion, useReducedMotion, type HTMLMotionProps } from "@/components/ClientMotion";
 import { Children, isValidElement, type ReactNode } from "react";
 
 const childVariants = {

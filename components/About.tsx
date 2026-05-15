@@ -5,7 +5,7 @@ import { GsapStaggerReveal } from "@/components/animations/GsapStaggerReveal";
 import { RevealChildren } from "@/components/animations/RevealChildren";
 import { RevealText } from "@/components/animations/RevealText";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion } from "@/components/ClientMotion";
 import { revealInView } from "@/lib/motion-viewport";
 import Image from "next/image";
 import { useRef } from "react";

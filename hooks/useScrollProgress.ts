@@ -1,10 +1,8 @@
+"use client";
+
+import type { MotionValue, UseScrollOptions } from "@/components/ClientMotion";
+import { useMotionValueEvent, useScroll } from "@/components/ClientMotion";
 import { clamp01 } from "@/lib/animations";
-import {
-  type MotionValue,
-  useMotionValueEvent,
-  useScroll,
-  type UseScrollOptions,
-} from "framer-motion";
 import { type RefObject, useState } from "react";
 
 export interface UseScrollProgressOptions {
