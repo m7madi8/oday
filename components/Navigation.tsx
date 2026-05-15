@@ -2,8 +2,11 @@
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Facebook, Instagram, Linkedin } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+
+import brandLogo from "@/imgs/oday-logo.png";
 
 const loadEase = [0.22, 1, 0.36, 1] as const;
 const softOut = [0.33, 1, 0.68, 1] as const;
@@ -136,10 +139,18 @@ export function Navigation() {
           >
             <Link
               href="#top"
-              className="font-outfit text-[11px] font-medium uppercase tracking-[0.14em] text-white transition-colors duration-200 hover:text-white md:text-[12px] md:tracking-[0.15em]"
+              className="flex shrink-0 items-center transition-opacity duration-200 hover:opacity-90"
               aria-label="OD Studio home"
             >
-              OD STUDIO
+              <Image
+                src={brandLogo}
+                alt="OD Studio"
+                height={28}
+                width={112}
+                className="h-[26px] w-auto md:h-[30px]"
+                priority
+                sizes="(max-width: 768px) 112px, 128px"
+              />
             </Link>
 
             <button
@@ -210,8 +221,14 @@ export function Navigation() {
                       initial={reduceMotion ? false : "hidden"}
                       animate={reduceMotion ? false : "show"}
                     >
-                      <span className="font-outfit text-[13px] font-semibold uppercase tracking-[0.18em] text-white">
-                        OD STUDIO
+                      <span className="inline-block" aria-hidden>
+                        <Image
+                          src={brandLogo}
+                          alt=""
+                          height={32}
+                          width={128}
+                          className="h-7 w-auto opacity-95 sm:h-8"
+                        />
                       </span>
                     </motion.div>
 

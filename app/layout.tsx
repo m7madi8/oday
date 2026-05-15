@@ -8,6 +8,10 @@ export const metadata: Metadata = {
   title: "OD STUDIO",
   description:
     "OD Studio delivers architecture and engineering solutions that elevate asset value, accelerate approvals, and strengthen market positioning.",
+  icons: {
+    icon: [{ url: "/favicon.png", type: "image/png", sizes: "any" }],
+    apple: [{ url: "/favicon.png", sizes: "180x180", type: "image/png" }],
+  },
 };
 
 export default function RootLayout({
@@ -16,8 +20,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="min-h-screen bg-bg-primary font-sans font-light text-ink-primary">
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className="min-h-screen bg-bg-primary font-sans font-light text-ink-primary"
+        suppressHydrationWarning
+      >
         <GrainOverlay />
         <CustomCursor />
         <Navigation />

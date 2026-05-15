@@ -144,12 +144,8 @@ function getServiceVisual(title: string): ServiceVisual {
 export function Services() {
   const reduceMotion = useReducedMotion();
   const [activeServiceId, setActiveServiceId] = useState(services[0]?.id ?? "");
-  const activeService = services.find((service) => service.id === activeServiceId) ?? services[0];
 
-  if (!activeService) return null;
-
-  const activeProfile = serviceProfiles[activeService.title] ?? fallbackProfile;
-  const activeTone = serviceTones[activeService.title] ?? defaultTone;
+  if (!services.length) return null;
 
   return (
     <section
@@ -187,34 +183,6 @@ export function Services() {
             A refined board where every service has its own visual identity, without visual noise.
           </p>
         </ScrollReveal>
-
-        <motion.div
-          key={activeService.id}
-          initial={{ opacity: reduceMotion ? 1 : 0, y: reduceMotion ? 0 : 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: reduceMotion ? 0 : 0.35 }}
-          className="mt-7 rounded-2xl border border-gold/24 bg-bg-card/90 p-4 shadow-[0_14px_35px_rgba(0,0,0,0.35)] backdrop-blur-[1px] md:flex md:items-center md:justify-between md:px-6"
-        >
-          <div className="md:max-w-3xl">
-            <span className={`label-upper rounded-full border px-2.5 py-1 ${activeTone.chip}`}>
-              {activeService.orderLabel} Active Service
-            </span>
-            <h3 className="mt-3 font-display text-2xl italic text-ink-primary md:text-[2rem]">
-              {activeService.title}
-            </h3>
-            <p className="mt-2 text-sm text-ink-secondary md:text-base">{activeProfile.punchline}</p>
-          </div>
-          <div className="mt-4 flex flex-wrap gap-2 md:mt-0 md:justify-end">
-            {activeProfile.bullets.map((bullet) => (
-              <span
-                key={`${activeService.id}-${bullet}`}
-                className="label-upper rounded-full border border-gold/26 bg-bg-primary px-3 py-1.5 text-ink-secondary"
-              >
-                {bullet}
-              </span>
-            ))}
-          </div>
-        </motion.div>
 
         <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {services.map((service) => (

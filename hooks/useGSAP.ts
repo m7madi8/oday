@@ -107,13 +107,66 @@ async function loadGSAPRuntime(): Promise<GSAPRuntime | null> {
 const useIsomorphicLayoutEffect =
   typeof window === "undefined" ? useEffect : useLayoutEffect;
 
+/** Safe for refs / DOM nodes (avoids JSON circular errors on `RefObject` + `HTMLElement`). */
+function dependencyListKey(deps: DependencyList | undefined): string {
+  const list = deps ?? [];
+  const parts: string[] = [];
+  for (const dep of list) {
+    if (dep === null || dep === undefined) {
+      parts.push(String(dep));
+      continue;
+    }
+    const t = typeof dep;
+    if (t === "string" || t === "number" || t === "boolean" || t === "bigint") {
+      parts.push(`${t}:${String(dep)}`);
+      continue;
+    }
+    if (t === "symbol") {
+      parts.push(`symbol:${String(dep)}`);
+      continue;
+    }
+    if (t === "function") {
+      const fn = dep as (...args: unknown[]) => unknown;
+      parts.push(`fn:${fn.name || "anonymous"}`);
+      continue;
+    }
+    if (dep instanceof Date) {
+      parts.push(`date:${dep.toISOString()}`);
+      continue;
+    }
+    if (typeof Element !== "undefined" && dep instanceof Element) {
+      parts.push(`element:${dep.tagName}`);
+      continue;
+    }
+    if (typeof dep === "object" && "current" in dep) {
+      const cur = (dep as { current: unknown }).current;
+      if (cur === null || cur === undefined) {
+        parts.push("ref:null");
+        continue;
+      }
+      if (typeof Element !== "undefined" && cur instanceof Element) {
+        parts.push(`ref:el:${cur.tagName}`);
+        continue;
+      }
+      parts.push(`ref:${typeof cur}`);
+      continue;
+    }
+    try {
+      parts.push(`json:${JSON.stringify(dep)}`);
+    } catch {
+      parts.push(`obj:${Object.prototype.toString.call(dep)}`);
+    }
+  }
+  return parts.join("\u241e");
+}
+
 export function useGSAP(
   init: UseGSAPInit,
   { scope, deps = [], enabled = true, once = false }: UseGSAPOptions = {},
 ): void {
   const hasRun = useRef(false);
-  /** Stable primitive so the effect dependency array length never changes (avoids HMR / optional deps bugs). */
-  const depsKey = JSON.stringify(deps ?? []);
+  /** Stable string key for deps (refs/DOM-safe; effect deps length stays fixed). */
+  const depsKey = dependencyListKey(deps);
 
   useIsomorphicLayoutEffect(() => {
     if (!enabled) {

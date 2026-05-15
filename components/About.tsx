@@ -14,7 +14,7 @@ import aboutSectionImage from "@/imgs/about.jpg";
 const stats = [
   { target: 180, suffix: "+", label: "Projects" },
   { target: 8, suffix: "", label: "Years" },
-  { target: 91, suffix: "%", label: "Repeat Clients" },
+  { target: 91, suffix: "%", label: "Repeat clients" },
 ] as const;
 
 const pillars = [
@@ -36,102 +36,106 @@ export function About() {
         className="relative mx-auto grid w-full max-w-7xl gap-8 px-5 md:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)] md:px-10 lg:gap-10"
         stagger={0.09}
       >
-        <ScrollReveal as="article" dramatic className="flex flex-col justify-between rounded-2xl border border-gold/25 bg-bg-card/80 p-6 md:p-8 lg:p-10">
+        <ScrollReveal
+          as="article"
+          dramatic
+          className="flex flex-col justify-between rounded-xl border border-white/[0.08] bg-bg-card/90 p-7 md:p-9 lg:p-10"
+        >
           <div>
+            <header className="border-b border-white/[0.1] pb-5 md:pb-6">
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={revealInView}
+                transition={{ duration: reduce ? 0 : 0.45, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <p className="label-upper tracking-[0.22em] text-gold/85">Company snapshot</p>
+                <p className="mt-2 font-outfit text-[0.6875rem] font-normal tracking-[0.08em] text-ink-muted">
+                  Key figures and operating focus
+                </p>
+              </motion.div>
+            </header>
+
+            <motion.div
+              ref={statsRowRef}
+              className="mt-7 border-y border-white/[0.08] md:mt-8"
+              initial={reduce ? false : { opacity: 0, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.35, margin: "0px 0px -8% 0px" }}
+              transition={{ duration: reduce ? 0 : 0.55, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <div className="grid grid-cols-1 divide-y divide-white/[0.08] sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+                {stats.map((stat, idx) => (
+                  <motion.div
+                    key={stat.label}
+                    className="py-5 text-left sm:px-5 sm:py-6 md:px-6 md:py-6 sm:first:pl-0"
+                    initial={reduce ? false : { opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.25 }}
+                    transition={{
+                      duration: reduce ? 0 : 0.45,
+                      delay: reduce ? 0 : 0.04 + idx * 0.05,
+                      ease: [0.16, 1, 0.3, 1],
+                    }}
+                  >
+                    <p className="font-display text-[2rem] font-normal not-italic leading-none tabular-nums tracking-tight text-ink-primary md:text-[2.35rem]">
+                      <CounterNumber
+                        targetNumber={stat.target}
+                        suffix={stat.suffix}
+                        triggerRef={statsRowRef}
+                        delay={reduce ? 0 : 0.18 + idx * 0.12}
+                        duration={reduce ? 0 : 2}
+                        ease="expo.out"
+                        start="top 85%"
+                        enabled={!reduce}
+                      />
+                    </p>
+                    <p className="label-upper mt-2.5 tracking-[0.16em] text-ink-muted">{stat.label}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+
             <motion.p
-              className="label-upper text-gold"
+              className="mt-8 max-w-xl text-[0.9375rem] leading-[1.65] text-ink-secondary md:mt-9 md:text-base md:leading-[1.7]"
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={revealInView}
-              transition={{ duration: reduce ? 0 : 0.5, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: reduce ? 0 : 0.55, delay: reduce ? 0 : 0.04, ease: [0.22, 1, 0.36, 1] }}
             >
-              COMPANY SNAPSHOT
+              Architecture, interiors, and engineering — one accountable team.
             </motion.p>
 
-            <h2 className="mt-4 font-display text-[clamp(2.2rem,5.1vw,4.2rem)] italic leading-[0.96] text-ink-primary">
+            <h2 className="mt-6 font-display text-[clamp(1.85rem,4.2vw,3.25rem)] font-normal italic leading-[1.06] text-ink-primary md:mt-7">
               <RevealText as="span" className="block" splitByWords wordStagger={0.06} duration={0.85}>
                 Built for Serious
               </RevealText>{" "}
-              <RevealText as="span" className="text-gold" splitByWords wordStagger={0.07} duration={0.85} delay={0.12}>
+              <RevealText as="span" className="text-gold/90" splitByWords wordStagger={0.07} duration={0.85} delay={0.12}>
                 Developers
               </RevealText>
             </h2>
 
-            <motion.p
-              className="mt-5 max-w-2xl text-sm leading-relaxed text-ink-secondary md:text-base"
-              initial={{ opacity: 0, y: 22 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={revealInView}
-              transition={{ duration: reduce ? 0 : 0.62, delay: reduce ? 0 : 0.08, ease: [0.22, 1, 0.36, 1] }}
-            >
-              Architecture, interiors, and engineering - one accountable team.
-            </motion.p>
+            <div className="mt-5 h-px w-full max-w-[4.5rem] bg-gold/35" aria-hidden />
 
-            <motion.div
-              className="mt-8 h-px w-12 bg-gold/55"
-              initial={{ scaleX: 0 }}
-              whileInView={{ scaleX: 1 }}
-              viewport={revealInView}
-              transition={{ duration: reduce ? 0 : 0.75, delay: reduce ? 0 : 0.12, ease: [0.22, 1, 0.36, 1] }}
-              style={{ transformOrigin: "left center" }}
-            />
-
-            <motion.div
-              ref={statsRowRef}
-              className="mt-9 flex flex-wrap items-stretch"
-              initial={reduce ? false : { opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.4, margin: "0px 0px -8% 0px" }}
-              transition={{
-                duration: reduce ? 0 : 0.7,
-                ease: [0.22, 1, 0.36, 1],
-              }}
+            <GsapStaggerReveal
+              className="mt-7 border-l border-gold/35 pl-5 md:mt-8 md:pl-6"
+              start="top 88%"
+              stagger={0.08}
             >
-              {stats.map((stat, idx) => (
-                <motion.div
-                  key={stat.label}
-                  className={`px-4 py-1 md:px-6 ${idx < stats.length - 1 ? "border-r border-gold/28" : ""}`}
-                  initial={reduce ? false : { opacity: 0, y: 18 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.35 }}
-                  transition={{
-                    duration: reduce ? 0 : 0.55,
-                    delay: reduce ? 0 : 0.08 + idx * 0.07,
-                    ease: [0.16, 1, 0.3, 1],
-                  }}
+              {pillars.map((title) => (
+                <div
+                  key={title}
+                  data-reveal-item
+                  className="border-b border-white/[0.06] py-3 font-outfit text-[13px] font-medium tracking-[0.06em] text-ink-primary last:border-b-0 last:pb-0 first:pt-0"
                 >
-                  <p className="font-display text-[2.2rem] italic leading-none text-ink-primary md:text-[2.5rem] tabular-nums tracking-tight">
-                    <CounterNumber
-                      targetNumber={stat.target}
-                      suffix={stat.suffix}
-                      triggerRef={statsRowRef}
-                      delay={reduce ? 0 : 0.22 + idx * 0.16}
-                      duration={reduce ? 0 : 2.15}
-                      ease="expo.out"
-                      start="top 80%"
-                      enabled={!reduce}
-                    />
-                  </p>
-                  <p className="label-upper mt-2 text-ink-muted">{stat.label}</p>
-                </motion.div>
-              ))}
-            </motion.div>
-
-            <GsapStaggerReveal className="mt-10 space-y-3.5" start="top 88%" stagger={0.1}>
-              {pillars.map((title, idx) => (
-                <div key={title} data-reveal-item className="flex items-center gap-3">
-                  <span className="label-upper text-gold">
-                    {(idx + 1).toString().padStart(2, "0")}
-                  </span>
-                  <p className="label-upper text-ink-primary">{title}</p>
-                  <span className="h-px flex-1 bg-gold/30" />
+                  {title}
                 </div>
               ))}
             </GsapStaggerReveal>
           </div>
 
           <motion.div
-            className="mt-10 border-t border-gold/28 pt-5"
+            className="mt-10 border-t border-white/[0.1] pt-6 md:mt-12 md:pt-7"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={revealInView}

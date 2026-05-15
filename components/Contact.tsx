@@ -133,6 +133,7 @@ export function Contact() {
               </p>
               <form
                 className="mt-3 flex flex-col gap-2.5 sm:flex-row sm:flex-wrap sm:items-stretch lg:justify-end"
+                autoComplete="off"
                 onSubmit={onNewsletterSubmit}
               >
                 <label htmlFor="footer-newsletter-email" className="sr-only">
@@ -147,10 +148,10 @@ export function Contact() {
                   value={newsletter}
                   onChange={(e) => setNewsletter(e.target.value)}
                   className={glassField}
+                  suppressHydrationWarning
                 />
                 <button
                   type="submit"
-                  suppressHydrationWarning
                   className={`${glassPill} shrink-0 px-6 py-2.5 tracking-[0.12em]`}
                 >
                   Submit

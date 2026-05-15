@@ -94,7 +94,7 @@ export const hero = {
     "Interior, landscape, exterior, architecture drone, and architecture AI — precision-focused delivery for high-value projects.",
   image:
     "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1920&q=80",
-  imageAlt: "Luxury interior with sculpted ceiling and large windows",
+  imageAlt: "Modern desert villa at sunset with infinity pool and mountain backdrop",
   stats: [
     { label: "Projects", value: 180, suffix: "+" },
     { label: "Years", value: 8, suffix: "" },
