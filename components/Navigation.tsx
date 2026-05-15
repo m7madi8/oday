@@ -137,40 +137,46 @@ export function Navigation() {
               open ? "scale-[0.982] opacity-[0.93]" : "scale-100 opacity-100"
             }`}
           >
-            <Link
-              href="#top"
-              className="flex shrink-0 items-center transition-opacity duration-200 hover:opacity-90"
-              aria-label="OD Studio home"
-            >
-              <Image
-                src={brandLogo}
-                alt="OD Studio"
-                height={28}
-                width={112}
-                className="h-[26px] w-auto md:h-[30px]"
-                priority
-                sizes="(max-width: 768px) 112px, 128px"
-              />
-            </Link>
+            {open ? (
+              <span className="label-upper shrink-0 text-sm tracking-[0.22em] text-white/90 sm:text-base">
+                Menu
+              </span>
+            ) : (
+              <Link
+                href="#top"
+                className="flex shrink-0 items-center transition-opacity duration-200 hover:opacity-90"
+                aria-label="OD Studio home"
+              >
+                <Image
+                  src={brandLogo}
+                  alt="OD Studio"
+                  height={72}
+                  width={288}
+                  className="h-[72px] w-auto max-w-[min(360px,calc(100vw-9.5rem))]"
+                  priority
+                  sizes="(max-width: 768px) 320px, 360px"
+                />
+              </Link>
+            )}
 
             <button
               type="button"
               suppressHydrationWarning
-              className="group relative flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-transparent text-white transition-[transform,opacity] duration-300 ease-[cubic-bezier(0.34,1.3,0.64,1)] hover:opacity-90 active:scale-[0.96]"
+              className="group relative flex h-[72px] w-[72px] shrink-0 items-center justify-center rounded-xl bg-transparent text-white transition-[transform,opacity] duration-300 ease-[cubic-bezier(0.34,1.3,0.64,1)] hover:opacity-90 active:scale-[0.96]"
               aria-label={open ? "Close menu" : "Open menu"}
               aria-expanded={open}
               aria-controls="site-menu-dropdown"
               onClick={toggle}
             >
-              <span className="relative block h-[9px] w-[18px]" aria-hidden>
+              <span className="relative block h-[18px] w-[36px]" aria-hidden>
                 <span
-                  className={`absolute left-0 top-0 h-[1.5px] w-[18px] origin-center rounded-full bg-current transition-[transform,opacity] duration-300 ease-[cubic-bezier(0.34,1.3,0.64,1)] ${
-                    open ? "translate-y-[3.5px] rotate-45" : "translate-y-0 rotate-0"
+                  className={`absolute left-0 top-0 h-[3px] w-[36px] origin-center rounded-full bg-current transition-[transform,opacity] duration-300 ease-[cubic-bezier(0.34,1.3,0.64,1)] ${
+                    open ? "translate-y-[7px] rotate-45" : "translate-y-0 rotate-0"
                   }`}
                 />
                 <span
-                  className={`absolute left-0 top-[6px] h-[1.5px] w-[18px] origin-center rounded-full bg-current transition-[transform,opacity] duration-300 ease-[cubic-bezier(0.34,1.3,0.64,1)] ${
-                    open ? "-translate-y-[3.5px] -rotate-45" : "translate-y-0 rotate-0"
+                  className={`absolute left-0 top-[12px] h-[3px] w-[36px] origin-center rounded-full bg-current transition-[transform,opacity] duration-300 ease-[cubic-bezier(0.34,1.3,0.64,1)] ${
+                    open ? "-translate-y-[7px] -rotate-45" : "translate-y-0 rotate-0"
                   }`}
                 />
               </span>
@@ -221,15 +227,7 @@ export function Navigation() {
                       initial={reduceMotion ? false : "hidden"}
                       animate={reduceMotion ? false : "show"}
                     >
-                      <span className="inline-block" aria-hidden>
-                        <Image
-                          src={brandLogo}
-                          alt=""
-                          height={32}
-                          width={128}
-                          className="h-7 w-auto opacity-95 sm:h-8"
-                        />
-                      </span>
+                      <p className="label-upper text-white/85">Menu</p>
                     </motion.div>
 
                     {reduceMotion ? (

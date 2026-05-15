@@ -1,3 +1,5 @@
+"use client";
+
 export * from "./CounterNumber";
 export * from "./DrawLine";
 export * from "./MagneticButton";

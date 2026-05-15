@@ -9,7 +9,10 @@ export const metadata: Metadata = {
   description:
     "OD Studio delivers architecture and engineering solutions that elevate asset value, accelerate approvals, and strengthen market positioning.",
   icons: {
-    icon: [{ url: "/favicon.png", type: "image/png", sizes: "any" }],
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon.png", type: "image/png", sizes: "any" },
+    ],
     apple: [{ url: "/favicon.png", sizes: "180x180", type: "image/png" }],
   },
 };

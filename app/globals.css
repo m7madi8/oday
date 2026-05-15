@@ -23,8 +23,8 @@
   --hero-gutter: 0.5rem;
   /* Nudge nav + open menu down */
   --hero-nav-offset: 0.875rem;
-  /* Distance from viewport top to below compact bar (py-2.5 + h-9 + top offset share) */
-  --hero-nav-stack: calc(var(--hero-gutter) + var(--hero-nav-offset) + 3.5rem);
+  /* Distance from viewport top to below nav pill (py + 72px logo row + rounding) */
+  --hero-nav-stack: calc(var(--hero-gutter) + var(--hero-nav-offset) + 6rem);
 }
 
 @media (min-width: 640px) {

@@ -14,4 +14,10 @@ export {
   useSpring,
 } from "framer-motion";
 
-export type { HTMLMotionProps, MotionValue, UseScrollOptions } from "framer-motion";
+export type {
+  HTMLMotionProps,
+  MotionValue,
+  Transition,
+  UseScrollOptions,
+  Variants,
+} from "framer-motion";

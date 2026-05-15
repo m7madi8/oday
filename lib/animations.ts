@@ -1,4 +1,6 @@
-import type { Transition, Variants } from "framer-motion";
+"use client";
+
+import type { Transition, Variants } from "@/components/ClientMotion";
 
 export const animationEasing = {
   cinematic: [0.16, 1, 0.3, 1] as const,
