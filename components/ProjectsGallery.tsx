@@ -4,6 +4,7 @@ import { RevealChildren } from "@/components/animations/RevealChildren";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import {
   isValidServiceSlug,
+  projectDetailPath,
   projectServiceFilters,
   projects,
   serviceFilterLabel,
@@ -161,11 +162,11 @@ function GalleryCard({
       }}
     >
       <Link
-        href="/#contact"
+        href={projectDetailPath(project)}
         className="absolute inset-0 z-10"
-        aria-label={`Inquire about ${project.title}`}
+        aria-label={`View ${project.title} project`}
       >
-        <span className="sr-only">Inquire about {project.title}</span>
+        <span className="sr-only">View {project.title}</span>
       </Link>
 
       <span className="pointer-events-none absolute left-4 top-4 z-[2] font-display text-sm italic text-gold md:text-base">
@@ -197,7 +198,7 @@ function GalleryCard({
         </h2>
         <p className="mt-2 text-sm text-ink-secondary">{project.country}</p>
         <span className="mt-4 inline-flex translate-y-1 items-center gap-2 text-xs uppercase tracking-[0.2em] text-gold opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-          Inquire <span aria-hidden>→</span>
+          View project <span aria-hidden>→</span>
         </span>
       </div>
     </motion.article>

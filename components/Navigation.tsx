@@ -1,10 +1,11 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "@/components/ClientMotion";
-import { Facebook, Instagram, Linkedin } from "lucide-react";
+import { Facebook, Instagram } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useCallback, useEffect, useState, type MouseEvent } from "react";
 
 import brandLogo from "@/imgs/oday-logo.png";
 
@@ -82,28 +83,75 @@ const barGlass =
 const menuPanelGlass =
   "border border-white/20 bg-[rgba(18,18,18,0.42)] shadow-[0_32px_100px_rgba(0,0,0,0.65)] backdrop-blur-[20px] backdrop-saturate-150";
 
+/** Homepage sections use `/#id` so links work from `/projects` and other routes. */
+function resolveMenuHref(href: string): string {
+  if (href.startsWith("/")) return href;
+  if (href.startsWith("#")) return `/${href}`;
+  return href;
+}
+
 const mainLinks = [
-  { href: "#top", label: "Home" },
-  { href: "#about", label: "About" },
-  { href: "#services", label: "Services" },
+  { href: "/#top", label: "Home" },
+  { href: "/#about", label: "About" },
+  { href: "/#services", label: "Services" },
   { href: "/projects", label: "Gallery" },
+  { href: "/#location", label: "Location" },
 ] as const;
 
 const secondaryLinks = [
-  { href: "#contact", label: "Contact" },
-  { href: "#footer", label: "Terms" },
-  { href: "#footer", label: "Privacy" },
+  { href: "/#contact", label: "Contact" },
+  { href: "/#faq", label: "FAQ" },
+  { href: "/#footer", label: "Legal" },
 ] as const;
+
+const mainLinkClass =
+  "block py-1.5 font-outfit text-[1.2rem] font-medium leading-snug tracking-tight text-white transition-[color,transform] duration-200 ease-out hover:translate-x-0.5 hover:text-white/95 sm:py-2 sm:text-[1.35rem] md:text-[1.45rem] [@media(max-height:720px)]:py-1 [@media(max-height:720px)]:text-[1.1rem]";
+
+const secondaryLinkClass =
+  "font-outfit text-[13px] font-normal text-white/60 transition-colors duration-200 hover:text-white/90";
 
 const socialLinks = [
   { href: "https://instagram.com", label: "Instagram", Icon: Instagram },
   { href: "https://facebook.com", label: "Facebook", Icon: Facebook },
-  { href: "https://linkedin.com", label: "LinkedIn", Icon: Linkedin },
 ] as const;
 
 export function Navigation() {
   const [open, setOpen] = useState(false);
   const reduceMotion = useReducedMotion();
+  const pathname = usePathname();
+
+  const close = useCallback(() => setOpen(false), []);
+  const toggle = () => setOpen((v) => !v);
+
+  const handleMenuNavigate = useCallback(
+    (e: MouseEvent<HTMLAnchorElement>, href: string) => {
+      close();
+
+      const resolved = resolveMenuHref(href);
+      let path: string;
+      let hash = "";
+
+      try {
+        const url = new URL(resolved, window.location.origin);
+        path = url.pathname;
+        hash = url.hash.replace(/^#/, "");
+      } catch {
+        return;
+      }
+
+      if (path === pathname && hash) {
+        e.preventDefault();
+        window.requestAnimationFrame(() => {
+          const target = document.getElementById(hash);
+          if (target) {
+            target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth" });
+          }
+          window.history.pushState(null, "", `${path}#${hash}`);
+        });
+      }
+    },
+    [close, pathname, reduceMotion],
+  );
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -121,9 +169,6 @@ export function Navigation() {
     };
   }, [open]);
 
-  const close = () => setOpen(false);
-  const toggle = () => setOpen((v) => !v);
-
   const layerOpen = reduceMotion ? { duration: 0 } : { duration: 0.34, ease: loadEase };
   const layerClose = reduceMotion ? { duration: 0 } : { duration: 0.26, ease: loadEase };
 
@@ -138,9 +183,10 @@ export function Navigation() {
             }`}
           >
             <Link
-              href="#top"
+              href="/#top"
               className="flex shrink-0 items-center transition-opacity duration-200 hover:opacity-90"
               aria-label="OD Studio home"
+              onClick={() => open && close()}
             >
               <Image
                 src={brandLogo}
@@ -230,8 +276,8 @@ export function Navigation() {
                           <li key={link.href + link.label}>
                             <Link
                               href={link.href}
-                              className="block py-1.5 font-outfit text-[1.2rem] font-medium leading-snug tracking-tight text-white transition-[color,transform] duration-200 ease-out hover:translate-x-0.5 hover:text-white/95 sm:py-2 sm:text-[1.35rem] md:text-[1.45rem] [@media(max-height:720px)]:py-1 [@media(max-height:720px)]:text-[1.1rem]"
-                              onClick={close}
+                              className={mainLinkClass}
+                              onClick={(e) => handleMenuNavigate(e, link.href)}
                             >
                               {link.label}
                             </Link>
@@ -249,8 +295,8 @@ export function Navigation() {
                           <motion.li key={link.href + link.label} variants={listItem}>
                             <Link
                               href={link.href}
-                              className="block py-1.5 font-outfit text-[1.2rem] font-medium leading-snug tracking-tight text-white transition-[color,transform] duration-200 ease-out hover:translate-x-0.5 hover:text-white/95 sm:py-2 sm:text-[1.35rem] md:text-[1.45rem] [@media(max-height:720px)]:py-1 [@media(max-height:720px)]:text-[1.1rem]"
-                              onClick={close}
+                              className={mainLinkClass}
+                              onClick={(e) => handleMenuNavigate(e, link.href)}
                             >
                               {link.label}
                             </Link>
@@ -270,8 +316,8 @@ export function Navigation() {
                           <li key={link.href + link.label}>
                             <Link
                               href={link.href}
-                              className="font-outfit text-[13px] font-normal text-white/60 transition-colors duration-200 hover:text-white/90"
-                              onClick={close}
+                              className={secondaryLinkClass}
+                              onClick={(e) => handleMenuNavigate(e, link.href)}
                             >
                               {link.label}
                             </Link>
@@ -295,6 +341,7 @@ export function Navigation() {
                             rel="noopener noreferrer"
                             className="text-white/80 transition-[color,transform] duration-200 hover:scale-105 hover:text-white"
                             aria-label={label}
+                            onClick={close}
                           >
                             <Icon className="h-[20px] w-[20px]" strokeWidth={1.45} aria-hidden />
                           </a>

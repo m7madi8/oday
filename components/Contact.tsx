@@ -10,6 +10,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
+import brandLogo from "@/imgs/oday-logo.png";
+
 const socialIcons = {
   facebook: Facebook,
   instagram: Instagram,
@@ -176,6 +178,33 @@ export function Contact() {
               </div>
             ))}
           </div>
+
+          <motion.div
+            className="mt-8 flex flex-col items-center md:mt-9"
+            initial={{ opacity: reduceMotion ? 1 : 0, y: reduceMotion ? 0 : 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={softInView}
+            transition={{ duration: reduceMotion ? 0 : 0.55, delay: reduceMotion ? 0 : 0.1, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <div
+              aria-hidden
+              className="mb-5 h-px w-full max-w-[12rem] bg-gradient-to-r from-transparent via-gold/50 to-transparent md:max-w-[16rem]"
+            />
+            <Link
+              href="#top"
+              className="group inline-flex shrink-0 items-center justify-center"
+              aria-label="OD Studio home"
+            >
+              <Image
+                src={brandLogo}
+                alt="OD Studio"
+                width={720}
+                height={180}
+                className="h-28 w-auto max-w-[min(95vw,720px)] brightness-110 drop-shadow-[0_4px_28px_rgba(0,0,0,0.5)] transition-[transform,opacity] duration-300 group-hover:scale-[1.02] group-hover:opacity-90 sm:h-32 md:h-[9.5rem] lg:h-40"
+                sizes="(max-width: 768px) 640px, 720px"
+              />
+            </Link>
+          </motion.div>
         </footer>
       </RevealChildren>
     </section>

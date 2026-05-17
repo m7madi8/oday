@@ -13,6 +13,7 @@ import aboutImage from "@/imgs/about.jpg";
 import ceoPortrait from "@/imgs/ceo.jpg";
 import exteriorImage from "@/imgs/exterior.jpg";
 import interiorImage from "@/imgs/interior.jpg";
+import landscapeImage from "@/imgs/landscape.jpg";
 
 export const site = {
   name: "OD Studio",
@@ -343,6 +344,58 @@ export const projects: Project[] = [
   },
 ];
 
+export const PROJECT_GALLERY_IMAGE_COUNT = 20;
+
+const projectGalleryPool = [
+  interiorImage,
+  exteriorImage,
+  landscapeImage,
+  aboutImage,
+] as const;
+
+export interface ProjectGalleryImage {
+  src: (typeof projectGalleryPool)[number];
+  alt: string;
+}
+
+export interface ProjectDetailRow {
+  label: string;
+  value: string;
+}
+
+export function getProjectBySlug(slug: string): Project | undefined {
+  return projects.find((p) => p.id === slug);
+}
+
+export function getProjectSummary(project: Project): string {
+  return `${project.title} — ${project.tag} in ${project.country}. A ${project.category.toLowerCase()} engagement delivered through our ${serviceFilterLabel(project.serviceSlug)} line with documentation and coordination built for serious developers.`;
+}
+
+export function getProjectDetailRows(project: Project): ProjectDetailRow[] {
+  return [
+    { label: "Location", value: project.country },
+    { label: "Service line", value: serviceFilterLabel(project.serviceSlug) },
+    { label: "Category", value: project.category },
+    { label: "Focus", value: project.tag },
+    { label: "Case ref.", value: project.orderLabel },
+  ];
+}
+
+/** Twenty gallery frames per project (cycles local portfolio imagery). */
+export function getProjectGallery(project: Project): ProjectGalleryImage[] {
+  return Array.from({ length: PROJECT_GALLERY_IMAGE_COUNT }, (_, i) => {
+    const src = projectGalleryPool[i % projectGalleryPool.length];
+    return {
+      src,
+      alt: `${project.title} — gallery frame ${String(i + 1).padStart(2, "0")} of ${PROJECT_GALLERY_IMAGE_COUNT}`,
+    };
+  });
+}
+
+export function projectDetailPath(project: Project): string {
+  return `/projects/${project.id}`;
+}
+
 export const hero = {
   titleLine1: "Design",
   titleLine2Words: ["That", "Drives", "Value"],
@@ -611,6 +664,19 @@ export const contact = {
       href: "tel:+9700000000",
     },
   ] satisfies ContactChannel[],
+};
+
+export const studioLocation = {
+  eyebrow: "Studio Location",
+  heading: "Where We Build",
+  headingAccent: "From Ramallah",
+  addressLine2: "Ramallah, Palestine",
+  coordinates: { lat: 31.9038, lng: 35.2034 },
+  mapEmbedUrl:
+    "https://www.openstreetmap.org/export/embed.html?bbox=35.185%2C31.892%2C35.225%2C31.918&layer=mapnik&marker=31.9038%2C35.2034",
+  directionsUrl:
+    "https://www.google.com/maps/dir/?api=1&destination=31.9038%2C35.2034&travelmode=driving",
+  openInMapsUrl: "https://www.google.com/maps/search/?api=1&query=Ramallah%2C+Palestine",
 };
 
 export const footer = {

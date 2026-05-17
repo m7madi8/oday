@@ -2,8 +2,8 @@ import { About } from "@/components/About";
 import { Contact } from "@/components/Contact";
 import { FAQ } from "@/components/FAQ";
 import { Hero } from "@/components/Hero";
+import { Location } from "@/components/Location";
 import { Process } from "@/components/Process";
-import { Projects } from "@/components/Projects";
 import { Services } from "@/components/Services";
 
 export default function Home() {
@@ -13,8 +13,8 @@ export default function Home() {
         <Hero />
         <About />
         <Services />
-        <Projects />
         <Process />
+        <Location />
         <FAQ />
         <Contact />
       </main>
