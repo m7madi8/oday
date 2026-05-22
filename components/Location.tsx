@@ -48,10 +48,10 @@ export function Location() {
             <iframe
               title="OD Studio location on map"
               src={studioLocation.mapEmbedUrl}
-              className="absolute inset-0 h-full w-full border-0 opacity-[0.88] contrast-[1.05] saturate-[0.65] brightness-[0.72]"
+              className="pointer-events-none absolute inset-0 h-full w-full border-0 opacity-[0.88] contrast-[1.05] saturate-[0.65] brightness-[0.72]"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              allowFullScreen
+              tabIndex={-1}
             />
 
             <div
@@ -60,7 +60,7 @@ export function Location() {
             />
             <div
               aria-hidden
-              className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_100%,rgba(201,166,107,0.12),transparent_60%)]"
+              className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_100%,rgba(245, 197, 24,0.12),transparent_60%)]"
             />
 
             <motion.div

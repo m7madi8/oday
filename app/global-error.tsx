@@ -30,14 +30,14 @@ export default function GlobalError({
     textAlign: "center",
   };
 
-  const gold = "#c9a66b";
+  const gold = "#f5c518";
   const muted = "#c9c2b6";
 
   const btn: CSSProperties = {
     marginTop: 28,
     cursor: "pointer",
     borderRadius: 9999,
-    border: `1px solid rgba(201, 166, 107, 0.45)`,
+    border: `1px solid rgba(245, 197, 24, 0.45)`,
     backgroundColor: "#1e1e1e",
     color: "#f2efe8",
     padding: "12px 22px",

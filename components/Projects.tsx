@@ -119,7 +119,7 @@ export function Projects() {
                 sizes="(max-width: 1024px) 50vw, 33vw"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#1e1913]/72 via-[#1e1913]/22 to-transparent" />
-              <p className="label-upper absolute bottom-4 left-4 text-[#f4e8d1]">
+              <p className="label-upper absolute bottom-4 left-4 text-[#fff4c9]">
                 {item.label}
               </p>
             </article>
@@ -202,7 +202,7 @@ function ProjectCard({
       <span className="pointer-events-none absolute left-6 top-6 z-[2] font-display text-lg italic text-gold">
         {project.orderLabel}
       </span>
-      <span className="pointer-events-none absolute right-6 top-6 z-[2] label-upper text-[#f0e2c6]">
+      <span className="pointer-events-none absolute right-6 top-6 z-[2] label-upper text-[#fff4c9]">
         Case Study
       </span>
 

@@ -1,15 +1,18 @@
 "use client";
 
-import { ProjectCarousel } from "@/components/ProjectCarousel";
-import { RevealChildren } from "@/components/animations/RevealChildren";
-import { ScrollReveal } from "@/components/animations/ScrollReveal";
+import { ProjectGallery } from "@/components/ProjectGallery";
+import { GalleryGoldLine, GalleryReveal } from "@/components/animations/GalleryMotion";
 import {
+  exteriorTypeLabel,
   getProjectDetailRows,
   getProjectSummary,
+  resolveProjectGalleryFormat,
   serviceFilterLabel,
   type Project,
   type ProjectGalleryImage,
 } from "@/lib/data";
+import { galleryTransition } from "@/lib/gallery-motion";
+import { motion, useReducedMotion } from "@/components/ClientMotion";
 import Link from "next/link";
 
 export function ProjectDetailView({
@@ -19,16 +22,23 @@ export function ProjectDetailView({
   project: Project;
   gallery: ProjectGalleryImage[];
 }) {
+  const reduce = useReducedMotion();
   const summary = getProjectSummary(project);
   const details = getProjectDetailRows(project);
+  const galleryFormat = resolveProjectGalleryFormat(project);
 
   return (
     <main
       id="main-content"
-      className="relative bg-bg-primary pb-24 pt-[calc(var(--hero-nav-stack)+1.25rem)] md:pb-32 md:pt-[calc(var(--hero-nav-stack)+2rem)]"
+      className="project-detail relative overflow-hidden bg-bg-primary pb-24 pt-[calc(var(--hero-nav-stack)+1.25rem)] md:pb-32 md:pt-[calc(var(--hero-nav-stack)+2rem)]"
     >
-      <RevealChildren className="mx-auto max-w-6xl px-5 md:px-10" stagger={0.07}>
-        <ScrollReveal dramatic>
+      <div
+        aria-hidden
+        className="project-detail__glow pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-8%,rgba(245, 197, 24,0.12),transparent_55%)]"
+      />
+
+      <div className="relative mx-auto max-w-6xl px-5 md:px-10">
+        <GalleryReveal dramatic>
           <nav className="flex flex-wrap items-center gap-x-2 gap-y-1 font-outfit text-[11px] font-medium uppercase tracking-[0.16em] text-ink-muted">
             <Link href="/" className="transition-colors hover:text-gold">
               Home
@@ -53,40 +63,59 @@ export function ProjectDetailView({
               {project.tag}
             </span>
           </div>
-        </ScrollReveal>
+          <GalleryGoldLine className="mt-6 max-w-md" />
+        </GalleryReveal>
 
-        <ScrollReveal dramatic delay={0.05} className="mt-8 md:mt-10">
-          <ProjectCarousel images={gallery} title={project.title} />
-        </ScrollReveal>
+        <GalleryReveal delay={0.08} dramatic className="mt-8 md:mt-10">
+          <ProjectGallery images={gallery} title={project.title} format={galleryFormat} />
+        </GalleryReveal>
 
         <div className="mt-10 grid gap-8 md:mt-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:gap-12">
-          <ScrollReveal dramatic delay={0.08}>
+          <GalleryReveal delay={0.12}>
             <p className="label-upper text-ink-muted">Overview</p>
             <p className="mt-4 text-sm leading-[1.72] text-ink-secondary md:text-[0.9375rem]">{summary}</p>
             <p className="mt-6 text-sm leading-[1.65] text-ink-muted">
-              Swipe the carousel or use arrow keys to browse all {gallery.length} project frames.
+              Swipe the carousel or use the arrows to browse frames side by side. Tap any image for a soft
+              fullscreen view.
             </p>
-          </ScrollReveal>
+          </GalleryReveal>
 
-          <ScrollReveal dramatic delay={0.1}>
+          <motion.div
+            initial={reduce ? false : { opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={galleryTransition(!!reduce, 0.55, 0.16)}
+          >
             <p className="label-upper text-ink-muted">Project details</p>
             <dl className="mt-4 divide-y divide-white/[0.08] rounded-xl border border-white/[0.1] bg-bg-card/60">
-              {details.map(({ label, value }) => (
-                <div key={label} className="flex items-baseline justify-between gap-4 px-4 py-3.5 sm:px-5">
+              {details.map(({ label, value }, i) => (
+                <motion.div
+                  key={label}
+                  initial={reduce ? false : { opacity: 0, x: 12 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={galleryTransition(!!reduce, 0.4, 0.2 + i * 0.05)}
+                  className="flex items-baseline justify-between gap-4 px-4 py-3.5 sm:px-5"
+                >
                   <dt className="font-outfit text-[11px] font-medium uppercase tracking-[0.14em] text-ink-muted">
                     {label}
                   </dt>
                   <dd className="text-right text-sm font-medium text-ink-primary">{value}</dd>
-                </div>
+                </motion.div>
               ))}
             </dl>
 
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
-                href={`/projects?service=${encodeURIComponent(project.serviceSlug)}`}
+                href={
+                  project.serviceSlug === "exterior" && project.exteriorType
+                    ? `/projects?service=exterior&type=${encodeURIComponent(project.exteriorType)}`
+                    : `/projects?service=${encodeURIComponent(project.serviceSlug)}`
+                }
                 className="label-upper inline-flex rounded-full border border-gold/40 bg-gold/10 px-6 py-3 text-ink-primary transition-colors hover:bg-gold/18"
               >
-                More {serviceFilterLabel(project.serviceSlug)}
+                More{" "}
+                {project.serviceSlug === "exterior" && project.exteriorType
+                  ? exteriorTypeLabel(project.exteriorType)
+                  : serviceFilterLabel(project.serviceSlug)}
               </Link>
               <Link
                 href="/#contact"
@@ -95,18 +124,18 @@ export function ProjectDetailView({
                 Request brief
               </Link>
             </div>
-          </ScrollReveal>
+          </motion.div>
         </div>
 
-        <ScrollReveal className="mt-12 md:mt-14">
+        <GalleryReveal delay={0.2} className="mt-12 md:mt-14">
           <Link
             href="/projects"
             className="label-upper inline-flex items-center gap-2 text-ink-secondary transition-colors hover:text-gold"
           >
             <span aria-hidden>←</span> Back to gallery
           </Link>
-        </ScrollReveal>
-      </RevealChildren>
+        </GalleryReveal>
+      </div>
     </main>
   );
 }

@@ -42,9 +42,11 @@ export function FAQ() {
           aria-label="FAQ accordion"
           className="min-w-0"
         >
-          <div className="divide-y divide-gold/15">
-            {faqItems.map((item) => (
-              <FaqRow key={item.id} item={item} panelId={`${baseId}-${item.id}`} reduceMotion={!!reduceMotion} />
+          <div>
+            {faqItems.map((item, index) => (
+              <div key={item.id} className={index > 0 ? "border-t border-white/10" : undefined}>
+                <FaqRow item={item} panelId={`${baseId}-${item.id}`} reduceMotion={!!reduceMotion} />
+              </div>
             ))}
           </div>
         </ScrollReveal>
@@ -65,14 +67,15 @@ function FaqRow({
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="border-b border-gold/25">
+    <div>
       <button
         type="button"
+        data-no-glow
         suppressHydrationWarning
         aria-expanded={open}
         aria-controls={panelId}
         id={`${panelId}-trigger`}
-        className="flex w-full items-center justify-between gap-6 py-6 text-left"
+        className="btn-plain flex w-full items-center justify-between gap-6 border-0 py-6 text-left shadow-none"
         onClick={() => setOpen((v) => !v)}
       >
         <span className="font-display text-xl italic text-ink-primary md:text-2xl">{item.question}</span>

@@ -1,126 +1,188 @@
 "use client";
 
-import { RevealChildren } from "@/components/animations/RevealChildren";
-import { ScrollReveal } from "@/components/animations/ScrollReveal";
+import { ExteriorGallery } from "@/components/ExteriorGallery";
+import { ProjectsGallerySearchSync } from "@/components/ProjectsGallerySearchSync";
 import {
-  isValidServiceSlug,
+  GalleryFilterPill,
+  GalleryGoldLine,
+  GalleryReveal,
+  GallerySectionTransition,
+  GalleryStagger,
+} from "@/components/animations/GalleryMotion";
+import {
+  galleryCardItem,
+  gallerySpring,
+  galleryTransition,
+} from "@/lib/gallery-motion";
+import {
   projectDetailPath,
   projectServiceFilters,
   projects,
   serviceFilterLabel,
+  type ExteriorProjectTypeFilter,
   type ProjectServiceFilter,
 } from "@/lib/data";
-import { revealInView } from "@/lib/motion-viewport";
 import { AnimatePresence, motion, useReducedMotion } from "@/components/ClientMotion";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import { Suspense, useCallback, useMemo, useState } from "react";
 
-export function ProjectsGallery({ initialFilter }: { initialFilter: ProjectServiceFilter }) {
+function projectsGalleryPath(
+  service: ProjectServiceFilter,
+  exteriorType: ExteriorProjectTypeFilter,
+) {
+  if (service === "All") return "/projects";
+  const params = new URLSearchParams({ service });
+  if (service === "exterior" && exteriorType !== "All") {
+    params.set("type", exteriorType);
+  }
+  return `/projects?${params.toString()}`;
+}
+
+export function ProjectsGallery({
+  initialFilter,
+  initialExteriorType = "All",
+}: {
+  initialFilter: ProjectServiceFilter;
+  initialExteriorType?: ExteriorProjectTypeFilter;
+}) {
   const reduceMotion = useReducedMotion();
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [filter, setFilter] = useState<ProjectServiceFilter>(initialFilter);
+  const [exteriorType, setExteriorType] = useState<ExteriorProjectTypeFilter>(initialExteriorType);
 
-  useEffect(() => {
-    const raw = searchParams.get("service");
-    if (!raw) {
-      setFilter("All");
-      return;
-    }
-    if (isValidServiceSlug(raw)) {
-      setFilter(raw);
-    } else {
-      setFilter("All");
-      router.replace("/projects", { scroll: false });
-    }
-  }, [searchParams, router]);
+  const isExteriorMode = filter === "exterior";
+
+  const onFilterChange = useCallback(
+    (nextFilter: ProjectServiceFilter, nextExteriorType: ExteriorProjectTypeFilter) => {
+      setFilter(nextFilter);
+      setExteriorType(nextExteriorType);
+    },
+    [],
+  );
 
   const setFilterAndUrl = useCallback(
     (next: ProjectServiceFilter) => {
+      const nextExteriorType: ExteriorProjectTypeFilter = "All";
       setFilter(next);
-      if (next === "All") {
-        router.replace("/projects", { scroll: false });
-      } else {
-        router.replace(`/projects?service=${encodeURIComponent(next)}`, { scroll: false });
-      }
+      setExteriorType(nextExteriorType);
+      router.replace(projectsGalleryPath(next, nextExteriorType), { scroll: false });
+    },
+    [router],
+  );
+
+  const setExteriorTypeAndUrl = useCallback(
+    (next: ExteriorProjectTypeFilter) => {
+      setExteriorType(next);
+      router.replace(projectsGalleryPath("exterior", next), { scroll: false });
     },
     [router],
   );
 
   const filtered = useMemo(() => {
+    if (isExteriorMode) return [];
     if (filter === "All") return projects;
     return projects.filter((p) => p.serviceSlug === filter);
-  }, [filter]);
+  }, [filter, isExteriorMode]);
+
+  const galleryKey = isExteriorMode ? `exterior-${exteriorType}` : filter;
 
   return (
-    <main id="main-content" className="relative bg-bg-primary pb-24 pt-[calc(var(--hero-nav-stack)+1.5rem)] md:pb-32 md:pt-[calc(var(--hero-nav-stack)+2rem)]">
-      <RevealChildren className="mx-auto max-w-7xl px-5 md:px-10" stagger={0.06}>
-        <ScrollReveal
-          dramatic
-          className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between"
-        >
-          <div>
-            <p className="label-upper text-gold">Case Studies</p>
-            <h1 className="mt-3 font-display text-4xl italic text-ink-primary md:text-5xl">
-              Project Gallery
-            </h1>
-            <p className="mt-5 max-w-xl text-sm leading-relaxed text-ink-secondary md:text-base">
-              Filter by service line to explore representative work across interior, landscape,
-              exterior, drone intelligence, and AI-assisted workflows.
-            </p>
+    <main
+      id="main-content"
+      className="gallery-page relative overflow-hidden bg-bg-primary pb-24 pt-[calc(var(--hero-nav-stack)+1.5rem)] md:pb-32 md:pt-[calc(var(--hero-nav-stack)+2rem)]"
+    >
+      <div aria-hidden className="gallery-page__glow pointer-events-none absolute inset-0" />
+
+      <Suspense fallback={null}>
+        <ProjectsGallerySearchSync onFilterChange={onFilterChange} />
+      </Suspense>
+
+      <div className="relative mx-auto max-w-7xl px-5 md:px-10">
+        <GalleryReveal as="header" dramatic className={`flex flex-col gap-8 ${isExteriorMode ? "" : "lg:flex-row lg:items-end lg:justify-between"}`}>
+          <div className={isExteriorMode ? "max-w-3xl" : undefined}>
+            <motion.p
+              className="label-upper text-gold"
+              initial={reduceMotion ? false : { opacity: 0, x: -12 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={galleryTransition(!!reduceMotion, 0.45, 0.05)}
+            >
+              Case Studies
+            </motion.p>
+            <motion.h1
+              className="mt-3 font-display text-4xl italic text-ink-primary md:text-5xl"
+              initial={reduceMotion ? false : { opacity: 0, y: 28 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={galleryTransition(!!reduceMotion, 0.62, 0.1)}
+            >
+              {isExteriorMode ? "Exterior Design" : "Project Gallery"}
+            </motion.h1>
+            <GalleryGoldLine className="mt-5 max-w-xs" />
+            <motion.p
+              className="mt-5 max-w-xl text-sm leading-relaxed text-ink-secondary md:text-base"
+              initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={galleryTransition(!!reduceMotion, 0.5, 0.22)}
+            >
+              {isExteriorMode
+                ? "A dedicated exterior portfolio — five collections with their own layouts and case studies, separate from the main service-line gallery."
+                : "Filter by service line to explore interior, drone intelligence, AI-assisted workflows, and exterior design collections."}
+            </motion.p>
           </div>
 
-          <div
-            className="flex max-w-full flex-wrap gap-2 md:justify-end"
+          <motion.div
+            className={`flex max-w-full flex-wrap gap-2 ${isExteriorMode ? "mt-2" : "md:justify-end"}`}
             role="tablist"
             aria-label="Filter projects by service"
+            initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={galleryTransition(!!reduceMotion, 0.5, 0.28)}
           >
             {projectServiceFilters.map((tab) => (
-              <button
+              <GalleryFilterPill
                 key={tab}
-                type="button"
-                role="tab"
-                aria-selected={filter === tab}
-                className={`label-upper rounded-full border px-4 py-2 text-[0.65rem] transition-colors sm:px-5 sm:text-[0.6875rem] ${
-                  filter === tab
-                    ? "border-gold/50 bg-gold/15 text-ink-primary"
-                    : "border-gold/25 text-ink-secondary hover:border-gold/50 hover:text-ink-primary"
-                }`}
+                active={filter === tab}
                 onClick={() => setFilterAndUrl(tab)}
+                className={`label-upper rounded-full px-4 py-2 text-[0.65rem] sm:px-5 sm:text-[0.6875rem] ${
+                  filter === tab ? "text-ink-primary" : "border border-gold/25 text-ink-secondary hover:border-gold/50 hover:text-ink-primary"
+                }`}
               >
                 {serviceFilterLabel(tab)}
-              </button>
-            ))}
-          </div>
-        </ScrollReveal>
-
-        <AnimatePresence initial={false} mode="wait">
-          <motion.div
-            key={filter}
-            className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
-            initial={{ opacity: reduceMotion ? 1 : 0, y: reduceMotion ? 0 : 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: reduceMotion ? 1 : 0, y: reduceMotion ? 0 : -8 }}
-            transition={{ duration: reduceMotion ? 0 : 0.28, ease: [0.22, 1, 0.36, 1] }}
-          >
-            {filtered.map((project, idx) => (
-              <GalleryCard key={project.id} project={project} index={idx} reduceMotion={!!reduceMotion} />
+              </GalleryFilterPill>
             ))}
           </motion.div>
+        </GalleryReveal>
+
+        <AnimatePresence mode="wait">
+          {isExteriorMode ? (
+            <GallerySectionTransition key={`exterior-${exteriorType}`} sectionKey={`exterior-${exteriorType}`}>
+              <ExteriorGallery
+                activeType={exteriorType}
+                onSelectType={setExteriorTypeAndUrl}
+                onBackToServices={() => setFilterAndUrl("All")}
+              />
+            </GallerySectionTransition>
+          ) : (
+            <GallerySectionTransition key={galleryKey} sectionKey={galleryKey} className="mt-12">
+              <GalleryStagger
+                className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
+                itemVariants={galleryCardItem}
+                stagger={0.07}
+                delayChildren={0.08}
+              >
+                {filtered.map((project) => (
+                  <GalleryCard key={project.id} project={project} reduceMotion={!!reduceMotion} />
+                ))}
+              </GalleryStagger>
+              {filtered.length === 0 && (
+                <p className="mt-12 text-center text-sm text-ink-secondary">No projects match this filter.</p>
+              )}
+            </GallerySectionTransition>
+          )}
         </AnimatePresence>
 
-        {filtered.length === 0 && (
-          <p className="mt-12 text-center text-sm text-ink-secondary">No projects match this filter.</p>
-        )}
-
-        <motion.div
-          className="mt-14 flex flex-wrap justify-center gap-4"
-          initial={{ opacity: reduceMotion ? 1 : 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={revealInView}
-        >
+        <GalleryReveal delay={0.2} className="mt-14 flex flex-wrap justify-center gap-4">
           <Link
             href="/#contact"
             className="label-upper inline-flex rounded-full border border-gold/45 bg-gold/10 px-6 py-2.5 text-ink-primary transition-colors hover:bg-gold/20"
@@ -133,33 +195,34 @@ export function ProjectsGallery({ initialFilter }: { initialFilter: ProjectServi
           >
             Back to services
           </Link>
-        </motion.div>
-      </RevealChildren>
+        </GalleryReveal>
+      </div>
     </main>
   );
 }
 
 function GalleryCard({
   project,
-  index,
   reduceMotion,
 }: {
   project: (typeof projects)[number];
-  index: number;
   reduceMotion: boolean;
 }) {
   return (
     <motion.article
       id={project.id}
-      className="group relative min-h-[280px] overflow-hidden rounded-xl border border-gold/25 bg-bg-card"
-      initial={{ opacity: reduceMotion ? 1 : 0, y: reduceMotion ? 0 : 28 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={revealInView}
-      transition={{
-        delay: reduceMotion ? 0 : 0.04 * (index % 6),
-        duration: reduceMotion ? 0 : 0.5,
-        ease: [0.16, 1, 0.3, 1],
-      }}
+      className="gallery-card group relative min-h-[280px] overflow-hidden rounded-xl border border-gold/25 bg-bg-card"
+      whileHover={
+        reduceMotion
+          ? {}
+          : {
+              y: -6,
+              scale: 1.015,
+              borderColor: "rgba(245, 197, 24, 0.45)",
+              boxShadow: "0 28px 64px rgba(0, 0, 0, 0.48)",
+            }
+      }
+      transition={reduceMotion ? { duration: 0 } : gallerySpring.soft}
     >
       <Link
         href={projectDetailPath(project)}
@@ -169,17 +232,25 @@ function GalleryCard({
         <span className="sr-only">View {project.title}</span>
       </Link>
 
+      <motion.span
+        aria-hidden
+        className="gallery-card__shine pointer-events-none absolute inset-x-0 top-0 z-[3] h-px bg-gradient-to-r from-transparent via-gold/80 to-transparent"
+        initial={{ scaleX: 0, opacity: 0 }}
+        whileHover={reduceMotion ? {} : { scaleX: 1, opacity: 1 }}
+        transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+      />
+
       <span className="pointer-events-none absolute left-4 top-4 z-[2] font-display text-sm italic text-gold md:text-base">
         {project.orderLabel}
       </span>
-      <span className="pointer-events-none absolute right-4 top-4 z-[2] max-w-[10rem] truncate text-right font-outfit text-[10px] font-medium uppercase tracking-[0.14em] text-[#f0e2c6]/90">
+      <span className="pointer-events-none absolute right-4 top-4 z-[2] max-w-[10rem] truncate text-right font-outfit text-[10px] font-medium uppercase tracking-[0.14em] text-[#fff4c9]/90">
         {project.tag}
       </span>
 
       <motion.div
         className="absolute inset-0"
-        whileHover={reduceMotion ? {} : { scale: 1.04 }}
-        transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+        whileHover={reduceMotion ? {} : { scale: 1.06 }}
+        transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
       >
         <Image
           src={project.image}
@@ -190,16 +261,20 @@ function GalleryCard({
         />
       </motion.div>
 
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-bg-primary via-bg-primary/40 to-transparent" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-bg-primary via-bg-primary/45 to-transparent" />
 
       <div className="pointer-events-none absolute bottom-0 left-0 right-0 z-[2] p-6 md:p-7">
         <h2 className="font-display text-2xl italic leading-tight text-ink-primary md:text-[1.65rem]">
           {project.title}
         </h2>
         <p className="mt-2 text-sm text-ink-secondary">{project.country}</p>
-        <span className="mt-4 inline-flex translate-y-1 items-center gap-2 text-xs uppercase tracking-[0.2em] text-gold opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+        <motion.span
+          className="mt-4 inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-gold"
+          initial={{ opacity: 0, y: 8 }}
+          whileHover={reduceMotion ? {} : { opacity: 1, y: 0 }}
+        >
           View project <span aria-hidden>→</span>
-        </span>
+        </motion.span>
       </div>
     </motion.article>
   );

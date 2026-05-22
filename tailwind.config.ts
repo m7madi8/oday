@@ -31,12 +31,13 @@ const config: Config = {
       },
       fontFamily: {
         display: ["var(--font-cormorant)", "Cormorant Garamond", "serif"],
+        "hero-accent": ["var(--font-hero-accent)", "Cormorant Garamond", "serif"],
         sans: ["var(--font-dm)", "DM Sans", "system-ui", "sans-serif"],
         outfit: ["var(--font-outfit)", "Outfit", "ui-sans-serif", "system-ui", "sans-serif"],
       },
       backgroundImage: {
         "gold-glow":
-          "linear-gradient(180deg, rgba(185,138,75,0.14) 0%, transparent 55%)",
+          "linear-gradient(180deg, rgba(245,197,24,0.14) 0%, transparent 55%)",
       },
     },
   },

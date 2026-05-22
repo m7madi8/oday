@@ -2,7 +2,7 @@
 
 import { useGSAP } from "@/hooks/useGSAP";
 import { counterDefaults } from "@/lib/animations";
-import { useMemo, useRef, type RefObject } from "react";
+import { useEffect, useMemo, useRef, type RefObject } from "react";
 
 type Killable = { kill?: () => void };
 
@@ -20,10 +20,9 @@ export interface CounterNumberProps {
   className?: string;
   duration?: number;
   ease?: string;
+  /** @deprecated ScrollTrigger start — counters use IntersectionObserver now */
   start?: string;
-  /** Seconds before the count tween starts (e.g. stagger multiple counters). */
   delay?: number;
-  /** When false (e.g. reduced motion), shows the final value with no animation. */
   enabled?: boolean;
   triggerRef?: RefObject<HTMLElement | null>;
 }
@@ -36,12 +35,12 @@ export function CounterNumber({
   className,
   duration = counterDefaults.duration,
   ease = counterDefaults.ease,
-  start = counterDefaults.start,
   delay = 0,
   enabled = true,
   triggerRef,
 }: CounterNumberProps) {
   const valueRef = useRef<HTMLSpanElement>(null);
+  const hasAnimatedRef = useRef(false);
 
   const formatter = useMemo(
     () =>
@@ -63,85 +62,76 @@ export function CounterNumber({
   );
 
   useGSAP(
-    ({ gsap, ScrollTrigger, addCleanup }) => {
-      if (!valueRef.current) {
-        return;
-      }
+    ({ gsap, addCleanup }) => {
+      const valueEl = valueRef.current;
+      if (!valueEl) return;
 
-      const count = { value: 0 };
-      valueRef.current.textContent = zeroText;
+      valueEl.textContent = zeroText;
 
-      const triggerEl = triggerRef?.current ?? valueRef.current;
+      const formatValue = (value: number) => {
+        const rounded =
+          decimals === 0 ? Math.round(value) : Number(value.toFixed(decimals));
+        return `${prefix}${formatter.format(rounded)}${suffix}`;
+      };
 
-      const trigger = ScrollTrigger.create({
-        trigger: triggerEl,
-        start,
-        once: true,
-        invalidateOnRefresh: true,
-        onEnter: () => {
-          count.value = 0;
-          if (valueRef.current) {
-            valueRef.current.textContent = zeroText;
+      const runCount = () => {
+        if (hasAnimatedRef.current || !valueRef.current) return;
+        hasAnimatedRef.current = true;
+
+        const count = { value: 0 };
+        valueRef.current.textContent = zeroText;
+
+        const tween = gsap.to(count, {
+          value: targetNumber,
+          duration,
+          delay,
+          ease,
+          snap: decimals === 0 ? { value: 1 } : { value: 0.1 },
+          onUpdate: () => {
+            if (valueRef.current) {
+              valueRef.current.textContent = formatValue(count.value);
+            }
+          },
+          onComplete: () => {
+            if (valueRef.current) {
+              valueRef.current.textContent = finalText;
+            }
+          },
+        });
+
+        addCleanup(() => killIfPossible(tween));
+      };
+
+      const observeTarget = triggerRef?.current ?? valueEl;
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((entry) => entry.isIntersecting)) {
+            runCount();
+            observer.disconnect();
           }
-
-          const tween = gsap.to(count, {
-            value: targetNumber,
-            duration,
-            delay,
-            ease,
-            snap: { value: 1 / Math.pow(10, decimals) },
-            onUpdate: () => {
-              if (!valueRef.current) {
-                return;
-              }
-
-              const rounded =
-                decimals === 0
-                  ? Math.round(count.value)
-                  : Number(count.value.toFixed(decimals));
-
-              valueRef.current.textContent = `${prefix}${formatter.format(
-                rounded,
-              )}${suffix}`;
-            },
-            onComplete: () => {
-              if (valueRef.current) {
-                valueRef.current.textContent = finalText;
-              }
-            },
-          });
-
-          addCleanup(() => killIfPossible(tween));
         },
-      });
+        { threshold: 0.15, rootMargin: "0px 0px -8% 0px" },
+      );
 
-      return () => killIfPossible(trigger);
+      observer.observe(observeTarget);
+
+      return () => observer.disconnect();
     },
     {
-      deps: [
-        targetNumber,
-        suffix,
-        prefix,
-        decimals,
-        duration,
-        ease,
-        start,
-        delay,
-        formatter,
-        zeroText,
-        finalText,
-        triggerRef,
-      ],
+      scope: valueRef,
+      deps: [targetNumber, suffix, prefix, decimals, duration, ease, delay, zeroText, finalText],
       enabled,
     },
   );
+
+  useEffect(() => {
+    hasAnimatedRef.current = false;
+  }, [targetNumber, prefix, suffix, decimals]);
 
   if (!enabled) {
     return <span className={className}>{finalText}</span>;
   }
 
-  // Start at zero so the count-up is visible; ScrollTrigger snaps to final
-  // value if the section is already past the start on refresh.
   return (
     <span ref={valueRef} className={className} suppressHydrationWarning>
       {zeroText}

@@ -1,12 +1,16 @@
 import { ProjectsGallery } from "@/components/ProjectsGallery";
-import { isValidServiceSlug, type ProjectServiceFilter } from "@/lib/data";
+import {
+  isValidExteriorProjectType,
+  isValidServiceSlug,
+  type ExteriorProjectTypeFilter,
+  type ProjectServiceFilter,
+} from "@/lib/data";
 import type { Metadata } from "next";
-import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Project Gallery | OD STUDIO",
   description:
-    "Case studies across interior, landscape, exterior, architecture drone, and architecture AI.",
+    "Case studies across interior, exterior, architecture drone, and architecture AI.",
 };
 
 export default function ProjectsPage({
@@ -14,17 +18,23 @@ export default function ProjectsPage({
 }: {
   searchParams: Record<string, string | string[] | undefined>;
 }) {
-  const raw = typeof searchParams.service === "string" ? searchParams.service : undefined;
-  const initialFilter: ProjectServiceFilter =
-    raw && isValidServiceSlug(raw) ? raw : "All";
+  const rawService = typeof searchParams.service === "string" ? searchParams.service : undefined;
+  const rawType = typeof searchParams.type === "string" ? searchParams.type : undefined;
+
+  let initialFilter: ProjectServiceFilter = "All";
+  let initialExteriorType: ExteriorProjectTypeFilter = "All";
+
+  if (rawService === "landscape") {
+    initialFilter = "exterior";
+    initialExteriorType = "landscape";
+  } else if (rawService && isValidServiceSlug(rawService)) {
+    initialFilter = rawService;
+    if (rawService === "exterior" && rawType && isValidExteriorProjectType(rawType)) {
+      initialExteriorType = rawType;
+    }
+  }
 
   return (
-    <Suspense
-      fallback={
-        <div className="min-h-[60vh] bg-bg-primary pt-[calc(var(--hero-nav-stack)+2rem)]" aria-hidden />
-      }
-    >
-      <ProjectsGallery initialFilter={initialFilter} />
-    </Suspense>
+    <ProjectsGallery initialFilter={initialFilter} initialExteriorType={initialExteriorType} />
   );
 }

@@ -2,44 +2,54 @@
 
 import { useGSAP } from "@/hooks/useGSAP";
 import { hero } from "@/lib/data";
+import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
 import { useReducedMotion } from "@/components/ClientMotion";
 import heroImage from "@/imgs/exterior.jpg";
 
-const frostedCta =
-  "hero-enter-cta inline-flex items-center justify-center rounded-full border border-white/10 bg-[rgba(30,20,15,0.45)] px-6 py-3 text-[13px] font-normal tracking-[0.08em] text-white shadow-[0_8px_32px_rgba(0,0,0,0.18)] backdrop-blur-[12px] transition-colors hover:bg-[rgba(45,35,28,0.55)]";
-
-const heroBezel =
-  "relative flex min-h-0 flex-1 flex-col rounded-[1.15rem] bg-gradient-to-br from-white/[0.55] via-white/[0.22] to-white/[0.1] p-[2.5px] shadow-[0_28px_90px_rgba(0,0,0,0.48)] sm:rounded-[1.35rem] sm:p-[3px] md:rounded-[1.55rem]";
-
-const heroInner =
-  "relative min-h-0 w-full flex-1 overflow-hidden rounded-[1.02rem] sm:rounded-[1.2rem] md:rounded-[1.4rem]";
-
 export function Hero() {
   const reduceMotion = useReducedMotion();
   const scopeRef = useRef<HTMLElement | null>(null);
   const mediaRef = useRef<HTMLDivElement | null>(null);
-  const line1Ref = useRef<HTMLSpanElement | null>(null);
-  const line2Ref = useRef<HTMLSpanElement | null>(null);
+  const eyebrowRef = useRef<HTMLParagraphElement | null>(null);
+  const leadRef = useRef<HTMLSpanElement | null>(null);
+  const accentLeadRef = useRef<HTMLSpanElement | null>(null);
+  const accentEmphasisRef = useRef<HTMLSpanElement | null>(null);
+  const sublineRef = useRef<HTMLParagraphElement | null>(null);
+  const ruleRef = useRef<HTMLSpanElement | null>(null);
   const ctaRef = useRef<HTMLDivElement | null>(null);
 
   useGSAP(
     ({ gsap, addCleanup }) => {
       const media = mediaRef.current;
-      const l1 = line1Ref.current;
-      const l2 = line2Ref.current;
+      const eyebrow = eyebrowRef.current;
+      const lead = leadRef.current;
+      const accentLead = accentLeadRef.current;
+      const accentEmphasis = accentEmphasisRef.current;
+      const subline = sublineRef.current;
+      const rule = ruleRef.current;
       const cta = ctaRef.current;
-      if (!media || !l1 || !l2 || !cta) {
+      if (!media || !eyebrow || !lead || !accentLead || !accentEmphasis || !subline || !rule || !cta) {
         return;
       }
 
       type Tl = { from: (...args: unknown[]) => Tl; kill: () => void };
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } }) as Tl;
       tl.from(media, { scale: 1.1, duration: 1.45, ease: "power2.out" }, 0)
-        .from([l1, l2], { y: 80, opacity: 0, stagger: 0.16, duration: 0.95 }, 0.32)
-        .from(cta, { y: 36, opacity: 0, duration: 0.62, ease: "power2.out" }, 0.62);
+        .from(cta, { y: -28, opacity: 0, duration: 0.72, ease: "power2.out" }, 0.18)
+        .from(rule, { scaleX: 0, opacity: 0, transformOrigin: "left center", duration: 0.7, ease: "power2.inOut" }, 0.3)
+        .from(
+          [eyebrow, lead, accentLead, accentEmphasis, subline],
+          { y: 56, opacity: 0, stagger: 0.09, duration: 0.92 },
+          0.26,
+        )
+        .from(
+          accentEmphasis,
+          { scale: 0.96, duration: 1.05, ease: "power4.out" },
+          0.42,
+        );
 
       addCleanup(() => {
         tl.kill();
@@ -52,59 +62,94 @@ export function Hero() {
     <section
       ref={scopeRef}
       id="top"
-      className="relative isolate flex min-h-[100svh] w-full flex-col bg-bg-primary p-[var(--hero-gutter)]"
+      className="relative flex min-h-[100svh] w-full flex-col bg-bg-primary px-[var(--hero-gutter)] pt-[var(--hero-gutter)] pb-0"
     >
-      <div className="relative z-0 flex min-h-0 flex-1 flex-col">
-        <div className={heroBezel}>
-          <div className={heroInner}>
-            <div className="pointer-events-none absolute inset-0 z-0">
-              <div ref={mediaRef} className="relative h-full w-full brightness-[0.78]">
-                <Image
-                  src={heroImage}
-                  alt={hero.imageAlt}
-                  fill
-                  priority
-                  className="object-cover"
-                  sizes="100vw"
-                />
-              </div>
-            </div>
+      <div className="relative z-0 flex min-h-0 flex-1 flex-col overflow-hidden">
+        <div className="pointer-events-none absolute inset-0 z-0">
+          <div ref={mediaRef} className="relative h-full w-full brightness-[0.78]">
+            <Image
+              src={heroImage}
+              alt={hero.imageAlt}
+              fill
+              priority
+              className="object-cover"
+              sizes="100vw"
+            />
+          </div>
+        </div>
 
-            <div
-              className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-t from-black/40 via-black/10 to-black/25"
+        <div
+          className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-t from-[#121212] via-black/20 to-black/30"
+          aria-hidden
+        />
+
+        <div
+          className="pointer-events-none absolute inset-x-0 top-0 z-[5] h-[min(48%,260px)] bg-gradient-to-b from-black/62 via-black/28 to-transparent"
+          aria-hidden
+        />
+
+        <div className="relative z-10 flex min-h-0 flex-1 flex-col">
+          <div
+            ref={ctaRef}
+            className="hero-enter-cta pointer-events-auto absolute right-[clamp(1.25rem,4vw,3.75rem)] top-[var(--hero-cta-top)] z-20 max-sm:right-5"
+          >
+            <Link
+              href="/projects"
+              data-no-glow
+              className="hero-cta-luxe group"
+              aria-label={`${hero.ctaLabel} — ${hero.ctaEyebrow}`}
+            >
+              <span className="flex flex-col items-start gap-0.5 pr-0.5 text-left">
+                <span className="hero-cta-luxe__eyebrow font-outfit font-medium uppercase text-gold/75 transition-colors group-hover:text-gold">
+                  {hero.ctaEyebrow}
+                </span>
+                <span className="hero-cta-luxe__label font-outfit font-medium tracking-[0.04em] text-white/95 transition-colors group-hover:text-white">
+                  {hero.ctaLabel}
+                </span>
+              </span>
+              <span className="hero-cta-luxe__icon" aria-hidden>
+                <ArrowUpRight className="h-[18px] w-[18px] stroke-[1.75]" />
+              </span>
+            </Link>
+          </div>
+
+          <div className="hero-enter-headline pointer-events-auto absolute bottom-[clamp(2rem,5.5vw,3.75rem)] left-[clamp(1.25rem,4vw,3.75rem)] max-w-[min(42rem,calc(100%-2.5rem))] max-sm:left-5 max-sm:max-w-[calc(100%-2.5rem)]">
+            <p
+              ref={eyebrowRef}
+              className="font-outfit text-[10px] font-medium uppercase tracking-[0.34em] text-white/62 md:text-[11px]"
+            >
+              {hero.headlineEyebrow}
+            </p>
+
+            <span
+              ref={ruleRef}
+              className="mt-4 block h-px w-[min(4.5rem,28vw)] origin-left bg-gradient-to-r from-gold/80 via-gold/35 to-transparent"
               aria-hidden
             />
 
-            <div
-              className="pointer-events-none absolute inset-x-0 top-0 z-[5] h-[min(42%,220px)] bg-gradient-to-b from-black/55 via-black/20 to-transparent"
-              aria-hidden
-            />
-
-            <div className="pointer-events-none absolute inset-0 z-10">
-              <h1
-                className="hero-enter-headline pointer-events-auto font-outfit absolute bottom-[clamp(2.25rem,6vw,3.75rem)] left-[clamp(1.25rem,4vw,3.75rem)] max-w-[min(32rem,calc(100%-8rem))] text-[clamp(1.65rem,5.2vw,52px)] font-medium leading-[1.08] text-white [text-shadow:0_2px_48px_rgba(0,0,0,0.55)] max-sm:left-5 max-sm:max-w-[calc(100%-6.5rem)]"
+            <h1 className="mt-4">
+              <span
+                ref={leadRef}
+                className="block font-outfit text-[10px] font-semibold uppercase tracking-[0.32em] text-white/65 md:text-[11px]"
               >
-                <span ref={line1Ref} className="block">
-                  Precision-built spaces
+                {hero.headlineLead}
+              </span>
+              <span className="hero-accent mt-1 block" aria-label={`${hero.headlineAccentLead} ${hero.headlineAccentEmphasis}`}>
+                <span ref={accentLeadRef} className="hero-accent-lead block">
+                  {hero.headlineAccentLead}
                 </span>
-                <span ref={line2Ref} className="block">
-                  for serious developers.
+                <span ref={accentEmphasisRef} className="hero-accent-emphasis block">
+                  {hero.headlineAccentEmphasis}
                 </span>
-              </h1>
+              </span>
+            </h1>
 
-              <div
-                ref={ctaRef}
-                className="pointer-events-auto absolute bottom-[clamp(2.25rem,6vw,3.75rem)] right-[clamp(1.25rem,4vw,3.75rem)] max-sm:right-5"
-              >
-                <Link
-                  href="/projects"
-                  className={frostedCta}
-                  aria-label="See all projects"
-                >
-                  See all projects
-                </Link>
-              </div>
-            </div>
+            <p
+              ref={sublineRef}
+              className="mt-5 max-w-[34ch] font-body text-[13px] font-light leading-relaxed text-white/72 md:max-w-[38ch] md:text-sm"
+            >
+              {hero.headlineSubline}
+            </p>
           </div>
         </div>
       </div>

@@ -11,9 +11,8 @@ import Image from "next/image";
 import { useRef } from "react";
 
 const stats = [
-  { target: 180, suffix: "+", label: "Projects" },
-  { target: 8, suffix: "", label: "Years" },
-  { target: 91, suffix: "%", label: "Repeat clients" },
+  { target: 500, prefix: "+", suffix: "", label: "Total" },
+  { target: 60, prefix: "+", suffix: " million", label: "Value" },
 ] as const;
 
 export function About() {
@@ -23,10 +22,10 @@ export function About() {
   return (
     <section
       id="about"
-      className="relative overflow-hidden bg-bg-primary py-10 md:py-12 lg:flex lg:min-h-[calc(100svh-var(--hero-nav-stack)-1.5rem)] lg:items-center lg:py-14"
+      className="relative overflow-hidden bg-bg-primary px-[var(--hero-gutter)] pb-10 pt-0 md:pb-12 lg:flex lg:min-h-0 lg:items-center lg:pb-14"
     >
       <RevealChildren
-        className="relative mx-auto grid w-full max-w-6xl items-center gap-6 px-5 md:gap-7 md:px-8 lg:grid-cols-[minmax(0,1.12fr)_minmax(220px,0.88fr)] lg:gap-8"
+        className="relative mx-auto grid w-full max-w-6xl items-center gap-6 md:gap-7 lg:grid-cols-[minmax(0,1.12fr)_minmax(220px,0.88fr)] lg:gap-8"
         stagger={0.07}
       >
         <ScrollReveal
@@ -56,7 +55,7 @@ export function About() {
             viewport={{ once: true, amount: 0.35, margin: "0px 0px -8% 0px" }}
             transition={{ duration: reduce ? 0 : 0.55, ease: [0.22, 1, 0.36, 1] }}
           >
-            <motion.div className="grid grid-cols-3 divide-x divide-white/[0.08]">
+            <motion.div className="grid grid-cols-2 divide-x divide-white/[0.08]">
               {stats.map((stat, idx) => (
                 <motion.div
                   key={stat.label}
@@ -73,12 +72,12 @@ export function About() {
                   <p className="font-display text-[1.65rem] font-normal not-italic leading-none tabular-nums tracking-tight text-ink-primary md:text-[1.85rem]">
                     <CounterNumber
                       targetNumber={stat.target}
+                      prefix={stat.prefix}
                       suffix={stat.suffix}
                       triggerRef={statsRowRef}
-                      delay={reduce ? 0 : 0.18 + idx * 0.12}
-                      duration={reduce ? 0 : 2}
-                      ease="expo.out"
-                      start="top 85%"
+                      delay={reduce ? 0 : 0.15 + idx * 0.35}
+                      duration={reduce ? 0 : 2.4}
+                      ease="power2.out"
                       enabled={!reduce}
                     />
                   </p>
@@ -106,7 +105,6 @@ export function About() {
               {studioAbout.headlineAccent}
             </RevealText>
           </h2>
-
           <div className="mt-3 h-px w-full max-w-[3.5rem] bg-gold/35" aria-hidden />
 
           <motion.ul
