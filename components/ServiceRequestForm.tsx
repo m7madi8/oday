@@ -68,7 +68,7 @@ function ConfiguredServiceRequestForm({
 }) {
   const { fields, sections, requireOneOf } = config;
   const fieldsById = useMemo(() => fieldMap(fields), [fields]);
-  const email = contact.items.find((i) => i.label === "Email")?.value ?? "hello@odstudio.com";
+  const email = contact.items.find((i) => i.label === "Email")?.value ?? "abodohaoday@gmail.com";
 
   const [values, setValues] = useState<Record<string, string>>(() =>
     Object.fromEntries(fields.filter((f) => f.type !== "file").map((f) => [f.id, ""])),
@@ -260,7 +260,7 @@ function DefaultServiceRequestForm({
   serviceTitle: string;
   serviceSlug: ServiceSlug;
 }) {
-  const email = contact.items.find((i) => i.label === "Email")?.value ?? "hello@odstudio.com";
+  const email = contact.items.find((i) => i.label === "Email")?.value ?? "abodohaoday@gmail.com";
 
   const [fullName, setFullName] = useState("");
   const [userEmail, setUserEmail] = useState("");

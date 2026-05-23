@@ -26,7 +26,7 @@ const glassField =
 export function Contact() {
   const reduceMotion = useReducedMotion();
   const email =
-    contact.items.find((i) => i.label === "Email")?.value ?? "hello@odstudio.com";
+    contact.items.find((i) => i.label === "Email")?.value ?? "abodohaoday@gmail.com";
   const [newsletter, setNewsletter] = useState("");
 
   function onNewsletterSubmit(e: React.FormEvent) {

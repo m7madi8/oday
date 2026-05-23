@@ -1146,13 +1146,13 @@ export const contact = {
     },
     {
       label: "Email",
-      value: "hello@odstudio.com",
-      href: "mailto:hello@odstudio.com",
+      value: "abodohaoday@gmail.com",
+      href: "mailto:abodohaoday@gmail.com",
     },
     {
       label: "Phone",
-      value: "+970 0000000",
-      href: "tel:+9700000000",
+      value: "+972 56-812-3413",
+      href: "tel:+972568123413",
     },
   ] satisfies ContactChannel[],
 };
