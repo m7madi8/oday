@@ -1,6 +1,5 @@
 const MIN_DURATION_MS = 1_100;
 const MAX_DURATION_MS = 2_400;
-const MS_PER_PX = 0.72;
 
 export const SECTION_SCROLL_START = "od-section-scroll-start";
 export const SECTION_SCROLL_END = "od-section-scroll-end";
