@@ -6,6 +6,7 @@ import {
   exteriorTypeLabel,
   getProjectDetailRows,
   getProjectSummary,
+  projectGalleryFrame,
   resolveProjectGalleryFormat,
   serviceFilterLabel,
   type Project,
@@ -75,8 +76,9 @@ export function ProjectDetailView({
             <p className="label-upper text-ink-muted">Overview</p>
             <p className="mt-4 text-sm leading-[1.72] text-ink-secondary md:text-[0.9375rem]">{summary}</p>
             <p className="mt-6 text-sm leading-[1.65] text-ink-muted">
-              Swipe the carousel or use the arrows to browse frames side by side. Tap any image for a soft
-              fullscreen view.
+              All frames use a unified Instagram poster ratio ({projectGalleryFrame.label}). Tap a card to focus, drag
+              horizontally to browse, or use the arrow keys. On desktop, move the cursor across the gallery to
+              glide through the set.
             </p>
           </GalleryReveal>
 

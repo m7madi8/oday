@@ -1,85 +1,91 @@
 "use client";
 
-import { ProjectImageLightbox } from "@/components/ProjectImageLightbox";
-import { AnimatePresence, motion, useReducedMotion } from "@/components/ClientMotion";
-import type { ProjectGalleryFormat, ProjectGalleryImage } from "@/lib/data";
+import { motion, useReducedMotion } from "@/components/ClientMotion";
+import {
+  projectGalleryFrame,
+  type ProjectGalleryFormat,
+  type ProjectGalleryImage,
+} from "@/lib/data";
 import { gallerySpring, galleryTransition } from "@/lib/gallery-motion";
-import { ChevronLeft, ChevronRight, Expand } from "lucide-react";
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-function aspectClass(format: ProjectGalleryFormat) {
-  return format === "instagram" ? "aspect-[4/5]" : "aspect-video";
-}
+/** Lower = slower, smoother mouse-driven scroll */
+const PAN_LERP = 0.012;
 
-function slideWidthClass(format: ProjectGalleryFormat) {
-  return format === "instagram"
-    ? "w-[min(72vw,280px)] sm:w-[300px]"
-    : "w-[min(88vw,480px)] sm:w-[520px]";
-}
-
-function GallerySlide({
+function GalleryCard({
   image,
   index,
-  format,
-  active,
-  onOpen,
-  onFocus,
+  isActive,
+  onSelect,
   reduce,
 }: {
   image: ProjectGalleryImage;
   index: number;
-  format: ProjectGalleryFormat;
-  active: boolean;
-  onOpen: (index: number) => void;
-  onFocus: (index: number) => void;
+  isActive: boolean;
+  onSelect: () => void;
   reduce: boolean;
 }) {
+  const label = String(index + 1).padStart(2, "0");
+
   return (
-    <motion.button
-      type="button"
-      data-no-glow
-      data-slide-index={index}
-      layout
-      initial={reduce ? false : { opacity: 0, y: 24, scale: 0.94 }}
-      animate={{
-        opacity: active ? 1 : 0.88,
-        y: 0,
-        scale: active ? 1 : 0.98,
+    <motion.article
+      data-gallery-card={index}
+      layout={false}
+      role="tab"
+      tabIndex={0}
+      aria-selected={isActive}
+      aria-label={`${label} — ${image.alt}`}
+      onClick={onSelect}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onSelect();
+        }
       }}
-      transition={galleryTransition(reduce, 0.5, index * 0.06)}
-      whileHover={reduce ? {} : { scale: active ? 1.02 : 1.01, y: -3 }}
-      className={`project-gallery__tile group relative shrink-0 snap-center overflow-hidden rounded-2xl border bg-bg-card text-left ${slideWidthClass(format)} ${aspectClass(format)} ${
-        active
-          ? "border-gold/50 shadow-[0_20px_56px_rgba(0,0,0,0.45)] ring-1 ring-gold/25"
-          : "border-white/[0.1] hover:border-gold/35 hover:opacity-100"
+      animate={
+        reduce
+          ? undefined
+          : {
+              scale: isActive ? 1 : 0.99,
+              opacity: isActive ? 1 : 0.88,
+            }
+      }
+      transition={reduce ? { duration: 0 } : gallerySpring.soft}
+      className={`project-gallery__card shrink-0 cursor-pointer ${
+        isActive ? "project-gallery__card--active" : ""
       }`}
-      onClick={() => onOpen(index)}
-      onFocus={() => onFocus(index)}
-      aria-label={`View fullscreen: ${image.alt}`}
-      aria-current={active ? "true" : undefined}
     >
-      <Image
-        src={image.src}
-        alt={image.alt}
-        fill
-        className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-        sizes={format === "instagram" ? "300px" : "520px"}
-        priority={index < 3}
-      />
-      <div
-        aria-hidden
-        className="absolute inset-0 bg-gradient-to-t from-bg-primary/85 via-bg-primary/10 to-transparent"
-      />
-      <div className="absolute left-3 top-3 z-[2] rounded-full border border-white/15 bg-bg-primary/70 px-2.5 py-1 font-outfit text-[10px] font-medium tabular-nums tracking-[0.12em] text-ink-primary backdrop-blur-md">
-        {String(index + 1).padStart(2, "0")}
+      <div className="project-gallery__card-media">
+        <Image
+          src={image.src}
+          alt={image.alt}
+          fill
+          className="object-contain object-center"
+          sizes="(max-width: 768px) 88vw, 720px"
+          priority={index < 3}
+          draggable={false}
+        />
       </div>
-      <div className="absolute bottom-0 right-0 z-[2] p-3 sm:p-4">
-        <span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-bg-primary/70 text-ink-primary opacity-0 backdrop-blur-md transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
-          <Expand className="h-3.5 w-3.5" aria-hidden />
-        </span>
-      </div>
-    </motion.button>
+
+      <span className="project-gallery__badge" aria-hidden>
+        {label}
+      </span>
+
+      {isActive ? (
+        <motion.div
+          aria-hidden
+          className="project-gallery__card-caption"
+          initial={false}
+          animate={{ opacity: 1, y: 0 }}
+          transition={reduce ? { duration: 0 } : { duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <p className="line-clamp-2 font-outfit text-[11px] leading-snug text-white/90 sm:text-xs">
+            {image.alt}
+          </p>
+        </motion.div>
+      ) : null}
+    </motion.article>
   );
 }
 
@@ -94,183 +100,229 @@ export function ProjectGallery({
 }) {
   const reduce = useReducedMotion();
   const trackRef = useRef<HTMLDivElement>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const zoneRef = useRef<HTMLDivElement>(null);
+  const panRafRef = useRef(0);
+  const panActiveRef = useRef(false);
+  const scrollTargetRef = useRef(0);
+  const scrollCurrentRef = useRef(0);
+  const finePointerRef = useRef(false);
 
-  const open = useCallback((index: number) => setLightboxIndex(index), []);
-  const close = useCallback(() => setLightboxIndex(null), []);
-  const scrollToIndex = useCallback(
+  const [activeIndex, setActiveIndex] = useState(0);
+  void format;
+
+  const syncScrollRefs = useCallback(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    scrollCurrentRef.current = track.scrollLeft;
+    scrollTargetRef.current = track.scrollLeft;
+  }, []);
+
+  const scrollToCard = useCallback(
     (index: number) => {
       const track = trackRef.current;
       if (!track) return;
-      const slide = track.querySelector<HTMLElement>(`[data-slide-index="${index}"]`);
-      if (!slide) return;
-      const left = slide.offsetLeft - (track.clientWidth - slide.offsetWidth) / 2;
+      const card = track.querySelector<HTMLElement>(`[data-gallery-card="${index}"]`);
+      if (!card) return;
+      const target = card.offsetLeft - (track.clientWidth - card.offsetWidth) / 2;
+      const clamped = Math.max(0, Math.min(target, track.scrollWidth - track.clientWidth));
+
+      scrollTargetRef.current = clamped;
+      scrollCurrentRef.current = clamped;
       track.scrollTo({
-        left: Math.max(0, left),
+        left: clamped,
         behavior: reduce ? "auto" : "smooth",
       });
-      setActiveIndex(index);
     },
     [reduce],
   );
 
+  const select = useCallback(
+    (index: number) => {
+      setActiveIndex(index);
+      scrollToCard(index);
+    },
+    [scrollToCard],
+  );
+
   const go = useCallback(
     (delta: number) => {
-      scrollToIndex((activeIndex + delta + images.length) % images.length);
+      select((activeIndex + delta + images.length) % images.length);
     },
-    [activeIndex, images.length, scrollToIndex],
+    [activeIndex, images.length, select],
   );
+
+  const runPanLoop = useCallback(() => {
+    if (panActiveRef.current) return;
+    panActiveRef.current = true;
+
+    const tick = () => {
+      const track = trackRef.current;
+      if (!track) {
+        panActiveRef.current = false;
+        return;
+      }
+
+      const target = scrollTargetRef.current;
+      const current = scrollCurrentRef.current;
+      const diff = target - current;
+
+      if (Math.abs(diff) < 0.35) {
+        scrollCurrentRef.current = target;
+        track.scrollLeft = target;
+        panActiveRef.current = false;
+        return;
+      }
+
+      const next = current + diff * PAN_LERP;
+      scrollCurrentRef.current = next;
+      track.scrollLeft = next;
+      panRafRef.current = requestAnimationFrame(tick);
+    };
+
+    panRafRef.current = requestAnimationFrame(tick);
+  }, []);
+
+  const panToRatio = useCallback(
+    (ratio: number) => {
+      const track = trackRef.current;
+      if (!track) return;
+      const max = track.scrollWidth - track.clientWidth;
+      if (max <= 0) return;
+
+      scrollTargetRef.current = Math.max(0, Math.min(1, ratio)) * max;
+      runPanLoop();
+    },
+    [runPanLoop],
+  );
+
+  useEffect(() => {
+    finePointerRef.current = window.matchMedia("(pointer: fine)").matches;
+    const mq = window.matchMedia("(pointer: fine)");
+    const onChange = () => {
+      finePointerRef.current = mq.matches;
+    };
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
 
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
 
+    syncScrollRefs();
+
     const onScroll = () => {
-      const center = track.scrollLeft + track.clientWidth / 2;
-      let closest = 0;
-      let minDist = Infinity;
-      track.querySelectorAll<HTMLElement>("[data-slide-index]").forEach((el) => {
-        const slideCenter = el.offsetLeft + el.offsetWidth / 2;
-        const dist = Math.abs(slideCenter - center);
-        const idx = Number(el.dataset.slideIndex);
-        if (dist < minDist) {
-          minDist = dist;
-          closest = idx;
-        }
-      });
-      setActiveIndex(closest);
+      if (panActiveRef.current) return;
+      syncScrollRefs();
     };
 
     track.addEventListener("scroll", onScroll, { passive: true });
     return () => track.removeEventListener("scroll", onScroll);
-  }, [images.length]);
+  }, [syncScrollRefs, images.length]);
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
-      if (lightboxIndex !== null) return;
-      if (e.key === "ArrowLeft") go(-1);
-      if (e.key === "ArrowRight") go(1);
+      const tag = (e.target as HTMLElement)?.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA") return;
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        go(-1);
+      }
+      if (e.key === "ArrowRight") {
+        e.preventDefault();
+        go(1);
+      }
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [go, lightboxIndex]);
+  }, [go]);
+
+  useEffect(() => {
+    return () => cancelAnimationFrame(panRafRef.current);
+  }, []);
+
+  if (!images.length) return null;
+
+  const focusProgress = images.length > 1 ? activeIndex / (images.length - 1) : 1;
 
   return (
-    <div className="project-gallery space-y-4">
-      <div className="relative">
-        <motion.span
+    <section
+      className="project-gallery"
+      aria-label={`${title} gallery`}
+      data-gallery-format="instagram-poster"
+    >
+      <div className="project-gallery__header">
+        <div>
+          <p className="label-upper text-gold/90">Project frames</p>
+          <p className="mt-1 font-outfit text-[11px] text-ink-muted">
+            <span className="hidden sm:inline">Frame · {projectGalleryFrame.label} · </span>
+            Move the cursor to browse · tap to focus
+          </p>
+        </div>
+        <motion.p
           key={activeIndex}
-          initial={reduce ? false : { opacity: 0, y: -4 }}
+          initial={reduce ? false : { opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={galleryTransition(!!reduce, 0.28)}
-          className="absolute right-0 top-0 z-20 -translate-y-full pb-2 font-outfit text-[10px] tabular-nums tracking-[0.14em] text-ink-muted"
+          transition={galleryTransition(!!reduce, 0.35)}
+          className="project-gallery__counter font-outfit tabular-nums"
+          aria-live="polite"
         >
-          {String(activeIndex + 1).padStart(2, "0")} / {String(images.length).padStart(2, "0")}
-        </motion.span>
-        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r from-bg-primary to-transparent sm:w-16" />
-        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-bg-primary to-transparent sm:w-16" />
+          {String(activeIndex + 1).padStart(2, "0")}
+          <span className="text-ink-muted"> / {String(images.length).padStart(2, "0")}</span>
+          <span className="sr-only"> — {images[activeIndex]?.alt}</span>
+        </motion.p>
+      </div>
 
+      <div
+        ref={zoneRef}
+        className="project-gallery__stage"
+        onMouseMove={(e) => {
+          if (!finePointerRef.current || reduce) return;
+          const zone = zoneRef.current;
+          if (!zone) return;
+          const rect = zone.getBoundingClientRect();
+          if (rect.width <= 0) return;
+          const ratio = (e.clientX - rect.left) / rect.width;
+          panToRatio(ratio);
+        }}
+        onMouseLeave={() => {
+          cancelAnimationFrame(panRafRef.current);
+          panActiveRef.current = false;
+        }}
+      >
         <div
           ref={trackRef}
-          className="project-gallery__track flex gap-4 overflow-x-auto overscroll-x-contain scroll-smooth px-1 py-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory"
-          role="region"
-          aria-label={`${title} image carousel`}
-          tabIndex={0}
+          className="project-gallery__track"
+          role="tablist"
+          aria-label={`${title} image gallery`}
         >
           {images.map((image, index) => (
-            <GallerySlide
+            <GalleryCard
               key={`${image.alt}-${index}`}
               image={image}
               index={index}
-              format={format}
-              active={index === activeIndex}
-              onOpen={open}
-              onFocus={setActiveIndex}
+              isActive={index === activeIndex}
+              onSelect={() => select(index)}
               reduce={!!reduce}
             />
           ))}
         </div>
-
-        {images.length > 1 ? (
-          <>
-            <motion.button
-              type="button"
-              data-no-glow
-              onClick={() => go(-1)}
-              initial={reduce ? false : { opacity: 0, x: -8 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={galleryTransition(!!reduce, 0.45, 0.2)}
-              whileTap={reduce ? {} : { scale: 0.94 }}
-              className="absolute left-2 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-bg-primary/80 text-ink-primary backdrop-blur-md transition-colors hover:border-gold/40 sm:left-3"
-              aria-label="Previous image in carousel"
-            >
-              <ChevronLeft className="h-5 w-5" aria-hidden />
-            </motion.button>
-            <motion.button
-              type="button"
-              data-no-glow
-              onClick={() => go(1)}
-              initial={reduce ? false : { opacity: 0, x: 8 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={galleryTransition(!!reduce, 0.45, 0.2)}
-              whileTap={reduce ? {} : { scale: 0.94 }}
-              className="absolute right-2 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-bg-primary/80 text-ink-primary backdrop-blur-md transition-colors hover:border-gold/40 sm:right-3"
-              aria-label="Next image in carousel"
-            >
-              <ChevronRight className="h-5 w-5" aria-hidden />
-            </motion.button>
-          </>
-        ) : null}
       </div>
 
       <div
-        className="flex gap-2 overflow-x-auto pb-1 [scrollbar-width:thin]"
-        role="tablist"
-        aria-label={`${title} carousel thumbnails`}
+        className="project-gallery__progress"
+        role="progressbar"
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={Math.round(focusProgress * 100)}
+        aria-label="Gallery position"
       >
-        {images.map((img, i) => {
-          const selected = i === activeIndex;
-          return (
-            <motion.button
-              key={`thumb-${img.alt}-${i}`}
-              type="button"
-              role="tab"
-              aria-selected={selected}
-              aria-label={`Go to image ${i + 1}`}
-              data-no-glow
-              onClick={() => scrollToIndex(i)}
-              layout
-              animate={{
-                scale: selected ? 1.06 : 1,
-                opacity: selected ? 1 : 0.5,
-              }}
-              transition={reduce ? { duration: 0 } : gallerySpring.soft}
-              className={`relative shrink-0 overflow-hidden rounded-lg border ${
-                format === "instagram" ? "h-14 w-11" : "h-12 w-[4.5rem]"
-              } ${
-                selected
-                  ? "border-gold/60 ring-1 ring-gold/35"
-                  : "border-white/10 hover:border-gold/30 hover:opacity-90"
-              }`}
-            >
-              <Image src={img.src} alt="" fill className="object-cover" sizes="64px" />
-            </motion.button>
-          );
-        })}
+        <motion.div
+          className="project-gallery__progress-fill"
+          animate={{ width: `${focusProgress * 100}%` }}
+          transition={reduce ? { duration: 0 } : gallerySpring.soft}
+        />
       </div>
-
-      <AnimatePresence>
-        {lightboxIndex !== null ? (
-          <ProjectImageLightbox
-            images={images}
-            index={lightboxIndex}
-            title={title}
-            onClose={close}
-            onIndexChange={setLightboxIndex}
-          />
-        ) : null}
-      </AnimatePresence>
-    </div>
+    </section>
   );
 }

@@ -33,8 +33,8 @@ export type ProjectCategory = "Residential" | "Cultural";
 export const serviceSlugs = [
   "exterior",
   "interior",
-  "architecture-drone",
   "architecture-ai",
+  "architecture-drone",
 ] as const;
 
 export type ServiceSlug = (typeof serviceSlugs)[number];
@@ -60,8 +60,28 @@ export type ProjectServiceFilter = (typeof projectServiceFilters)[number];
 export const projectFilters = projectServiceFilters;
 export type ProjectFilter = ProjectServiceFilter;
 
-/** Instagram portrait post (~4:5) or cinematic still (16:9 / 1920×1080). */
+/** Instagram deliverable (2550×2000) or cinematic still (1920×1080 / 16:9). */
 export type ProjectGalleryFormat = "instagram" | "cinema";
+
+export const projectGalleryFormatSpecs = {
+  cinema: { width: 1920, height: 1080, aspect: 16 / 9, label: "1920 × 1080" },
+  instagram: { width: 2550, height: 2000, aspect: 2550 / 2000, label: "2550 × 2000" },
+} as const satisfies Record<
+  ProjectGalleryFormat,
+  { width: number; height: number; aspect: number; label: string }
+>;
+
+export function projectGalleryAspect(format: ProjectGalleryFormat): number {
+  return projectGalleryFormatSpecs[format].aspect;
+}
+
+/** Unified gallery frame on project pages — Instagram deliverable (2550×2000). */
+export const projectGalleryFrame = {
+  width: 2550,
+  height: 2000,
+  aspect: 2550 / 2000,
+  label: "2550 × 2000",
+} as const;
 
 export interface Project {
   id: string;
@@ -632,22 +652,22 @@ export function projectDetailPath(project: Project): string {
 
 export const hero = {
   headlineEyebrow: "Architecture · Engineering · Delivery",
-  headlineLead: "We Design For",
-  headlineAccentLead: "A Better",
-  headlineAccentEmphasis: "Life",
+  headlineBeforeAccent: "We Design For ",
+  headlineAccent: "A Better Life",
   headlineSubline:
     "Engineering discipline and design authority — built to elevate assets, environments, and the lives within them.",
   ctaEyebrow: "Case Studies",
   ctaLabel: "View All Projects",
+  ctaHref: "/#services",
   titleLine1: "Design",
   titleLine2Words: ["That", "Drives", "Value"],
   description:
-    "Interior, exterior (including landscape), architecture drone, and architecture AI — precision-focused delivery for high-value projects.",
+    "Exterior Design, Interior Design, Ai Design, and Architect Dron — precision-focused delivery for high-value projects.",
   image: exteriorImage,
   imageAlt: "Modern desert villa at sunset with infinity pool and mountain backdrop",
   stats: [
-    { label: "Total", value: 500, prefix: "+", suffix: "" },
-    { label: "Value", value: 60, prefix: "+", suffix: " million" },
+    { label: "Projects", value: 500, prefix: "+", suffix: "" },
+    { label: "Value", value: 50, prefix: "+", suffix: " million" },
   ],
 };
 
@@ -661,6 +681,10 @@ export const about = {
   sectionNumber: "01",
   snapshotEyebrow: "Company snapshot",
   snapshotSub: "Key figures and operating focus",
+  stats: [
+    { label: "Projects", target: 500, prefix: "+", suffix: "" },
+    { label: "Value", target: 50, prefix: "+", suffix: " million" },
+  ],
   headlinePrimary: "Built for Serious",
   headlineAccent: "Developers",
   /** Single ~30-word company snapshot for the About column. */
@@ -709,7 +733,7 @@ export const services: ServiceItem[] = [
     id: "s3",
     slug: "exterior",
     orderLabel: "01",
-    title: "Exterior",
+    title: "Exterior Design",
     description:
       "Facade language, massing, landscape integration, and exterior performance optimization.",
     icon: DraftingCompass,
@@ -718,28 +742,28 @@ export const services: ServiceItem[] = [
     id: "s1",
     slug: "interior",
     orderLabel: "02",
-    title: "Interior",
+    title: "Interior Design",
     description:
       "Premium interior planning, material systems, and execution-ready detailing.",
     icon: Box,
   },
   {
-    id: "s4",
-    slug: "architecture-drone",
-    orderLabel: "03",
-    title: "Architecture Drone",
-    description:
-      "Aerial capture, site intelligence, and progress tracking for smarter decisions.",
-    icon: MonitorPlay,
-  },
-  {
     id: "s5",
     slug: "architecture-ai",
-    orderLabel: "04",
-    title: "Architecture AI",
+    orderLabel: "03",
+    title: "Ai Design",
     description:
       "AI-assisted concept exploration, optimization, and performance-led design workflows.",
     icon: Layers3,
+  },
+  {
+    id: "s4",
+    slug: "architecture-drone",
+    orderLabel: "04",
+    title: "Architect Dron",
+    description:
+      "Aerial capture, site intelligence, and progress tracking for smarter decisions.",
+    icon: MonitorPlay,
   },
 ];
 
@@ -1190,10 +1214,10 @@ export const footer = {
     { href: "#contact", label: "Contact" },
   ],
   categoryLinks: [
-    { href: "/projects?service=interior", label: "Interior" },
-    { href: "/projects?service=exterior", label: "Exterior" },
-    { href: "/projects?service=architecture-drone", label: "Architecture Drone" },
-    { href: "/projects?service=architecture-ai", label: "Architecture AI" },
+    { href: "/projects?service=exterior", label: "Exterior Design" },
+    { href: "/projects?service=interior", label: "Interior Design" },
+    { href: "/projects?service=architecture-ai", label: "Ai Design" },
+    { href: "/projects?service=architecture-drone", label: "Architect Dron" },
   ],
   social: [
     { label: "Facebook", href: "https://facebook.com", icon: "facebook" as const },

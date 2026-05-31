@@ -37,7 +37,7 @@ export function Contact() {
   }
 
   return (
-    <section id="contact" className="relative isolate min-h-[100svh]">
+    <section id="contact" className="section-snap relative isolate">
       <div className="absolute inset-0">
         <Image
           src={contact.backgroundImage}
@@ -192,7 +192,7 @@ export function Contact() {
             />
             <Link
               href="#top"
-              className="group inline-flex shrink-0 items-center justify-center"
+              className="contact-footer-logo group inline-flex shrink-0 items-center justify-center"
               aria-label="OD Studio home"
             >
               <Image
@@ -200,7 +200,7 @@ export function Contact() {
                 alt="OD Studio"
                 width={720}
                 height={180}
-                className="h-28 w-auto max-w-[min(95vw,720px)] brightness-110 drop-shadow-[0_4px_28px_rgba(0,0,0,0.5)] transition-[transform,opacity] duration-300 group-hover:scale-[1.02] group-hover:opacity-90 sm:h-32 md:h-[9.5rem] lg:h-40"
+                className="contact-footer-logo__img h-28 w-auto max-w-[min(95vw,720px)] sm:h-32 md:h-[9.5rem] lg:h-40"
                 sizes="(max-width: 768px) 640px, 720px"
               />
             </Link>

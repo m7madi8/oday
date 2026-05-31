@@ -6,6 +6,7 @@
  */
 export {
   AnimatePresence,
+  LayoutGroup,
   motion,
   useMotionValue,
   useMotionValueEvent,

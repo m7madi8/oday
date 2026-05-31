@@ -114,6 +114,7 @@ export function Navigation() {
   const isRequest = pathname.startsWith("/request");
   const activeSection = useActiveSection(isHome);
   const invertLogo = isGallery || isRequest || (isHome && scrolled);
+  const heroLogoGlow = isHome && !scrolled && !isGallery && !isRequest;
 
   const close = useCallback(() => setOpen(false), []);
   const linkActive = (href: string) => isNavLinkActive(pathname, href, activeSection);
@@ -136,17 +137,10 @@ export function Navigation() {
       }
 
       if (path === pathname && hash) {
-        e.preventDefault();
-        window.requestAnimationFrame(() => {
-          const target = document.getElementById(hash);
-          if (target) {
-            target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth" });
-          }
-          window.history.pushState(null, "", `${path}#${hash}`);
-        });
+        close();
       }
     },
-    [close, pathname, reduceMotion],
+    [close, pathname],
   );
 
   useEffect(() => {
@@ -199,7 +193,7 @@ export function Navigation() {
               alt="OD Studio"
               height={72}
               width={288}
-              className={`site-nav-logo__img h-11 w-auto max-w-[min(240px,calc(100vw-7rem))] origin-left scale-[1.62] md:scale-[1.72] lg:scale-[1.82] ${invertLogo ? "site-nav-logo__img--inverted" : ""}`}
+              className={`site-nav-logo__img h-11 w-auto max-w-[min(240px,calc(100vw-7rem))] origin-left scale-[1.62] md:scale-[1.72] lg:scale-[1.82] ${invertLogo ? "site-nav-logo__img--inverted" : ""} ${heroLogoGlow ? "site-nav-logo__img--hero-glow" : ""}`}
               priority
               sizes="(max-width: 1024px) 200px, 280px"
             />
@@ -223,15 +217,6 @@ export function Navigation() {
           </nav>
 
           <div className="flex shrink-0 items-center justify-end gap-2 sm:gap-3">
-            <Link
-              href="/#contact"
-              className={`site-nav-contact-btn hidden md:inline-flex ${linkActive("/#contact") ? "site-nav-contact-btn--active" : ""}`}
-              aria-current={linkActive("/#contact") ? "page" : undefined}
-              onClick={(e) => handleMenuNavigate(e, "/#contact")}
-            >
-              Contact
-            </Link>
-
             <button
               type="button"
               data-no-glow

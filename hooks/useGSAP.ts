@@ -13,6 +13,7 @@ type GsapContext = { revert: () => void };
 
 export type GsapLike = {
   registerPlugin: (...plugins: unknown[]) => void;
+  set: (...args: unknown[]) => unknown;
   to: (...args: unknown[]) => unknown;
   from: (...args: unknown[]) => unknown;
   fromTo: (...args: unknown[]) => unknown;

@@ -8,21 +8,13 @@ import { motion, useReducedMotion } from "@/components/ClientMotion";
 import { revealInView } from "@/lib/motion-viewport";
 import { about as studioAbout } from "@/lib/data";
 import Image from "next/image";
-import { useRef } from "react";
-
-const stats = [
-  { target: 500, prefix: "+", suffix: "", label: "Total" },
-  { target: 60, prefix: "+", suffix: " million", label: "Value" },
-] as const;
-
 export function About() {
   const reduce = useReducedMotion();
-  const statsRowRef = useRef<HTMLDivElement>(null);
 
   return (
     <section
       id="about"
-      className="relative overflow-hidden bg-bg-primary px-[var(--hero-gutter)] pb-10 pt-0 md:pb-12 lg:flex lg:min-h-0 lg:items-center lg:pb-14"
+      className="section-snap relative flex flex-col justify-center overflow-hidden bg-bg-primary px-[var(--hero-gutter)] py-[var(--hero-nav-stack)] pb-8 md:pb-10"
     >
       <RevealChildren
         className="relative mx-auto grid w-full max-w-6xl items-center gap-6 md:gap-7 lg:grid-cols-[minmax(0,1.12fr)_minmax(220px,0.88fr)] lg:gap-8"
@@ -48,7 +40,6 @@ export function About() {
           </header>
 
           <motion.div
-            ref={statsRowRef}
             className="mt-4 border-y border-white/[0.08] md:mt-4"
             initial={reduce ? false : { opacity: 0, y: 14 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -56,7 +47,7 @@ export function About() {
             transition={{ duration: reduce ? 0 : 0.55, ease: [0.22, 1, 0.36, 1] }}
           >
             <motion.div className="grid grid-cols-2 divide-x divide-white/[0.08]">
-              {stats.map((stat, idx) => (
+              {studioAbout.stats.map((stat, idx) => (
                 <motion.div
                   key={stat.label}
                   className="py-3 text-center first:pl-0 sm:py-3.5"
@@ -74,10 +65,8 @@ export function About() {
                       targetNumber={stat.target}
                       prefix={stat.prefix}
                       suffix={stat.suffix}
-                      triggerRef={statsRowRef}
-                      delay={reduce ? 0 : 0.15 + idx * 0.35}
-                      duration={reduce ? 0 : 2.4}
-                      ease="power2.out"
+                      delay={reduce ? 0 : 0.12 + idx * 0.3}
+                      duration={reduce ? 0 : 2.2}
                       enabled={!reduce}
                     />
                   </p>

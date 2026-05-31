@@ -11,8 +11,10 @@ import { useEffect } from "react";
 
 export function ProjectsGallerySearchSync({
   onFilterChange,
+  basePath = "/projects",
 }: {
   onFilterChange: (filter: ProjectServiceFilter, exteriorType: ExteriorProjectTypeFilter) => void;
+  basePath?: "/projects" | "/gallery";
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -21,12 +23,13 @@ export function ProjectsGallerySearchSync({
     const rawService = searchParams.get("service");
 
     if (rawService === "landscape") {
-      router.replace("/projects?service=exterior&type=landscape", { scroll: false });
+      router.replace(`${basePath}?service=exterior&type=landscape`, { scroll: false });
       onFilterChange("exterior", "landscape");
       return;
     }
 
     if (!rawService) {
+      if (basePath === "/gallery") return;
       onFilterChange("All", "All");
       return;
     }
@@ -40,8 +43,8 @@ export function ProjectsGallerySearchSync({
     }
 
     onFilterChange("All", "All");
-    router.replace("/projects", { scroll: false });
-  }, [searchParams, router, onFilterChange]);
+    router.replace(basePath, { scroll: false });
+  }, [basePath, searchParams, router, onFilterChange]);
 
   return null;
 }

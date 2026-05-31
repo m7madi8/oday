@@ -21,7 +21,7 @@ const sectionShowcase = [
     id: "showcase-1",
     image: interiorShowcaseImage,
     alt: "Premium interior space with sculpted ceiling design",
-    label: "Interior Experience",
+    label: "Interior Design",
   },
   {
     id: "showcase-2",

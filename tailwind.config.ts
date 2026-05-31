@@ -30,10 +30,20 @@ const config: Config = {
         edge: "var(--border)",
       },
       fontFamily: {
-        display: ["var(--font-cormorant)", "Cormorant Garamond", "serif"],
-        "hero-accent": ["var(--font-hero-accent)", "Cormorant Garamond", "serif"],
-        sans: ["var(--font-dm)", "DM Sans", "system-ui", "sans-serif"],
-        outfit: ["var(--font-outfit)", "Outfit", "ui-sans-serif", "system-ui", "sans-serif"],
+        display: ["var(--font-display)", "Cormorant Garamond", "Georgia", "serif"],
+        sub: ["var(--font-sub)", "Philosopher", "Georgia", "serif"],
+        ui: ["var(--font-ui)", "Jost", "system-ui", "sans-serif"],
+        sans: ["var(--font-ui)", "Jost", "system-ui", "sans-serif"],
+        body: ["var(--font-ui)", "Jost", "system-ui", "sans-serif"],
+        outfit: ["var(--font-ui)", "Jost", "system-ui", "sans-serif"],
+        /* Legacy aliases */
+        viga: ["var(--font-display)", "Cormorant Garamond", "Georgia", "serif"],
+        cairo: ["var(--font-ui)", "Jost", "system-ui", "sans-serif"],
+        "hero-accent": ["var(--font-display)", "Cormorant Garamond", "Georgia", "serif"],
+        "hero-display": ["var(--font-display)", "Cormorant Garamond", "Georgia", "serif"],
+      },
+      fontWeight: {
+        hairline: "200",
       },
       backgroundImage: {
         "gold-glow":

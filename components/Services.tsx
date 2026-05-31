@@ -5,6 +5,7 @@ import { services } from "@/lib/data";
 import { motion, useReducedMotion } from "@/components/ClientMotion";
 import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
+import { SafeButton } from "@/components/SafeButton";
 import { ArrowUpRight } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import aboutImage from "@/imgs/about.jpg";
@@ -34,29 +35,29 @@ const fallbackProfile: ServiceProfile = {
 };
 
 const serviceProfiles: Record<string, ServiceProfile> = {
-  Interior: {
+  "Interior Design": {
     tagline: "Interior systems",
     punchline:
       "Premium interiors built for brand value, material clarity, and execution-ready detailing.",
-    verticalLabel: "Interior",
+    verticalLabel: "Interior Design",
   },
-  Exterior: {
+  "Exterior Design": {
     tagline: "Facade & landscape",
     punchline:
       "Facades, villas, residential buildings, and integrated landscape — tuned for climate, massing, and market appeal.",
-    verticalLabel: "Exterior",
+    verticalLabel: "Exterior Design",
   },
-  "Architecture Drone": {
+  "Architect Dron": {
     tagline: "Aerial intelligence",
     punchline:
       "Drone-powered site data and visual reporting for faster, sharper project decisions.",
-    verticalLabel: "Drone",
+    verticalLabel: "Architect Dron",
   },
-  "Architecture AI": {
+  "Ai Design": {
     tagline: "AI workflows",
     punchline:
       "AI-enhanced architecture workflows for speed, option exploration, and precision.",
-    verticalLabel: "AI Design",
+    verticalLabel: "Ai Design",
   },
 };
 
@@ -79,7 +80,7 @@ function getServiceVisual(title: string): ServiceVisual {
     };
   }
 
-  if (normalized.includes("drone")) {
+  if (normalized.includes("drone") || normalized.includes("dron")) {
     return {
       src: exteriorImage,
       alt: "Aerial architectural perspective for site intelligence",
@@ -106,7 +107,7 @@ const stripBezel =
   "rounded-[1.1rem] bg-gradient-to-br from-gold/55 via-white/25 to-gold/20 p-[2px] shadow-[0_40px_100px_rgba(0,0,0,0.65),0_0_0_1px_rgba(245, 197, 24,0.12)] lg:rounded-[1.25rem] lg:p-[3px]";
 
 const stripInner =
-  "flex h-[clamp(420px,68vh,760px)] min-h-[400px] w-full overflow-hidden rounded-[1.02rem] bg-transparent lg:rounded-[1.15rem]";
+  "flex h-full min-h-[200px] max-h-[min(50svh,540px)] w-full flex-1 overflow-hidden rounded-[1.02rem] bg-transparent lg:rounded-[1.15rem]";
 
 type StoryCardMotion = {
   focus: number;
@@ -195,7 +196,7 @@ export function Services() {
   return (
     <section
       id="services"
-      className="relative isolate overflow-hidden bg-bg-primary py-20 md:py-28"
+      className="section-snap relative isolate flex flex-col overflow-hidden bg-bg-primary pb-5 pt-[var(--hero-nav-stack)] md:pb-6"
     >
       <div
         aria-hidden
@@ -214,25 +215,25 @@ export function Services() {
         transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      <div className="relative mx-auto w-full max-w-[100rem] px-4 md:px-8 lg:px-10">
-        <ScrollReveal dramatic className="mx-auto max-w-3xl text-center md:max-w-4xl">
-          <p className="label-upper text-gold">Solutions</p>
-          <h2 className="mt-4 font-display text-[clamp(2.1rem,5vw,4rem)] italic leading-[0.95] text-ink-primary">
+      <div className="relative mx-auto flex min-h-0 w-full max-w-[100rem] flex-1 flex-col px-4 md:px-8 lg:px-10">
+        <ScrollReveal dramatic className="mx-auto max-w-3xl shrink-0 text-center md:max-w-4xl">
+          <p className="label-upper text-[0.65rem] text-gold md:text-[0.7rem]">Solutions</p>
+          <h2 className="mt-1.5 font-display text-[clamp(1.45rem,3.2vw,2.5rem)] italic leading-[0.98] text-ink-primary">
             Four disciplines.
-            <span className="mt-2 block bg-gradient-to-r from-gold via-[#fff3b0] to-gold/70 bg-clip-text text-transparent">
+            <span className="mt-1 block bg-gradient-to-r from-gold via-[#fff3b0] to-gold/70 bg-clip-text text-transparent">
               One cinematic frame.
             </span>
           </h2>
-          <p className="mx-auto mt-5 max-w-2xl text-sm leading-relaxed text-ink-secondary md:text-base">
+          <p className="mx-auto mt-2 max-w-xl text-xs leading-relaxed text-ink-secondary md:text-sm">
             <span className="md:hidden">Swipe through story-sized service cards.</span>
             <span className="hidden md:inline">
-              Every service in one frame â€” hover any column to reveal its story.
+              Every service in one frame — hover any column to reveal its story.
             </span>
           </p>
         </ScrollReveal>
 
         {/* Mobile: Instagram story ratio cards */}
-        <ScrollReveal dramatic delay={0.06} className="mt-10 md:hidden">
+        <ScrollReveal dramatic delay={0.06} className="mt-4 flex min-h-0 flex-1 flex-col md:hidden">
           <div className="overflow-hidden rounded-[1.35rem]">
           <motion.div
             ref={storyScrollerRef}
@@ -243,7 +244,6 @@ export function Services() {
               <ServiceStoryCard
                 key={service.id}
                 service={service}
-                index={index}
                 motionState={storyMotions[index] ?? { focus: 0, drift: 0 }}
                 isCentered={storyIndex === index}
                 reduceMotion={!!reduceMotion}
@@ -252,11 +252,10 @@ export function Services() {
           </motion.div>
           </div>
 
-          <div className="mt-5 flex justify-center gap-2" role="tablist" aria-label="Service stories">
+          <div className="mt-3 flex shrink-0 justify-center gap-2" role="tablist" aria-label="Service stories">
             {services.map((service, index) => (
-              <button
+              <SafeButton
                 key={service.id}
-                type="button"
                 data-no-glow
                 role="tab"
                 aria-selected={storyIndex === index}
@@ -271,8 +270,8 @@ export function Services() {
         </ScrollReveal>
 
         {/* Desktop: panoramic accordion strip */}
-        <ScrollReveal dramatic delay={0.06} className="mt-11 hidden md:block">
-          <div className={stripBezel}>
+        <ScrollReveal dramatic delay={0.06} className="mt-3 hidden min-h-0 flex-1 flex-col md:flex">
+          <div className={`${stripBezel} flex min-h-0 flex-1 flex-col`}>
             <div
               className={stripInner}
               onMouseLeave={() => setActiveId(services[0]?.id ?? "")}
@@ -293,14 +292,14 @@ export function Services() {
         <ScrollReveal
           dramatic
           delay={0.1}
-          className="mt-10 rounded-2xl border border-gold/28 bg-gradient-to-r from-bg-card/95 via-bg-card/88 to-bg-card/95 p-5 shadow-[0_16px_48px_rgba(0,0,0,0.35)] backdrop-blur-sm md:flex md:items-center md:justify-between md:gap-6 md:px-7"
+          className="mt-3 shrink-0 rounded-xl border border-gold/28 bg-gradient-to-r from-bg-card/95 via-bg-card/88 to-bg-card/95 p-3 shadow-[0_12px_36px_rgba(0,0,0,0.3)] backdrop-blur-sm md:flex md:items-center md:justify-between md:gap-5 md:px-5 md:py-3.5"
         >
-          <p className="text-sm text-ink-secondary md:text-base">
+          <p className="text-xs text-ink-secondary md:text-sm">
             Need a custom mix? We can combine design, engineering, drone, and AI in one clean workflow.
           </p>
           <Link
             href="#contact"
-            className="mt-4 inline-flex items-center justify-center rounded-full border border-gold/50 bg-gold/20 px-7 py-3 text-xs uppercase tracking-[0.2em] text-ink-primary shadow-[0_8px_28px_rgba(245, 197, 24,0.2)] transition-all hover:bg-gold/28 hover:shadow-[0_12px_36px_rgba(245, 197, 24,0.28)] md:mt-0"
+            className="mt-3 inline-flex items-center justify-center rounded-full border border-gold/50 bg-gold/20 px-5 py-2 text-[10px] uppercase tracking-[0.18em] text-ink-primary shadow-[0_8px_28px_rgba(245, 197, 24,0.2)] transition-all hover:bg-gold/28 hover:shadow-[0_12px_36px_rgba(245, 197, 24,0.28)] md:mt-0"
             aria-label="Build custom service scope"
           >
             Build My Scope
@@ -314,13 +313,11 @@ export function Services() {
 /** 9:16 story card â€” soft scroll focus */
 function ServiceStoryCard({
   service,
-  index,
   motionState,
   isCentered,
   reduceMotion,
 }: {
   service: (typeof services)[number];
-  index: number;
   motionState: StoryCardMotion;
   isCentered: boolean;
   reduceMotion: boolean;
@@ -336,7 +333,7 @@ function ServiceStoryCard({
 
   return (
     <motion.article
-      className="relative aspect-[9/16] w-[min(78vw,300px)] shrink-0 snap-center overflow-hidden bg-transparent px-0.5"
+      className="relative aspect-[9/16] h-[min(58svh,520px)] w-auto max-h-full shrink-0 snap-center overflow-hidden bg-transparent px-0.5"
       style={{ zIndex: Math.round(focus * 10) }}
       animate={{ scale, opacity, y: liftY }}
       transition={reduceMotion ? { duration: 0 } : storyEase}
@@ -363,7 +360,7 @@ function ServiceStoryCard({
             fill
             quality={IMAGE_QUALITY}
             sizes={IMAGE_SIZES_STORY}
-            priority={index < 2}
+            priority={false}
             className="object-cover brightness-[1.03] contrast-[1.02] saturate-[1.06]"
             style={{ objectPosition: visual.objectPosition }}
           />
@@ -488,7 +485,7 @@ function ServicePanel({
           fill
           quality={IMAGE_QUALITY}
           sizes={IMAGE_SIZES_DESKTOP}
-          priority={index < 3}
+          priority={index === 0}
           className={`object-cover transition-[transform,filter] duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
             isActive
               ? "scale-[1.04] brightness-[1.08] contrast-[1.06] saturate-[1.14]"

@@ -1,6 +1,7 @@
 "use client";
 
 import { ExteriorGallery } from "@/components/ExteriorGallery";
+import { GalleryHashSync } from "@/components/GalleryHashSync";
 import { ProjectsGallerySearchSync } from "@/components/ProjectsGallerySearchSync";
 import {
   GalleryFilterPill,
@@ -19,9 +20,11 @@ import {
   projectServiceFilters,
   projects,
   serviceFilterLabel,
+  type ExteriorProjectType,
   type ExteriorProjectTypeFilter,
   type ProjectServiceFilter,
 } from "@/lib/data";
+import { GALLERY_CATEGORY_ANCHORS } from "@/lib/gallery-anchors";
 import { AnimatePresence, motion, useReducedMotion } from "@/components/ClientMotion";
 import Image from "next/image";
 import Link from "next/link";
@@ -29,23 +32,26 @@ import { useRouter } from "next/navigation";
 import { Suspense, useCallback, useMemo, useState } from "react";
 
 function projectsGalleryPath(
+  basePath: "/projects" | "/gallery",
   service: ProjectServiceFilter,
   exteriorType: ExteriorProjectTypeFilter,
 ) {
-  if (service === "All") return "/projects";
+  if (service === "All") return basePath;
   const params = new URLSearchParams({ service });
   if (service === "exterior" && exteriorType !== "All") {
     params.set("type", exteriorType);
   }
-  return `/projects?${params.toString()}`;
+  return `${basePath}?${params.toString()}`;
 }
 
 export function ProjectsGallery({
   initialFilter,
   initialExteriorType = "All",
+  basePath = "/projects",
 }: {
   initialFilter: ProjectServiceFilter;
   initialExteriorType?: ExteriorProjectTypeFilter;
+  basePath?: "/projects" | "/gallery";
 }) {
   const reduceMotion = useReducedMotion();
   const router = useRouter();
@@ -53,6 +59,7 @@ export function ProjectsGallery({
   const [exteriorType, setExteriorType] = useState<ExteriorProjectTypeFilter>(initialExteriorType);
 
   const isExteriorMode = filter === "exterior";
+  const galleryTitle = filter === "All" ? "Project Gallery" : serviceFilterLabel(filter);
 
   const onFilterChange = useCallback(
     (nextFilter: ProjectServiceFilter, nextExteriorType: ExteriorProjectTypeFilter) => {
@@ -67,17 +74,25 @@ export function ProjectsGallery({
       const nextExteriorType: ExteriorProjectTypeFilter = "All";
       setFilter(next);
       setExteriorType(nextExteriorType);
-      router.replace(projectsGalleryPath(next, nextExteriorType), { scroll: false });
+      router.replace(projectsGalleryPath(basePath, next, nextExteriorType), { scroll: false });
     },
-    [router],
+    [basePath, router],
   );
 
   const setExteriorTypeAndUrl = useCallback(
     (next: ExteriorProjectTypeFilter) => {
       setExteriorType(next);
-      router.replace(projectsGalleryPath("exterior", next), { scroll: false });
+      router.replace(projectsGalleryPath(basePath, "exterior", next), { scroll: false });
     },
-    [router],
+    [basePath, router],
+  );
+
+  const onCategoryFromHash = useCallback(
+    (type: ExteriorProjectType) => {
+      setFilter("exterior");
+      setExteriorType(type);
+    },
+    [],
   );
 
   const filtered = useMemo(() => {
@@ -86,22 +101,29 @@ export function ProjectsGallery({
     return projects.filter((p) => p.serviceSlug === filter);
   }, [filter, isExteriorMode]);
 
-  const galleryKey = isExteriorMode ? `exterior-${exteriorType}` : filter;
+  const galleryKey = isExteriorMode ? "exterior" : filter;
 
   return (
     <main
       id="main-content"
-      className="gallery-page relative overflow-hidden bg-bg-primary pb-24 pt-[calc(var(--hero-nav-stack)+1.5rem)] md:pb-32 md:pt-[calc(var(--hero-nav-stack)+2rem)]"
+      className={`gallery-page relative bg-bg-primary pb-24 pt-[calc(var(--hero-nav-stack)+1.5rem)] md:pb-32 md:pt-[calc(var(--hero-nav-stack)+2rem)]${
+        isExteriorMode ? " gallery-page--exterior" : " overflow-x-clip"
+      }`}
     >
+      <GalleryHashSync onCategoryFromHash={onCategoryFromHash} />
       <div aria-hidden className="gallery-page__glow pointer-events-none absolute inset-0" />
 
       <Suspense fallback={null}>
-        <ProjectsGallerySearchSync onFilterChange={onFilterChange} />
+        <ProjectsGallerySearchSync onFilterChange={onFilterChange} basePath={basePath} />
       </Suspense>
 
-      <div className="relative mx-auto max-w-7xl px-5 md:px-10">
-        <GalleryReveal as="header" dramatic className={`flex flex-col gap-8 ${isExteriorMode ? "" : "lg:flex-row lg:items-end lg:justify-between"}`}>
-          <div className={isExteriorMode ? "max-w-3xl" : undefined}>
+      <div className="gallery-page__shell relative mx-auto flex max-w-7xl flex-col px-5 md:px-10">
+        <GalleryReveal
+          as="header"
+          dramatic
+          className={`gallery-page__header flex flex-col ${isExteriorMode ? "gap-2 md:gap-8" : "gap-8 lg:flex-row lg:items-end lg:justify-between"}`}
+        >
+          <div className="max-w-3xl">
             <motion.p
               className="label-upper text-gold"
               initial={reduceMotion ? false : { opacity: 0, x: -12 }}
@@ -111,28 +133,38 @@ export function ProjectsGallery({
               Case Studies
             </motion.p>
             <motion.h1
-              className="mt-3 font-display text-4xl italic text-ink-primary md:text-5xl"
+              className={`font-display italic text-ink-primary ${
+                isExteriorMode
+                  ? "mt-2 text-[2rem] leading-tight md:mt-3 md:text-5xl"
+                  : "mt-3 text-4xl md:text-5xl"
+              }`}
               initial={reduceMotion ? false : { opacity: 0, y: 28 }}
               animate={{ opacity: 1, y: 0 }}
               transition={galleryTransition(!!reduceMotion, 0.62, 0.1)}
             >
-              {isExteriorMode ? "Exterior Design" : "Project Gallery"}
+              {galleryTitle}
             </motion.h1>
-            <GalleryGoldLine className="mt-5 max-w-xs" />
+            <GalleryGoldLine
+              className={`max-w-xs ${isExteriorMode ? "mt-3 md:mt-5" : "mt-5"}`}
+            />
             <motion.p
-              className="mt-5 max-w-xl text-sm leading-relaxed text-ink-secondary md:text-base"
+              className={`max-w-xl text-sm leading-relaxed text-ink-secondary md:text-base ${
+                isExteriorMode ? "mt-3 md:mt-5" : "mt-5"
+              }`}
               initial={reduceMotion ? false : { opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={galleryTransition(!!reduceMotion, 0.5, 0.22)}
             >
               {isExteriorMode
-                ? "A dedicated exterior portfolio — five collections with their own layouts and case studies, separate from the main service-line gallery."
-                : "Filter by service line to explore interior, drone intelligence, AI-assisted workflows, and exterior design collections."}
+                ? "Select a collection. Browse one project at a time."
+                : filter === "All"
+                  ? "Filter by service line to explore Exterior Design, Interior Design, Ai Design, and Architect Dron collections."
+                  : `Case studies and deliverables from our ${serviceFilterLabel(filter)} line.`}
             </motion.p>
           </div>
 
           <motion.div
-            className={`flex max-w-full flex-wrap gap-2 ${isExteriorMode ? "mt-2" : "md:justify-end"}`}
+            className={`gallery-page__filters flex max-w-full gap-1.5 ${isExteriorMode ? "flex-nowrap overflow-x-auto pb-0.5 scrollbar-none md:mt-2 md:flex-wrap md:gap-2" : "flex-wrap gap-2 md:justify-end"}`}
             role="tablist"
             aria-label="Filter projects by service"
             initial={reduceMotion ? false : { opacity: 0, y: 16 }}
@@ -156,13 +188,23 @@ export function ProjectsGallery({
 
         <AnimatePresence mode="wait">
           {isExteriorMode ? (
-            <GallerySectionTransition key={`exterior-${exteriorType}`} sectionKey={`exterior-${exteriorType}`}>
-              <ExteriorGallery
-                activeType={exteriorType}
-                onSelectType={setExteriorTypeAndUrl}
-                onBackToServices={() => setFilterAndUrl("All")}
-              />
-            </GallerySectionTransition>
+            <div className="gallery-exterior-slot relative min-h-0 flex-1 md:flex-none">
+              {GALLERY_CATEGORY_ANCHORS.map((anchor) => (
+                <section
+                  key={anchor.id}
+                  id={anchor.id}
+                  aria-label={anchor.label}
+                  className="pointer-events-none h-px w-full scroll-mt-[calc(var(--hero-nav-stack)+2rem)]"
+                />
+              ))}
+              <GallerySectionTransition key="exterior" sectionKey="exterior">
+                <ExteriorGallery
+                  activeType={exteriorType}
+                  onSelectType={setExteriorTypeAndUrl}
+                  onBackToServices={() => setFilterAndUrl("All")}
+                />
+              </GallerySectionTransition>
+            </div>
           ) : (
             <GallerySectionTransition key={galleryKey} sectionKey={galleryKey} className="mt-12">
               <GalleryStagger
@@ -185,12 +227,14 @@ export function ProjectsGallery({
         <GalleryReveal delay={0.2} className="mt-14 flex flex-wrap justify-center gap-4">
           <Link
             href="/#contact"
+            data-no-glow
             className="label-upper inline-flex rounded-full border border-gold/45 bg-gold/10 px-6 py-2.5 text-ink-primary transition-colors hover:bg-gold/20"
           >
             Request a project brief
           </Link>
           <Link
             href="/#services"
+            data-no-glow
             className="label-upper inline-flex rounded-full border border-gold/25 px-6 py-2.5 text-ink-secondary transition-colors hover:border-gold/45 hover:text-ink-primary"
           >
             Back to services
