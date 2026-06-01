@@ -54,7 +54,7 @@ export function ProjectsGallery({
   const reduceMotion = useReducedMotion();
   const router = useRouter();
   const [filter, setFilter] = useState<ProjectServiceFilter>(initialFilter);
-  const [exteriorType, setExteriorType] = useState<ExteriorProjectTypeFilter>(initialExteriorType);
+  const [, setExteriorType] = useState<ExteriorProjectTypeFilter>(initialExteriorType);
 
   const isInteriorMode = filter === "interior";
   const isPortfolioMode = filter === "All" || isInteriorMode || filter === "exterior";
@@ -64,8 +64,9 @@ export function ProjectsGallery({
     (nextFilter: ProjectServiceFilter, nextExteriorType: ExteriorProjectTypeFilter) => {
       setFilter(nextFilter);
       setExteriorType(nextExteriorType);
+      router.replace(projectsGalleryPath(basePath, nextFilter, nextExteriorType), { scroll: false });
     },
-    [],
+    [basePath, router],
   );
 
   const setFilterAndUrl = useCallback(
@@ -77,10 +78,14 @@ export function ProjectsGallery({
     [basePath, router],
   );
 
-  const onCategoryFromHash = useCallback((type: ExteriorProjectType) => {
-    setFilter("exterior");
-    setExteriorType(type);
-  }, []);
+  const onCategoryFromHash = useCallback(
+    (type: ExteriorProjectType) => {
+      setFilter("exterior");
+      setExteriorType(type);
+      router.replace(projectsGalleryPath(basePath, "exterior", type), { scroll: false });
+    },
+    [basePath, router],
+  );
 
   const filtered = useMemo(() => {
     if (isPortfolioMode) return [];
