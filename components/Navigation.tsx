@@ -22,7 +22,7 @@ const menuListContainer = {
 };
 
 const menuListItem = {
-  hidden: { opacity: 0, x: -28 },
+  hidden: { opacity: 0, x: 20 },
   show: {
     opacity: 1,
     x: 0,
@@ -40,16 +40,16 @@ const menuFooterVariants = {
 };
 
 const menuPanelVariants = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, x: "100%" },
   show: {
     opacity: 1,
-    y: 0,
+    x: 0,
     transition: { duration: 0.45, ease: loadEase },
   },
   exit: {
     opacity: 0,
-    y: 12,
-    transition: { duration: 0.26, ease: loadEase },
+    x: "100%",
+    transition: { duration: 0.28, ease: loadEase },
   },
 };
 
@@ -239,17 +239,22 @@ export function Navigation() {
           <motion.div
             key="menu-layer"
             id="site-menu-overlay"
-            className="site-menu-overlay nav-menu-layer pointer-events-auto fixed inset-0 z-[530] lg:hidden"
+            className="site-menu-overlay nav-menu-layer pointer-events-auto fixed inset-0 z-[530] flex lg:hidden"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1, transition: layerOpen }}
             exit={{ opacity: 0, transition: layerClose }}
-            onClick={close}
           >
+            <button
+              type="button"
+              className="site-menu-overlay__backdrop min-h-0 min-w-0 flex-1"
+              aria-label="Close menu"
+              onClick={close}
+            />
             <motion.nav
               role="dialog"
               aria-modal="true"
               aria-label="Site menu"
-              className="site-menu-panel relative z-10"
+              className="site-menu-panel relative z-10 h-full shrink-0"
               variants={reduceMotion ? undefined : menuPanelVariants}
               initial={reduceMotion ? false : "hidden"}
               animate={reduceMotion ? false : "show"}

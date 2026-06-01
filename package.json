@@ -12,7 +12,14 @@
     "dev:lan": "next dev -H 0.0.0.0",
     "build": "next build",
     "start": "next start -H 0.0.0.0",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate:interior": "node scripts/generate-interior-projects.mjs",
+    "generate:villas": "node scripts/generate-villa-projects.mjs",
+    "generate:residential": "node scripts/generate-residential-projects.mjs",
+    "generate:cottage": "node scripts/generate-cottage-projects.mjs",
+    "generate:landscape": "node scripts/generate-landscape-projects.mjs",
+    "generate:exterior": "npm run generate:villas && npm run generate:residential && npm run generate:cottage && npm run generate:landscape",
+    "generate:projects": "npm run generate:interior && npm run generate:exterior"
   },
   "dependencies": {
     "framer-motion": "^11.18.2",

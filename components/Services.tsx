@@ -7,6 +7,7 @@ import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 import { SafeButton } from "@/components/SafeButton";
 import { ArrowUpRight } from "lucide-react";
+import { useForwardVerticalScroll } from "@/lib/forward-vertical-scroll";
 import { useCallback, useEffect, useRef, useState } from "react";
 import aboutImage from "@/imgs/about.jpg";
 import interiorImage from "@/imgs/interior.jpg";
@@ -107,7 +108,7 @@ const stripBezel =
   "rounded-[1.1rem] bg-gradient-to-br from-gold/55 via-white/25 to-gold/20 p-[2px] shadow-[0_40px_100px_rgba(0,0,0,0.65),0_0_0_1px_rgba(245, 197, 24,0.12)] lg:rounded-[1.25rem] lg:p-[3px]";
 
 const stripInner =
-  "flex h-full min-h-[200px] max-h-[min(50svh,540px)] w-full flex-1 overflow-hidden rounded-[1.02rem] bg-transparent lg:rounded-[1.15rem]";
+  "flex h-full min-h-[inherit] w-full overflow-hidden rounded-[1.02rem] bg-transparent lg:rounded-[1.15rem]";
 
 type StoryCardMotion = {
   focus: number;
@@ -137,7 +138,11 @@ export function Services() {
     services.map((_, i) => ({ focus: i === 0 ? 1 : 0, drift: i === 0 ? 0 : 0.4 })),
   );
   const storyScrollerRef = useRef<HTMLDivElement>(null);
+  const panelScrollRef = useRef<HTMLDivElement>(null);
   const storyRafRef = useRef(0);
+
+  useForwardVerticalScroll(storyScrollerRef);
+  useForwardVerticalScroll(panelScrollRef);
 
   const syncStoryScroll = useCallback(() => {
     const el = storyScrollerRef.current;
@@ -196,7 +201,7 @@ export function Services() {
   return (
     <section
       id="services"
-      className="section-snap relative isolate flex flex-col overflow-hidden bg-bg-primary pb-5 pt-[var(--hero-nav-stack)] md:pb-6"
+      className="section-snap relative isolate flex flex-col overflow-x-clip overflow-y-visible bg-bg-primary pb-5 pt-[var(--hero-nav-stack)] md:pb-6"
     >
       <div
         aria-hidden
@@ -215,7 +220,7 @@ export function Services() {
         transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      <div className="relative mx-auto flex min-h-0 w-full max-w-[100rem] flex-1 flex-col px-4 md:px-8 lg:px-10">
+      <div className="relative mx-auto flex w-full max-w-[100rem] flex-col px-4 md:px-8 lg:px-10">
         <ScrollReveal dramatic className="mx-auto max-w-3xl shrink-0 text-center md:max-w-4xl">
           <p className="label-upper text-[0.65rem] text-gold md:text-[0.7rem]">Solutions</p>
           <h2 className="mt-1.5 font-display text-[clamp(1.45rem,3.2vw,2.5rem)] italic leading-[0.98] text-ink-primary">
@@ -225,19 +230,21 @@ export function Services() {
             </span>
           </h2>
           <p className="mx-auto mt-2 max-w-xl text-xs leading-relaxed text-ink-secondary md:text-sm">
-            <span className="md:hidden">Swipe through story-sized service cards.</span>
+            <span className="md:hidden">
+              Swipe sideways for services — scroll the page normally over the cards.
+            </span>
             <span className="hidden md:inline">
-              Every service in one frame — hover any column to reveal its story.
+              Hover or swipe columns sideways — scroll the page freely over the strip.
             </span>
           </p>
         </ScrollReveal>
 
         {/* Mobile: Instagram story ratio cards */}
-        <ScrollReveal dramatic delay={0.06} className="mt-4 flex min-h-0 flex-1 flex-col md:hidden">
-          <div className="overflow-hidden rounded-[1.35rem]">
+        <ScrollReveal dramatic delay={0.06} className="mt-4 flex flex-col md:hidden">
+          <div className="-mx-4 overflow-visible px-4 sm:-mx-6 sm:px-6">
           <motion.div
             ref={storyScrollerRef}
-            className="flex snap-x snap-mandatory gap-0 overflow-x-auto overflow-y-hidden overscroll-x-contain scroll-smooth touch-pan-x py-2 [-ms-overflow-style:none] [scrollbar-width:none] [-webkit-overflow-scrolling:touch] [&::-webkit-scrollbar]:hidden"
+            className="services-story-track flex gap-3 py-2"
             aria-label="Services stories"
           >
             {services.map((service, index) => (
@@ -270,21 +277,24 @@ export function Services() {
         </ScrollReveal>
 
         {/* Desktop: panoramic accordion strip */}
-        <ScrollReveal dramatic delay={0.06} className="mt-3 hidden min-h-0 flex-1 flex-col md:flex">
-          <div className={`${stripBezel} flex min-h-0 flex-1 flex-col`}>
+        <ScrollReveal dramatic delay={0.06} className="mt-3 hidden flex-col md:flex">
+          <div className={`${stripBezel} flex flex-col`}>
             <div
-              className={stripInner}
+              ref={panelScrollRef}
+              className="services-panel-scroll"
               onMouseLeave={() => setActiveId(services[0]?.id ?? "")}
             >
-              {services.map((service, index) => (
-                <ServicePanel
-                  key={service.id}
-                  service={service}
-                  index={index}
-                  isActive={activeId === service.id}
-                  onActivate={() => setActiveId(service.id)}
-                />
-              ))}
+              <div className={`${stripInner} services-panel-track`}>
+                {services.map((service, index) => (
+                  <ServicePanel
+                    key={service.id}
+                    service={service}
+                    index={index}
+                    isActive={activeId === service.id}
+                    onActivate={() => setActiveId(service.id)}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </ScrollReveal>
@@ -333,7 +343,7 @@ function ServiceStoryCard({
 
   return (
     <motion.article
-      className="relative aspect-[9/16] h-[min(58svh,520px)] w-auto max-h-full shrink-0 snap-center overflow-hidden bg-transparent px-0.5"
+      className="services-story-card relative aspect-[9/16] h-[min(58svh,520px)] w-auto max-h-full shrink-0 overflow-hidden bg-transparent first:scroll-ml-0"
       style={{ zIndex: Math.round(focus * 10) }}
       animate={{ scale, opacity, y: liftY }}
       transition={reduceMotion ? { duration: 0 } : storyEase}
@@ -441,7 +451,7 @@ function ServiceStoryCard({
             </div>
 
             <p className="text-center font-outfit text-[10px] uppercase tracking-[0.28em] text-white/40">
-              Swipe
+              Scroll
             </p>
           </motion.div>
         </div>
@@ -468,7 +478,7 @@ function ServicePanel({
 
   return (
     <article
-      className={`group/panel relative flex min-w-0 cursor-pointer overflow-hidden transition-[flex-grow,box-shadow] duration-[850ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
+      className={`services-panel-card group/panel relative flex min-w-[min(100%,14rem)] shrink-0 cursor-pointer overflow-hidden transition-[flex-grow,box-shadow] duration-[850ms] ease-[cubic-bezier(0.22,1,0.36,1)] sm:min-w-[min(100%,16rem)] lg:min-w-0 ${
         isActive
           ? "z-20 flex-[3] shadow-[inset_0_0_0_1px_rgba(245, 197, 24,0.45),0_0_60px_rgba(245, 197, 24,0.12)]"
           : "z-0 flex-1 hover:z-10"

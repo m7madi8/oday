@@ -1,6 +1,8 @@
 "use client";
 
+import "@/app/portfolio-gallery.css";
 import { FilterBar } from "@/components/FilterBar";
+import { PortfolioDesignGallery } from "@/components/portfolio/PortfolioDesignGallery";
 import { GalleryHashSync } from "@/components/GalleryHashSync";
 import { ProjectCard } from "@/components/ProjectCard";
 import { ProjectsGallerySearchSync } from "@/components/ProjectsGallerySearchSync";
@@ -21,7 +23,7 @@ import {
   type ExteriorProjectTypeFilter,
   type ProjectServiceFilter,
 } from "@/lib/data";
-import { Suspense, useCallback, useEffect, useRef, useState } from "react";
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
 const pageEase = [0.16, 1, 0.3, 1] as const;
@@ -66,6 +68,11 @@ export function GalleryPageView({
   const isFirstFilter = useRef(true);
 
   const filtered = useFilteredProjects(service, category);
+  const isPortfolioService = service === "interior" || service === "exterior";
+  const ancillaryFiltered = useMemo(
+    () => (service === "All" ? filtered.filter((p) => p.serviceSlug !== "interior" && p.serviceSlug !== "exterior") : []),
+    [filtered, service],
+  );
 
   const onFilterChange = useCallback(
     (nextService: ProjectServiceFilter, nextExteriorType: ExteriorProjectTypeFilter) => {
@@ -252,6 +259,41 @@ export function GalleryPageView({
                 >
                   Clear filters
                 </button>
+              </motion.div>
+            ) : isPortfolioService || service === "All" ? (
+              <motion.div
+                key={filterKey}
+                initial={reduceMotion ? false : { opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={reduceMotion ? undefined : { opacity: 0 }}
+                transition={{ duration: 0.25 }}
+              >
+                <PortfolioDesignGallery
+                  sections={
+                    service === "All"
+                      ? ["interior", "exterior"]
+                      : service === "interior"
+                        ? ["interior"]
+                        : ["exterior"]
+                  }
+                  interiorProjects={service === "interior" || service === "All" ? filtered.filter((p) => p.serviceSlug === "interior") : undefined}
+                  exteriorProjects={service === "exterior" || service === "All" ? filtered.filter((p) => p.serviceSlug === "exterior") : undefined}
+                />
+                {service === "All" && ancillaryFiltered.length > 0 ? (
+                  <div className="mt-16 border-t border-white/[0.07] pt-12 md:mt-24">
+                    <h2 className="mb-8 font-display text-3xl italic text-ink-primary">AI &amp; Drone</h2>
+                    <div className="grid min-w-0 grid-cols-1 gap-px bg-white/[0.06] md:grid-cols-2 xl:grid-cols-3">
+                      {ancillaryFiltered.map((project, index) => (
+                        <ProjectCard
+                          key={project.id}
+                          project={project}
+                          index={index}
+                          batchAnimate={batchAnimate}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
               </motion.div>
             ) : (
               <motion.div

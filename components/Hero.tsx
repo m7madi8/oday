@@ -2,7 +2,7 @@
 
 import { useIsHeroRouteTarget } from "@/hooks/useIsHeroRouteTarget";
 import { usePreloaderDone } from "@/hooks/usePreloaderDone";
-import { hero } from "@/lib/data";
+import { hero } from "@/lib/hero-content";
 import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";

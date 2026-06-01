@@ -13,6 +13,17 @@ import ceoPortrait from "@/imgs/ceo.jpg";
 import exteriorImage from "@/imgs/exterior.jpg";
 import interiorImage from "@/imgs/interior.jpg";
 import landscapeImage from "@/imgs/landscape.jpg";
+import { cottageProjects, getCottageProjectGalleryImages } from "@/lib/exterior-cottage-projects";
+import {
+  getLandscapeProjectGalleryImages,
+  landscapeProjects,
+} from "@/lib/exterior-landscape-projects";
+import {
+  getResidentialProjectGalleryImages,
+  residentialBuildingProjects,
+} from "@/lib/exterior-residential-projects";
+import { getVillaProjectGalleryImages, villaProjects } from "@/lib/exterior-villa-projects";
+import { getInteriorProjectGalleryImages, interiorProjects } from "@/lib/interior-projects";
 
 export const site = {
   name: "OD Studio",
@@ -100,312 +111,18 @@ export interface Project {
 }
 
 export const projects: Project[] = [
-  // Interior (5)
-  {
-    id: "in-1",
-    orderLabel: "01",
-    title: "Palm Crown Residence",
-    country: "Nablus, Palestine",
-    tag: "Ultra-Luxury Residence",
-    category: "Residential",
-    serviceSlug: "interior",
-    image: interiorImage,
-    imageAlt: "Luxury interior lounge with sculpted ceiling details",
-  },
-  {
-    id: "in-2",
-    orderLabel: "02",
-    title: "Velvet Atrium Lobby",
-    country: "Ramallah, Palestine",
-    tag: "Hospitality Interior",
-    category: "Cultural",
-    serviceSlug: "interior",
-    image: aboutImage,
-    imageAlt: "Grand lobby with double-height glazing and stone floors",
-  },
-  {
-    id: "in-3",
-    orderLabel: "03",
-    title: "Lunar Spa Suites",
-    country: "Bethlehem, Palestine",
-    tag: "Wellness Interior",
-    category: "Residential",
-    serviceSlug: "interior",
-    image: exteriorImage,
-    imageAlt: "Spa suite interior with warm minimal lighting",
-  },
-  {
-    id: "in-4",
-    orderLabel: "04",
-    title: "Boardroom One",
-    country: "Ramallah, Palestine",
-    tag: "Executive Workspace",
-    category: "Cultural",
-    serviceSlug: "interior",
-    image: interiorImage,
-    imageAlt: "Executive boardroom with tailored joinery",
-  },
-  {
-    id: "in-5",
-    orderLabel: "05",
-    title: "Marble Gallery Kitchen",
-    country: "Jericho, Palestine",
-    tag: "Residential Kitchen",
-    category: "Residential",
-    serviceSlug: "interior",
-    image: aboutImage,
-    imageAlt: "Open kitchen with marble island and pendant lighting",
-  },
-  // Exterior — 5 projects per collection (25 total)
-  // Villas (5)
-  {
-    id: "vil-1",
-    orderLabel: "01",
-    title: "Cliffline Signature Villas",
-    country: "Nablus, Palestine",
-    tag: "Residential Collection",
-    category: "Residential",
-    serviceSlug: "exterior",
-    exteriorType: "villas",
-    image: aboutImage,
-    imageAlt: "Architectural landscaping with modern villa context",
-  },
-  {
-    id: "vil-2",
-    orderLabel: "02",
-    title: "Limestone Villa Massing",
-    country: "Bethlehem, Palestine",
-    tag: "Villa Exterior",
-    category: "Residential",
-    serviceSlug: "exterior",
-    exteriorType: "villas",
-    image: interiorImage,
-    imageAlt: "Limestone-clad villa with deep overhangs",
-  },
-  {
-    id: "vil-3",
-    orderLabel: "03",
-    title: "Courtyard Palm Residence",
-    country: "Ramallah, Palestine",
-    tag: "Private Villa",
-    category: "Residential",
-    serviceSlug: "exterior",
-    exteriorType: "villas",
-    image: exteriorImage,
-    imageAlt: "Villa courtyard with palm canopy and stone walls",
-  },
-  {
-    id: "vil-4",
-    orderLabel: "04",
-    title: "Ridge Horizon Villa",
-    country: "Jericho, Palestine",
-    tag: "Hillside Villa",
-    category: "Residential",
-    serviceSlug: "exterior",
-    exteriorType: "villas",
-    image: landscapeImage,
-    imageAlt: "Villa silhouette along a desert ridge at dusk",
-  },
-  {
-    id: "vil-5",
-    orderLabel: "05",
-    title: "Marble Pool Pavilion",
-    country: "Nablus, Palestine",
-    tag: "Pool Villa",
-    category: "Residential",
-    serviceSlug: "exterior",
-    exteriorType: "villas",
-    image: aboutImage,
-    imageAlt: "Villa pool deck with marble coping and minimal facade",
-  },
-  // Residential Buildings (5)
-  {
-    id: "res-1",
-    orderLabel: "01",
-    title: "Glass Veil Tower",
-    country: "Ramallah, Palestine",
-    tag: "Facade Study",
-    category: "Residential",
-    serviceSlug: "exterior",
-    exteriorType: "residential-buildings",
-    image: exteriorImage,
-    imageAlt: "Contemporary tower facade with glass rhythm",
-  },
-  {
-    id: "res-2",
-    orderLabel: "02",
-    title: "Brise-Soleil Office Block",
-    country: "Nablus, Palestine",
-    tag: "Solar Shading",
-    category: "Cultural",
-    serviceSlug: "exterior",
-    exteriorType: "residential-buildings",
-    image: exteriorImage,
-    imageAlt: "Office facade with horizontal brise-soleil",
-  },
-  {
-    id: "res-3",
-    orderLabel: "03",
-    title: "Terrace Apartment Stack",
-    country: "Bethlehem, Palestine",
-    tag: "Multi-Unit Housing",
-    category: "Residential",
-    serviceSlug: "exterior",
-    exteriorType: "residential-buildings",
-    image: interiorImage,
-    imageAlt: "Stacked apartment terraces with planted edges",
-  },
-  {
-    id: "res-4",
-    orderLabel: "04",
-    title: "Urban Corner Tower",
-    country: "Ramallah, Palestine",
-    tag: "Mixed-Use Shell",
-    category: "Cultural",
-    serviceSlug: "exterior",
-    exteriorType: "residential-buildings",
-    image: aboutImage,
-    imageAlt: "Corner tower with stone base and glazed upper volume",
-  },
-  {
-    id: "res-5",
-    orderLabel: "05",
-    title: "Garden Court Residences",
-    country: "Nablus, Palestine",
-    tag: "Courtyard Block",
-    category: "Residential",
-    serviceSlug: "exterior",
-    exteriorType: "residential-buildings",
-    image: landscapeImage,
-    imageAlt: "Residential block wrapping a shared garden court",
-  },
-  // Cottage (5)
-  {
-    id: "cot-1",
-    orderLabel: "01",
-    title: "Corten Gatehouse",
-    country: "Jericho, Palestine",
-    tag: "Entry Pavilion",
-    category: "Residential",
-    serviceSlug: "exterior",
-    exteriorType: "cottage",
-    image: aboutImage,
-    imageAlt: "Corten steel entry pavilion at dusk",
-  },
-  {
-    id: "cot-2",
-    orderLabel: "02",
-    title: "Stone Garden Cottage",
-    country: "Bethlehem, Palestine",
-    tag: "Retreat Cottage",
-    category: "Residential",
-    serviceSlug: "exterior",
-    exteriorType: "cottage",
-    image: landscapeImage,
-    imageAlt: "Small stone cottage nestled in a planted garden",
-  },
-  {
-    id: "cot-3",
-    orderLabel: "03",
-    title: "Timber Canopy Shelter",
-    country: "Ramallah, Palestine",
-    tag: "Pool Pavilion",
-    category: "Residential",
-    serviceSlug: "exterior",
-    exteriorType: "cottage",
-    image: exteriorImage,
-    imageAlt: "Timber canopy structure beside a quiet pool",
-  },
-  {
-    id: "cot-4",
-    orderLabel: "04",
-    title: "Hillside Guest Lodge",
-    country: "Nablus, Palestine",
-    tag: "Guest Lodge",
-    category: "Residential",
-    serviceSlug: "exterior",
-    exteriorType: "cottage",
-    image: interiorImage,
-    imageAlt: "Compact guest lodge with wide eaves on a hillside",
-  },
-  {
-    id: "cot-5",
-    orderLabel: "05",
-    title: "Courtyard Tea House",
-    country: "Jericho, Palestine",
-    tag: "Tea Pavilion",
-    category: "Cultural",
-    serviceSlug: "exterior",
-    exteriorType: "cottage",
-    image: aboutImage,
-    imageAlt: "Intimate tea pavilion opening to a shaded courtyard",
-  },
-  // Landscape (5)
-  {
-    id: "lsc-1",
-    orderLabel: "01",
-    title: "Olive Grove Courtyard",
-    country: "Ramallah, Palestine",
-    tag: "Courtyard Garden",
-    category: "Cultural",
-    serviceSlug: "exterior",
-    exteriorType: "landscape",
-    image: interiorImage,
-    imageAlt: "Courtyard garden with olive trees and stone paving",
-  },
-  {
-    id: "lsc-2",
-    orderLabel: "02",
-    title: "Linear Reflecting Pools",
-    country: "Bethlehem, Palestine",
-    tag: "Water Feature",
-    category: "Residential",
-    serviceSlug: "exterior",
-    exteriorType: "landscape",
-    image: exteriorImage,
-    imageAlt: "Reflecting pool alongside contemporary architecture",
-  },
-  {
-    id: "lsc-3",
-    orderLabel: "03",
-    title: "Terraced Hillside Estate",
-    country: "Nablus, Palestine",
-    tag: "Terraced Landscape",
-    category: "Residential",
-    serviceSlug: "exterior",
-    exteriorType: "landscape",
-    image: exteriorImage,
-    imageAlt: "Terraced garden following natural slope",
-  },
-  {
-    id: "lsc-4",
-    orderLabel: "04",
-    title: "Arrival Forecourt Plaza",
-    country: "Ramallah, Palestine",
-    tag: "Public Realm",
-    category: "Cultural",
-    serviceSlug: "exterior",
-    exteriorType: "landscape",
-    image: aboutImage,
-    imageAlt: "Formal arrival plaza with integrated planting",
-  },
-  {
-    id: "lsc-5",
-    orderLabel: "05",
-    title: "Native Meadow Walk",
-    country: "Jericho, Palestine",
-    tag: "Softscape Path",
-    category: "Residential",
-    serviceSlug: "exterior",
-    exteriorType: "landscape",
-    image: landscapeImage,
-    imageAlt: "Walking path through native meadow planting",
-  },
+  // Interior — imgs/Interior (37 projects)
+  ...(interiorProjects as Project[]),
+  // Exterior — folder imports
+  ...(villaProjects as Project[]),
+  ...(residentialBuildingProjects as Project[]),
+  ...(cottageProjects as Project[]),
+  ...(landscapeProjects as Project[]),
   // General (5)
   {
     id: "gen-1",
     orderLabel: "01",
-    title: "Seafront Culture House",
+    title: "01",
     country: "Bethlehem, Palestine",
     tag: "Cultural Destination",
     category: "Cultural",
@@ -417,7 +134,7 @@ export const projects: Project[] = [
   {
     id: "gen-2",
     orderLabel: "02",
-    title: "Civic Assembly Hall",
+    title: "02",
     country: "Ramallah, Palestine",
     tag: "Public Architecture",
     category: "Cultural",
@@ -429,7 +146,7 @@ export const projects: Project[] = [
   {
     id: "gen-3",
     orderLabel: "03",
-    title: "Innovation Campus Hub",
+    title: "03",
     country: "Nablus, Palestine",
     tag: "Campus Gateway",
     category: "Cultural",
@@ -441,7 +158,7 @@ export const projects: Project[] = [
   {
     id: "gen-4",
     orderLabel: "04",
-    title: "Harbor Arts Warehouse",
+    title: "04",
     country: "Jericho, Palestine",
     tag: "Adaptive Reuse",
     category: "Cultural",
@@ -453,7 +170,7 @@ export const projects: Project[] = [
   {
     id: "gen-5",
     orderLabel: "05",
-    title: "Desert Observatory Deck",
+    title: "05",
     country: "Bethlehem, Palestine",
     tag: "Landmark Structure",
     category: "Residential",
@@ -461,118 +178,6 @@ export const projects: Project[] = [
     exteriorType: "general",
     image: exteriorImage,
     imageAlt: "Observatory deck structure in open desert landscape",
-  },
-  // Architecture Drone (5)
-  {
-    id: "dr-1",
-    orderLabel: "01",
-    title: "Site Topo Ortho-Mosaic",
-    country: "Ramallah, Palestine",
-    tag: "Aerial Survey",
-    category: "Residential",
-    serviceSlug: "architecture-drone",
-    image: exteriorImage,
-    imageAlt: "Aerial perspective over construction site",
-  },
-  {
-    id: "dr-2",
-    orderLabel: "02",
-    title: "Tower Crane Progress Ring",
-    country: "Nablus, Palestine",
-    tag: "Progress Capture",
-    category: "Residential",
-    serviceSlug: "architecture-drone",
-    image: interiorImage,
-    imageAlt: "Drone view of high-rise under construction",
-  },
-  {
-    id: "dr-3",
-    orderLabel: "03",
-    title: "Coastal Masterplan Flyover",
-    country: "Gaza, Palestine",
-    tag: "Masterplan Film",
-    category: "Cultural",
-    serviceSlug: "architecture-drone",
-    image: aboutImage,
-    imageAlt: "Urban coastline from elevated drone angle",
-  },
-  {
-    id: "dr-4",
-    orderLabel: "04",
-    title: "Heritage Roof Documentation",
-    country: "Bethlehem, Palestine",
-    tag: "Heritage Scan",
-    category: "Cultural",
-    serviceSlug: "architecture-drone",
-    image: aboutImage,
-    imageAlt: "Close aerial documentation of historic roofscape",
-  },
-  {
-    id: "dr-5",
-    orderLabel: "05",
-    title: "Solar Farm Layout QA",
-    country: "Jericho, Palestine",
-    tag: "Infrastructure",
-    category: "Residential",
-    serviceSlug: "architecture-drone",
-    image: exteriorImage,
-    imageAlt: "Wide aerial over solar array alignment",
-  },
-  // Architecture AI (5)
-  {
-    id: "ai-1",
-    orderLabel: "01",
-    title: "Optioneering Massing Study",
-    country: "Ramallah, Palestine",
-    tag: "Generative Massing",
-    category: "Residential",
-    serviceSlug: "architecture-ai",
-    image: interiorImage,
-    imageAlt: "Digital massing study overlay on site model",
-  },
-  {
-    id: "ai-2",
-    orderLabel: "02",
-    title: "Facade Pattern Optimizer",
-    country: "Nablus, Palestine",
-    tag: "Performance Facade",
-    category: "Cultural",
-    serviceSlug: "architecture-ai",
-    image: exteriorImage,
-    imageAlt: "Parametric facade pattern visualization",
-  },
-  {
-    id: "ai-3",
-    orderLabel: "03",
-    title: "Daylight Scenario Lab",
-    country: "Bethlehem, Palestine",
-    tag: "Simulation",
-    category: "Residential",
-    serviceSlug: "architecture-ai",
-    image: interiorImage,
-    imageAlt: "Interior daylight simulation heat map",
-  },
-  {
-    id: "ai-4",
-    orderLabel: "04",
-    title: "Crescent Museum Annex",
-    country: "Ramallah, Palestine",
-    tag: "Cultural Expansion",
-    category: "Cultural",
-    serviceSlug: "architecture-ai",
-    image: interiorImage,
-    imageAlt: "Museum expansion concept visualization",
-  },
-  {
-    id: "ai-5",
-    orderLabel: "05",
-    title: "Carbon Lite Structure Pack",
-    country: "Ramallah, Palestine",
-    tag: "Structural AI Assist",
-    category: "Residential",
-    serviceSlug: "architecture-ai",
-    image: exteriorImage,
-    imageAlt: "Structural diagram with optimization overlays",
   },
 ];
 
@@ -586,7 +191,7 @@ const projectGalleryPool = [
 ] as const;
 
 export interface ProjectGalleryImage {
-  src: (typeof projectGalleryPool)[number];
+  src: string | StaticImageData;
   alt: string;
   format: ProjectGalleryFormat;
 }
@@ -633,9 +238,23 @@ export function getProjectDetailRows(project: Project): ProjectDetailRow[] {
   return rows;
 }
 
-/** Twenty gallery frames per project (cycles local portfolio imagery). */
+/** Gallery frames — folder-backed projects use local imagery; others cycle the portfolio pool. */
 export function getProjectGallery(project: Project): ProjectGalleryImage[] {
   const format = resolveProjectGalleryFormat(project);
+  const folderImages =
+    getInteriorProjectGalleryImages(project.id) ??
+    getVillaProjectGalleryImages(project.id) ??
+    getResidentialProjectGalleryImages(project.id) ??
+    getCottageProjectGalleryImages(project.id) ??
+    getLandscapeProjectGalleryImages(project.id);
+  if (folderImages?.length) {
+    const total = folderImages.length;
+    return folderImages.map((src, i) => ({
+      src,
+      alt: `${project.title} — gallery frame ${String(i + 1).padStart(2, "0")} of ${total}`,
+      format,
+    }));
+  }
   return Array.from({ length: PROJECT_GALLERY_IMAGE_COUNT }, (_, i) => {
     const src = projectGalleryPool[i % projectGalleryPool.length];
     return {
@@ -650,26 +269,7 @@ export function projectDetailPath(project: Project): string {
   return `/projects/${project.id}`;
 }
 
-export const hero = {
-  headlineEyebrow: "Architecture · Engineering · Delivery",
-  headlineBeforeAccent: "We Design For ",
-  headlineAccent: "A Better Life",
-  headlineSubline:
-    "Engineering discipline and design authority — built to elevate assets, environments, and the lives within them.",
-  ctaEyebrow: "Case Studies",
-  ctaLabel: "View All Projects",
-  ctaHref: "/#services",
-  titleLine1: "Design",
-  titleLine2Words: ["That", "Drives", "Value"],
-  description:
-    "Exterior Design, Interior Design, Ai Design, and Architect Dron — precision-focused delivery for high-value projects.",
-  image: exteriorImage,
-  imageAlt: "Modern desert villa at sunset with infinity pool and mountain backdrop",
-  stats: [
-    { label: "Projects", value: 500, prefix: "+", suffix: "" },
-    { label: "Value", value: 50, prefix: "+", suffix: " million" },
-  ],
-};
+export { hero } from "@/lib/hero-content";
 
 export interface Strength {
   title: string;
