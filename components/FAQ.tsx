@@ -5,31 +5,29 @@ import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import { faqItems } from "@/lib/data";
 import { AnimatePresence, motion, useReducedMotion } from "@/components/ClientMotion";
 import { useId, useState } from "react";
+import { SectionHeader, SectionInner, SectionShell } from "@/components/SectionShell";
 
 export function FAQ() {
   const reduceMotion = useReducedMotion();
   const baseId = useId();
 
   return (
-    <section
-      id="faq"
-      className="section-snap flex flex-col justify-center overflow-hidden bg-bg-primary py-[var(--hero-nav-stack)] pb-8 md:pb-10"
-    >
+    <SectionShell id="faq">
+      <SectionInner>
       <RevealChildren
-        className="mx-auto grid w-full max-w-7xl gap-8 px-5 md:grid-cols-2 md:gap-10 md:px-10 lg:gap-14"
+        className="grid w-full gap-8 md:grid-cols-2 md:gap-10 lg:gap-14"
         stagger={0.1}
       >
         <ScrollReveal dramatic className="min-w-0">
-          <p className="label-upper text-gold">Client Desk</p>
-          <h2 className="mt-2 max-w-md font-display text-[clamp(1.65rem,3.5vw,2.35rem)] italic leading-tight text-ink-primary">
-            Before We Start
-          </h2>
-          <p className="mt-3 text-xs leading-relaxed text-ink-secondary md:text-sm">
-            Clear answers on scope, timeline, and delivery so you can move forward with confidence.
-          </p>
+          <SectionHeader
+            align="start"
+            eyebrow="Client Desk"
+            title="Before We Start"
+            description="Clear answers on scope, timeline, and delivery so you can move forward with confidence."
+          />
           <motion.a
             href="#contact"
-            className="label-upper mt-5 inline-flex rounded-full border border-gold/45 bg-gold/15 px-6 py-2.5 text-ink-primary transition-colors hover:bg-gold/25"
+            className="label-upper mt-6 inline-flex rounded-full border border-gold/45 bg-gold/15 px-6 py-2.5 text-ink-primary transition-colors hover:bg-gold/25"
             whileHover={reduceMotion ? {} : { scale: 1.02 }}
             whileTap={reduceMotion ? {} : { scale: 0.98 }}
             aria-label="Talk to strategy team via contact section"
@@ -54,7 +52,8 @@ export function FAQ() {
           </div>
         </ScrollReveal>
       </RevealChildren>
-    </section>
+      </SectionInner>
+    </SectionShell>
   );
 }
 

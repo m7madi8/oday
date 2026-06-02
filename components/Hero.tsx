@@ -8,6 +8,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import heroImage from "@/imgs/exterior.jpg";
 import { ServicesDrawer } from "@/components/ServicesDrawer";
+import { SectionShell } from "@/components/SectionShell";
 
 export function Hero() {
   const preloaderDone = usePreloaderDone();
@@ -23,9 +24,10 @@ export function Hero() {
   const holdEntrance = !preloaderDone;
 
   return (
-    <section
+    <SectionShell
       id="top"
-      className={`section-snap relative flex w-full flex-col bg-bg-primary px-[var(--hero-gutter)] pt-[var(--hero-gutter)] pb-0${holdEntrance ? " hero--hold-entrance" : " hero--ready"}`}
+      variant="hero"
+      className={`px-[var(--hero-gutter)] pt-[var(--hero-gutter)] pb-0${holdEntrance ? " hero--hold-entrance" : " hero--ready"}`}
     >
       <div className="relative z-0 flex min-h-0 flex-1 flex-col overflow-hidden">
         <div className="pointer-events-none absolute inset-0 z-0">
@@ -98,6 +100,6 @@ export function Hero() {
       </div>
 
       <ServicesDrawer isOpen={drawerOpen} onClose={() => setDrawerOpen(false)} />
-    </section>
+    </SectionShell>
   );
 }

@@ -23,14 +23,10 @@ export function ScrollReveal({
   const hidden = reduce
     ? { opacity: 0 }
     : dramatic
-      ? { opacity: 0, y: 56, scale: 0.93, filter: "blur(12px)" }
-      : { opacity: 0, y: 44, scale: 0.97 };
+      ? { opacity: 0, y: 28 }
+      : { opacity: 0, y: 20 };
 
-  const visible = reduce
-    ? { opacity: 1 }
-    : dramatic
-      ? { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }
-      : { opacity: 1, y: 0, scale: 1 };
+  const visible = reduce ? { opacity: 1 } : { opacity: 1, y: 0 };
 
   const Motion =
     as === "section" ? motion.section : as === "article" ? motion.article : motion.div;
@@ -43,7 +39,7 @@ export function ScrollReveal({
       whileInView={visible}
       viewport={revealInView}
       transition={{
-        duration: reduce ? 0 : dramatic ? 0.82 : 0.68,
+        duration: reduce ? 0 : dramatic ? 0.55 : 0.45,
         delay: reduce ? 0 : delay,
         ease: animationEasing.cinematic,
       }}

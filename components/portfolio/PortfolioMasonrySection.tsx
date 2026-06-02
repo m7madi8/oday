@@ -1,9 +1,11 @@
 "use client";
 
-import { PortfolioProjectCard } from "@/components/portfolio/PortfolioProjectCard";
+import { PortfolioMasonryRowView } from "@/components/portfolio/PortfolioMasonryRow";
 import { GalleryGoldLine, GalleryReveal } from "@/components/animations/GalleryMotion";
+import { buildPortfolioMasonryRows } from "@/lib/portfolio-masonry-layout";
 import type { PortfolioSectionId } from "@/lib/project-card-ratio";
 import type { Project } from "@/lib/data";
+import { useMemo } from "react";
 
 const SECTION_COPY: Record<
   PortfolioSectionId,
@@ -29,6 +31,7 @@ export function PortfolioMasonrySection({
   className?: string;
 }) {
   const copy = SECTION_COPY[section];
+  const rows = useMemo(() => buildPortfolioMasonryRows(projects), [projects]);
 
   if (projects.length === 0) return null;
 
@@ -49,11 +52,9 @@ export function PortfolioMasonrySection({
         </header>
       </GalleryReveal>
 
-      <div className="portfolio-masonry" role="list">
-        {projects.map((project) => (
-          <div key={project.id} className="portfolio-masonry__cell" role="listitem">
-            <PortfolioProjectCard project={project} section={section} />
-          </div>
+      <div className="portfolio-masonry-rows">
+        {rows.map((row, index) => (
+          <PortfolioMasonryRowView key={`${row.kind}-${index}`} row={row} section={section} />
         ))}
       </div>
     </section>

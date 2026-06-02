@@ -42,30 +42,89 @@
   color: var(--text-secondary);
 }
 
-.portfolio-masonry {
+.portfolio-masonry-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .portfolio-masonry-rows {
+    gap: 1.5rem;
+  }
+}
+
+/* Row bands — portrait + landscape share one height (no masonry holes) */
+.portfolio-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  grid-auto-flow: dense;
-  gap: 1.25rem 1rem;
-  align-items: start;
+  gap: 1rem;
+  align-items: stretch;
+  min-width: 0;
 }
 
 @media (min-width: 640px) {
-  .portfolio-masonry {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.35rem 1.15rem;
+  .portfolio-row {
+    gap: 1.15rem;
   }
 }
 
 @media (min-width: 1024px) {
-  .portfolio-masonry {
+  .portfolio-row {
+    gap: 1.25rem;
+    --portfolio-row-h: clamp(300px, 36vw, 440px);
+  }
+
+  .portfolio-row--featured-trio,
+  .portfolio-row--featured-trio-reverse {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: var(--portfolio-row-h);
+  }
+
+  .portfolio-row--twin-landscape {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .portfolio-row--quad-portrait {
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 1.5rem 1.25rem;
+    grid-template-rows: var(--portfolio-row-h);
+  }
+
+  .portfolio-row--pair-portrait {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: var(--portfolio-row-h);
   }
 }
 
-.portfolio-masonry__cell {
-  min-width: 0;
+@media (max-width: 1023px) {
+  .portfolio-row--featured-trio,
+  .portfolio-row--featured-trio-reverse {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .portfolio-row--featured-trio .project-card[data-ratio="landscape"],
+  .portfolio-row--featured-trio-reverse .project-card[data-ratio="landscape"] {
+    grid-column: 1 / -1;
+  }
+
+  .portfolio-row--twin-landscape,
+  .portfolio-row--pair-portrait,
+  .portfolio-row--quad-portrait {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .portfolio-row--quad-portrait .project-card:nth-child(n + 3) {
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 639px) {
+  .portfolio-row--featured-trio,
+  .portfolio-row--featured-trio-reverse,
+  .portfolio-row--twin-landscape,
+  .portfolio-row--quad-portrait,
+  .portfolio-row--pair-portrait {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 .project-card {
@@ -100,27 +159,61 @@
   height: 100%;
 }
 
-.project-card[data-ratio="landscape"] {
-  min-width: min(100%, 320px);
+.project-card {
+  min-width: 0;
+  height: 100%;
 }
 
-@media (min-width: 1024px) {
-  .project-card[data-ratio="landscape"] {
-    grid-column: span 2;
-  }
-}
-
-.project-card[data-ratio="portrait"] {
+.portfolio-row .project-card[data-ratio="portrait"] {
   width: 100%;
-  max-width: 280px;
-  margin-inline: auto;
+  max-width: none;
+  margin-inline: 0;
 }
 
 @media (min-width: 1024px) {
-  .project-card[data-ratio="portrait"] {
-    grid-row: span 2;
-    margin-inline: 0;
-    justify-self: start;
+  .portfolio-row--featured-trio .project-card,
+  .portfolio-row--featured-trio-reverse .project-card,
+  .portfolio-row--quad-portrait .project-card,
+  .portfolio-row--pair-portrait .project-card {
+    height: 100%;
+    min-height: 0;
+  }
+
+  .portfolio-row--featured-trio .project-card__link--landscape,
+  .portfolio-row--featured-trio-reverse .project-card__link--landscape {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+  }
+
+  .portfolio-row--featured-trio .project-card__media--landscape,
+  .portfolio-row--featured-trio-reverse .project-card__media--landscape {
+    flex: 1 1 auto;
+    aspect-ratio: unset;
+    min-height: 0;
+  }
+
+  .portfolio-row--featured-trio .project-card__info--below,
+  .portfolio-row--featured-trio-reverse .project-card__info--below {
+    flex: 0 0 auto;
+  }
+
+  .portfolio-row--featured-trio .project-card__link--portrait,
+  .portfolio-row--featured-trio-reverse .project-card__link--portrait,
+  .portfolio-row--quad-portrait .project-card__link--portrait,
+  .portfolio-row--pair-portrait .project-card__link--portrait {
+    height: 100%;
+    min-height: 0;
+  }
+
+  .portfolio-row--featured-trio .project-card__media--portrait,
+  .portfolio-row--featured-trio-reverse .project-card__media--portrait,
+  .portfolio-row--quad-portrait .project-card__media--portrait,
+  .portfolio-row--pair-portrait .project-card__media--portrait {
+    height: 100%;
+    aspect-ratio: unset;
+    min-height: 0;
   }
 }
 
@@ -137,6 +230,23 @@
   width: 100%;
   overflow: hidden;
   border-radius: 4px;
+}
+
+.portfolio-row--solo-landscape {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.portfolio-row--solo-portrait {
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+}
+
+@media (min-width: 1024px) {
+  .portfolio-row--solo-portrait {
+    grid-template-columns: minmax(0, min(100%, 360px));
+    justify-content: center;
+    justify-items: stretch;
+  }
 }
 
 .project-card__img {
@@ -291,8 +401,3 @@
   color: var(--text-secondary);
 }
 
-@media (max-width: 639px) {
-  .project-card[data-ratio="landscape"] {
-    grid-column: span 1;
-  }
-}

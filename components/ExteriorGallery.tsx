@@ -1,6 +1,7 @@
 "use client";
 
 import { GallerySectionTransition } from "@/components/animations/GalleryMotion";
+import { GalleryFilterCell, GalleryFilterGrid } from "@/components/GalleryFilterGrid";
 import {
   exteriorGalleryCollections,
   getExteriorGalleryCollection,
@@ -21,14 +22,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 const DEFAULT_TYPE = exteriorGalleryCollections[0].type;
 const SWIPE_THRESHOLD = 48;
 
-const TAB_SHORT: Record<ExteriorProjectType, string> = {
-  villas: "Villas",
-  "residential-buildings": "Resid.",
-  cottage: "Cottage",
-  landscape: "Land.",
-  general: "General",
-};
-
 type SlideDirection = -1 | 0 | 1;
 
 export function ExteriorGallery({
@@ -47,7 +40,6 @@ export function ExteriorGallery({
   const [projectIndex, setProjectIndex] = useState(0);
   const [slideDirection, setSlideDirection] = useState<SlideDirection>(0);
   const touchStartX = useRef<number | null>(null);
-  const chipsRef = useRef<HTMLElement>(null);
 
   const collection = getExteriorGalleryCollection(currentType);
   const projects = getExteriorProjectsByType(currentType);
@@ -92,13 +84,6 @@ export function ExteriorGallery({
     setProjectIndex(0);
   }, [currentType]);
 
-  useEffect(() => {
-    const nav = chipsRef.current;
-    if (!nav) return;
-    const active = nav.querySelector<HTMLButtonElement>(".xgl__chip.is-active");
-    active?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
-  }, [currentType]);
-
   const onTouchStart = (clientX: number) => {
     touchStartX.current = clientX;
   };
@@ -132,31 +117,19 @@ export function ExteriorGallery({
             </p>
           </div>
 
-          <nav
-            ref={chipsRef}
-            className="xgl__chips"
-            role="tablist"
-            aria-label="Exterior collections"
-          >
+          <GalleryFilterGrid variant="exterior" ariaLabel="Exterior collections" className="xgl__chips">
             {exteriorGalleryCollections.map((item) => {
               const selected = currentType === item.type;
               return (
-                <button
+                <GalleryFilterCell
                   key={item.type}
-                  type="button"
-                  role="tab"
-                  aria-selected={selected}
-                  data-no-glow
-                  className={`xgl__chip${selected ? " is-active" : ""}`}
-                  style={{ "--chip-accent": item.accent } as React.CSSProperties}
+                  active={selected}
+                  label={item.title}
                   onClick={() => handlePick(item.type)}
-                >
-                  <span className="xgl__chip-label xgl__chip-label--short">{TAB_SHORT[item.type]}</span>
-                  <span className="xgl__chip-label xgl__chip-label--full">{item.title}</span>
-                </button>
+                />
               );
             })}
-          </nav>
+          </GalleryFilterGrid>
         </header>
 
         <div className="xgl__body" aria-live="polite">
@@ -326,24 +299,12 @@ function Filmstrip({
   activeIndex: number;
   onSelect: (index: number) => void;
 }) {
-  const trackRef = useRef<HTMLUListElement>(null);
-
-  useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return;
-    const active = track.children[activeIndex] as HTMLElement | undefined;
-    active?.scrollIntoView({
-      behavior: "smooth",
-      block: "nearest",
-      inline: "center",
-    });
-  }, [activeIndex, projects]);
-
   return (
     <div className="xgl__film">
       <ul
-        ref={trackRef}
-        className={`xgl__film-track xgl__film-track--${projects.length}`}
+        className={`xgl__film-track${
+          projects.length <= 5 ? ` xgl__film-track--${projects.length}` : " xgl__film-track--many"
+        }`}
         role="tablist"
         aria-label="Projects in collection"
       >

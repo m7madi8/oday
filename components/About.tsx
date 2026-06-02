@@ -8,22 +8,22 @@ import { motion, useReducedMotion } from "@/components/ClientMotion";
 import { revealInView } from "@/lib/motion-viewport";
 import { about as studioAbout } from "@/lib/data";
 import Image from "next/image";
+import { SectionInner, SectionShell } from "@/components/SectionShell";
+
 export function About() {
   const reduce = useReducedMotion();
 
   return (
-    <section
-      id="about"
-      className="section-snap relative flex flex-col justify-center overflow-hidden bg-bg-primary px-[var(--hero-gutter)] py-[var(--hero-nav-stack)] pb-8 md:pb-10"
-    >
+    <SectionShell id="about">
+      <SectionInner>
       <RevealChildren
-        className="relative mx-auto grid w-full max-w-6xl items-center gap-6 md:gap-7 lg:grid-cols-[minmax(0,1.12fr)_minmax(220px,0.88fr)] lg:gap-8"
+        className="relative grid w-full items-center gap-6 md:gap-7 lg:grid-cols-[minmax(0,1.12fr)_minmax(220px,0.88fr)] lg:gap-8"
         stagger={0.07}
       >
         <ScrollReveal
           as="article"
           dramatic
-          className="flex flex-col rounded-xl border border-white/[0.08] bg-bg-card/90 p-5 md:p-6 lg:p-7"
+          className="section-card flex flex-col p-5 md:p-6 lg:p-7"
         >
           <header className="border-b border-white/[0.1] pb-3 md:pb-3.5">
             <motion.div
@@ -160,6 +160,7 @@ export function About() {
           </div>
         </ScrollReveal>
       </RevealChildren>
-    </section>
+      </SectionInner>
+    </SectionShell>
   );
 }

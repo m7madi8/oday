@@ -9,6 +9,7 @@ import { Facebook, Instagram } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { SectionHeader, SectionInner, SectionShell } from "@/components/SectionShell";
 
 import brandLogo from "@/imgs/oday-logo.png";
 
@@ -37,7 +38,7 @@ export function Contact() {
   }
 
   return (
-    <section id="contact" className="section-snap relative isolate">
+    <SectionShell id="contact" variant="media">
       <div className="absolute inset-0">
         <Image
           src={contact.backgroundImage}
@@ -45,28 +46,28 @@ export function Contact() {
           fill
           className="object-cover"
           sizes="100vw"
-          priority
+          loading="lazy"
         />
         <div
-          className="absolute inset-0 bg-gradient-to-b from-[#1a120c]/75 via-[#120d09]/55 to-[#0a0705]/88"
+          className="absolute inset-0 bg-gradient-to-b from-[#121212]/80 via-[#121212]/65 to-[#0a0a0a]/92"
           aria-hidden
         />
         <div
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_90%_60%_at_50%_0%,rgba(255,248,240,0.08),transparent_55%)]"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_90%_50%_at_50%_0%,rgba(245,197,24,0.08),transparent_55%)]"
           aria-hidden
         />
       </div>
 
-      <RevealChildren
-        className="relative z-[1] mx-auto flex min-h-[100svh] max-w-7xl flex-col px-5 pb-8 pt-28 md:px-10 md:pb-10 md:pt-32"
-        stagger={0.12}
-      >
+      <SectionInner className="relative z-[1] flex min-h-[100svh] flex-col pb-[var(--section-pad-bottom)] pt-[var(--hero-nav-stack)]">
+      <RevealChildren className="flex flex-1 flex-col" stagger={0.12}>
         <ScrollReveal dramatic className="flex max-w-3xl flex-1 flex-col items-start">
-          <p className="font-outfit text-[11px] font-medium uppercase tracking-[0.28em] text-white/65">Start Here</p>
-          <h2 className="mt-5 max-w-[18ch] font-display text-[clamp(2.1rem,5.8vw,3.75rem)] font-normal italic leading-[1.06] text-white [text-shadow:0_2px_48px_rgba(0,0,0,0.35)] md:max-w-[22ch]">
-            {contact.heading}
-          </h2>
-          <p className="mt-6 max-w-xl text-sm leading-relaxed text-white/78 md:text-[15px]">{contact.description}</p>
+          <SectionHeader
+            align="start"
+            eyebrow="Start Here"
+            title={<span className="text-white">{contact.heading}</span>}
+            description={contact.description}
+            className="[&_.label-upper]:text-white/65 [&_.section-lead]:text-white/78 [&_.section-title]:max-w-[22ch] [&_.section-title]:text-[clamp(2rem,5vw,3.25rem)] [&_.section-title]:text-white"
+          />
           <motion.div
             className="mt-10"
             initial={{ opacity: reduceMotion ? 1 : 0, y: reduceMotion ? 0 : 20 }}
@@ -207,6 +208,7 @@ export function Contact() {
           </motion.div>
         </footer>
       </RevealChildren>
-    </section>
+      </SectionInner>
+    </SectionShell>
   );
 }

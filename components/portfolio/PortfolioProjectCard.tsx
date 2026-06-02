@@ -20,29 +20,34 @@ import { useCallback, useState, type SyntheticEvent } from "react";
 export function PortfolioProjectCard({
   project,
   section,
+  ratio: ratioProp,
 }: {
   project: Project;
   section: PortfolioSectionId;
+  /** When set (from masonry row layout), avoids reflow after image load. */
+  ratio?: ProjectCardRatio;
 }) {
   const format = resolveProjectGalleryFormat(project);
-  const initialRatio = resolveProjectCardRatio(project.image, format);
-  const [ratio, setRatio] = useState<ProjectCardRatio>(initialRatio);
+  const inferredRatio = resolveProjectCardRatio(project.image, format);
+  const [ratio, setRatio] = useState<ProjectCardRatio>(ratioProp ?? inferredRatio);
+  const displayRatio = ratioProp ?? ratio;
 
   const onImageLoad = useCallback(
     (e: SyntheticEvent<HTMLImageElement>) => {
+      if (ratioProp) return;
       const img = e.currentTarget;
       if (!img.naturalWidth || !img.naturalHeight) return;
       const aspect = img.naturalWidth / img.naturalHeight;
       setRatio(aspect <= 0.92 ? "portrait" : "landscape");
     },
-    [],
+    [ratioProp],
   );
 
   const pill = getProjectCardPill(project, section);
   const description = getProjectCardDescription(project);
   const href = projectDetailPath(project);
 
-  if (ratio === "portrait") {
+  if (displayRatio === "portrait") {
     return (
       <article
         className="project-card"
@@ -81,6 +86,7 @@ export function PortfolioProjectCard({
     <article
       className="project-card"
       data-ratio="landscape"
+      data-ratio-locked={ratioProp ? "true" : undefined}
       data-section={section}
       id={project.id}
     >

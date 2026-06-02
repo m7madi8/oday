@@ -1,8 +1,9 @@
 "use client";
 
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
+import { SectionHeader, SectionInner, SectionShell } from "@/components/SectionShell";
 import { services } from "@/lib/data";
-import { motion, useReducedMotion } from "@/components/ClientMotion";
+import { useReducedMotion } from "@/components/ClientMotion";
 import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 import { SafeButton } from "@/components/SafeButton";
@@ -27,7 +28,7 @@ type ServiceVisual = {
 
 const IMAGE_SIZES_DESKTOP = "(max-width: 1024px) 55vw, 65vw";
 const IMAGE_SIZES_STORY = "(max-width: 768px) 85vw, 320px";
-const IMAGE_QUALITY = 92;
+const IMAGE_QUALITY = 82;
 
 const fallbackProfile: ServiceProfile = {
   tagline: "Oday scope",
@@ -110,33 +111,28 @@ const stripBezel =
 const stripInner =
   "flex h-full min-h-[inherit] w-full overflow-hidden rounded-[1.02rem] bg-transparent lg:rounded-[1.15rem]";
 
-type StoryCardMotion = {
-  focus: number;
-  drift: number;
-};
-
-const storyEase = { type: "tween" as const, duration: 0.55, ease: [0.22, 1, 0.36, 1] as const };
-
-function buildStoryMotions(el: HTMLDivElement): StoryCardMotion[] {
+function getCenteredStoryIndex(el: HTMLDivElement): number {
   const center = el.scrollLeft + el.clientWidth / 2;
-  const half = Math.max(el.clientWidth / 2, 1);
+  let closest = 0;
+  let minDist = Infinity;
 
-  return Array.from(el.children).map((child) => {
+  Array.from(el.children).forEach((child, i) => {
     const card = child as HTMLElement;
     const cardCenter = card.offsetLeft + card.offsetWidth / 2;
-    const drift = Math.max(-1, Math.min(1, (cardCenter - center) / half));
-    const focus = Math.max(0, 1 - Math.abs(drift) * 0.94);
-    return { focus, drift };
+    const dist = Math.abs(cardCenter - center);
+    if (dist < minDist) {
+      minDist = dist;
+      closest = i;
+    }
   });
+
+  return closest;
 }
 
 export function Services() {
   const reduceMotion = useReducedMotion();
   const [activeId, setActiveId] = useState(services[0]?.id ?? "");
   const [storyIndex, setStoryIndex] = useState(0);
-  const [storyMotions, setStoryMotions] = useState<StoryCardMotion[]>(() =>
-    services.map((_, i) => ({ focus: i === 0 ? 1 : 0, drift: i === 0 ? 0 : 0.4 })),
-  );
   const storyScrollerRef = useRef<HTMLDivElement>(null);
   const panelScrollRef = useRef<HTMLDivElement>(null);
   const storyRafRef = useRef(0);
@@ -147,20 +143,8 @@ export function Services() {
   const syncStoryScroll = useCallback(() => {
     const el = storyScrollerRef.current;
     if (!el || !el.children.length) return;
-
-    const motions = buildStoryMotions(el);
-    setStoryMotions(motions);
-
-    let closest = 0;
-    let minDist = Infinity;
-    motions.forEach((m, i) => {
-      const focusDist = 1 - m.focus;
-      if (focusDist < minDist) {
-        minDist = focusDist;
-        closest = i;
-      }
-    });
-    setStoryIndex(closest);
+    const closest = getCenteredStoryIndex(el);
+    setStoryIndex((prev) => (prev === closest ? prev : closest));
   }, []);
 
   useEffect(() => {
@@ -199,50 +183,32 @@ export function Services() {
   }
 
   return (
-    <section
-      id="services"
-      className="section-snap relative isolate flex flex-col overflow-x-clip overflow-y-visible bg-bg-primary pb-5 pt-[var(--hero-nav-stack)] md:pb-6"
-    >
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-10%,rgba(245, 197, 24,0.14),transparent_55%)]"
-      />
-      <motion.div
-        aria-hidden
-        className="pointer-events-none absolute -left-40 top-16 h-80 w-80 rounded-full bg-gold/16 blur-3xl"
-        animate={reduceMotion ? undefined : { x: [0, 32, 0], y: [0, -18, 0] }}
-        transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        aria-hidden
-        className="pointer-events-none absolute -right-32 bottom-0 h-72 w-72 rounded-full bg-gold/10 blur-3xl"
-        animate={reduceMotion ? undefined : { x: [0, -28, 0], y: [0, 16, 0] }}
-        transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
-      />
-
-      <div className="relative mx-auto flex w-full max-w-[100rem] flex-col px-4 md:px-8 lg:px-10">
-        <ScrollReveal dramatic className="mx-auto max-w-3xl shrink-0 text-center md:max-w-4xl">
-          <p className="label-upper text-[0.65rem] text-gold md:text-[0.7rem]">Solutions</p>
-          <h2 className="mt-1.5 font-display text-[clamp(1.45rem,3.2vw,2.5rem)] italic leading-[0.98] text-ink-primary">
-            Four disciplines.
-            <span className="mt-1 block bg-gradient-to-r from-gold via-[#fff3b0] to-gold/70 bg-clip-text text-transparent">
-              One cinematic frame.
-            </span>
-          </h2>
-          <p className="mx-auto mt-2 max-w-xl text-xs leading-relaxed text-ink-secondary md:text-sm">
-            <span className="md:hidden">
-              Swipe sideways for services — scroll the page normally over the cards.
-            </span>
-            <span className="hidden md:inline">
-              Hover or swipe columns sideways — scroll the page freely over the strip.
-            </span>
-          </p>
+    <SectionShell id="services" className="isolate overflow-x-clip overflow-y-visible">
+      <SectionInner className="relative flex flex-col">
+        <ScrollReveal dramatic>
+          <SectionHeader
+            eyebrow="Solutions"
+            title={
+              <>
+                Four disciplines.
+                <span className="mt-1 block bg-gradient-to-r from-gold via-[#fff3b0] to-gold/70 bg-clip-text text-transparent">
+                  One cinematic frame.
+                </span>
+              </>
+            }
+            description={
+              <>
+                <span className="md:hidden">Swipe sideways for services — scroll the page normally over the cards.</span>
+                <span className="hidden md:inline">Hover columns to explore — scroll the page freely over the strip.</span>
+              </>
+            }
+          />
         </ScrollReveal>
 
         {/* Mobile: Instagram story ratio cards */}
-        <ScrollReveal dramatic delay={0.06} className="mt-4 flex flex-col md:hidden">
-          <div className="-mx-4 overflow-visible px-4 sm:-mx-6 sm:px-6">
-          <motion.div
+        <ScrollReveal dramatic delay={0.06} className="mt-6 flex flex-col md:hidden">
+          <div className="-mx-[var(--section-gutter-x)] overflow-visible px-[var(--section-gutter-x)]">
+          <div
             ref={storyScrollerRef}
             className="services-story-track flex gap-3 py-2"
             aria-label="Services stories"
@@ -251,12 +217,10 @@ export function Services() {
               <ServiceStoryCard
                 key={service.id}
                 service={service}
-                motionState={storyMotions[index] ?? { focus: 0, drift: 0 }}
-                isCentered={storyIndex === index}
-                reduceMotion={!!reduceMotion}
+                isActive={storyIndex === index}
               />
             ))}
-          </motion.div>
+          </div>
           </div>
 
           <div className="mt-3 flex shrink-0 justify-center gap-2" role="tablist" aria-label="Service stories">
@@ -302,7 +266,7 @@ export function Services() {
         <ScrollReveal
           dramatic
           delay={0.1}
-          className="mt-3 shrink-0 rounded-xl border border-gold/28 bg-gradient-to-r from-bg-card/95 via-bg-card/88 to-bg-card/95 p-3 shadow-[0_12px_36px_rgba(0,0,0,0.3)] backdrop-blur-sm md:flex md:items-center md:justify-between md:gap-5 md:px-5 md:py-3.5"
+          className="section-card mt-6 shrink-0 border-gold/28 bg-gradient-to-r from-bg-card/95 via-bg-card/88 to-bg-card/95 p-3 shadow-[0_12px_36px_rgba(0,0,0,0.3)] md:flex md:items-center md:justify-between md:gap-5 md:px-5 md:py-3.5"
         >
           <p className="text-xs text-ink-secondary md:text-sm">
             Need a custom mix? We can combine design, engineering, drone, and AI in one clean workflow.
@@ -315,66 +279,40 @@ export function Services() {
             Build My Scope
           </Link>
         </ScrollReveal>
-      </div>
-    </section>
+      </SectionInner>
+    </SectionShell>
   );
 }
 
-/** 9:16 story card â€” soft scroll focus */
+/** 9:16 story card — CSS scroll focus */
 function ServiceStoryCard({
   service,
-  motionState,
-  isCentered,
-  reduceMotion,
+  isActive,
 }: {
   service: (typeof services)[number];
-  motionState: StoryCardMotion;
-  isCentered: boolean;
-  reduceMotion: boolean;
+  isActive: boolean;
 }) {
   const profile = serviceProfiles[service.title] ?? fallbackProfile;
   const visual = getServiceVisual(service.title);
   const Icon = service.icon;
 
-  const { focus } = motionState;
-  const scale = reduceMotion ? 1 : 0.97 + focus * 0.03;
-  const opacity = reduceMotion ? 1 : 0.88 + focus * 0.12;
-  const liftY = reduceMotion ? 0 : (1 - focus) * 5;
-
   return (
-    <motion.article
-      className="services-story-card relative aspect-[9/16] h-[min(58svh,520px)] w-auto max-h-full shrink-0 overflow-hidden bg-transparent first:scroll-ml-0"
-      style={{ zIndex: Math.round(focus * 10) }}
-      animate={{ scale, opacity, y: liftY }}
-      transition={reduceMotion ? { duration: 0 } : storyEase}
+    <article
+      className={`services-story-card relative aspect-[9/16] h-[min(58svh,520px)] w-auto max-h-full shrink-0 overflow-hidden bg-transparent first:scroll-ml-0${isActive ? " services-story-card--active" : ""}`}
     >
-      <motion.div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 rounded-[1.12rem]"
-        animate={{ opacity: isCentered && !reduceMotion ? 0.1 + focus * 0.08 : 0 }}
-        transition={storyEase}
-        style={{
-          boxShadow: isCentered ? "0 0 28px rgba(245, 197, 24,0.14)" : "none",
-        }}
-      />
-
       <div className="relative h-full w-full overflow-hidden rounded-[1.12rem] shadow-[0_16px_40px_rgba(0,0,0,0.35)] ring-1 ring-white/[0.08]">
-        <motion.div
-          className="absolute inset-0"
-          animate={{ scale: reduceMotion ? 1 : 1.02 + focus * 0.02 }}
-          transition={storyEase}
-        >
+        <div className="absolute inset-0">
           <Image
             src={visual.src}
             alt={visual.alt}
             fill
             quality={IMAGE_QUALITY}
             sizes={IMAGE_SIZES_STORY}
-            priority={false}
-            className="object-cover brightness-[1.03] contrast-[1.02] saturate-[1.06]"
+            loading="lazy"
+            className="services-panel-image object-cover brightness-[1.03] contrast-[1.02] saturate-[1.06]"
             style={{ objectPosition: visual.objectPosition }}
           />
-        </motion.div>
+        </div>
 
         <div
           aria-hidden
@@ -394,14 +332,12 @@ function ServiceStoryCard({
                 aria-hidden
                 className="h-[3px] flex-1 overflow-hidden rounded-full bg-white/20"
               >
-                <motion.div
-                  className="h-full rounded-full bg-white/90"
-                  initial={false}
-                  animate={{
-                    scaleX: isCurrent && isCentered ? 1 : isCurrent ? 0.5 + focus * 0.35 : 0,
+                <div
+                  className="h-full rounded-full bg-white/90 transition-transform duration-300"
+                  style={{
+                    transform: `scaleX(${isCurrent && isActive ? 1 : isCurrent ? 0.55 : 0})`,
+                    transformOrigin: "left center",
                   }}
-                  style={{ transformOrigin: "left center" }}
-                  transition={storyEase}
                 />
               </div>
             );
@@ -411,8 +347,8 @@ function ServiceStoryCard({
         <div className="relative z-10 flex h-full flex-col p-4">
           <div className="mt-8 flex items-center gap-2.5">
               <span
-                className={`flex h-9 w-9 items-center justify-center rounded-full border bg-gold/12 text-gold ring-1 ring-black/30 transition-colors duration-500 ${
-                  isCentered ? "border-gold/55" : "border-gold/35"
+                className={`flex h-9 w-9 items-center justify-center rounded-full border bg-gold/12 text-gold ring-1 ring-black/30 transition-colors duration-300 ${
+                  isActive ? "border-gold/55" : "border-gold/35"
                 }`}
               >
                 <Icon className="h-4 w-4" aria-hidden />
@@ -425,7 +361,7 @@ function ServiceStoryCard({
               </div>
           </div>
 
-          <motion.div className="mt-auto space-y-4 pb-1">
+          <div className="mt-auto space-y-4 pb-1">
             <p className="label-upper text-[10px] text-gold/80">{profile.tagline}</p>
             <p className="text-sm leading-relaxed text-white/88">{profile.punchline}</p>
 
@@ -453,10 +389,10 @@ function ServiceStoryCard({
             <p className="text-center font-outfit text-[10px] uppercase tracking-[0.28em] text-white/40">
               Scroll
             </p>
-          </motion.div>
+          </div>
         </div>
       </div>
-    </motion.article>
+    </article>
   );
 }
 
@@ -478,9 +414,9 @@ function ServicePanel({
 
   return (
     <article
-      className={`services-panel-card group/panel relative flex min-w-[min(100%,14rem)] shrink-0 cursor-pointer overflow-hidden transition-[flex-grow,box-shadow] duration-[850ms] ease-[cubic-bezier(0.22,1,0.36,1)] sm:min-w-[min(100%,16rem)] lg:min-w-0 ${
+      className={`services-panel-card group/panel relative flex min-w-[min(100%,14rem)] shrink-0 cursor-pointer overflow-hidden sm:min-w-[min(100%,16rem)] lg:min-w-0 ${
         isActive
-          ? "z-20 flex-[3] shadow-[inset_0_0_0_1px_rgba(245, 197, 24,0.45),0_0_60px_rgba(245, 197, 24,0.12)]"
+          ? "services-panel-card--active z-20 flex-[3] shadow-[inset_0_0_0_1px_rgba(245,197,24,0.45),0_0_40px_rgba(245,197,24,0.1)]"
           : "z-0 flex-1 hover:z-10"
       }`}
       onMouseEnter={onActivate}
@@ -496,29 +432,23 @@ function ServicePanel({
           quality={IMAGE_QUALITY}
           sizes={IMAGE_SIZES_DESKTOP}
           priority={index === 0}
-          className={`object-cover transition-[transform,filter] duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
-            isActive
-              ? "scale-[1.04] brightness-[1.08] contrast-[1.06] saturate-[1.14]"
-              : "scale-100 brightness-[0.92] contrast-[1.02] saturate-[0.95] group-hover/panel:brightness-[1] group-hover/panel:saturate-[1.05]"
-          }`}
+          className="services-panel-image object-cover"
           style={{ objectPosition: visual.objectPosition }}
         />
       </div>
 
-      <motion.div
+      <div
         aria-hidden
-        className={`pointer-events-none absolute inset-0 transition-opacity duration-700 ${
-          isActive ? "opacity-100" : "opacity-80"
-        }`}
+        className="pointer-events-none absolute inset-0"
         style={{
           background:
             "linear-gradient(180deg, rgba(0,0,0,0.22) 0%, rgba(0,0,0,0.05) 38%, rgba(0,0,0,0.55) 100%)",
         }}
       />
 
-      <motion.div
+      <div
         aria-hidden
-        className={`pointer-events-none absolute inset-x-0 bottom-0 transition-all duration-700 ${
+        className={`pointer-events-none absolute inset-x-0 bottom-0 transition-[height] duration-500 ${
           isActive ? "h-[58%]" : "h-[42%]"
         }`}
         style={{
@@ -527,16 +457,16 @@ function ServicePanel({
         }}
       />
 
-      <motion.div
+      <div
         aria-hidden
-        className={`absolute inset-y-0 left-0 w-[4px] bg-gradient-to-b from-transparent via-gold to-transparent shadow-[0_0_24px_rgba(245, 197, 24,0.55)] transition-all duration-500 ${
-          isActive ? "opacity-100" : "opacity-0 group-hover/panel:opacity-60"
+        className={`absolute inset-y-0 left-0 w-[3px] bg-gradient-to-b from-transparent via-gold to-transparent transition-opacity duration-300 ${
+          isActive ? "opacity-100" : "opacity-0 group-hover/panel:opacity-50"
         }`}
       />
 
       <span
         aria-hidden
-        className={`pointer-events-none absolute -right-2 top-1/2 -translate-y-1/2 select-none font-display text-[clamp(5rem,14vw,9rem)] italic leading-none transition-all duration-700 ${
+        className={`pointer-events-none absolute -right-2 top-1/2 -translate-y-1/2 select-none font-display text-[clamp(5rem,14vw,9rem)] italic leading-none transition-opacity duration-300 ${
           isActive
             ? "text-white/[0.07]"
             : "text-white/[0.04] group-hover/panel:text-white/[0.06]"
@@ -548,7 +478,7 @@ function ServicePanel({
       <div className="relative z-10 flex h-full w-full flex-col p-4 sm:p-5 md:p-6 lg:p-7">
         <div className="flex items-start justify-between gap-3">
           <p
-            className={`max-w-[90%] font-outfit text-[9px] font-semibold uppercase leading-snug tracking-[0.22em] transition-all duration-500 sm:text-[10px] md:text-[11px] ${
+            className={`max-w-[90%] font-outfit text-[9px] font-semibold uppercase leading-snug tracking-[0.22em] transition-colors duration-300 sm:text-[10px] md:text-[11px] ${
               isActive ? "text-white" : "text-white/65 group-hover/panel:text-white/85"
             }`}
           >
@@ -560,7 +490,7 @@ function ServicePanel({
           </p>
 
           <span
-            className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border backdrop-blur-md transition-all duration-500 sm:h-10 sm:w-10 ${
+            className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border backdrop-blur-md transition-colors duration-300 sm:h-10 sm:w-10 ${
               isActive
                 ? "border-gold/60 bg-gold/20 text-gold shadow-[0_0_20px_rgba(245, 197, 24,0.35)]"
                 : "border-white/15 bg-black/35 text-white/70 group-hover/panel:border-gold/35 group-hover/panel:text-gold"
@@ -572,7 +502,7 @@ function ServicePanel({
 
         <div className="mt-auto flex min-h-0 flex-1 items-end gap-4 pt-8">
           <h3
-            className={`shrink-0 font-display text-[clamp(1.25rem,2.8vw,2.1rem)] italic leading-none tracking-[0.06em] [writing-mode:vertical-rl] rotate-180 transition-all duration-700 ${
+            className={`shrink-0 font-display text-[clamp(1.25rem,2.8vw,2.1rem)] italic leading-none tracking-[0.06em] [writing-mode:vertical-rl] rotate-180 transition-colors duration-300 ${
               isActive
                 ? "text-gold drop-shadow-[0_0_28px_rgba(245, 197, 24,0.45)]"
                 : "text-white/75 group-hover/panel:text-white"
@@ -582,7 +512,7 @@ function ServicePanel({
           </h3>
 
           <div
-            className={`min-w-0 flex-1 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+            className={`min-w-0 flex-1 transition-[opacity,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
               isActive
                 ? "translate-y-0 opacity-100"
                 : "pointer-events-none translate-y-4 opacity-0"

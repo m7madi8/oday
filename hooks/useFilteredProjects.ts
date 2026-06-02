@@ -2,6 +2,7 @@
 
 import {
   exteriorProjectTypes,
+  exteriorTypeLabel,
   getExteriorProjectCount,
   projects,
   type ExteriorProjectType,
@@ -36,7 +37,7 @@ export function categoryFilterLabel(
 ): string {
   if (category === "All") return "All";
   if (service === "exterior" && category !== "Residential" && category !== "Cultural") {
-    return EXTERIOR_CATEGORY_SHORT[category as ExteriorProjectType];
+    return exteriorTypeLabel(category as ExteriorProjectType);
   }
   return category;
 }

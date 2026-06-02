@@ -1,37 +1,45 @@
 "use client";
 
-import { motion, useReducedMotion } from "@/components/ClientMotion";
+import { useReducedMotion } from "@/components/ClientMotion";
 import {
-  projectGalleryFrame,
-  type ProjectGalleryFormat,
-  type ProjectGalleryImage,
-} from "@/lib/data";
-import { gallerySpring, galleryTransition } from "@/lib/gallery-motion";
+  getGalleryCardSize,
+  resolveGalleryImageDimensions,
+} from "@/lib/project-gallery-layout";
+import { type ProjectGalleryFormat, type ProjectGalleryImage } from "@/lib/data";
+import { galleryTransition } from "@/lib/gallery-motion";
+import { motion } from "@/components/ClientMotion";
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-/** Lower = slower, smoother mouse-driven scroll */
-const PAN_LERP = 0.012;
+const MAX_CARD_H = 480;
+const MAX_CARD_W = 720;
+const MAX_CARD_H_MOBILE = 360;
+const MAX_CARD_W_MOBILE = 320;
 
 function GalleryCard({
   image,
   index,
   isActive,
+  format,
+  maxHeight,
+  maxWidth,
   onSelect,
-  reduce,
 }: {
   image: ProjectGalleryImage;
   index: number;
   isActive: boolean;
+  format: ProjectGalleryFormat;
+  maxHeight: number;
+  maxWidth: number;
   onSelect: () => void;
-  reduce: boolean;
 }) {
+  const dims = resolveGalleryImageDimensions(image.src, format);
+  const { width, height } = getGalleryCardSize(dims, { maxHeight, maxWidth });
   const label = String(index + 1).padStart(2, "0");
 
   return (
-    <motion.article
+    <article
       data-gallery-card={index}
-      layout={false}
       role="tab"
       tabIndex={0}
       aria-selected={isActive}
@@ -43,49 +51,23 @@ function GalleryCard({
           onSelect();
         }
       }}
-      animate={
-        reduce
-          ? undefined
-          : {
-              scale: isActive ? 1 : 0.99,
-              opacity: isActive ? 1 : 0.88,
-            }
-      }
-      transition={reduce ? { duration: 0 } : gallerySpring.soft}
-      className={`project-gallery__card shrink-0 cursor-pointer ${
-        isActive ? "project-gallery__card--active" : ""
-      }`}
+      className={`project-gallery__card${isActive ? " project-gallery__card--active" : ""}`}
+      style={{ width, height }}
     >
-      <div className="project-gallery__card-media">
-        <Image
-          src={image.src}
-          alt={image.alt}
-          fill
-          className="object-contain object-center"
-          sizes="(max-width: 768px) 88vw, 720px"
-          priority={index < 3}
-          draggable={false}
-        />
-      </div>
-
+      <Image
+        src={image.src}
+        alt={image.alt}
+        width={width}
+        height={height}
+        className="project-gallery__img"
+        sizes={`(max-width: 640px) ${maxWidth}px, ${maxWidth}px`}
+        priority={index < 2}
+        draggable={false}
+      />
       <span className="project-gallery__badge" aria-hidden>
         {label}
       </span>
-
-      {isActive ? (
-        <motion.div
-          aria-hidden
-          className="project-gallery__card-caption"
-          initial={false}
-          animate={{ opacity: 1, y: 0 }}
-          transition={reduce ? { duration: 0 } : { duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <p className="line-clamp-2 font-outfit text-[11px] leading-snug text-white/90 sm:text-xs">
-            {image.alt}
-          </p>
-        </motion.div>
-      ) : null}
-    </motion.article>
+    </article>
   );
 }
 
@@ -100,21 +82,19 @@ export function ProjectGallery({
 }) {
   const reduce = useReducedMotion();
   const trackRef = useRef<HTMLDivElement>(null);
-  const zoneRef = useRef<HTMLDivElement>(null);
-  const panRafRef = useRef(0);
-  const panActiveRef = useRef(false);
-  const scrollTargetRef = useRef(0);
-  const scrollCurrentRef = useRef(0);
-  const finePointerRef = useRef(false);
-
   const [activeIndex, setActiveIndex] = useState(0);
-  void format;
+  const [maxHeight, setMaxHeight] = useState(MAX_CARD_H);
+  const [maxWidth, setMaxWidth] = useState(MAX_CARD_W);
 
-  const syncScrollRefs = useCallback(() => {
-    const track = trackRef.current;
-    if (!track) return;
-    scrollCurrentRef.current = track.scrollLeft;
-    scrollTargetRef.current = track.scrollLeft;
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 640px)");
+    const apply = () => {
+      setMaxHeight(mq.matches ? MAX_CARD_H_MOBILE : MAX_CARD_H);
+      setMaxWidth(mq.matches ? MAX_CARD_W_MOBILE : MAX_CARD_W);
+    };
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
   }, []);
 
   const scrollToCard = useCallback(
@@ -124,12 +104,8 @@ export function ProjectGallery({
       const card = track.querySelector<HTMLElement>(`[data-gallery-card="${index}"]`);
       if (!card) return;
       const target = card.offsetLeft - (track.clientWidth - card.offsetWidth) / 2;
-      const clamped = Math.max(0, Math.min(target, track.scrollWidth - track.clientWidth));
-
-      scrollTargetRef.current = clamped;
-      scrollCurrentRef.current = clamped;
       track.scrollTo({
-        left: clamped,
+        left: Math.max(0, Math.min(target, track.scrollWidth - track.clientWidth)),
         behavior: reduce ? "auto" : "smooth",
       });
     },
@@ -144,81 +120,31 @@ export function ProjectGallery({
     [scrollToCard],
   );
 
-  const go = useCallback(
-    (delta: number) => {
-      select((activeIndex + delta + images.length) % images.length);
-    },
-    [activeIndex, images.length, select],
-  );
-
-  const runPanLoop = useCallback(() => {
-    if (panActiveRef.current) return;
-    panActiveRef.current = true;
-
-    const tick = () => {
-      const track = trackRef.current;
-      if (!track) {
-        panActiveRef.current = false;
-        return;
-      }
-
-      const target = scrollTargetRef.current;
-      const current = scrollCurrentRef.current;
-      const diff = target - current;
-
-      if (Math.abs(diff) < 0.35) {
-        scrollCurrentRef.current = target;
-        track.scrollLeft = target;
-        panActiveRef.current = false;
-        return;
-      }
-
-      const next = current + diff * PAN_LERP;
-      scrollCurrentRef.current = next;
-      track.scrollLeft = next;
-      panRafRef.current = requestAnimationFrame(tick);
-    };
-
-    panRafRef.current = requestAnimationFrame(tick);
-  }, []);
-
-  const panToRatio = useCallback(
-    (ratio: number) => {
-      const track = trackRef.current;
-      if (!track) return;
-      const max = track.scrollWidth - track.clientWidth;
-      if (max <= 0) return;
-
-      scrollTargetRef.current = Math.max(0, Math.min(1, ratio)) * max;
-      runPanLoop();
-    },
-    [runPanLoop],
-  );
-
-  useEffect(() => {
-    finePointerRef.current = window.matchMedia("(pointer: fine)").matches;
-    const mq = window.matchMedia("(pointer: fine)");
-    const onChange = () => {
-      finePointerRef.current = mq.matches;
-    };
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
-  }, []);
-
   useEffect(() => {
     const track = trackRef.current;
-    if (!track) return;
+    if (!track || images.length < 2) return;
 
-    syncScrollRefs();
+    const cards = track.querySelectorAll<HTMLElement>("[data-gallery-card]");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        let best: { index: number; ratio: number } | null = null;
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const index = Number((entry.target as HTMLElement).dataset.galleryCard);
+          if (Number.isNaN(index)) continue;
+          const ratio = entry.intersectionRatio;
+          if (!best || ratio > best.ratio) {
+            best = { index, ratio };
+          }
+        }
+        if (best) setActiveIndex(best.index);
+      },
+      { root: track, threshold: [0.4, 0.55, 0.7, 0.85] },
+    );
 
-    const onScroll = () => {
-      if (panActiveRef.current) return;
-      syncScrollRefs();
-    };
-
-    track.addEventListener("scroll", onScroll, { passive: true });
-    return () => track.removeEventListener("scroll", onScroll);
-  }, [syncScrollRefs, images.length]);
+    cards.forEach((card) => observer.observe(card));
+    return () => observer.disconnect();
+  }, [images.length, maxHeight, maxWidth]);
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -226,37 +152,28 @@ export function ProjectGallery({
       if (tag === "INPUT" || tag === "TEXTAREA") return;
       if (e.key === "ArrowLeft") {
         e.preventDefault();
-        go(-1);
+        select((activeIndex - 1 + images.length) % images.length);
       }
       if (e.key === "ArrowRight") {
         e.preventDefault();
-        go(1);
+        select((activeIndex + 1) % images.length);
       }
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [go]);
-
-  useEffect(() => {
-    return () => cancelAnimationFrame(panRafRef.current);
-  }, []);
+  }, [activeIndex, images.length, select]);
 
   if (!images.length) return null;
 
   const focusProgress = images.length > 1 ? activeIndex / (images.length - 1) : 1;
 
   return (
-    <section
-      className="project-gallery"
-      aria-label={`${title} gallery`}
-      data-gallery-format="instagram-poster"
-    >
+    <section className="project-gallery" aria-label={`${title} gallery`}>
       <div className="project-gallery__header">
         <div>
           <p className="label-upper text-gold/90">Project frames</p>
           <p className="mt-1 font-outfit text-[11px] text-ink-muted">
-            <span className="hidden sm:inline">Frame · {projectGalleryFrame.label} · </span>
-            Move the cursor to browse · tap to focus
+            Swipe to browse · each frame matches its image proportions
           </p>
         </div>
         <motion.p
@@ -273,23 +190,7 @@ export function ProjectGallery({
         </motion.p>
       </div>
 
-      <div
-        ref={zoneRef}
-        className="project-gallery__stage"
-        onMouseMove={(e) => {
-          if (!finePointerRef.current || reduce) return;
-          const zone = zoneRef.current;
-          if (!zone) return;
-          const rect = zone.getBoundingClientRect();
-          if (rect.width <= 0) return;
-          const ratio = (e.clientX - rect.left) / rect.width;
-          panToRatio(ratio);
-        }}
-        onMouseLeave={() => {
-          cancelAnimationFrame(panRafRef.current);
-          panActiveRef.current = false;
-        }}
-      >
+      <div className="project-gallery__stage">
         <div
           ref={trackRef}
           className="project-gallery__track"
@@ -302,8 +203,10 @@ export function ProjectGallery({
               image={image}
               index={index}
               isActive={index === activeIndex}
+              format={format}
+              maxHeight={maxHeight}
+              maxWidth={maxWidth}
               onSelect={() => select(index)}
-              reduce={!!reduce}
             />
           ))}
         </div>
@@ -320,7 +223,7 @@ export function ProjectGallery({
         <motion.div
           className="project-gallery__progress-fill"
           animate={{ width: `${focusProgress * 100}%` }}
-          transition={reduce ? { duration: 0 } : gallerySpring.soft}
+          transition={reduce ? { duration: 0 } : { duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
         />
       </div>
     </section>

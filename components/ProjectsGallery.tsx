@@ -2,18 +2,25 @@
 
 import "@/app/portfolio-gallery.css";
 import {
-  GalleryFilterPill,
   GalleryGoldLine,
   GalleryReveal,
   GallerySectionTransition,
   GalleryStagger,
 } from "@/components/animations/GalleryMotion";
+import { GalleryFilterCell, GalleryFilterGrid } from "@/components/GalleryFilterGrid";
 import { GalleryHashSync } from "@/components/GalleryHashSync";
 import { PortfolioDesignGallery } from "@/components/portfolio/PortfolioDesignGallery";
 import { ProjectsGallerySearchSync } from "@/components/ProjectsGallerySearchSync";
 import { galleryCardItem, gallerySpring } from "@/lib/gallery-motion";
 import { GALLERY_CATEGORY_ANCHORS } from "@/lib/gallery-anchors";
 import {
+  categoryFilterLabel,
+  countProjectsForCategory,
+  countProjectsForService,
+  type GalleryCategoryFilter,
+} from "@/hooks/useFilteredProjects";
+import {
+  exteriorProjectTypeFilters,
   projectDetailPath,
   projectServiceFilters,
   projects,
@@ -54,7 +61,7 @@ export function ProjectsGallery({
   const reduceMotion = useReducedMotion();
   const router = useRouter();
   const [filter, setFilter] = useState<ProjectServiceFilter>(initialFilter);
-  const [, setExteriorType] = useState<ExteriorProjectTypeFilter>(initialExteriorType);
+  const [exteriorType, setExteriorType] = useState<ExteriorProjectTypeFilter>(initialExteriorType);
 
   const isInteriorMode = filter === "interior";
   const isPortfolioMode = filter === "All" || isInteriorMode || filter === "exterior";
@@ -77,6 +84,20 @@ export function ProjectsGallery({
     },
     [basePath, router],
   );
+
+  const setExteriorTypeAndUrl = useCallback(
+    (next: ExteriorProjectTypeFilter) => {
+      setExteriorType(next);
+      router.replace(projectsGalleryPath(basePath, "exterior", next), { scroll: false });
+    },
+    [basePath, router],
+  );
+
+  const exteriorProjectsForGallery = useMemo(() => {
+    const list = projects.filter((p) => p.serviceSlug === "exterior");
+    if (exteriorType === "All") return list;
+    return list.filter((p) => p.exteriorType === exteriorType);
+  }, [exteriorType]);
 
   const onCategoryFromHash = useCallback(
     (type: ExteriorProjectType) => {
@@ -123,22 +144,34 @@ export function ProjectsGallery({
                 Editorial grids for interior and exterior work — each card adapts to its cover aspect ratio.
               </p>
             </div>
-            <motion.div className="gallery-page__filters flex max-w-full flex-nowrap gap-1.5 overflow-x-auto pb-0.5 scrollbar-none md:flex-wrap md:gap-2">
+            <GalleryFilterGrid variant="services" ariaLabel="Filter by service" className="gallery-page__filters">
               {projectServiceFilters.map((tab) => (
-                <GalleryFilterPill
+                <GalleryFilterCell
                   key={tab}
                   active={filter === tab}
+                  label={serviceFilterLabel(tab)}
+                  count={countProjectsForService(tab)}
                   onClick={() => setFilterAndUrl(tab)}
-                  className={`label-upper shrink-0 rounded-full px-4 py-2 text-[10px] tracking-[0.16em] transition-colors md:text-[11px] ${
-                    filter === tab
-                      ? "text-ink-primary"
-                      : "border border-gold/25 text-ink-secondary hover:border-gold/50 hover:text-ink-primary"
-                  }`}
-                >
-                  {serviceFilterLabel(tab)}
-                </GalleryFilterPill>
+                />
               ))}
-            </motion.div>
+            </GalleryFilterGrid>
+
+            {filter === "exterior" ? (
+              <div className="mt-4 border-t border-white/[0.08] pt-4">
+                <p className="label-upper mb-2 text-[0.6rem] text-ink-muted">Exterior scope</p>
+                <GalleryFilterGrid variant="exterior" ariaLabel="Exterior collections">
+                  {exteriorProjectTypeFilters.map((type) => (
+                    <GalleryFilterCell
+                      key={type}
+                      active={exteriorType === type}
+                      label={categoryFilterLabel("exterior", type as GalleryCategoryFilter)}
+                      count={countProjectsForCategory("exterior", type as GalleryCategoryFilter)}
+                      onClick={() => setExteriorTypeAndUrl(type)}
+                    />
+                  ))}
+                </GalleryFilterGrid>
+              </div>
+            ) : null}
           </header>
           <GalleryGoldLine className="mt-8 max-w-md" />
         </GalleryReveal>
@@ -158,6 +191,7 @@ export function ProjectsGallery({
                 sections={
                   filter === "All" ? ["interior", "exterior"] : isInteriorMode ? ["interior"] : ["exterior"]
                 }
+                exteriorProjects={filter === "exterior" ? exteriorProjectsForGallery : undefined}
               />
               {filter === "All" && ancillaryProjects.length > 0 ? (
                 <div className="mt-16 md:mt-24">
