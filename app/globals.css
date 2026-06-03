@@ -3683,15 +3683,55 @@ html.preloader-pending body::before {
   background: transparent !important;
 }
 
-@media (max-width: 767px) {
+#services.section-page {
+  overflow: visible;
+}
+
+@media (max-width: 1023px) {
   #services.section-page,
-  #services .section-inner {
+  #services .section-inner,
+  #services .services-carousel {
     overflow: visible;
   }
+}
 
-  .services-story-track {
-    touch-action: pan-x;
-    overscroll-behavior-y: auto;
+.services-carousel {
+  overflow: visible;
+  touch-action: auto;
+}
+
+.services-carousel__viewport {
+  overflow: hidden;
+  width: 100%;
+}
+
+.services-carousel__track {
+  display: flex;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .services-carousel__track {
+    transition: none;
+  }
+}
+
+.services-carousel__slide {
+  display: flex;
+  flex: 0 0 100%;
+  width: 100%;
+  justify-content: center;
+  padding-inline: max(0.25rem, var(--section-gutter-x));
+}
+
+@media (min-width: 640px) {
+  .services-carousel__slide {
+    padding-inline: max(0.5rem, var(--section-gutter-x));
+  }
+
+  .services-story-card {
+    max-width: min(100%, 22rem);
   }
 }
 
@@ -3713,13 +3753,16 @@ html.preloader-pending body::before {
   transition:
     transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
     opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-  transform: scale(0.97);
-  opacity: 0.9;
 }
 
 .services-story-card--active {
   transform: scale(1);
   opacity: 1;
+}
+
+.services-story-card:not(.services-story-card--active) {
+  transform: scale(0.98);
+  opacity: 0.92;
 }
 
 .services-panel-card {
@@ -3745,9 +3788,7 @@ html.preloader-pending body::before {
 .services-panel-scroll {
   min-height: 200px;
   max-height: min(50svh, 540px);
-  overflow-x: auto;
-  overflow-y: visible;
-  -webkit-overflow-scrolling: touch;
+  overflow: visible;
 }
 
 .services-panel-track {
@@ -3755,7 +3796,6 @@ html.preloader-pending body::before {
   height: 100%;
   min-height: inherit;
   max-height: inherit;
-  scroll-snap-type: x proximity;
   scroll-padding-inline: 0.35rem;
 }
 

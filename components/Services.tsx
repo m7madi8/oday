@@ -3,12 +3,12 @@
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import { SectionHeader, SectionInner, SectionShell } from "@/components/SectionShell";
 import { services } from "@/lib/content/services";
-import { useReducedMotion } from "@/components/ClientMotion";
 import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 import { SafeButton } from "@/components/SafeButton";
 import { ArrowUpRight } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
+import { useReducedMotion } from "@/components/ClientMotion";
 import aboutImage from "@/imgs/about.jpg";
 import interiorImage from "@/imgs/interior.jpg";
 import exteriorImage from "@/imgs/exterior.jpg";
@@ -110,75 +110,13 @@ const stripBezel =
 const stripInner =
   "flex h-full min-h-[inherit] w-full overflow-hidden rounded-[1.02rem] bg-transparent lg:rounded-[1.15rem]";
 
-function getCenteredStoryIndex(el: HTMLDivElement): number {
-  const center = el.scrollLeft + el.clientWidth / 2;
-  let closest = 0;
-  let minDist = Infinity;
-
-  Array.from(el.children).forEach((child, i) => {
-    const card = child as HTMLElement;
-    const cardCenter = card.offsetLeft + card.offsetWidth / 2;
-    const dist = Math.abs(cardCenter - center);
-    if (dist < minDist) {
-      minDist = dist;
-      closest = i;
-    }
-  });
-
-  return closest;
-}
-
 export function Services() {
-  const reduceMotion = useReducedMotion();
   const [activeId, setActiveId] = useState(services[0]?.id ?? "");
-  const [storyIndex, setStoryIndex] = useState(0);
-  const storyScrollerRef = useRef<HTMLDivElement>(null);
-  const storyRafRef = useRef(0);
-
-  const syncStoryScroll = useCallback(() => {
-    const el = storyScrollerRef.current;
-    if (!el || !el.children.length) return;
-    const closest = getCenteredStoryIndex(el);
-    setStoryIndex((prev) => (prev === closest ? prev : closest));
-  }, []);
-
-  useEffect(() => {
-    const el = storyScrollerRef.current;
-    if (!el) return;
-
-    syncStoryScroll();
-
-    const onScroll = () => {
-      cancelAnimationFrame(storyRafRef.current);
-      storyRafRef.current = requestAnimationFrame(syncStoryScroll);
-    };
-
-    el.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", syncStoryScroll);
-
-    return () => {
-      cancelAnimationFrame(storyRafRef.current);
-      el.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", syncStoryScroll);
-    };
-  }, [syncStoryScroll]);
 
   if (!services.length) return null;
 
-  function scrollToStory(index: number) {
-    const el = storyScrollerRef.current;
-    const child = el?.children[index] as HTMLElement | undefined;
-    if (!el || !child) return;
-    const left = child.offsetLeft - (el.clientWidth - child.offsetWidth) / 2;
-    el.scrollTo({
-      left: Math.max(0, left),
-      behavior: reduceMotion ? "auto" : "smooth",
-    });
-    setStoryIndex(index);
-  }
-
   return (
-    <SectionShell id="services" snap={false} className="isolate !overflow-visible">
+    <SectionShell id="services" snap={false} containOverflow={false}>
       <SectionInner className="relative flex flex-col">
         <ScrollReveal dramatic>
           <SectionHeader
@@ -195,43 +133,11 @@ export function Services() {
           />
         </ScrollReveal>
 
-        {/* Mobile: Instagram story ratio cards */}
-        <ScrollReveal dramatic delay={0.06} className="mt-6 flex flex-col md:hidden">
-          <div className="-mx-[var(--section-gutter-x)] overflow-visible px-[var(--section-gutter-x)]">
-          <div
-            ref={storyScrollerRef}
-            className="services-story-track flex gap-3 py-2"
-            aria-label="Services stories"
-          >
-            {services.map((service, index) => (
-              <ServiceStoryCard
-                key={service.id}
-                service={service}
-                isActive={storyIndex === index}
-              />
-            ))}
-          </div>
-          </div>
-
-          <div className="mt-3 flex shrink-0 justify-center gap-2" role="tablist" aria-label="Service stories">
-            {services.map((service, index) => (
-              <SafeButton
-                key={service.id}
-                data-no-glow
-                role="tab"
-                aria-selected={storyIndex === index}
-                aria-label={`Go to ${service.title}`}
-                onClick={() => scrollToStory(index)}
-                className={`h-1.5 rounded-full transition-all duration-300 ${
-                  storyIndex === index ? "w-7 bg-gold" : "w-1.5 bg-gold/35"
-                }`}
-              />
-            ))}
-          </div>
-        </ScrollReveal>
+        {/* Mobile / tablet: transform carousel — no overflow scroll trap */}
+        <ServicesMobileCarousel />
 
         {/* Desktop: panoramic accordion strip */}
-        <ScrollReveal dramatic delay={0.06} className="mt-3 hidden flex-col md:flex">
+        <ScrollReveal dramatic delay={0.06} className="mt-3 hidden flex-col lg:flex">
           <div className={`${stripBezel} flex flex-col`}>
             <div
               className="services-panel-scroll"
@@ -273,13 +179,104 @@ export function Services() {
   );
 }
 
-/** 9:16 story card — CSS scroll focus */
+const SWIPE_THRESHOLD_PX = 48;
+
+function ServicesMobileCarousel() {
+  const reduceMotion = useReducedMotion();
+  const [activeIndex, setActiveIndex] = useState(0);
+  const touchStartRef = useRef<{ x: number; y: number } | null>(null);
+
+  const goTo = useCallback((index: number) => {
+    setActiveIndex(Math.max(0, Math.min(services.length - 1, index)));
+  }, []);
+
+  const onTouchStart = useCallback((e: React.TouchEvent) => {
+    if (e.touches.length !== 1) {
+      touchStartRef.current = null;
+      return;
+    }
+    const t = e.touches[0];
+    touchStartRef.current = { x: t.clientX, y: t.clientY };
+  }, []);
+
+  const onTouchEnd = useCallback(
+    (e: React.TouchEvent) => {
+      const start = touchStartRef.current;
+      touchStartRef.current = null;
+      if (!start || e.changedTouches.length !== 1) return;
+
+      const t = e.changedTouches[0];
+      const dx = t.clientX - start.x;
+      const dy = t.clientY - start.y;
+
+      if (Math.abs(dx) < SWIPE_THRESHOLD_PX || Math.abs(dx) <= Math.abs(dy)) return;
+
+      if (dx < 0) goTo(activeIndex + 1);
+      else goTo(activeIndex - 1);
+    },
+    [activeIndex, goTo],
+  );
+
+  return (
+    <div className="services-carousel mt-6 lg:hidden">
+      <div
+        className="services-carousel__viewport"
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
+        aria-roledescription="carousel"
+        aria-label="Services"
+      >
+        <div
+          className="services-carousel__track"
+          style={{
+            transform: `translate3d(-${activeIndex * 100}%, 0, 0)`,
+            transition: reduceMotion ? "none" : undefined,
+          }}
+        >
+          {services.map((service, index) => (
+            <div
+              key={service.id}
+              className="services-carousel__slide"
+              aria-hidden={activeIndex !== index}
+            >
+              <ServiceStoryCard
+                service={service}
+                isActive={activeIndex === index}
+                activeIndex={activeIndex}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="mt-3 flex justify-center gap-2" role="tablist" aria-label="Service slides">
+        {services.map((service, index) => (
+          <SafeButton
+            key={service.id}
+            data-no-glow
+            role="tab"
+            aria-selected={activeIndex === index}
+            aria-label={`Go to ${service.title}`}
+            onClick={() => goTo(index)}
+            className={`h-1.5 rounded-full transition-all duration-300 ${
+              activeIndex === index ? "w-7 bg-gold" : "w-1.5 bg-gold/35"
+            }`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/** Mobile story card — used inside transform carousel (not scroll container) */
 function ServiceStoryCard({
   service,
   isActive,
+  activeIndex,
 }: {
   service: (typeof services)[number];
   isActive: boolean;
+  activeIndex: number;
 }) {
   const profile = serviceProfiles[service.title] ?? fallbackProfile;
   const visual = getServiceVisual(service.title);
@@ -287,7 +284,9 @@ function ServiceStoryCard({
 
   return (
     <article
-      className={`services-story-card relative aspect-[9/16] h-[min(58svh,520px)] w-auto max-h-full shrink-0 overflow-hidden bg-transparent first:scroll-ml-0${isActive ? " services-story-card--active" : ""}`}
+      className={`services-story-card relative aspect-[9/16] h-[min(56svh,500px)] w-full max-w-[min(100%,20rem)] shrink-0 bg-transparent${
+        isActive ? " services-story-card--active" : ""
+      }`}
     >
       <div className="relative h-full w-full overflow-hidden rounded-[1.12rem] shadow-[0_16px_40px_rgba(0,0,0,0.35)] ring-1 ring-white/[0.08]">
         <div className="absolute inset-0">
@@ -313,41 +312,38 @@ function ServiceStoryCard({
         />
 
         <div className="absolute inset-x-0 top-0 z-20 flex gap-1 p-3 pt-3.5">
-          {services.map((s) => {
-            const isCurrent = s.id === service.id;
-            return (
-              <div
-                key={s.id}
-                aria-hidden
-                className="h-[3px] flex-1 overflow-hidden rounded-full bg-white/20"
-              >
+          {services.map((s, idx) => (
+            <div
+              key={s.id}
+              aria-hidden
+              className="h-[3px] flex-1 overflow-hidden rounded-full bg-white/20"
+            >
                 <div
                   className="h-full rounded-full bg-white/90 transition-transform duration-300"
                   style={{
-                    transform: `scaleX(${isCurrent && isActive ? 1 : isCurrent ? 0.55 : 0})`,
+                    transform: `scaleX(${idx < activeIndex ? 1 : idx === activeIndex && isActive ? 1 : 0})`,
                     transformOrigin: "left center",
                   }}
                 />
               </div>
-            );
-          })}
+            ))}
         </div>
 
         <div className="relative z-10 flex h-full flex-col p-4">
           <div className="mt-8 flex items-center gap-2.5">
-              <span
-                className={`flex h-9 w-9 items-center justify-center rounded-full border bg-gold/12 text-gold ring-1 ring-black/30 transition-colors duration-300 ${
-                  isActive ? "border-gold/55" : "border-gold/35"
-                }`}
-              >
-                <Icon className="h-4 w-4" aria-hidden />
-              </span>
-              <div>
-                <p className="font-outfit text-[10px] font-semibold uppercase tracking-[0.2em] text-gold">
-                  {service.orderLabel}
-                </p>
-                <p className="font-display text-lg italic leading-tight text-white">{service.title}</p>
-              </div>
+            <span
+              className={`flex h-9 w-9 items-center justify-center rounded-full border bg-gold/12 text-gold ring-1 ring-black/30 transition-colors duration-300 ${
+                isActive ? "border-gold/55" : "border-gold/35"
+              }`}
+            >
+              <Icon className="h-4 w-4" aria-hidden />
+            </span>
+            <div>
+              <p className="font-outfit text-[10px] font-semibold uppercase tracking-[0.2em] text-gold">
+                {service.orderLabel}
+              </p>
+              <p className="font-display text-lg italic leading-tight text-white">{service.title}</p>
+            </div>
           </div>
 
           <div className="mt-auto space-y-4 pb-1">
