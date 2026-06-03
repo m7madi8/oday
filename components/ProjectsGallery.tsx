@@ -7,7 +7,7 @@ import {
   GallerySectionTransition,
   GalleryStagger,
 } from "@/components/animations/GalleryMotion";
-import { GalleryFilterCell, GalleryFilterGrid } from "@/components/GalleryFilterGrid";
+import { GalleryFilterCell, GalleryFilterGrid, GalleryFilterScope } from "@/components/GalleryFilterGrid";
 import { GalleryHashSync } from "@/components/GalleryHashSync";
 import { PortfolioDesignGallery } from "@/components/portfolio/PortfolioDesignGallery";
 import { ProjectsGallerySearchSync } from "@/components/ProjectsGallerySearchSync";
@@ -144,10 +144,17 @@ export function ProjectsGallery({
                 Editorial grids for interior and exterior work — each card adapts to its cover aspect ratio.
               </p>
             </div>
-            <GalleryFilterGrid variant="services" ariaLabel="Filter by service" className="gallery-page__filters">
-              {projectServiceFilters.map((tab) => (
+            <GalleryFilterGrid
+              variant="services"
+              tier="primary"
+              ariaLabel="Filter by service"
+              className="gallery-page__filters"
+            >
+              {projectServiceFilters.map((tab, i) => (
                 <GalleryFilterCell
                   key={tab}
+                  tier="primary"
+                  index={tab === "All" ? undefined : String(i).padStart(2, "0")}
                   active={filter === tab}
                   label={serviceFilterLabel(tab)}
                   count={countProjectsForService(tab)}
@@ -157,12 +164,12 @@ export function ProjectsGallery({
             </GalleryFilterGrid>
 
             {filter === "exterior" ? (
-              <div className="mt-4 border-t border-white/[0.08] pt-4">
-                <p className="label-upper mb-2 text-[0.6rem] text-ink-muted">Exterior scope</p>
-                <GalleryFilterGrid variant="exterior" ariaLabel="Exterior collections">
+              <GalleryFilterScope label="Exterior scope" className="mt-4 border-t border-white/[0.06] pt-3">
+                <GalleryFilterGrid variant="exterior" tier="secondary" ariaLabel="Exterior collections">
                   {exteriorProjectTypeFilters.map((type) => (
                     <GalleryFilterCell
                       key={type}
+                      tier="secondary"
                       active={exteriorType === type}
                       label={categoryFilterLabel("exterior", type as GalleryCategoryFilter)}
                       count={countProjectsForCategory("exterior", type as GalleryCategoryFilter)}
@@ -170,7 +177,7 @@ export function ProjectsGallery({
                     />
                   ))}
                 </GalleryFilterGrid>
-              </div>
+              </GalleryFilterScope>
             ) : null}
           </header>
           <GalleryGoldLine className="mt-8 max-w-md" />

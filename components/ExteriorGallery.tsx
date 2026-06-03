@@ -123,6 +123,7 @@ export function ExteriorGallery({
               return (
                 <GalleryFilterCell
                   key={item.type}
+                  tier="secondary"
                   active={selected}
                   label={item.title}
                   onClick={() => handlePick(item.type)}

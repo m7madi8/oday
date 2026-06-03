@@ -15,6 +15,8 @@ export interface CounterNumberProps {
   start?: string;
   delay?: number;
   enabled?: boolean;
+  /** When disabled, show zero instead of the final value (for pre-scroll hold). */
+  holdAtZero?: boolean;
   triggerRef?: RefObject<HTMLElement | null>;
 }
 
@@ -31,6 +33,7 @@ export function CounterNumber({
   duration = counterDefaults.duration,
   delay = 0,
   enabled = true,
+  holdAtZero = false,
   triggerRef,
 }: CounterNumberProps) {
   const valueRef = useRef<HTMLSpanElement>(null);
@@ -105,12 +108,9 @@ export function CounterNumber({
     };
 
     const observeTarget = triggerRef?.current ?? valueEl;
-
-    const isVisible = () => {
-      const rect = observeTarget.getBoundingClientRect();
-      const vh = window.innerHeight || document.documentElement.clientHeight;
-      return rect.top < vh * 0.92 && rect.bottom > vh * 0.06;
-    };
+    const observerOptions: IntersectionObserverInit = triggerRef?.current
+      ? { threshold: 0.28, rootMargin: "0px 0px -12% 0px" }
+      : { threshold: 0.15, rootMargin: "0px 0px -8% 0px" };
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -119,15 +119,10 @@ export function CounterNumber({
           observer.disconnect();
         }
       },
-      { threshold: 0.1, rootMargin: "0px 0px -4% 0px" },
+      observerOptions,
     );
 
     observer.observe(observeTarget);
-
-    if (isVisible()) {
-      runCount();
-      observer.disconnect();
-    }
 
     const safety = window.setTimeout(() => {
       if (!hasAnimatedRef.current && valueRef.current) {
@@ -144,7 +139,11 @@ export function CounterNumber({
   }, [enabled, targetNumber, duration, delay, formatValue, finalText, triggerRef]);
 
   if (!enabled) {
-    return <span className={className}>{finalText}</span>;
+    return (
+      <span className={className} suppressHydrationWarning>
+        {holdAtZero ? formatValue(0) : finalText}
+      </span>
+    );
   }
 
   return (

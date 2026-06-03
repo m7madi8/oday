@@ -1,11 +1,8 @@
-import type { LucideIcon } from "lucide-react";
-import { Compass, Globe2, Layers3 } from "lucide-react";
-import ceoPortrait from "@/imgs/ceo.jpg";
+import directorPortrait from "@/imgs/oday.jpeg";
 
 export interface Strength {
   title: string;
   description: string;
-  icon: LucideIcon;
 }
 
 export const about = {
@@ -27,24 +24,21 @@ export const about = {
       title: "Design Strategy",
       description:
         "Every concept starts with spatial intent, material identity, and buildable clarity.",
-      icon: Layers3,
     },
     {
       title: "Technical Authority",
       description:
         "BIM-led coordination, code compliance, and buildable detailing reduce execution risk.",
-      icon: Compass,
     },
     {
       title: "Execution Control",
       description:
         "Clear milestones, transparent reporting, and site follow-up protect quality and timeline.",
-      icon: Globe2,
     },
   ] satisfies Strength[],
   directorName: "Oday Abu Doha",
   directorRole: "Founder & Design Director",
-  directorPortrait: ceoPortrait,
+  directorPortrait,
   directorPortraitAlt:
-    "Portrait of Oday Abu Doha, founder and design director of OD Studio",
+    "Oday Abu Doha, founder and design director of OD Studio, in formal attire",
 };

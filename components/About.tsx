@@ -8,25 +8,59 @@ import { motion, useReducedMotion } from "@/components/ClientMotion";
 import { revealInView } from "@/lib/motion-viewport";
 import { about as studioAbout } from "@/lib/content/about";
 import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 import { SectionInner, SectionShell } from "@/components/SectionShell";
 
 export function About() {
   const reduce = useReducedMotion();
+  const statsTriggerRef = useRef<HTMLDivElement>(null);
+  const [statsInView, setStatsInView] = useState(false);
+
+  useEffect(() => {
+    if (reduce) {
+      setStatsInView(true);
+      return;
+    }
+
+    const section = document.getElementById("about");
+    if (!section) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          setStatsInView(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.18, rootMargin: "0px 0px -12% 0px" },
+    );
+
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, [reduce]);
 
   return (
     <SectionShell id="about">
       <SectionInner>
       <RevealChildren
-        className="relative grid w-full items-center gap-6 md:gap-7 lg:grid-cols-[minmax(0,1.12fr)_minmax(220px,0.88fr)] lg:gap-8"
+        className="relative grid w-full items-center gap-6 md:gap-7 lg:grid-cols-[minmax(0,1.08fr)_minmax(240px,0.92fr)] lg:gap-10"
         stagger={0.07}
       >
         <ScrollReveal
           as="article"
           dramatic
-          className="section-card flex flex-col p-5 md:p-6 lg:p-7"
+          className="about-snapshot"
         >
-          <header className="border-b border-white/[0.1] pb-3 md:pb-3.5">
+          <span className="about-snapshot__frame" aria-hidden />
+          <span className="about-snapshot__corner about-snapshot__corner--tl" aria-hidden />
+          <span className="about-snapshot__corner about-snapshot__corner--tr" aria-hidden />
+          <span className="about-snapshot__corner about-snapshot__corner--bl" aria-hidden />
+          <span className="about-snapshot__corner about-snapshot__corner--br" aria-hidden />
+          <span className="about-snapshot__grid" aria-hidden />
+
+          <header className="about-snapshot__header">
             <motion.div
+              className="about-snapshot__header-copy"
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={revealInView}
@@ -37,127 +71,128 @@ export function About() {
                 {studioAbout.snapshotSub}
               </p>
             </motion.div>
+            <span className="about-snapshot__index label-upper" aria-hidden>
+              {studioAbout.sectionNumber}
+            </span>
           </header>
 
           <motion.div
-            className="mt-4 border-y border-white/[0.08] md:mt-4"
+            ref={statsTriggerRef}
+            className="about-snapshot__stats"
             initial={reduce ? false : { opacity: 0, y: 14 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.35, margin: "0px 0px -8% 0px" }}
             transition={{ duration: reduce ? 0 : 0.55, ease: [0.22, 1, 0.36, 1] }}
           >
-            <motion.div className="grid grid-cols-2 divide-x divide-white/[0.08]">
-              {studioAbout.stats.map((stat, idx) => (
-                <motion.div
-                  key={stat.label}
-                  className="py-3 text-center first:pl-0 sm:py-3.5"
-                  initial={reduce ? false : { opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.25 }}
-                  transition={{
-                    duration: reduce ? 0 : 0.45,
-                    delay: reduce ? 0 : 0.04 + idx * 0.05,
-                    ease: [0.16, 1, 0.3, 1],
-                  }}
-                >
-                  <p className="font-display text-[1.65rem] font-normal not-italic leading-none tabular-nums tracking-tight text-ink-primary md:text-[1.85rem]">
-                    <CounterNumber
-                      targetNumber={stat.target}
-                      prefix={stat.prefix}
-                      suffix={stat.suffix}
-                      delay={reduce ? 0 : 0.12 + idx * 0.3}
-                      duration={reduce ? 0 : 2.2}
-                      enabled={!reduce}
-                    />
-                  </p>
-                  <p className="label-upper mt-1.5 text-[0.6rem] tracking-[0.14em] text-ink-muted">{stat.label}</p>
-                </motion.div>
-              ))}
-            </motion.div>
-          </motion.div>
-
-          <motion.p
-            className="mt-4 max-w-2xl text-[0.875rem] font-medium leading-[1.58] text-ink-secondary md:mt-4 md:text-[0.9rem] md:leading-[1.62]"
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={revealInView}
-            transition={{ duration: reduce ? 0 : 0.55, delay: reduce ? 0 : 0.04, ease: [0.22, 1, 0.36, 1] }}
-          >
-            {studioAbout.introParagraph}
-          </motion.p>
-
-          <h2 className="mt-4 font-display text-[clamp(1.5rem,3.2vw,2.35rem)] font-normal italic leading-[1.08] text-ink-primary">
-            <RevealText as="span" className="block" splitByWords wordStagger={0.06} duration={0.85}>
-              {studioAbout.headlinePrimary}
-            </RevealText>{" "}
-            <RevealText as="span" className="text-gold/90" splitByWords wordStagger={0.07} duration={0.85} delay={0.12}>
-              {studioAbout.headlineAccent}
-            </RevealText>
-          </h2>
-          <div className="mt-3 h-px w-full max-w-[3.5rem] bg-gold/35" aria-hidden />
-
-          <motion.ul
-            className="mt-4 grid gap-3 sm:grid-cols-3 sm:gap-4 md:mt-4"
-            initial={{ opacity: 0, y: 14 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={revealInView}
-            transition={{ duration: reduce ? 0 : 0.5, delay: reduce ? 0 : 0.08 }}
-          >
-            {studioAbout.strengths.map(({ title, description, icon: Icon }) => (
-              <li key={title} className="flex gap-2.5 sm:flex-col sm:gap-2">
-                <motion.div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-gold/28 bg-bg-primary/80 text-gold sm:mx-auto">
-                  <Icon className="h-4 w-4" aria-hidden />
-                </motion.div>
-                <motion.div className="min-w-0 sm:text-center">
-                  <p className="font-outfit text-[0.8125rem] font-semibold tracking-[0.03em] text-ink-primary">
-                    {title}
-                  </p>
-                  <p className="mt-1 text-[0.72rem] leading-[1.5] text-ink-secondary sm:leading-[1.48]">
-                    {description}
-                  </p>
-                </motion.div>
-              </li>
+            {studioAbout.stats.map((stat, idx) => (
+              <motion.div
+                key={stat.label}
+                className="about-snapshot__stat"
+                initial={reduce ? false : { opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.25 }}
+                transition={{
+                  duration: reduce ? 0 : 0.45,
+                  delay: reduce ? 0 : 0.04 + idx * 0.05,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+              >
+                <span className="about-snapshot__stat-index" aria-hidden>
+                  {String(idx + 1).padStart(2, "0")}
+                </span>
+                <p className="about-snapshot__stat-value">
+                  <CounterNumber
+                    targetNumber={stat.target}
+                    prefix={stat.prefix}
+                    suffix={stat.suffix}
+                    delay={reduce ? 0 : 0.15 + idx * 0.35}
+                    duration={reduce ? 0 : 2.2}
+                    enabled={statsInView && !reduce}
+                    holdAtZero={!statsInView && !reduce}
+                    triggerRef={statsTriggerRef}
+                  />
+                </p>
+                <p className="about-snapshot__stat-label">{stat.label}</p>
+              </motion.div>
             ))}
-          </motion.ul>
-
-          <motion.div
-            className="mt-5 border-t border-white/[0.1] pt-4 md:mt-5 md:pt-4"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={revealInView}
-            transition={{ duration: reduce ? 0 : 0.58, delay: reduce ? 0 : 0.06 }}
-          >
-            <p className="font-display text-[1.45rem] italic leading-none text-ink-primary md:text-[1.6rem]">
-              {studioAbout.directorName}
-            </p>
-            <p className="label-upper mt-1.5 text-ink-muted" style={{ fontVariantCaps: "all-small-caps" }}>
-              {studioAbout.directorRole}
-            </p>
           </motion.div>
+
+          <div className="about-snapshot__body">
+            <motion.p
+              className="about-snapshot__intro"
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={revealInView}
+              transition={{ duration: reduce ? 0 : 0.55, delay: reduce ? 0 : 0.04, ease: [0.22, 1, 0.36, 1] }}
+            >
+              {studioAbout.introParagraph}
+            </motion.p>
+
+            <h2 className="about-snapshot__headline">
+              <RevealText as="span" className="block" splitByWords wordStagger={0.06} duration={0.85}>
+                {studioAbout.headlinePrimary}
+              </RevealText>{" "}
+              <RevealText as="span" className="text-gold/90" splitByWords wordStagger={0.07} duration={0.85} delay={0.12}>
+                {studioAbout.headlineAccent}
+              </RevealText>
+            </h2>
+
+            <motion.ul
+              className="about-snapshot__strengths"
+              initial={{ opacity: 0, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={revealInView}
+              transition={{ duration: reduce ? 0 : 0.5, delay: reduce ? 0 : 0.08 }}
+            >
+              {studioAbout.strengths.map(({ title, description }, idx) => (
+                <li key={title} className="about-snapshot__strength">
+                  <span className="about-snapshot__strength-index" aria-hidden>
+                    {String(idx + 1).padStart(2, "0")}
+                  </span>
+                  <div className="about-snapshot__strength-copy">
+                    <p className="about-snapshot__strength-title">{title}</p>
+                    <p className="about-snapshot__strength-desc">{description}</p>
+                  </div>
+                </li>
+              ))}
+            </motion.ul>
+          </div>
         </ScrollReveal>
 
         <ScrollReveal
           dramatic
           delay={0.05}
-          className="flex items-center justify-center lg:justify-center"
+          className="about-portrait-wrap flex items-center justify-center lg:justify-end"
         >
-          <div className="relative mx-auto aspect-[3/4] w-full max-w-[min(100%,280px)] overflow-hidden rounded-2xl border border-gold/25 shadow-[0_16px_48px_rgba(0,0,0,0.45)] sm:max-w-[300px] lg:max-h-[min(72vh,480px)] lg:w-full lg:max-w-[min(100%,320px)]">
-            <Image
-              src={studioAbout.directorPortrait}
-              alt={studioAbout.directorPortraitAlt}
-              fill
-              className="object-cover object-center"
-              sizes="(max-width: 1024px) 85vw, 320px"
-              loading="lazy"
-            />
-            <motion.div
-              aria-hidden
-              className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#12100c]/80 to-transparent"
-            />
-            <p className="absolute inset-x-0 bottom-0 px-3 py-2.5 text-center text-[0.58rem] uppercase leading-snug tracking-[0.16em] text-ink-primary">
-              {studioAbout.directorName} — {studioAbout.logoWordmark} {studioAbout.logoSub}
-            </p>
-          </div>
+          <figure className="about-portrait">
+            <div className="about-portrait__ghost" aria-hidden />
+
+            <div className="about-portrait__shell">
+              <span className="about-portrait__corner about-portrait__corner--tl" aria-hidden />
+              <span className="about-portrait__corner about-portrait__corner--br" aria-hidden />
+              <span className="about-portrait__index label-upper" aria-hidden>
+                {studioAbout.sectionNumber}
+              </span>
+
+              <div className="about-portrait__media">
+                <Image
+                  src={studioAbout.directorPortrait}
+                  alt={studioAbout.directorPortraitAlt}
+                  fill
+                  className="about-portrait__img"
+                  sizes="(max-width: 1024px) 88vw, 360px"
+                  loading="lazy"
+                />
+                <div className="about-portrait__veil" aria-hidden />
+              </div>
+
+              <figcaption className="about-portrait__caption">
+                <p className="label-upper text-gold/80">{studioAbout.logoWordmark} {studioAbout.logoSub}</p>
+                <p className="about-portrait__name">{studioAbout.directorName}</p>
+                <p className="about-portrait__role">{studioAbout.directorRole}</p>
+              </figcaption>
+            </div>
+          </figure>
         </ScrollReveal>
       </RevealChildren>
       </SectionInner>

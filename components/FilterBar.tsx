@@ -1,6 +1,6 @@
 "use client";
 
-import { GalleryFilterCell, GalleryFilterGrid } from "@/components/GalleryFilterGrid";
+import { GalleryFilterCell, GalleryFilterGrid, GalleryFilterScope } from "@/components/GalleryFilterGrid";
 import {
   AnimatePresence,
   motion,
@@ -44,10 +44,12 @@ export function FilterBar({
       }`}
     >
       <div className="mx-auto w-full max-w-7xl px-5 py-3 md:px-10">
-        <GalleryFilterGrid variant="services" ariaLabel="Filter by service">
-          {projectServiceFilters.map((tab) => (
+        <GalleryFilterGrid variant="services" tier="primary" ariaLabel="Filter by service">
+          {projectServiceFilters.map((tab, i) => (
             <GalleryFilterCell
               key={tab}
+              tier="primary"
+              index={tab === "All" ? undefined : String(i).padStart(2, "0")}
               active={service === tab}
               label={serviceFilterLabel(tab)}
               count={countProjectsForService(tab)}
@@ -65,26 +67,27 @@ export function FilterBar({
             animate={{ opacity: 1, height: "auto" }}
             exit={reduceMotion ? undefined : { opacity: 0, height: 0 }}
             transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-            className="overflow-hidden border-t border-white/[0.08]"
+            className="overflow-hidden border-t border-white/[0.06]"
           >
             <div className="mx-auto w-full max-w-7xl px-5 py-2.5 md:px-10 md:py-3">
-              <p className="label-upper mb-2 text-[0.6rem] text-ink-muted">
-                {service === "exterior" ? "Exterior scope" : "Category"}
-              </p>
-              <GalleryFilterGrid
-                variant={service === "exterior" ? "exterior" : "auto"}
-                ariaLabel="Filter by category"
-              >
-                {categoryOptions.map((cat) => (
-                  <GalleryFilterCell
-                    key={cat}
-                    active={category === cat}
-                    label={categoryFilterLabel(service, cat)}
-                    count={categoryCounts[cat]}
-                    onClick={() => onCategoryChange(cat)}
-                  />
-                ))}
-              </GalleryFilterGrid>
+              <GalleryFilterScope label={service === "exterior" ? "Exterior scope" : "Category"}>
+                <GalleryFilterGrid
+                  variant={service === "exterior" ? "exterior" : "auto"}
+                  tier="secondary"
+                  ariaLabel="Filter by category"
+                >
+                  {categoryOptions.map((cat) => (
+                    <GalleryFilterCell
+                      key={cat}
+                      tier="secondary"
+                      active={category === cat}
+                      label={categoryFilterLabel(service, cat)}
+                      count={categoryCounts[cat]}
+                      onClick={() => onCategoryChange(cat)}
+                    />
+                  ))}
+                </GalleryFilterGrid>
+              </GalleryFilterScope>
             </div>
           </motion.div>
         ) : null}

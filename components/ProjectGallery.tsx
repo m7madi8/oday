@@ -1,5 +1,6 @@
 "use client";
 
+import { ProjectImageLightbox } from "@/components/ProjectImageLightbox";
 import { useReducedMotion } from "@/components/ClientMotion";
 import {
   getGalleryCardSize,
@@ -8,6 +9,7 @@ import {
 import { type ProjectGalleryFormat, type ProjectGalleryImage } from "@/lib/data";
 import { galleryTransition } from "@/lib/gallery-motion";
 import { motion } from "@/components/ClientMotion";
+import { ChevronLeft, ChevronRight, Maximize2 } from "lucide-react";
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 
@@ -23,7 +25,8 @@ function GalleryCard({
   format,
   maxHeight,
   maxWidth,
-  onSelect,
+  onOpen,
+  onNavigate,
 }: {
   image: ProjectGalleryImage;
   index: number;
@@ -31,7 +34,8 @@ function GalleryCard({
   format: ProjectGalleryFormat;
   maxHeight: number;
   maxWidth: number;
-  onSelect: () => void;
+  onOpen: () => void;
+  onNavigate: () => void;
 }) {
   const dims = resolveGalleryImageDimensions(image.src, format);
   const { width, height } = getGalleryCardSize(dims, { maxHeight, maxWidth });
@@ -43,12 +47,23 @@ function GalleryCard({
       role="tab"
       tabIndex={0}
       aria-selected={isActive}
-      aria-label={`${label} — ${image.alt}`}
-      onClick={onSelect}
+      aria-label={
+        isActive
+          ? `${label} — ${image.alt}. Tap to view fullscreen`
+          : `${label} — ${image.alt}. Tap to view`
+      }
+      onClick={() => {
+        if (isActive) {
+          onOpen();
+        } else {
+          onNavigate();
+        }
+      }}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
-          onSelect();
+          if (isActive) onOpen();
+          else onNavigate();
         }
       }}
       className={`project-gallery__card${isActive ? " project-gallery__card--active" : ""}`}
@@ -67,6 +82,9 @@ function GalleryCard({
       <span className="project-gallery__badge" aria-hidden>
         {label}
       </span>
+      <span className="project-gallery__expand" aria-hidden>
+        <Maximize2 className="h-3.5 w-3.5" strokeWidth={1.75} />
+      </span>
     </article>
   );
 }
@@ -82,7 +100,10 @@ export function ProjectGallery({
 }) {
   const reduce = useReducedMotion();
   const trackRef = useRef<HTMLDivElement>(null);
+  const skipObserverRef = useRef(false);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
   const [maxHeight, setMaxHeight] = useState(MAX_CARD_H);
   const [maxWidth, setMaxWidth] = useState(MAX_CARD_W);
 
@@ -112,8 +133,13 @@ export function ProjectGallery({
     [reduce],
   );
 
-  const select = useCallback(
+  const releaseObserverLock = useCallback(() => {
+    skipObserverRef.current = false;
+  }, []);
+
+  const navigateTo = useCallback(
     (index: number) => {
+      skipObserverRef.current = true;
       setActiveIndex(index);
       scrollToCard(index);
     },
@@ -124,9 +150,25 @@ export function ProjectGallery({
     const track = trackRef.current;
     if (!track || images.length < 2) return;
 
+    let settleTimer: ReturnType<typeof setTimeout> | undefined;
+
+    const scheduleObserverRelease = () => {
+      if (!skipObserverRef.current) return;
+      clearTimeout(settleTimer);
+      settleTimer = setTimeout(releaseObserverLock, reduce ? 80 : 480);
+    };
+
+    const onScrollEnd = () => {
+      if (skipObserverRef.current) releaseObserverLock();
+    };
+
+    track.addEventListener("scroll", scheduleObserverRelease, { passive: true });
+    track.addEventListener("scrollend", onScrollEnd);
+
     const cards = track.querySelectorAll<HTMLElement>("[data-gallery-card]");
     const observer = new IntersectionObserver(
       (entries) => {
+        if (skipObserverRef.current) return;
         let best: { index: number; ratio: number } | null = null;
         for (const entry of entries) {
           if (!entry.isIntersecting) continue;
@@ -143,10 +185,34 @@ export function ProjectGallery({
     );
 
     cards.forEach((card) => observer.observe(card));
-    return () => observer.disconnect();
-  }, [images.length, maxHeight, maxWidth]);
+    return () => {
+      clearTimeout(settleTimer);
+      track.removeEventListener("scroll", scheduleObserverRelease);
+      track.removeEventListener("scrollend", onScrollEnd);
+      observer.disconnect();
+    };
+  }, [images.length, maxHeight, maxWidth, reduce, releaseObserverLock]);
+
+  const select = useCallback(
+    (index: number) => {
+      navigateTo(index);
+    },
+    [navigateTo],
+  );
+
+  const openLightbox = useCallback(
+    (index: number) => {
+      skipObserverRef.current = true;
+      setActiveIndex(index);
+      setLightboxIndex(index);
+      setLightboxOpen(true);
+      scrollToCard(index);
+    },
+    [scrollToCard],
+  );
 
   useEffect(() => {
+    if (lightboxOpen) return;
     function onKey(e: KeyboardEvent) {
       const tag = (e.target as HTMLElement)?.tagName;
       if (tag === "INPUT" || tag === "TEXTAREA") return;
@@ -161,11 +227,32 @@ export function ProjectGallery({
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [activeIndex, images.length, select]);
+  }, [activeIndex, images.length, lightboxOpen, select]);
+
+  const goPrev = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (images.length < 2) return;
+      navigateTo((activeIndex - 1 + images.length) % images.length);
+    },
+    [activeIndex, images.length, navigateTo],
+  );
+
+  const goNext = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (images.length < 2) return;
+      navigateTo((activeIndex + 1) % images.length);
+    },
+    [activeIndex, images.length, navigateTo],
+  );
 
   if (!images.length) return null;
 
   const focusProgress = images.length > 1 ? activeIndex / (images.length - 1) : 1;
+  const canNavigate = images.length > 1;
 
   return (
     <section className="project-gallery" aria-label={`${title} gallery`}>
@@ -173,7 +260,10 @@ export function ProjectGallery({
         <div>
           <p className="label-upper text-gold/90">Project frames</p>
           <p className="mt-1 font-outfit text-[11px] text-ink-muted">
-            Swipe to browse · each frame matches its image proportions
+            <span className="md:hidden">Swipe to browse · tap active frame for fullscreen</span>
+            <span className="hidden md:inline">
+              Use side arrows or keyboard · tap active frame for fullscreen
+            </span>
           </p>
         </div>
         <motion.p
@@ -190,7 +280,21 @@ export function ProjectGallery({
         </motion.p>
       </div>
 
-      <div className="project-gallery__stage">
+      <div
+        className={`project-gallery__stage${canNavigate ? " project-gallery__stage--has-nav" : ""}`}
+      >
+        {canNavigate ? (
+          <button
+            type="button"
+            data-no-glow
+            className="project-gallery__nav-btn project-gallery__nav-btn--prev"
+            aria-label="Previous image"
+            onClick={goPrev}
+          >
+            <ChevronLeft className="h-5 w-5" strokeWidth={1.5} aria-hidden />
+          </button>
+        ) : null}
+
         <div
           ref={trackRef}
           className="project-gallery__track"
@@ -206,11 +310,37 @@ export function ProjectGallery({
               format={format}
               maxHeight={maxHeight}
               maxWidth={maxWidth}
-              onSelect={() => select(index)}
+              onNavigate={() => navigateTo(index)}
+              onOpen={() => openLightbox(index)}
             />
           ))}
         </div>
+
+        {canNavigate ? (
+          <button
+            type="button"
+            data-no-glow
+            className="project-gallery__nav-btn project-gallery__nav-btn--next"
+            aria-label="Next image"
+            onClick={goNext}
+          >
+            <ChevronRight className="h-5 w-5" strokeWidth={1.5} aria-hidden />
+          </button>
+        ) : null}
       </div>
+
+      <ProjectImageLightbox
+        open={lightboxOpen}
+        images={images}
+        index={lightboxIndex}
+        title={title}
+        onClose={() => setLightboxOpen(false)}
+        onIndexChange={(next) => {
+          setLightboxIndex(next);
+          setActiveIndex(next);
+          scrollToCard(next);
+        }}
+      />
 
       <div
         className="project-gallery__progress"

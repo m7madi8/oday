@@ -45,6 +45,21 @@ function getScrollOffset(): number {
   return Number.isFinite(parsed) ? parsed : 0;
 }
 
+/** Sections with `.section-page` already pad for the nav — avoid double offset. */
+function getScrollOffsetFor(target: HTMLElement): number {
+  const globalOffset = getScrollOffset();
+  if (!target.classList.contains("section-page")) {
+    return globalOffset;
+  }
+
+  const sectionPadTop = Number.parseFloat(getComputedStyle(target).paddingTop);
+  if (!Number.isFinite(sectionPadTop)) {
+    return globalOffset;
+  }
+
+  return Math.max(0, globalOffset - sectionPadTop);
+}
+
 function durationForDistance(distance: number): number {
   const scaled = Math.sqrt(Math.abs(distance)) * 42;
   return Math.min(MAX_DURATION_MS, Math.max(MIN_DURATION_MS, scaled));
@@ -86,7 +101,7 @@ export function smoothScrollToElement(
   const { reduceMotion = false, delay = 0 } = options ?? {};
 
   const run = () => {
-    const offset = getScrollOffset();
+    const offset = getScrollOffsetFor(target);
     const top = Math.max(0, target.getBoundingClientRect().top + window.scrollY - offset);
 
     if (activeFrame !== null) {

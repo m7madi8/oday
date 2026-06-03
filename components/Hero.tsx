@@ -2,21 +2,12 @@
 
 import { usePreloaderDone } from "@/hooks/usePreloaderDone";
 import { hero } from "@/lib/hero-content";
-import { ArrowUpRight } from "lucide-react";
-import dynamic from "next/dynamic";
 import Image from "next/image";
-import { useState } from "react";
 import heroImage from "@/imgs/exterior.jpg";
 import { SectionShell } from "@/components/SectionShell";
 
-const ServicesDrawer = dynamic(
-  () => import("@/components/ServicesDrawer").then((m) => ({ default: m.ServicesDrawer })),
-  { ssr: false },
-);
-
 export function Hero() {
   const preloaderDone = usePreloaderDone();
-  const [drawerOpen, setDrawerOpen] = useState(false);
   const holdEntrance = !preloaderDone;
 
   return (
@@ -51,28 +42,6 @@ export function Hero() {
         />
 
         <div className="relative z-10 flex min-h-0 flex-1 flex-col">
-          <div className="hero-enter-cta pointer-events-auto absolute right-[clamp(1.25rem,4vw,3.75rem)] top-[var(--hero-cta-top)] z-20 max-sm:right-5">
-            <button
-              type="button"
-              data-no-glow
-              className="hero-cta-luxe group"
-              aria-label={`${hero.ctaLabel} — ${hero.ctaEyebrow}`}
-              onClick={() => setDrawerOpen(true)}
-            >
-              <span className="flex flex-col items-start gap-0.5 pr-0.5 text-left">
-                <span className="hero-cta-luxe__eyebrow font-sub uppercase text-gold/75 transition-colors group-hover:text-gold">
-                  {hero.ctaEyebrow}
-                </span>
-                <span className="hero-cta-luxe__label font-ui tracking-[0.04em] text-white/95 transition-colors group-hover:text-white">
-                  {hero.ctaLabel}
-                </span>
-              </span>
-              <span className="hero-cta-luxe__icon" aria-hidden>
-                <ArrowUpRight className="h-[22px] w-[22px] stroke-[1.75]" />
-              </span>
-            </button>
-          </div>
-
           <div className="hero-enter-headline pointer-events-auto absolute bottom-[clamp(2rem,5.5vw,3.75rem)] left-[clamp(1.25rem,4vw,3.75rem)] w-max max-w-[calc(100vw-2.5rem)] max-sm:left-5">
             <p className="font-sub text-[10px] uppercase tracking-[0.34em] text-white/62 md:text-[11px]">
               {hero.headlineEyebrow}
@@ -94,10 +63,6 @@ export function Hero() {
           </div>
         </div>
       </div>
-
-      {drawerOpen ? (
-        <ServicesDrawer isOpen={drawerOpen} onClose={() => setDrawerOpen(false)} />
-      ) : null}
     </SectionShell>
   );
 }

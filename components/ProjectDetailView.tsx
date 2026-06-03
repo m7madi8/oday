@@ -75,8 +75,8 @@ export function ProjectDetailView({
             <p className="label-upper text-ink-muted">Overview</p>
             <p className="mt-4 text-sm leading-[1.72] text-ink-secondary md:text-[0.9375rem]">{summary}</p>
             <p className="mt-6 text-sm leading-[1.65] text-ink-muted">
-              Each frame is sized to its image — swipe horizontally to browse, tap a frame to center it, or use the
-              arrow keys.
+              Swipe horizontally to browse frames, tap any image to open it fullscreen, or use arrow keys in the
+              viewer.
             </p>
           </GalleryReveal>
 
