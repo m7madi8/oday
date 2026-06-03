@@ -3686,26 +3686,14 @@ html.preloader-pending body::before {
 .services-story-track {
   scroll-snap-type: x proximity;
   scroll-padding-inline: max(1rem, var(--hero-gutter));
-  scroll-behavior: auto;
-  overscroll-behavior-x: contain;
-  overscroll-behavior-y: auto;
-  touch-action: pan-x;
   overflow-x: auto;
-  overflow-y: hidden !important;
+  overflow-y: visible;
   -webkit-overflow-scrolling: touch;
 }
 
 .services-story-track > * {
   scroll-snap-align: center;
   scroll-snap-stop: normal;
-}
-
-#services .services-story-card {
-  touch-action: pan-x;
-}
-
-#services .services-panel-card {
-  touch-action: pan-y;
 }
 
 .services-story-card {
@@ -3745,10 +3733,7 @@ html.preloader-pending body::before {
   min-height: 200px;
   max-height: min(50svh, 540px);
   overflow-x: auto;
-  overflow-y: hidden !important;
-  overscroll-behavior-x: contain;
-  overscroll-behavior-y: auto;
-  touch-action: manipulation;
+  overflow-y: visible;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -3759,9 +3744,6 @@ html.preloader-pending body::before {
   max-height: inherit;
   scroll-snap-type: x proximity;
   scroll-padding-inline: 0.35rem;
-  scroll-behavior: auto;
-  overscroll-behavior-x: contain;
-  overscroll-behavior-y: auto;
 }
 
 @media (min-width: 1024px) {

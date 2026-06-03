@@ -8,7 +8,6 @@ import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 import { SafeButton } from "@/components/SafeButton";
 import { ArrowUpRight } from "lucide-react";
-import { useForwardVerticalScroll } from "@/lib/forward-vertical-scroll";
 import { useCallback, useEffect, useRef, useState } from "react";
 import aboutImage from "@/imgs/about.jpg";
 import interiorImage from "@/imgs/interior.jpg";
@@ -134,11 +133,7 @@ export function Services() {
   const [activeId, setActiveId] = useState(services[0]?.id ?? "");
   const [storyIndex, setStoryIndex] = useState(0);
   const storyScrollerRef = useRef<HTMLDivElement>(null);
-  const panelScrollRef = useRef<HTMLDivElement>(null);
   const storyRafRef = useRef(0);
-
-  useForwardVerticalScroll(storyScrollerRef);
-  useForwardVerticalScroll(panelScrollRef);
 
   const syncStoryScroll = useCallback(() => {
     const el = storyScrollerRef.current;
@@ -196,12 +191,7 @@ export function Services() {
                 </span>
               </>
             }
-            description={
-              <>
-                <span className="md:hidden">Swipe sideways for services — scroll the page normally over the cards.</span>
-                <span className="hidden md:inline">Hover columns to explore — scroll the page freely over the strip.</span>
-              </>
-            }
+            description="Architecture, interiors, drone intelligence, and AI workflows — integrated under one studio."
           />
         </ScrollReveal>
 
@@ -244,7 +234,6 @@ export function Services() {
         <ScrollReveal dramatic delay={0.06} className="mt-3 hidden flex-col md:flex">
           <div className={`${stripBezel} flex flex-col`}>
             <div
-              ref={panelScrollRef}
               className="services-panel-scroll"
               onMouseLeave={() => setActiveId(services[0]?.id ?? "")}
             >
@@ -385,10 +374,6 @@ function ServiceStoryCard({
                 View gallery
               </Link>
             </div>
-
-            <p className="text-center font-outfit text-[10px] uppercase tracking-[0.28em] text-white/40">
-              Scroll
-            </p>
           </div>
         </div>
       </div>
