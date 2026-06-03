@@ -178,7 +178,7 @@ export function Services() {
   }
 
   return (
-    <SectionShell id="services" className="isolate overflow-x-clip overflow-y-visible">
+    <SectionShell id="services" snap={false} className="isolate !overflow-visible">
       <SectionInner className="relative flex flex-col">
         <ScrollReveal dramatic>
           <SectionHeader

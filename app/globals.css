@@ -3683,11 +3683,24 @@ html.preloader-pending body::before {
   background: transparent !important;
 }
 
+@media (max-width: 767px) {
+  #services.section-page,
+  #services .section-inner {
+    overflow: visible;
+  }
+
+  .services-story-track {
+    touch-action: pan-x;
+    overscroll-behavior-y: auto;
+  }
+}
+
 .services-story-track {
   scroll-snap-type: x proximity;
   scroll-padding-inline: max(1rem, var(--hero-gutter));
   overflow-x: auto;
   overflow-y: visible;
+  overscroll-behavior-y: auto;
   -webkit-overflow-scrolling: touch;
 }
 
