@@ -1,26 +1,22 @@
 "use client";
 
-import { useIsHeroRouteTarget } from "@/hooks/useIsHeroRouteTarget";
 import { usePreloaderDone } from "@/hooks/usePreloaderDone";
 import { hero } from "@/lib/hero-content";
 import { ArrowUpRight } from "lucide-react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import heroImage from "@/imgs/exterior.jpg";
-import { ServicesDrawer } from "@/components/ServicesDrawer";
 import { SectionShell } from "@/components/SectionShell";
+
+const ServicesDrawer = dynamic(
+  () => import("@/components/ServicesDrawer").then((m) => ({ default: m.ServicesDrawer })),
+  { ssr: false },
+);
 
 export function Hero() {
   const preloaderDone = usePreloaderDone();
-  const heroRouteTarget = useIsHeroRouteTarget();
-  const [mounted, setMounted] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const prioritizeHeroImage = mounted && preloaderDone && heroRouteTarget;
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   const holdEntrance = !preloaderDone;
 
   return (
@@ -36,8 +32,8 @@ export function Hero() {
               src={heroImage}
               alt={hero.imageAlt}
               fill
-              priority={prioritizeHeroImage}
-              loading={prioritizeHeroImage ? undefined : "lazy"}
+              priority
+              fetchPriority="high"
               className="object-cover"
               sizes="(max-width: 768px) 100vw, 100vw"
             />
@@ -99,7 +95,9 @@ export function Hero() {
         </div>
       </div>
 
-      <ServicesDrawer isOpen={drawerOpen} onClose={() => setDrawerOpen(false)} />
+      {drawerOpen ? (
+        <ServicesDrawer isOpen={drawerOpen} onClose={() => setDrawerOpen(false)} />
+      ) : null}
     </SectionShell>
   );
 }

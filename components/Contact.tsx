@@ -2,7 +2,7 @@
 
 import { RevealChildren } from "@/components/animations/RevealChildren";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
-import { contact, footer } from "@/lib/data";
+import { contact, footer } from "@/lib/content/contact";
 import { revealInView, softInView } from "@/lib/motion-viewport";
 import { motion, useReducedMotion } from "@/components/ClientMotion";
 import { Facebook, Instagram } from "lucide-react";

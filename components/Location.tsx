@@ -3,7 +3,7 @@
 import { RevealChildren } from "@/components/animations/RevealChildren";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import { SectionHeader, SectionInner, SectionShell } from "@/components/SectionShell";
-import { studioLocation } from "@/lib/data";
+import { studioLocation } from "@/lib/content/location";
 import { ExternalLink, Navigation } from "lucide-react";
 
 export function Location() {

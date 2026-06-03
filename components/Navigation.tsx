@@ -194,7 +194,6 @@ export function Navigation() {
               height={72}
               width={288}
               className={`site-nav-logo__img h-11 w-auto max-w-[min(240px,calc(100vw-7rem))] origin-left scale-[1.62] md:scale-[1.72] lg:scale-[1.82] ${invertLogo ? "site-nav-logo__img--inverted" : ""} ${heroLogoGlow ? "site-nav-logo__img--hero-glow" : ""}`}
-              priority
               sizes="(max-width: 1024px) 200px, 280px"
             />
           </Link>

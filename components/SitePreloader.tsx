@@ -6,9 +6,9 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import brandLogo from "@/imgs/oday-logo.png";
 import { clearPreloaderShell, finishPreloaderSession } from "@/lib/preloader";
-const MIN_DURATION_MS = 2200;
-const MAX_DURATION_MS = 7000;
-const EXIT_MS = 900;
+const MIN_DURATION_MS = 1200;
+const MAX_DURATION_MS = 5500;
+const EXIT_MS = 720;
 
 const loadEase = [0.22, 1, 0.36, 1] as const;
 
@@ -129,8 +129,8 @@ export function SitePreloader() {
         className="site-preloader__veil"
         animate={
           phase === "exit"
-            ? { opacity: 0, scale: 1.03, filter: "blur(8px)" }
-            : { opacity: 1, scale: 1, filter: "blur(0px)" }
+            ? { opacity: 0, scale: 1.02 }
+            : { opacity: 1, scale: 1 }
         }
         transition={{ duration: EXIT_MS / 1000, ease: loadEase }}
       >

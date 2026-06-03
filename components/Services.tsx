@@ -2,7 +2,7 @@
 
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import { SectionHeader, SectionInner, SectionShell } from "@/components/SectionShell";
-import { services } from "@/lib/data";
+import { services } from "@/lib/content/services";
 import { useReducedMotion } from "@/components/ClientMotion";
 import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";

@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { CustomCursor } from "@/components/CustomCursor";
-import { GrainOverlay } from "@/components/GrainOverlay";
+import { DeferredClientShell } from "@/components/DeferredClientShell";
 import { Navigation } from "@/components/Navigation";
-import { SitePreloader } from "@/components/SitePreloader";
-import { SmoothHashScroll } from "@/components/SmoothHashScroll";
 
 export const metadata: Metadata = {
   title: "OD STUDIO",
@@ -41,10 +38,8 @@ export default function RootLayout({
         className="min-h-screen bg-bg-primary font-sans font-light text-ink-primary"
         suppressHydrationWarning
       >
-        <SitePreloader />
-        <GrainOverlay />
-        <CustomCursor />
-        <SmoothHashScroll />
+        <DeferredClientShell />
+        <div aria-hidden className="grain-layer pointer-events-none fixed inset-0 z-[1] mix-blend-soft-light" />
         <Navigation />
         <div className="relative z-10 min-h-screen">{children}</div>
       </body>

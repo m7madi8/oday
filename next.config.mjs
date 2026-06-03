@@ -1,8 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Dev-only: set by scripts/dev-fresh.cjs so `next dev` does not share/collide with
-  // production `.next` (reduces Windows "UNKNOWN" open errors + stale chunk IDs).
   ...(process.env.NEXT_DEV_DIST === "1" ? { distDir: ".next-dev" } : {}),
+  experimental: {
+    optimizePackageImports: ["lucide-react", "framer-motion"],
+  },
   images: {
     remotePatterns: [
       {

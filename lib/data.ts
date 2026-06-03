@@ -1,15 +1,5 @@
-import type { LucideIcon } from "lucide-react";
 import type { StaticImageData } from "next/image";
-import {
-  Compass,
-  DraftingCompass,
-  Globe2,
-  Layers3,
-  Box,
-  MonitorPlay,
-} from "lucide-react";
 import aboutImage from "@/imgs/about.jpg";
-import ceoPortrait from "@/imgs/ceo.jpg";
 import exteriorImage from "@/imgs/exterior.jpg";
 import interiorImage from "@/imgs/interior.jpg";
 import landscapeImage from "@/imgs/landscape.jpg";
@@ -24,6 +14,20 @@ import {
 } from "@/lib/exterior-residential-projects";
 import { getVillaProjectGalleryImages, villaProjects } from "@/lib/exterior-villa-projects";
 import { getInteriorProjectGalleryImages, interiorProjects } from "@/lib/interior-projects";
+import { services } from "@/lib/content/services";
+import { serviceSlugs, type ServiceSlug } from "@/lib/content/types";
+
+export { serviceSlugs } from "@/lib/content/types";
+export type { ServiceSlug } from "@/lib/content/types";
+export { about } from "@/lib/content/about";
+export type { Strength } from "@/lib/content/about";
+export { services } from "@/lib/content/services";
+export type { ServiceItem } from "@/lib/content/services";
+export { faqItems } from "@/lib/content/faq";
+export type { FaqItem } from "@/lib/content/faq";
+export { contact, footer } from "@/lib/content/contact";
+export type { ContactChannel } from "@/lib/content/contact";
+export { studioLocation } from "@/lib/content/location";
 
 export const site = {
   name: "OD Studio",
@@ -40,15 +44,6 @@ export const navLinks = [
 ] as const;
 
 export type ProjectCategory = "Residential" | "Cultural";
-
-export const serviceSlugs = [
-  "exterior",
-  "interior",
-  "architecture-ai",
-  "architecture-drone",
-] as const;
-
-export type ServiceSlug = (typeof serviceSlugs)[number];
 
 /** Sub-categories within the Exterior gallery (includes former Landscape work). */
 export const exteriorProjectTypes = [
@@ -209,102 +204,6 @@ export function projectDetailPath(project: Project): string {
 }
 
 export { hero } from "@/lib/hero-content";
-
-export interface Strength {
-  title: string;
-  description: string;
-  icon: LucideIcon;
-}
-
-export const about = {
-  sectionNumber: "01",
-  snapshotEyebrow: "Company snapshot",
-  snapshotSub: "Key figures and operating focus",
-  stats: [
-    { label: "Projects", target: 500, prefix: "+", suffix: "" },
-    { label: "Value", target: 50, prefix: "+", suffix: " million" },
-  ],
-  headlinePrimary: "Built for Serious",
-  headlineAccent: "Developers",
-  /** Single ~30-word company snapshot for the About column. */
-  introParagraph:
-    "Architecture, interiors, and engineering sit with one accountable OD Studio team, built for serious developers who demand bankable documentation, coordinated delivery, and premium outcomes without siloed consultants or excuse chains.",
-  logoWordmark: "OD",
-  logoSub: "STUDIO",
-  strengths: [
-    {
-      title: "Design Strategy",
-      description:
-        "Every concept starts with spatial intent, material identity, and buildable clarity.",
-      icon: Layers3,
-    },
-    {
-      title: "Technical Authority",
-      description:
-        "BIM-led coordination, code compliance, and buildable detailing reduce execution risk.",
-      icon: Compass,
-    },
-    {
-      title: "Execution Control",
-      description:
-        "Clear milestones, transparent reporting, and site follow-up protect quality and timeline.",
-      icon: Globe2,
-    },
-  ] satisfies Strength[],
-  directorName: "Oday Abu Doha",
-  directorRole: "Founder & Design Director",
-  directorPortrait: ceoPortrait,
-  directorPortraitAlt:
-    "Portrait of Oday Abu Doha, founder and design director of OD Studio",
-};
-
-export interface ServiceItem {
-  id: string;
-  slug: ServiceSlug;
-  orderLabel: string;
-  title: string;
-  description: string;
-  icon: LucideIcon;
-}
-
-export const services: ServiceItem[] = [
-  {
-    id: "s3",
-    slug: "exterior",
-    orderLabel: "01",
-    title: "Exterior Design",
-    description:
-      "Facade language, massing, landscape integration, and exterior performance optimization.",
-    icon: DraftingCompass,
-  },
-  {
-    id: "s1",
-    slug: "interior",
-    orderLabel: "02",
-    title: "Interior Design",
-    description:
-      "Premium interior planning, material systems, and execution-ready detailing.",
-    icon: Box,
-  },
-  {
-    id: "s5",
-    slug: "architecture-ai",
-    orderLabel: "03",
-    title: "Ai Design",
-    description:
-      "AI-assisted concept exploration, optimization, and performance-led design workflows.",
-    icon: Layers3,
-  },
-  {
-    id: "s4",
-    slug: "architecture-drone",
-    orderLabel: "04",
-    title: "Architect Dron",
-    description:
-      "Aerial capture, site intelligence, and progress tracking for smarter decisions.",
-    icon: MonitorPlay,
-  },
-];
 
 export function isValidServiceSlug(value: string): value is ServiceSlug {
   return (serviceSlugs as readonly string[]).includes(value);
@@ -617,39 +516,6 @@ export const processSteps: ProcessStep[] = [
   },
 ];
 
-export interface FaqItem {
-  id: string;
-  question: string;
-  answer: string;
-}
-
-export const faqItems: FaqItem[] = [
-  {
-    id: "faq1",
-    question: "What project types are the best fit for your team?",
-    answer:
-      "Luxury residences and villas, cultural destinations, and landscape-led estates where interior, exterior, and outdoor design quality are critical.",
-  },
-  {
-    id: "faq2",
-    question: "How fast can we move from brief to concept?",
-    answer:
-      "Most concept phases run within 4-8 weeks, followed by structured technical delivery according to scope and authority requirements.",
-  },
-  {
-    id: "faq3",
-    question: "How do you control budget and quality together?",
-    answer:
-      "Through stage-gated approvals, BIM coordination, and weekly QA/QC reviews that lock quality while managing change early.",
-  },
-  {
-    id: "faq4",
-    question: "Can you support investor or sales presentations?",
-    answer:
-      "Yes. We prepare high-impact visual and strategic presentation assets for investors, boards, and pre-sales teams.",
-  },
-];
-
 export interface Testimonial {
   id: string;
   name: string;
@@ -688,79 +554,3 @@ export const testimonials: Testimonial[] = [
     imageAlt: "Portrait of Sofia Lindqvist",
   },
 ];
-
-export interface ContactChannel {
-  label: string;
-  value: string;
-  href?: string;
-}
-
-export const contact = {
-  heading: "Ready to Position Your Next Landmark?",
-  description:
-    "Share your goals and timeline. We will return with a strategic direction, scope model, and execution path.",
-  ctaLabel: "Book Discovery Call",
-  backgroundImage: exteriorImage,
-  backgroundAlt: "Contemporary exterior architecture in Ramallah",
-  items: [
-    {
-      label: "Location",
-      value: "Al-Bireh, Ramallah",
-      href: "https://www.google.com/maps/search/?api=1&query=31.9230623,35.2090546",
-    },
-    {
-      label: "Email",
-      value: "abodohaoday@gmail.com",
-      href: "mailto:abodohaoday@gmail.com",
-    },
-    {
-      label: "Phone",
-      value: "+972 56-812-3413",
-      href: "tel:+972568123413",
-    },
-  ] satisfies ContactChannel[],
-};
-
-export const studioLocation = {
-  eyebrow: "Studio Location",
-  heading: "Where We Build",
-  headingAccent: "From Al-Bireh",
-  addressLine2: "Al-Bireh, Ramallah",
-  coordinates: { lat: 31.9230623, lng: 35.2090546 },
-  mapEmbedUrl:
-    "https://www.openstreetmap.org/export/embed.html?bbox=35.189%2C31.908%2C35.229%2C31.938&layer=mapnik&marker=31.9230623%2C35.2090546",
-  directionsUrl:
-    "https://www.google.com/maps/dir/?api=1&destination=31.9230623%2C35.2090546&travelmode=driving",
-  openInMapsUrl:
-    "https://www.google.com/maps/place/Dental+Spa+Clinic+%D8%A7%D9%84%D8%AF%D9%83%D8%AA%D9%88%D8%B1+%D9%85%D8%AD%D9%81%D9%88%D8%B8+%D9%81%D9%88%D8%A7%D9%84%D8%AD%D8%A9,+Al-Bireh,+Ramallah/@31.9230623,35.2090546,17z",
-};
-
-export const footer = {
-  blurb:
-    "OD Studio transforms complex briefs into high-value assets through design intelligence and engineering rigor.",
-  /** Single-row footer strip (aligned with main navigation). */
-  bottomBarLinks: [
-    { href: "#top", label: "Home" },
-    { href: "#about", label: "About" },
-    { href: "#services", label: "Services" },
-    { href: "/projects", label: "Gallery" },
-    { href: "#contact", label: "Contact" },
-  ] as const,
-  homepageLinks: [
-    { href: "#about", label: "Studio" },
-    { href: "/projects", label: "Case Studies" },
-    { href: "#services", label: "Solutions" },
-    { href: "#contact", label: "Contact" },
-  ],
-  categoryLinks: [
-    { href: "/projects?service=exterior", label: "Exterior Design" },
-    { href: "/projects?service=interior", label: "Interior Design" },
-    { href: "/projects?service=architecture-ai", label: "Ai Design" },
-    { href: "/projects?service=architecture-drone", label: "Architect Dron" },
-  ],
-  social: [
-    { label: "Facebook", href: "https://facebook.com", icon: "facebook" as const },
-    { label: "Instagram", href: "https://instagram.com", icon: "instagram" as const },
-  ],
-  copyright: "© 2026 OD Studio. All rights reserved.",
-};

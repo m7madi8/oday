@@ -606,7 +606,7 @@
   display: none;
 }
 
-/* Grain texture - base noise; opacity animated in GrainOverlay */
+/* Grain texture — opacity animated via CSS (no client JS) */
 @keyframes grain-breathe {
   0%,
   100% {

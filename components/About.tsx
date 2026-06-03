@@ -6,7 +6,7 @@ import { RevealText } from "@/components/animations/RevealText";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import { motion, useReducedMotion } from "@/components/ClientMotion";
 import { revealInView } from "@/lib/motion-viewport";
-import { about as studioAbout } from "@/lib/data";
+import { about as studioAbout } from "@/lib/content/about";
 import Image from "next/image";
 import { SectionInner, SectionShell } from "@/components/SectionShell";
 
@@ -148,7 +148,7 @@ export function About() {
               fill
               className="object-cover object-center"
               sizes="(max-width: 1024px) 85vw, 320px"
-              priority
+              loading="lazy"
             />
             <motion.div
               aria-hidden

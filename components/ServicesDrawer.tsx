@@ -1,7 +1,7 @@
 "use client";
 
 import { GALLERY_CATEGORY_ANCHORS } from "@/lib/gallery-anchors";
-import { services } from "@/lib/data";
+import { services } from "@/lib/content/services";
 import { ArrowUpRight, ChevronLeft, ChevronRight, X } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
