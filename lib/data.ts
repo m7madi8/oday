@@ -359,27 +359,11 @@ export const standardSiteRequestFields: ServiceRequestField[] = [
   },
   { id: "phone", label: "Phone", type: "tel", required: true, autoComplete: "tel" },
   {
-    id: "sitePlan",
-    label: "Site / plot plan",
-    type: "file",
-    required: true,
-    accept: ".pdf,.dwg,.dxf,image/*",
-    helperText: "Survey or plot plan (PDF, DWG, DXF, or image). Attach the file in your email after submit.",
-  },
-  {
     id: "approxArea",
     label: "Approximate area",
     type: "text",
     required: true,
     placeholder: "e.g. 450 m² or 2,400 sq ft",
-  },
-  {
-    id: "video",
-    label: "Video",
-    type: "file",
-    required: false,
-    accept: "video/*",
-    helperText: "Optional site walkthrough or context video. Attach in your email after submit.",
   },
   {
     id: "description",
@@ -411,7 +395,7 @@ export const standardSiteRequestConfig: ServiceRequestConfig = {
   fields: standardSiteRequestFields,
   sections: [
     { id: "contact", title: "Contact details", fieldIds: ["name", "email", "phone"] },
-    { id: "site", title: "Site information", fieldIds: ["sitePlan", "approxArea", "video"] },
+    { id: "site", title: "Site information", fieldIds: ["approxArea"] },
     { id: "brief", title: "Brief & references", fieldIds: ["description", "designReference", "notes"] },
   ],
 };
@@ -429,33 +413,10 @@ export const architectureAiRequestConfig: ServiceRequestConfig = {
       rows: 4,
       placeholder: "Describe the video type, mood, pacing, and deliverables you need.",
     },
-    {
-      id: "renderPhotos",
-      label: "Final render images",
-      type: "file",
-      multiple: true,
-      accept: "image/*",
-      helperText: "Optional if you attach real photos below. Attach files in your email after submit.",
-    },
-    {
-      id: "realPhotos",
-      label: "Real photos",
-      type: "file",
-      multiple: true,
-      accept: "image/*",
-      helperText: "Optional if you attach render images above. Attach files in your email after submit.",
-    },
   ],
   sections: [
     { id: "contact", title: "Contact details", fieldIds: ["name", "email", "phone"] },
     { id: "video", title: "Video brief", fieldIds: ["videoNature"] },
-    { id: "photos", title: "Reference images", fieldIds: ["renderPhotos", "realPhotos"] },
-  ],
-  requireOneOf: [
-    {
-      message: "Final render images and/or real photos",
-      fieldIds: ["renderPhotos", "realPhotos"],
-    },
   ],
 };
 

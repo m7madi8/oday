@@ -2,6 +2,7 @@
 
 import { RevealChildren } from "@/components/animations/RevealChildren";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
+import { submitContactForm } from "@/lib/contact-form";
 import { contact, footer } from "@/lib/content/contact";
 import { revealInView, softInView } from "@/lib/motion-viewport";
 import { motion, useReducedMotion } from "@/components/ClientMotion";
@@ -27,14 +28,38 @@ const glassField =
 export function Contact() {
   const reduceMotion = useReducedMotion();
   const email =
-    contact.items.find((i) => i.label === "Email")?.value ?? "abodohaoday@gmail.com";
+    contact.items.find((i) => i.label === "Email")?.value ?? "eslamhuhu1@gmail.com";
   const [newsletter, setNewsletter] = useState("");
+  const [newsletterHoneypot, setNewsletterHoneypot] = useState("");
+  const [newsletterError, setNewsletterError] = useState<string | null>(null);
+  const [newsletterSubmitting, setNewsletterSubmitting] = useState(false);
+  const [newsletterSent, setNewsletterSent] = useState(false);
 
-  function onNewsletterSubmit(e: React.FormEvent) {
+  async function onNewsletterSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (newsletterSubmitting || newsletterSent) return;
+
     const trimmed = newsletter.trim();
     if (!trimmed) return;
-    window.location.href = `mailto:${email}?subject=${encodeURIComponent("Newsletter")}&body=${encodeURIComponent(trimmed)}`;
+
+    setNewsletterError(null);
+    setNewsletterSubmitting(true);
+
+    const result = await submitContactForm({
+      type: "newsletter",
+      email: trimmed,
+      _gotcha: newsletterHoneypot,
+    });
+
+    setNewsletterSubmitting(false);
+
+    if (!result.ok) {
+      setNewsletterError(result.error);
+      return;
+    }
+
+    setNewsletterSent(true);
+    setNewsletter("");
   }
 
   return (
@@ -139,6 +164,16 @@ export function Contact() {
                 autoComplete="off"
                 onSubmit={onNewsletterSubmit}
               >
+                <input
+                  type="text"
+                  name="_gotcha"
+                  value={newsletterHoneypot}
+                  onChange={(e) => setNewsletterHoneypot(e.target.value)}
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden
+                  className="pointer-events-none absolute left-[-9999px] h-0 w-0 opacity-0"
+                />
                 <label htmlFor="footer-newsletter-email" className="sr-only">
                   Your email
                 </label>
@@ -151,15 +186,22 @@ export function Contact() {
                   value={newsletter}
                   onChange={(e) => setNewsletter(e.target.value)}
                   className={glassField}
+                  disabled={newsletterSubmitting || newsletterSent}
                   suppressHydrationWarning
                 />
                 <button
                   type="submit"
-                  className={`${glassPill} shrink-0 px-6 py-2.5 tracking-[0.12em]`}
+                  disabled={newsletterSubmitting || newsletterSent}
+                  className={`${glassPill} shrink-0 px-6 py-2.5 tracking-[0.12em] disabled:cursor-not-allowed disabled:opacity-60`}
                 >
-                  Submit
+                  {newsletterSubmitting ? "Sending…" : newsletterSent ? "Subscribed" : "Submit"}
                 </button>
               </form>
+              {newsletterError ? (
+                <p className="mt-2 text-xs text-red-200/90">{newsletterError}</p>
+              ) : newsletterSent ? (
+                <p className="mt-2 text-xs text-emerald-100/90">Thanks — you&apos;re on the list.</p>
+              ) : null}
             </div>
           </motion.div>
 

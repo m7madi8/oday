@@ -1,7 +1,7 @@
 "use client";
 
+import { submitContactForm } from "@/lib/contact-form";
 import {
-  contact,
   serviceRequestConfigs,
   type ServiceRequestConfig,
   type ServiceRequestField,
@@ -39,6 +39,21 @@ function fieldMap(fields: ServiceRequestField[]) {
   return Object.fromEntries(fields.map((f) => [f.id, f])) as Record<string, ServiceRequestField>;
 }
 
+function HoneypotField({ value, onChange }: { value: string; onChange: (value: string) => void }) {
+  return (
+    <input
+      type="text"
+      name="_gotcha"
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      tabIndex={-1}
+      autoComplete="off"
+      aria-hidden
+      className="pointer-events-none absolute left-[-9999px] h-0 w-0 opacity-0"
+    />
+  );
+}
+
 function FieldLabel({
   field,
   showOptional,
@@ -68,7 +83,6 @@ function ConfiguredServiceRequestForm({
 }) {
   const { fields, sections, requireOneOf } = config;
   const fieldsById = useMemo(() => fieldMap(fields), [fields]);
-  const email = contact.items.find((i) => i.label === "Email")?.value ?? "abodohaoday@gmail.com";
 
   const [values, setValues] = useState<Record<string, string>>(() =>
     Object.fromEntries(fields.filter((f) => f.type !== "file").map((f) => [f.id, ""])),
@@ -76,7 +90,10 @@ function ConfiguredServiceRequestForm({
   const [fileLists, setFileLists] = useState<Record<string, File[]>>(() =>
     Object.fromEntries(fields.filter((f) => f.type === "file").map((f) => [f.id, []])),
   );
+  const [honeypot, setHoneypot] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   function setValue(id: string, value: string) {
     setValues((prev) => ({ ...prev, [id]: value }));
@@ -182,8 +199,9 @@ function ConfiguredServiceRequestForm({
     );
   }
 
-  function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (isSubmitting || submitted) return;
     setError(null);
 
     const missing: string[] = [];
@@ -205,23 +223,41 @@ function ConfiguredServiceRequestForm({
       return;
     }
 
-    const lines = [`Service: ${serviceTitle} (${serviceSlug})`, ""];
+    const fieldEntries: Record<string, string> = {};
     for (const field of fields) {
       if (field.type === "file") {
         const names = fileLists[field.id]?.map((f) => f.name) ?? [];
-        lines.push(`${field.label}: ${names.length ? names.join(", ") : "—"}`);
+        fieldEntries[field.label] = names.length ? names.join(", ") : "—";
       } else {
-        lines.push(`${field.label}: ${values[field.id]?.trim() || "—"}`);
+        fieldEntries[field.label] = values[field.id]?.trim() || "—";
       }
     }
-    lines.push("", "Note: Please attach any selected files in your email before sending.");
 
-    window.location.href = `mailto:${email}?subject=${encodeURIComponent(`Service request: ${serviceTitle}`)}&body=${encodeURIComponent(lines.join("\n"))}`;
+    setIsSubmitting(true);
+    const result = await submitContactForm({
+      type: "service-request",
+      subject: `Service request: ${serviceTitle}`,
+      serviceTitle,
+      serviceSlug,
+      customerName: values.name?.trim() || values.fullName?.trim(),
+      customerEmail: values.email?.trim(),
+      fields: fieldEntries,
+      _gotcha: honeypot,
+    });
+    setIsSubmitting(false);
+
+    if (!result.ok) {
+      setError(result.error);
+      return;
+    }
+
+    setSubmitted(true);
   }
 
   return (
     <form onSubmit={onSubmit} className="space-y-10">
       <input type="hidden" name="serviceSlug" value={serviceSlug} readOnly />
+      <HoneypotField value={honeypot} onChange={setHoneypot} />
 
       {sections.map((section) => {
         const sectionFields = section.fieldIds.map((id) => fieldsById[id]).filter(Boolean);
@@ -248,7 +284,13 @@ function ConfiguredServiceRequestForm({
         <p className="rounded-lg border border-red-400/25 bg-red-950/30 px-4 py-3 text-sm text-red-200/95">{error}</p>
       )}
 
-      <SubmitFooter />
+      {submitted && (
+        <p className="rounded-lg border border-emerald-400/25 bg-emerald-950/30 px-4 py-3 text-sm text-emerald-100/95">
+          Thank you — your request was sent. We respond within two business days.
+        </p>
+      )}
+
+      <SubmitFooter isSubmitting={isSubmitting} submitted={submitted} />
     </form>
   );
 }
@@ -260,8 +302,6 @@ function DefaultServiceRequestForm({
   serviceTitle: string;
   serviceSlug: ServiceSlug;
 }) {
-  const email = contact.items.find((i) => i.label === "Email")?.value ?? "abodohaoday@gmail.com";
-
   const [fullName, setFullName] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -270,38 +310,54 @@ function DefaultServiceRequestForm({
   const [budget, setBudget] = useState("");
   const [timeline, setTimeline] = useState("");
   const [message, setMessage] = useState("");
+  const [honeypot, setHoneypot] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
-  function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (isSubmitting || submitted) return;
     setError(null);
     if (!fullName.trim() || !userEmail.trim() || !summary.trim()) {
       setError("Please fill in your name, email, and project summary.");
       return;
     }
-    const body = [
-      `Service: ${serviceTitle} (${serviceSlug})`,
-      "",
-      `Name: ${fullName.trim()}`,
-      `Email: ${userEmail.trim()}`,
-      `Phone: ${phone.trim() || "—"}`,
-      `Company: ${company.trim() || "—"}`,
-      `Budget: ${budget || "—"}`,
-      `Timeline: ${timeline || "—"}`,
-      "",
-      "Project summary:",
-      summary.trim(),
-      "",
-      "Additional notes:",
-      message.trim() || "—",
-    ].join("\n");
 
-    window.location.href = `mailto:${email}?subject=${encodeURIComponent(`Service request: ${serviceTitle}`)}&body=${encodeURIComponent(body)}`;
+    setIsSubmitting(true);
+    const result = await submitContactForm({
+      type: "service-request",
+      subject: `Service request: ${serviceTitle}`,
+      serviceTitle,
+      serviceSlug,
+      customerName: fullName.trim(),
+      customerEmail: userEmail.trim(),
+      fields: {
+        "Full name": fullName.trim(),
+        Email: userEmail.trim(),
+        Phone: phone.trim() || "—",
+        "Developer / company": company.trim() || "—",
+        Budget: budget || "—",
+        Timeline: timeline || "—",
+        "Project summary": summary.trim(),
+        "Additional notes": message.trim() || "—",
+      },
+      _gotcha: honeypot,
+    });
+    setIsSubmitting(false);
+
+    if (!result.ok) {
+      setError(result.error);
+      return;
+    }
+
+    setSubmitted(true);
   }
 
   return (
     <form onSubmit={onSubmit} className="space-y-10">
       <input type="hidden" name="serviceSlug" value={serviceSlug} readOnly />
+      <HoneypotField value={honeypot} onChange={setHoneypot} />
 
       <section aria-labelledby="sr-section-contact">
         <h2 id="sr-section-contact" className={sectionTitleClass}>
@@ -434,22 +490,29 @@ function DefaultServiceRequestForm({
         <p className="rounded-lg border border-red-400/25 bg-red-950/30 px-4 py-3 text-sm text-red-200/95">{error}</p>
       )}
 
-      <SubmitFooter />
+      {submitted && (
+        <p className="rounded-lg border border-emerald-400/25 bg-emerald-950/30 px-4 py-3 text-sm text-emerald-100/95">
+          Thank you — your request was sent. We respond within two business days.
+        </p>
+      )}
+
+      <SubmitFooter isSubmitting={isSubmitting} submitted={submitted} />
     </form>
   );
 }
 
-function SubmitFooter() {
+function SubmitFooter({ isSubmitting, submitted }: { isSubmitting: boolean; submitted: boolean }) {
   return (
     <div className="flex flex-col gap-4 border-t border-white/[0.08] pt-8 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
       <button
         type="submit"
-        className="label-upper inline-flex shrink-0 items-center justify-center rounded-full border border-gold/50 bg-gold/15 px-8 py-3.5 text-ink-primary transition-[background-color,border-color,transform] hover:bg-gold/25 active:scale-[0.99]"
+        disabled={isSubmitting || submitted}
+        className="label-upper inline-flex shrink-0 items-center justify-center rounded-full border border-gold/50 bg-gold/15 px-8 py-3.5 text-ink-primary transition-[background-color,border-color,transform] hover:bg-gold/25 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
       >
-        Submit request
+        {isSubmitting ? "Sending…" : submitted ? "Request sent" : "Submit request"}
       </button>
       <p className="max-w-md text-xs leading-relaxed text-ink-muted sm:text-right">
-        Opens your email client with a pre-filled message. We respond within two business days.
+        Your request is sent directly to our team. We respond within two business days.
       </p>
     </div>
   );

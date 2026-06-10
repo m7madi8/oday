@@ -21,8 +21,8 @@ export const contact = {
     },
     {
       label: "Email",
-      value: "abodohaoday@gmail.com",
-      href: "mailto:abodohaoday@gmail.com",
+      value: "eslamhuhu1@gmail.com",
+      href: "mailto:eslamhuhu1@gmail.com",
     },
     {
       label: "Phone",
