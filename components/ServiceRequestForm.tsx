@@ -7,8 +7,10 @@ import {
   type ServiceRequestField,
   type ServiceSlug,
 } from "@/lib/data";
+import { openServiceRequestWhatsApp } from "@/lib/whatsapp";
 import { motion, useReducedMotion } from "@/components/ClientMotion";
 import { revealInView } from "@/lib/motion-viewport";
+import { MessageCircle } from "lucide-react";
 import { useMemo, useState } from "react";
 
 const fieldClass =
@@ -199,11 +201,20 @@ function ConfiguredServiceRequestForm({
     );
   }
 
-  async function onSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (isSubmitting || submitted) return;
-    setError(null);
+  function collectFieldEntries(): Record<string, string> {
+    const fieldEntries: Record<string, string> = {};
+    for (const field of fields) {
+      if (field.type === "file") {
+        const names = fileLists[field.id]?.map((f) => f.name) ?? [];
+        fieldEntries[field.label] = names.length ? names.join(", ") : "—";
+      } else {
+        fieldEntries[field.label] = values[field.id]?.trim() || "—";
+      }
+    }
+    return fieldEntries;
+  }
 
+  function validateForm(): string | null {
     const missing: string[] = [];
     for (const field of fields) {
       if (field.required && field.type !== "file") {
@@ -219,19 +230,34 @@ function ConfiguredServiceRequestForm({
     }
 
     if (missing.length > 0) {
-      setError(`Please complete: ${Array.from(new Set(missing)).join(", ")}.`);
+      return `Please complete: ${Array.from(new Set(missing)).join(", ")}.`;
+    }
+
+    return null;
+  }
+
+  function onWhatsApp() {
+    setError(null);
+    const validationError = validateForm();
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
+    openServiceRequestWhatsApp(serviceTitle, collectFieldEntries());
+  }
+
+  async function onSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (isSubmitting || submitted) return;
+    setError(null);
+
+    const validationError = validateForm();
+    if (validationError) {
+      setError(validationError);
       return;
     }
 
-    const fieldEntries: Record<string, string> = {};
-    for (const field of fields) {
-      if (field.type === "file") {
-        const names = fileLists[field.id]?.map((f) => f.name) ?? [];
-        fieldEntries[field.label] = names.length ? names.join(", ") : "—";
-      } else {
-        fieldEntries[field.label] = values[field.id]?.trim() || "—";
-      }
-    }
+    const fieldEntries = collectFieldEntries();
 
     setIsSubmitting(true);
     const result = await submitContactForm({
@@ -290,7 +316,7 @@ function ConfiguredServiceRequestForm({
         </p>
       )}
 
-      <SubmitFooter isSubmitting={isSubmitting} submitted={submitted} />
+      <SubmitFooter isSubmitting={isSubmitting} submitted={submitted} onWhatsApp={onWhatsApp} />
     </form>
   );
 }
@@ -315,14 +341,48 @@ function DefaultServiceRequestForm({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
+  function collectFieldEntries(): Record<string, string> {
+    return {
+      "Full name": fullName.trim(),
+      Email: userEmail.trim(),
+      Phone: phone.trim() || "—",
+      "Developer / company": company.trim() || "—",
+      Budget: budget || "—",
+      Timeline: timeline || "—",
+      "Project summary": summary.trim(),
+      "Additional notes": message.trim() || "—",
+    };
+  }
+
+  function validateForm(): string | null {
+    if (!fullName.trim() || !userEmail.trim() || !summary.trim()) {
+      return "Please fill in your name, email, and project summary.";
+    }
+    return null;
+  }
+
+  function onWhatsApp() {
+    setError(null);
+    const validationError = validateForm();
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
+    openServiceRequestWhatsApp(serviceTitle, collectFieldEntries());
+  }
+
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (isSubmitting || submitted) return;
     setError(null);
-    if (!fullName.trim() || !userEmail.trim() || !summary.trim()) {
-      setError("Please fill in your name, email, and project summary.");
+
+    const validationError = validateForm();
+    if (validationError) {
+      setError(validationError);
       return;
     }
+
+    const fieldEntries = collectFieldEntries();
 
     setIsSubmitting(true);
     const result = await submitContactForm({
@@ -332,16 +392,7 @@ function DefaultServiceRequestForm({
       serviceSlug,
       customerName: fullName.trim(),
       customerEmail: userEmail.trim(),
-      fields: {
-        "Full name": fullName.trim(),
-        Email: userEmail.trim(),
-        Phone: phone.trim() || "—",
-        "Developer / company": company.trim() || "—",
-        Budget: budget || "—",
-        Timeline: timeline || "—",
-        "Project summary": summary.trim(),
-        "Additional notes": message.trim() || "—",
-      },
+      fields: fieldEntries,
       _gotcha: honeypot,
     });
     setIsSubmitting(false);
@@ -496,23 +547,41 @@ function DefaultServiceRequestForm({
         </p>
       )}
 
-      <SubmitFooter isSubmitting={isSubmitting} submitted={submitted} />
+      <SubmitFooter isSubmitting={isSubmitting} submitted={submitted} onWhatsApp={onWhatsApp} />
     </form>
   );
 }
 
-function SubmitFooter({ isSubmitting, submitted }: { isSubmitting: boolean; submitted: boolean }) {
+function SubmitFooter({
+  isSubmitting,
+  submitted,
+  onWhatsApp,
+}: {
+  isSubmitting: boolean;
+  submitted: boolean;
+  onWhatsApp: () => void;
+}) {
   return (
-    <div className="flex flex-col gap-4 border-t border-white/[0.08] pt-8 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
-      <button
-        type="submit"
-        disabled={isSubmitting || submitted}
-        className="label-upper inline-flex shrink-0 items-center justify-center rounded-full border border-gold/50 bg-gold/15 px-8 py-3.5 text-ink-primary transition-[background-color,border-color,transform] hover:bg-gold/25 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
-      >
-        {isSubmitting ? "Sending…" : submitted ? "Request sent" : "Submit request"}
-      </button>
-      <p className="max-w-md text-xs leading-relaxed text-ink-muted sm:text-right">
-        Your request is sent directly to our team. We respond within two business days.
+    <div className="flex flex-col gap-4 border-t border-white/[0.08] pt-8">
+      <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+        <button
+          type="submit"
+          disabled={isSubmitting || submitted}
+          className="label-upper inline-flex shrink-0 items-center justify-center rounded-full border border-gold/50 bg-gold/15 px-8 py-3.5 text-ink-primary transition-[background-color,border-color,transform] hover:bg-gold/25 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {isSubmitting ? "Sending…" : submitted ? "Email sent" : "Submit via email"}
+        </button>
+        <button
+          type="button"
+          onClick={onWhatsApp}
+          className="label-upper inline-flex shrink-0 items-center justify-center gap-2 rounded-full border border-emerald-400/45 bg-emerald-500/15 px-8 py-3.5 text-ink-primary transition-[background-color,border-color,transform] hover:bg-emerald-500/25 active:scale-[0.99]"
+        >
+          <MessageCircle className="h-4 w-4" aria-hidden />
+          Send via WhatsApp
+        </button>
+      </div>
+      <p className="max-w-xl text-xs leading-relaxed text-ink-muted">
+        Send your request by email or WhatsApp. We respond within two business days.
       </p>
     </div>
   );
