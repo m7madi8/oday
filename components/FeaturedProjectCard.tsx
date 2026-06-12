@@ -38,6 +38,7 @@ export function FeaturedProjectCard({
             fill
             className="feat-card__img"
             sizes="(max-width: 768px) 50vw, 33vw"
+            loading={index < 2 ? "eager" : "lazy"}
           />
           <div className="feat-card__shade" aria-hidden />
           <div className="feat-card__bar">

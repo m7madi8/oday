@@ -84,13 +84,18 @@
 
 .feat-card__img {
   object-fit: cover;
-  transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1), filter 0.45s ease;
 }
 
-.feat-card__link:hover .feat-card__img,
-.feat-card__link:focus-visible .feat-card__img {
-  transform: scale(1.05);
-  filter: brightness(0.9);
+@media (hover: hover) {
+  .feat-card__img {
+    transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1), filter 0.45s ease;
+  }
+
+  .feat-card__link:hover .feat-card__img,
+  .feat-card__link:focus-visible .feat-card__img {
+    transform: scale(1.05);
+    filter: brightness(0.9);
+  }
 }
 
 .feat-card__shade {

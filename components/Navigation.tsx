@@ -155,10 +155,21 @@ export function Navigation() {
   );
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 48);
+    let frame = 0;
+    const onScroll = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(() => {
+        frame = 0;
+        const next = window.scrollY > 48;
+        setScrolled((prev) => (prev === next ? prev : next));
+      });
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+    };
   }, []);
 
   useEffect(() => {

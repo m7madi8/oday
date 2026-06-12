@@ -124,11 +124,9 @@
 }
 
 .site-nav--scrolled {
-  background: rgba(14, 14, 14, 0.94);
+  background: rgba(14, 14, 14, 0.97);
   border-bottom-color: rgba(255, 255, 255, 0.08);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
-  backdrop-filter: blur(18px) saturate(1.2);
-  -webkit-backdrop-filter: blur(18px) saturate(1.2);
 }
 
 /* Menu open — header + overlay one surface */
@@ -146,7 +144,6 @@
 }
 
 .site-nav-logo__img {
-  will-change: transform, filter;
   transition: filter 0.5s ease;
 }
 
@@ -589,19 +586,6 @@
     scroll-margin-top: 0;
   }
 
-  html.section-scroll-active .section-snap:not(.is-scroll-target) {
-    opacity: 0.97;
-  }
-
-  html.section-scroll-active .section-snap.is-scroll-target {
-    opacity: 1;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    html.section-scroll-active .section-snap:not(.is-scroll-target) {
-      opacity: 1;
-    }
-  }
 
   #main-content :where(h1, h2, h3, h4) {
     font-family: var(--font-display);
@@ -675,28 +659,12 @@
   display: none;
 }
 
-/* Grain texture — opacity animated via CSS (no client JS) */
-@keyframes grain-breathe {
-  0%,
-  100% {
-    opacity: 0.02;
-  }
-  50% {
-    opacity: 0.04;
-  }
-}
-
+/* Grain texture — static overlay (no blend/animation for scroll performance) */
 .grain-layer {
   pointer-events: none;
+  opacity: 0.03;
+  contain: strict;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
-  animation: grain-breathe 8s ease-in-out infinite;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .grain-layer {
-    animation: none;
-    opacity: 0.025;
-  }
 }
 
 @keyframes hero-headline-in {
@@ -1033,6 +1001,14 @@
   .section-page {
     padding-top: var(--hero-nav-stack);
     padding-bottom: var(--section-pad-bottom);
+  }
+
+  #about.section-page,
+  #location.section-page,
+  #faq.section-page,
+  #contact.section-page {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 100svh;
   }
 
   .section-inner {

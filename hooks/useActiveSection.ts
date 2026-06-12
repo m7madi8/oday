@@ -12,13 +12,22 @@ function getScrollAnchorOffset(): number {
   return (Number.isFinite(parsed) ? parsed : 72) + 32;
 }
 
-function detectActiveSection(): string {
+type SectionAnchor = { id: string; top: number };
+
+function measureSectionAnchors(): SectionAnchor[] {
+  return HOME_SECTIONS.flatMap((id) => {
+    const el = document.getElementById(id);
+    if (!el) return [];
+    return [{ id, top: el.offsetTop }];
+  });
+}
+
+function detectActiveSection(anchors: SectionAnchor[]): string {
   const position = window.scrollY + getScrollAnchorOffset();
   let current = "top";
 
-  for (const id of HOME_SECTIONS) {
-    const el = document.getElementById(id);
-    if (el && el.offsetTop <= position) {
+  for (const { id, top } of anchors) {
+    if (top <= position) {
       current = id;
     }
   }
@@ -36,10 +45,16 @@ export function useActiveSection(enabled: boolean): string {
       return;
     }
 
+    let anchors = measureSectionAnchors();
     let frame = 0;
 
+    const refreshAnchors = () => {
+      anchors = measureSectionAnchors();
+    };
+
     const update = () => {
-      setActiveSection(detectActiveSection());
+      const next = detectActiveSection(anchors);
+      setActiveSection((prev) => (prev === next ? prev : next));
     };
 
     const scheduleUpdate = () => {
@@ -50,21 +65,34 @@ export function useActiveSection(enabled: boolean): string {
       });
     };
 
+    refreshAnchors();
     update();
-    const t = window.setTimeout(update, 120);
+    const t = window.setTimeout(() => {
+      refreshAnchors();
+      update();
+    }, 120);
 
     window.addEventListener("scroll", scheduleUpdate, { passive: true });
-    window.addEventListener("resize", scheduleUpdate, { passive: true });
+    const onResize = () => {
+      refreshAnchors();
+      scheduleUpdate();
+    };
+    const onScrollEnd = () => {
+      refreshAnchors();
+      update();
+    };
+
+    window.addEventListener("resize", onResize, { passive: true });
     window.addEventListener(SECTION_SCROLL_START, update);
-    window.addEventListener(SECTION_SCROLL_END, update);
+    window.addEventListener(SECTION_SCROLL_END, onScrollEnd);
 
     return () => {
       window.clearTimeout(t);
       if (frame) window.cancelAnimationFrame(frame);
       window.removeEventListener("scroll", scheduleUpdate);
-      window.removeEventListener("resize", scheduleUpdate);
+      window.removeEventListener("resize", onResize);
       window.removeEventListener(SECTION_SCROLL_START, update);
-      window.removeEventListener(SECTION_SCROLL_END, update);
+      window.removeEventListener(SECTION_SCROLL_END, onScrollEnd);
     };
   }, [enabled]);
 

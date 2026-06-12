@@ -34,7 +34,7 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <DeferredClientShell />
-        <div aria-hidden className="grain-layer pointer-events-none fixed inset-0 z-[1] mix-blend-soft-light" />
+        <div aria-hidden className="grain-layer pointer-events-none fixed inset-0 z-[1]" />
         <Navigation />
         <div className="relative z-10 min-h-screen">{children}</div>
       </body>
