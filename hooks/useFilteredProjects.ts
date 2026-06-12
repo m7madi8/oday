@@ -27,7 +27,7 @@ export const PROJECT_CATEGORIES: ProjectCategory[] = ["Residential", "Cultural"]
 
 export function getCategoryOptions(service: ProjectServiceFilter): GalleryCategoryFilter[] {
   if (service === "All") return ["All"];
-  if (service === "exterior") return ["All", ...exteriorProjectTypes];
+  if (service === "exterior") return [...exteriorProjectTypes];
   return ["All", ...PROJECT_CATEGORIES];
 }
 

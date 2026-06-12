@@ -16,9 +16,9 @@ export const about = {
   headlinePrimary: "Built for Serious",
   headlineAccent: "Developers",
   introParagraph:
-    "Architecture, interiors, and engineering sit with one accountable OD Studio team, built for serious developers who demand bankable documentation, coordinated delivery, and premium outcomes without siloed consultants or excuse chains.",
+    "Architecture, interiors, and engineering sit with one accountable OD Architects team, built for serious developers who demand bankable documentation, coordinated delivery, and premium outcomes without siloed consultants or excuse chains.",
   logoWordmark: "OD",
-  logoSub: "STUDIO",
+  logoSub: "ARCHITECTS",
   strengths: [
     {
       title: "Design Strategy",
@@ -40,5 +40,5 @@ export const about = {
   directorRole: "Founder & Design Director",
   directorPortrait,
   directorPortraitAlt:
-    "Oday Abu Doha, founder and design director of OD Studio, in formal attire",
+    "Oday Abu Doha, founder and design director of OD Architects, in formal attire",
 };

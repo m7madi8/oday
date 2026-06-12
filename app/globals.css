@@ -48,6 +48,66 @@
   --menu-surface: #121212;
 }
 
+/* Back control — lives inside fixed site nav (no content overlap) */
+.site-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-outfit), system-ui, sans-serif;
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-secondary);
+  cursor: pointer;
+  transition:
+    color 0.25s ease,
+    border-color 0.25s ease,
+    background-color 0.25s ease,
+    transform 0.2s ease;
+}
+
+.site-back-btn--nav {
+  flex-shrink: 0;
+  margin-right: -0.15rem;
+  padding: 0.45rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(18, 18, 18, 0.35);
+}
+
+.site-back-btn:hover,
+.site-back-btn:focus-visible {
+  color: var(--accent-gold);
+  border-color: rgba(var(--accent-gold-rgb), 0.42);
+  background: rgba(22, 22, 22, 0.55);
+}
+
+.site-back-btn:active {
+  transform: scale(0.98);
+}
+
+.site-back-btn__icon {
+  width: 0.85rem;
+  height: 0.85rem;
+  stroke-width: 1.75;
+}
+
+.site-back-btn__label {
+  display: none;
+  line-height: 1;
+}
+
+@media (min-width: 480px) {
+  .site-back-btn--nav {
+    padding: 0.45rem 0.85rem;
+  }
+
+  .site-back-btn__label {
+    display: inline;
+  }
+}
+
 /* Site navigation — full-width prestige bar */
 .site-nav {
   transition:
@@ -665,31 +725,6 @@
   animation: none;
 }
 
-/* Hold hero entrance until preloader finishes (GSAP runs after) */
-.hero--hold-entrance .hero-enter-media {
-  transform: scale(1.1);
-}
-
-.hero--hold-entrance .hero-enter-cta {
-  opacity: 0;
-  transform: translateY(-28px);
-}
-
-.hero--hold-entrance .hero-enter-headline > * {
-  opacity: 0;
-}
-
-.hero--hold-entrance .hero-enter-headline [aria-hidden] {
-  transform: scaleX(0);
-  opacity: 0;
-}
-
-.hero--hold-entrance .hero-enter-headline h1,
-.hero--hold-entrance .hero-enter-headline p:first-child {
-  transform: translateY(56px);
-}
-
-/* Visible immediately when preloader finishes (no GSAP delay) */
 .hero--ready .hero-enter-media,
 .hero--ready .hero-enter-cta,
 .hero--ready .hero-enter-headline > * {
@@ -3521,151 +3556,6 @@
   .project-lightbox__caption {
     font-size: 0.75rem;
   }
-}
-
-/* —— Site preloader —— */
-html.preloader-pending body,
-body.preloader-active {
-  overflow: hidden;
-  touch-action: none;
-}
-
-html.preloader-pending body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 9998;
-  background: var(--bg-primary);
-  pointer-events: all;
-}
-
-.site-preloader {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  display: grid;
-  place-items: center;
-  pointer-events: all;
-  background: var(--bg-primary);
-  isolation: isolate;
-}
-
-.site-preloader__veil {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-}
-
-.site-preloader__core {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  width: min(98vw, 96rem);
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-  text-align: center;
-}
-
-.site-preloader__eyebrow {
-  font-size: 0.62rem;
-  letter-spacing: 0.22em;
-  color: rgba(255, 255, 255, 0.42);
-}
-
-.site-preloader__logo-wrap {
-  position: relative;
-  line-height: 0;
-  padding: 0.25rem 0;
-}
-
-.site-preloader__logo {
-  display: block;
-  width: auto;
-  height: clamp(13rem, 48vw, 19rem);
-  max-width: min(96vw, 80rem);
-  /* Dark logo asset — flat invert only, no glow */
-  filter: invert(1);
-}
-
-.site-preloader__progress-block {
-  width: 100%;
-}
-
-.site-preloader__progress-meta {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 0.65rem;
-}
-
-.site-preloader__status {
-  font-family: var(--font-sub);
-  font-size: 0.62rem;
-  font-weight: 400;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-
-.site-preloader__percent {
-  font-family: var(--font-display);
-  font-size: clamp(1.65rem, 5vw, 2.15rem);
-  font-weight: 300;
-  line-height: 1;
-  letter-spacing: 0.04em;
-  color: var(--text-primary);
-  font-variant-numeric: tabular-nums;
-}
-
-.site-preloader__percent-suffix {
-  margin-left: 0.08em;
-  font-size: 0.62em;
-  color: rgba(255, 255, 255, 0.45);
-}
-
-.site-preloader__track {
-  position: relative;
-  height: 2px;
-  overflow: hidden;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
-}
-
-.site-preloader__bar {
-  display: block;
-  height: 100%;
-  width: 100%;
-  border-radius: inherit;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.28) 0%,
-    rgba(255, 255, 255, 0.72) 100%
-  );
-}
-
-.site-preloader__curtain {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  height: 50.5%;
-  background: var(--bg-primary);
-  z-index: 3;
-  will-change: transform;
-}
-
-.site-preloader__curtain--top {
-  top: 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.site-preloader__curtain--bottom {
-  bottom: 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.04);
 }
 
 /* Solutions — no visible scrollbars anywhere in section */

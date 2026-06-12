@@ -17,10 +17,10 @@ export function generateStaticParams() {
 export function generateMetadata({ params }: Props): Metadata {
   const project = getProjectBySlug(params.slug);
   if (!project) {
-    return { title: "Project | OD STUDIO" };
+    return { title: "Project | OD ARCHITECTS" };
   }
   return {
-    title: `${project.title} | OD STUDIO`,
+    title: `${project.title} | OD ARCHITECTS`,
     description: getProjectSummary(project),
   };
 }

@@ -30,13 +30,13 @@ export type { ContactChannel } from "@/lib/content/contact";
 export { studioLocation } from "@/lib/content/location";
 
 export const site = {
-  name: "OD Studio",
+  name: "OD Architects",
   tagline:
     "Architecture and engineering that increase asset value, brand prestige, and investor confidence.",
 };
 
 export const navLinks = [
-  { href: "#about", label: "Studio" },
+  { href: "#about", label: "About" },
   { href: "#services", label: "Solutions" },
   { href: "/projects", label: "Case Studies" },
   { href: "#faq", label: "FAQ" },
@@ -55,6 +55,8 @@ export const exteriorProjectTypes = [
 ] as const;
 
 export type ExteriorProjectType = (typeof exteriorProjectTypes)[number];
+
+export const defaultExteriorProjectType = exteriorProjectTypes[0];
 
 export const exteriorProjectTypeFilters = ["All", ...exteriorProjectTypes] as const;
 export type ExteriorProjectTypeFilter = (typeof exteriorProjectTypeFilters)[number];
@@ -492,7 +494,7 @@ export const testimonials: Testimonial[] = [
     name: "Nora Al-Mansoori",
     role: "CEO, Meridian Developments",
     quote:
-      "OD Studio reframed our project as a premium market product, and the positioning impact was immediate.",
+      "OD Architects reframed our project as a premium market product, and the positioning impact was immediate.",
     image: interiorImage,
     imageAlt: "Portrait of Elena Marchetti",
   },

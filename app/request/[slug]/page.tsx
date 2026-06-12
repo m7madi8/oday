@@ -9,10 +9,10 @@ type Props = { params: { slug: string } };
 export function generateMetadata({ params }: Props): Metadata {
   const service = getServiceBySlug(params.slug);
   if (!service) {
-    return { title: "Service request | OD STUDIO" };
+    return { title: "Service request | OD ARCHITECTS" };
   }
   return {
-    title: `Request ${service.title} | OD STUDIO`,
+    title: `Request ${service.title} | OD ARCHITECTS`,
     description: service.description,
   };
 }

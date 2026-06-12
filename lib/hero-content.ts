@@ -1,4 +1,4 @@
-import exteriorImage from "@/imgs/exterior.jpg";
+import heroVillaCover from "@/imgs/Exterior/Villa/hASSAN SALAMEH 27/ODAY_result.webp";
 
 /** Homepage hero copy — kept separate from data.ts to avoid heavy module init cycles. */
 export const hero = {
@@ -14,8 +14,8 @@ export const hero = {
   titleLine2Words: ["That", "Drives", "Value"],
   description:
     "Exterior Design, Interior Design, Ai Design, and Architect Dron — precision-focused delivery for high-value projects.",
-  image: exteriorImage,
-  imageAlt: "Modern desert villa at sunset with infinity pool and mountain backdrop",
+  image: heroVillaCover,
+  imageAlt: "Villa 05 — exterior visualization",
   stats: [
     { label: "Projects", value: 500, prefix: "+", suffix: "" },
     { label: "Value", value: 50, prefix: "+", suffix: " million" },

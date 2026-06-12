@@ -127,7 +127,7 @@ export function ServicesDrawer({ isOpen, onClose }: ServicesDrawerProps) {
         </ul>
 
         <footer className="svc-drawer__footer shrink-0 border-t px-7 py-5">
-          <p className="svc-drawer__footer-copy">OD Studio — Oday Abu Doha</p>
+          <p className="svc-drawer__footer-copy">OD Architects — Oday Abu Doha</p>
         </footer>
 
         <aside

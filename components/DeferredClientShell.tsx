@@ -2,10 +2,6 @@
 
 import dynamic from "next/dynamic";
 
-const SitePreloader = dynamic(
-  () => import("@/components/SitePreloader").then((m) => ({ default: m.SitePreloader })),
-);
-
 const CustomCursor = dynamic(
   () => import("@/components/CustomCursor").then((m) => ({ default: m.CustomCursor })),
   { ssr: false },
@@ -19,7 +15,6 @@ const SmoothHashScroll = dynamic(
 export function DeferredClientShell() {
   return (
     <>
-      <SitePreloader />
       <CustomCursor />
       <SmoothHashScroll />
     </>

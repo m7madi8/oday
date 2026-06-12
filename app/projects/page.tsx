@@ -1,5 +1,6 @@
 import { ProjectsGallery } from "@/components/ProjectsGallery";
 import {
+  defaultExteriorProjectType,
   isValidExteriorProjectType,
   isValidServiceSlug,
   type ExteriorProjectTypeFilter,
@@ -8,7 +9,7 @@ import {
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Project Gallery | OD STUDIO",
+  title: "Project Gallery | OD ARCHITECTS",
   description:
     "Case studies across Exterior Design, Interior Design, Ai Design, and Architect Dron.",
 };
@@ -29,8 +30,9 @@ export default function ProjectsPage({
     initialExteriorType = "landscape";
   } else if (rawService && isValidServiceSlug(rawService)) {
     initialFilter = rawService;
-    if (rawService === "exterior" && rawType && isValidExteriorProjectType(rawType)) {
-      initialExteriorType = rawType;
+    if (rawService === "exterior") {
+      initialExteriorType =
+        rawType && isValidExteriorProjectType(rawType) ? rawType : defaultExteriorProjectType;
     }
   }
 

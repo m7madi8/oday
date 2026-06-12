@@ -1,19 +1,17 @@
 "use client";
 
 import { CaseStudiesMenu } from "@/components/CaseStudiesMenu";
-import { usePreloaderDone } from "@/hooks/usePreloaderDone";
 import { hero } from "@/lib/hero-content";
 import { ArrowUpRight } from "lucide-react";
 import { useRef, useState } from "react";
 
 export function CaseStudiesCta() {
-  const preloaderDone = usePreloaderDone();
   const anchorRef = useRef<HTMLButtonElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <div
-      className={`case-studies-cta-fixed pointer-events-auto fixed z-[490]${preloaderDone ? " case-studies-cta-fixed--ready" : " case-studies-cta-fixed--hold"}`}
+      className="case-studies-cta-fixed case-studies-cta-fixed--ready pointer-events-auto fixed z-[490]"
     >
       <button
         ref={anchorRef}

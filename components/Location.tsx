@@ -40,7 +40,7 @@ export function Location() {
               />
 
               <iframe
-                title="OD Studio location on map"
+                title="OD Architects location on map"
                 src={studioLocation.mapEmbedUrl}
                 className="pointer-events-none absolute inset-0 h-full w-full border-0 opacity-[0.88] contrast-[1.05] saturate-[0.65] brightness-[0.72]"
                 loading="lazy"
@@ -55,7 +55,7 @@ export function Location() {
 
               <div className="absolute bottom-5 left-5 right-5 z-20 flex flex-col gap-4 sm:bottom-6 sm:left-6 sm:right-6 sm:flex-row sm:items-end sm:justify-between">
                 <div className="section-card rounded-xl border-white/15 bg-bg-primary/85 px-4 py-3 backdrop-blur-md">
-                  <p className="label-upper text-gold/90">OD Studio</p>
+                  <p className="label-upper text-gold/90">OD Architects</p>
                   <p className="mt-1 font-outfit text-sm font-medium text-ink-primary">
                     {studioLocation.addressLine2}
                   </p>

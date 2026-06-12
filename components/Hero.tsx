@@ -1,26 +1,21 @@
 "use client";
 
-import { usePreloaderDone } from "@/hooks/usePreloaderDone";
 import { hero } from "@/lib/hero-content";
 import Image from "next/image";
-import heroImage from "@/imgs/exterior.jpg";
 import { SectionShell } from "@/components/SectionShell";
 
 export function Hero() {
-  const preloaderDone = usePreloaderDone();
-  const holdEntrance = !preloaderDone;
-
   return (
     <SectionShell
       id="top"
       variant="hero"
-      className={`px-[var(--hero-gutter)] pt-[var(--hero-gutter)] pb-0${holdEntrance ? " hero--hold-entrance" : " hero--ready"}`}
+      className="hero--ready px-[var(--hero-gutter)] pt-[var(--hero-gutter)] pb-0"
     >
       <div className="relative z-0 flex min-h-0 flex-1 flex-col overflow-hidden">
         <div className="pointer-events-none absolute inset-0 z-0">
           <div className="hero-enter-media relative h-full w-full brightness-[0.78]">
             <Image
-              src={heroImage}
+              src={hero.image}
               alt={hero.imageAlt}
               fill
               priority

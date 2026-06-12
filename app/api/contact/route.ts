@@ -37,7 +37,7 @@ export async function POST(request: Request) {
 
     try {
       await sendBrevoEmail({
-        subject: "Newsletter signup — OD STUDIO",
+        subject: "Newsletter signup — OD ARCHITECTS",
         htmlContent: `<p style="font-family:Arial,sans-serif;font-size:14px;">New newsletter signup:</p><p style="font-family:Arial,sans-serif;font-size:14px;"><strong>${escapeHtml(email)}</strong></p>`,
         replyToEmail: email,
       });

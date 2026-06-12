@@ -30,7 +30,7 @@ export interface BrevoEmailOptions {
 export async function sendBrevoEmail(options: BrevoEmailOptions): Promise<void> {
   const apiKey = process.env.BREVO_API_KEY;
   const senderEmail = process.env.BREVO_SENDER_EMAIL;
-  const senderName = process.env.BREVO_SENDER_NAME ?? "OD STUDIO";
+  const senderName = process.env.BREVO_SENDER_NAME ?? "OD ARCHITECTS";
   const contactEmail = process.env.CONTACT_EMAIL;
 
   if (!apiKey || !senderEmail || !contactEmail) {

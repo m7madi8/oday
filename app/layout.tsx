@@ -4,9 +4,9 @@ import { DeferredClientShell } from "@/components/DeferredClientShell";
 import { Navigation } from "@/components/Navigation";
 
 export const metadata: Metadata = {
-  title: "OD STUDIO",
+  title: "OD ARCHITECTS",
   description:
-    "OD Studio delivers architecture and engineering solutions that elevate asset value, accelerate approvals, and strengthen market positioning.",
+    "OD Architects delivers architecture and engineering solutions that elevate asset value, accelerate approvals, and strengthen market positioning.",
   icons: {
     icon: [{ url: "/favicon.png", type: "image/png", sizes: "any" }],
     shortcut: [{ url: "/favicon.png", type: "image/png" }],
@@ -27,11 +27,6 @@ export default function RootLayout({
         <link
           href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Philosopher:ital,wght@0,400;1,400&family=Jost:wght@200;300;400&display=swap"
           rel="stylesheet"
-        />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){try{function lock(){document.documentElement.classList.add("preloader-pending");if(document.body)document.body.classList.add("preloader-active");}lock();if(!document.body)document.addEventListener("DOMContentLoaded",lock,{once:true});}catch(e){}})();`,
-          }}
         />
       </head>
       <body

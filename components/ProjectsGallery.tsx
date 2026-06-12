@@ -20,7 +20,8 @@ import {
   type GalleryCategoryFilter,
 } from "@/hooks/useFilteredProjects";
 import {
-  exteriorProjectTypeFilters,
+  defaultExteriorProjectType,
+  exteriorProjectTypes,
   projectDetailPath,
   projectServiceFilters,
   projects,
@@ -79,8 +80,9 @@ export function ProjectsGallery({
   const setFilterAndUrl = useCallback(
     (next: ProjectServiceFilter) => {
       setFilter(next);
-      setExteriorType("All");
-      router.replace(projectsGalleryPath(basePath, next, "All"), { scroll: false });
+      const nextExteriorType = next === "exterior" ? defaultExteriorProjectType : "All";
+      setExteriorType(nextExteriorType);
+      router.replace(projectsGalleryPath(basePath, next, nextExteriorType), { scroll: false });
     },
     [basePath, router],
   );
@@ -95,8 +97,8 @@ export function ProjectsGallery({
 
   const exteriorProjectsForGallery = useMemo(() => {
     const list = projects.filter((p) => p.serviceSlug === "exterior");
-    if (exteriorType === "All") return list;
-    return list.filter((p) => p.exteriorType === exteriorType);
+    const activeType = exteriorType === "All" ? defaultExteriorProjectType : exteriorType;
+    return list.filter((p) => p.exteriorType === activeType);
   }, [exteriorType]);
 
   const onCategoryFromHash = useCallback(
@@ -166,11 +168,11 @@ export function ProjectsGallery({
             {filter === "exterior" ? (
               <GalleryFilterScope label="Exterior scope" className="mt-4 border-t border-white/[0.06] pt-3">
                 <GalleryFilterGrid variant="exterior" tier="secondary" ariaLabel="Exterior collections">
-                  {exteriorProjectTypeFilters.map((type) => (
+                  {exteriorProjectTypes.map((type) => (
                     <GalleryFilterCell
                       key={type}
                       tier="secondary"
-                      active={exteriorType === type}
+                      active={(exteriorType === "All" ? defaultExteriorProjectType : exteriorType) === type}
                       label={categoryFilterLabel("exterior", type as GalleryCategoryFilter)}
                       count={countProjectsForCategory("exterior", type as GalleryCategoryFilter)}
                       onClick={() => setExteriorTypeAndUrl(type)}

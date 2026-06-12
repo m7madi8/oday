@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  defaultExteriorProjectType,
   isValidExteriorProjectType,
   isValidServiceSlug,
   type ExteriorProjectTypeFilter,
@@ -36,9 +37,16 @@ export function ProjectsGallerySearchSync({
 
     if (isValidServiceSlug(rawService)) {
       const rawType = searchParams.get("type");
-      const exteriorType: ExteriorProjectTypeFilter =
-        rawService === "exterior" && rawType && isValidExteriorProjectType(rawType) ? rawType : "All";
-      onFilterChange(rawService, exteriorType);
+      if (rawService === "exterior") {
+        const exteriorType: ExteriorProjectTypeFilter =
+          rawType && isValidExteriorProjectType(rawType) ? rawType : defaultExteriorProjectType;
+        if (!rawType || !isValidExteriorProjectType(rawType)) {
+          router.replace(`${basePath}?service=exterior&type=${exteriorType}`, { scroll: false });
+        }
+        onFilterChange("exterior", exteriorType);
+        return;
+      }
+      onFilterChange(rawService, "All");
       return;
     }
 

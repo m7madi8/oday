@@ -156,8 +156,10 @@ export function GalleryPageView({
   }, []);
 
   useEffect(() => {
-    if (service !== "All" && !getCategoryOptions(service).includes(category)) {
-      setCategory("All");
+    if (service === "All") return;
+    const options = getCategoryOptions(service);
+    if (!options.includes(category)) {
+      setCategory(service === "exterior" ? defaultCategoryForService("exterior") : "All");
     }
   }, [service, category]);
 

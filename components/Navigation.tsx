@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "@/components/ClientMotion";
+import { SiteBackButton } from "@/components/SiteBackButton";
 import { ArrowUpRight, Facebook, Instagram } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -73,7 +74,7 @@ const mainLinks = [
   { href: "/#top", label: "Home" },
   { href: "/#about", label: "About" },
   { href: "/#services", label: "Services" },
-  { href: "/projects", label: "Gallery" },
+  { href: "/#gallery", label: "Gallery" },
   { href: "/#location", label: "Location" },
 ] as const;
 
@@ -89,6 +90,7 @@ const socialLinks = [
 ] as const;
 
 function hrefToSectionId(href: string): string | null {
+  if (href === "/#gallery" || href === "#gallery") return "gallery";
   if (href === "/projects" || href.startsWith("/projects")) return null;
   if (href === "/#top" || href === "#top") return "top";
   const hash = href.includes("#") ? href.split("#")[1] : "";
@@ -96,8 +98,17 @@ function hrefToSectionId(href: string): string | null {
 }
 
 function isNavLinkActive(pathname: string, href: string, activeSection: string): boolean {
-  if (href === "/projects" || href.startsWith("/projects")) {
-    return pathname.startsWith("/projects");
+  if (
+    href === "/#gallery" ||
+    href === "#gallery" ||
+    href === "/projects" ||
+    href.startsWith("/projects")
+  ) {
+    if (pathname.startsWith("/projects")) return true;
+    if (pathname === "/" && (href === "/#gallery" || href === "#gallery")) {
+      return activeSection === "gallery";
+    }
+    return false;
   }
   if (pathname !== "/") return false;
   const sectionId = hrefToSectionId(href);
@@ -181,19 +192,22 @@ export function Navigation() {
         suppressHydrationWarning
         className={`site-nav fixed inset-x-0 top-0 overflow-visible border-b pt-[var(--hero-gutter)] ${open ? "z-[560]" : "z-[500]"} ${navTone}`}
       >
-        <div className="mx-auto grid h-[var(--site-nav-height)] max-w-7xl grid-cols-[auto_1fr_auto] items-center gap-4 overflow-visible px-4 sm:px-[var(--hero-gutter)] md:gap-6 md:px-8 lg:px-10">
+        <div
+          className={`mx-auto grid h-[var(--site-nav-height)] max-w-7xl items-center gap-3 overflow-visible px-4 sm:gap-4 sm:px-[var(--hero-gutter)] md:gap-6 md:px-8 lg:px-10 ${isHome ? "grid-cols-[auto_1fr_auto]" : "grid-cols-[auto_auto_1fr_auto]"}`}
+        >
+          {!isHome ? <SiteBackButton /> : null}
           <Link
             href="/#top"
             className="site-nav-logo flex shrink-0 items-center overflow-visible transition-opacity duration-300 hover:opacity-90"
-            aria-label="OD Studio home"
+            aria-label="OD Architects home"
             onClick={() => open && close()}
           >
             <Image
               src={brandLogo}
-              alt="OD Studio"
+              alt="OD Architects"
               height={72}
               width={288}
-              className={`site-nav-logo__img h-11 w-auto max-w-[min(240px,calc(100vw-7rem))] origin-left scale-[1.62] md:scale-[1.72] lg:scale-[1.82] ${invertLogo ? "site-nav-logo__img--inverted" : ""} ${heroLogoGlow ? "site-nav-logo__img--hero-glow" : ""}`}
+              className={`site-nav-logo__img h-11 w-auto ${isHome ? "max-w-[min(240px,calc(100vw-7rem))]" : "max-w-[min(200px,calc(100vw-10.5rem))] sm:max-w-[min(240px,calc(100vw-12rem))]"} origin-left scale-[1.62] md:scale-[1.72] lg:scale-[1.82] ${invertLogo ? "site-nav-logo__img--inverted" : ""} ${heroLogoGlow ? "site-nav-logo__img--hero-glow" : ""}`}
               sizes="(max-width: 1024px) 200px, 280px"
             />
           </Link>
@@ -336,7 +350,7 @@ export function Navigation() {
                       </a>
                     ))}
                   </div>
-                  <p className="site-menu-footer__copy">© 2026 OD Studio</p>
+                  <p className="site-menu-footer__copy">© 2026 OD Architects</p>
                 </div>
               </motion.div>
             </motion.nav>

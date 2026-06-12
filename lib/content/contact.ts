@@ -34,7 +34,7 @@ export const contact = {
 
 export const footer = {
   blurb:
-    "OD Studio transforms complex briefs into high-value assets through design intelligence and engineering rigor.",
+    "OD Architects transforms complex briefs into high-value assets through design intelligence and engineering rigor.",
   bottomBarLinks: [
     { href: "#top", label: "Home" },
     { href: "#about", label: "About" },
@@ -43,7 +43,7 @@ export const footer = {
     { href: "#contact", label: "Contact" },
   ] as const,
   homepageLinks: [
-    { href: "#about", label: "Studio" },
+    { href: "#about", label: "About" },
     { href: "/projects", label: "Case Studies" },
     { href: "#services", label: "Solutions" },
     { href: "#contact", label: "Contact" },
@@ -58,5 +58,5 @@ export const footer = {
     { label: "Facebook", href: "https://facebook.com", icon: "facebook" as const },
     { label: "Instagram", href: "https://instagram.com", icon: "instagram" as const },
   ],
-  copyright: "© 2026 OD Studio. All rights reserved.",
+  copyright: "© 2026 OD Architects. All rights reserved.",
 };

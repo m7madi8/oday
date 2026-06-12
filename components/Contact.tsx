@@ -236,11 +236,11 @@ export function Contact() {
             <Link
               href="#top"
               className="contact-footer-logo group inline-flex shrink-0 items-center justify-center"
-              aria-label="OD Studio home"
+              aria-label="OD Architects home"
             >
               <Image
                 src={brandLogo}
-                alt="OD Studio"
+                alt="OD Architects"
                 width={720}
                 height={180}
                 className="contact-footer-logo__img h-28 w-auto max-w-[min(95vw,720px)] sm:h-32 md:h-[9.5rem] lg:h-40"

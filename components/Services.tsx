@@ -129,7 +129,7 @@ export function Services() {
                 </span>
               </>
             }
-            description="Architecture, interiors, drone intelligence, and AI workflows — integrated under one studio."
+            description="Architecture, interiors, drone intelligence, and AI workflows — integrated under OD Architects."
           />
         </ScrollReveal>
 

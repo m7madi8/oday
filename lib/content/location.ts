@@ -1,5 +1,5 @@
 export const studioLocation = {
-  eyebrow: "Studio Location",
+  eyebrow: "Office Location",
   heading: "Where We Build",
   headingAccent: "From Al-Bireh",
   addressLine2: "Al-Bireh, Ramallah",
