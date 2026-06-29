@@ -201,7 +201,7 @@ export function Navigation() {
     <>
       <header
         suppressHydrationWarning
-        className={`site-nav fixed inset-x-0 top-0 overflow-visible border-b pt-[var(--hero-gutter)] ${open ? "z-[560]" : "z-[500]"} ${navTone}`}
+        className={`site-nav fixed inset-x-0 top-0 overflow-visible pt-[var(--hero-gutter)] ${open ? "z-[560]" : "z-[500]"} ${navTone}`}
       >
         <div
           className={`mx-auto grid h-[var(--site-nav-height)] max-w-7xl items-center gap-3 overflow-visible px-4 sm:gap-4 sm:px-[var(--hero-gutter)] md:gap-6 md:px-8 lg:px-10 ${isHome ? "grid-cols-[auto_1fr_auto]" : "grid-cols-[auto_auto_1fr_auto]"}`}
