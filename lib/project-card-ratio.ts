@@ -6,7 +6,6 @@ const EXTERIOR_TYPE_LABELS: Record<ExteriorProjectType, string> = {
   "residential-buildings": "Residential Buildings",
   cottage: "Cottage",
   landscape: "Landscape",
-  general: "General",
 };
 
 const PORTRAIT_MAX_ASPECT = 0.92;

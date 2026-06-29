@@ -7,6 +7,8 @@ import {
   GallerySectionTransition,
   GalleryStagger,
 } from "@/components/animations/GalleryMotion";
+import { AiDesignGallery } from "@/components/AiDesignGallery";
+import { DroneGallery } from "@/components/DroneGallery";
 import { GalleryFilterCell, GalleryFilterGrid, GalleryFilterScope } from "@/components/GalleryFilterGrid";
 import { GalleryHashSync } from "@/components/GalleryHashSync";
 import { PortfolioDesignGallery } from "@/components/portfolio/PortfolioDesignGallery";
@@ -65,6 +67,9 @@ export function ProjectsGallery({
   const [exteriorType, setExteriorType] = useState<ExteriorProjectTypeFilter>(initialExteriorType);
 
   const isInteriorMode = filter === "interior";
+  const isAiMode = filter === "architecture-ai";
+  const isDroneMode = filter === "architecture-drone";
+  const isVideoGalleryMode = isAiMode || isDroneMode;
   const isPortfolioMode = filter === "All" || isInteriorMode || filter === "exterior";
   const galleryTitle = filter === "All" ? "Project Gallery" : serviceFilterLabel(filter);
 
@@ -143,7 +148,11 @@ export function ProjectsGallery({
                 {galleryTitle}
               </h1>
               <p className="mt-3 max-w-xl text-sm leading-relaxed text-ink-secondary md:mt-5 md:text-[0.9375rem]">
-                Editorial grids for interior and exterior work — each card adapts to its cover aspect ratio.
+                {isAiMode
+                  ? "Cinematic AI concept films — motion studies built for fast alignment and premium client presentation."
+                  : isDroneMode
+                    ? "Aerial site films and drone capture — full-frame delivery for context reads and progress reporting."
+                    : "Editorial grids for interior and exterior work — each card adapts to its cover aspect ratio."}
               </p>
             </div>
             <GalleryFilterGrid
@@ -186,7 +195,11 @@ export function ProjectsGallery({
         </GalleryReveal>
 
         <AnimatePresence mode="wait">
-          {isPortfolioMode ? (
+          {isVideoGalleryMode ? (
+            <GallerySectionTransition key={galleryKey} sectionKey={galleryKey} className="mt-10 md:mt-12">
+              {isAiMode ? <AiDesignGallery /> : <DroneGallery />}
+            </GallerySectionTransition>
+          ) : isPortfolioMode ? (
             <GallerySectionTransition key={galleryKey} sectionKey={galleryKey} className="mt-10 md:mt-12">
               {GALLERY_CATEGORY_ANCHORS.map((anchor) => (
                 <section

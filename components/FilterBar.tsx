@@ -33,7 +33,7 @@ export function FilterBar({
   const reduceMotion = useReducedMotion();
   const categoryCounts = useCategoryCounts(service);
   const categoryOptions = getCategoryOptions(service);
-  const showLevel2 = service !== "All";
+  const showLevel2 = service !== "All" && categoryOptions.length > 0;
 
   return (
     <div

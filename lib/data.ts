@@ -51,7 +51,6 @@ export const exteriorProjectTypes = [
   "residential-buildings",
   "cottage",
   "landscape",
-  "general",
 ] as const;
 
 export type ExteriorProjectType = (typeof exteriorProjectTypes)[number];
@@ -135,7 +134,7 @@ export interface ProjectGalleryImage {
 export function resolveProjectGalleryFormat(project: Project): ProjectGalleryFormat {
   if (project.galleryFormat) return project.galleryFormat;
   if (project.serviceSlug === "exterior") {
-    return project.exteriorType === "residential-buildings" || project.exteriorType === "general"
+    return project.exteriorType === "residential-buildings"
       ? "cinema"
       : "instagram";
   }
@@ -221,7 +220,6 @@ export function exteriorTypeLabel(type: ExteriorProjectType): string {
     "residential-buildings": "Residential Buildings",
     cottage: "Cottage",
     landscape: "Landscape",
-    general: "General",
   };
   return labels[type];
 }
@@ -283,16 +281,6 @@ export const exteriorGalleryCollections: ExteriorGalleryCollection[] = [
       "Courtyards, terraces, water features, and arrival sequences integrated with the built form.",
     accent: "#6b8f71",
     layout: "landscape-grid",
-  },
-  {
-    type: "general",
-    orderLabel: "05",
-    title: "General",
-    tagline: "Cultural & mixed scope",
-    description:
-      "Distinct destinations and mixed briefs where exterior narrative carries brand and public presence.",
-    accent: "#a89888",
-    layout: "cultural-spotlight",
   },
 ];
 

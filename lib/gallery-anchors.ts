@@ -5,7 +5,6 @@ export const GALLERY_CATEGORY_ANCHORS = [
   { id: "resid", type: "residential-buildings" as const, label: "Resid.", order: "02" },
   { id: "cottage", type: "cottage" as const, label: "Cottage", order: "03" },
   { id: "land", type: "landscape" as const, label: "Land.", order: "04" },
-  { id: "general", type: "general" as const, label: "General", order: "05" },
 ] as const;
 
 export type GalleryCategoryAnchorId = (typeof GALLERY_CATEGORY_ANCHORS)[number]["id"];

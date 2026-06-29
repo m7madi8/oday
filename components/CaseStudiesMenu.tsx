@@ -21,7 +21,6 @@ const EXTERIOR_SECTIONS = [
   { type: "residential-buildings", label: "Residential Buildings" },
   { type: "cottage", label: "Cottage" },
   { type: "landscape", label: "Landscape" },
-  { type: "general", label: "General" },
 ] as const;
 
 const MOBILE_BP = 640;

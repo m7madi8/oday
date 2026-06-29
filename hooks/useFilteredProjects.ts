@@ -1,5 +1,7 @@
 "use client";
 
+import { aiDesignVideos } from "@/lib/content/ai-design-videos";
+import { droneVideos } from "@/lib/content/drone-videos";
 import {
   exteriorProjectTypes,
   exteriorTypeLabel,
@@ -20,14 +22,19 @@ export const EXTERIOR_CATEGORY_SHORT: Record<ExteriorProjectType, string> = {
   "residential-buildings": "Resid.",
   cottage: "Cottage",
   landscape: "Land.",
-  general: "General",
 };
 
 export const PROJECT_CATEGORIES: ProjectCategory[] = ["Residential", "Cultural"];
 
+const SERVICES_WITHOUT_CATEGORY_FILTER: ProjectServiceFilter[] = [
+  "architecture-ai",
+  "architecture-drone",
+];
+
 export function getCategoryOptions(service: ProjectServiceFilter): GalleryCategoryFilter[] {
   if (service === "All") return ["All"];
   if (service === "exterior") return [...exteriorProjectTypes];
+  if (SERVICES_WITHOUT_CATEGORY_FILTER.includes(service)) return [];
   return ["All", ...PROJECT_CATEGORIES];
 }
 
@@ -65,6 +72,8 @@ export function countProjectsForCategory(
 
 export function countProjectsForService(service: ProjectServiceFilter): number {
   if (service === "All") return projects.length;
+  if (service === "architecture-ai") return aiDesignVideos.length;
+  if (service === "architecture-drone") return droneVideos.length;
   return projects.filter((p) => p.serviceSlug === service).length;
 }
 

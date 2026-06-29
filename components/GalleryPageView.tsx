@@ -1,6 +1,8 @@
 "use client";
 
 import "@/app/portfolio-gallery.css";
+import { AiDesignGallery } from "@/components/AiDesignGallery";
+import { DroneGallery } from "@/components/DroneGallery";
 import { FilterBar } from "@/components/FilterBar";
 import { PortfolioDesignGallery } from "@/components/portfolio/PortfolioDesignGallery";
 import { GalleryHashSync } from "@/components/GalleryHashSync";
@@ -68,6 +70,9 @@ export function GalleryPageView({
   const isFirstFilter = useRef(true);
 
   const filtered = useFilteredProjects(service, category);
+  const isAiService = service === "architecture-ai";
+  const isDroneService = service === "architecture-drone";
+  const isVideoGalleryService = isAiService || isDroneService;
   const isPortfolioService = service === "interior" || service === "exterior";
   const ancillaryFiltered = useMemo(
     () => (service === "All" ? filtered.filter((p) => p.serviceSlug !== "interior" && p.serviceSlug !== "exterior") : []),
@@ -241,7 +246,17 @@ export function GalleryPageView({
       <div className="relative mx-auto min-w-0 max-w-7xl px-5 md:px-10">
         <section className="mt-8 min-w-0 md:mt-10">
           <AnimatePresence mode="wait">
-            {filtered.length === 0 ? (
+            {isVideoGalleryService ? (
+              <motion.div
+                key={filterKey}
+                initial={reduceMotion ? false : { opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={reduceMotion ? undefined : { opacity: 0 }}
+                transition={{ duration: 0.25 }}
+              >
+                {isAiService ? <AiDesignGallery /> : <DroneGallery />}
+              </motion.div>
+            ) : filtered.length === 0 ? (
               <motion.div
                 key="empty"
                 className="flex min-h-[50vh] flex-col items-center justify-center py-24 text-center"
