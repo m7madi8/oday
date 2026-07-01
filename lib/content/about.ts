@@ -7,33 +7,23 @@ export interface Strength {
 
 export const about = {
   sectionNumber: "01",
-  snapshotEyebrow: "Company snapshot",
-  snapshotSub: "Key figures and operating focus",
+  snapshotEyebrow: "About",
   stats: [
     { label: "Projects", target: 500, prefix: "+", suffix: "" },
     { label: "Value", target: 50, prefix: "+", suffix: " million" },
   ],
-  headlinePrimary: "Built for Serious",
-  headlineAccent: "Developers",
-  introParagraph:
-    "Architecture, interiors, and engineering sit with one accountable OD Architects team, built for serious developers who demand bankable documentation, coordinated delivery, and premium outcomes without siloed consultants or excuse chains.",
+  headlinePrimary: "Built for",
+  headlineAccent: "serious developers",
   logoWordmark: "OD",
   logoSub: "ARCHITECTS",
   strengths: [
     {
-      title: "Design Strategy",
-      description:
-        "Every concept starts with spatial intent, material identity, and buildable clarity.",
+      title: "One team",
+      description: "Architecture, interiors, and engineering — one accountable studio.",
     },
     {
-      title: "Technical Authority",
-      description:
-        "BIM-led coordination, code compliance, and buildable detailing reduce execution risk.",
-    },
-    {
-      title: "Execution Control",
-      description:
-        "Clear milestones, transparent reporting, and site follow-up protect quality and timeline.",
+      title: "Build-ready",
+      description: "Clear documentation, coordination, and site follow-through.",
     },
   ] satisfies Strength[],
   directorName: "Oday Abu Doha",

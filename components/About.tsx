@@ -43,7 +43,7 @@ export function About() {
     <SectionShell id="about">
       <SectionInner>
       <RevealChildren
-        className="relative grid w-full items-center gap-6 md:gap-7 lg:grid-cols-[minmax(0,1.08fr)_minmax(240px,0.92fr)] lg:gap-10"
+        className="relative grid w-full items-center gap-5 md:gap-6 lg:grid-cols-[minmax(0,1.08fr)_minmax(240px,0.92fr)] lg:gap-8"
         stagger={0.07}
       >
         <ScrollReveal
@@ -67,9 +67,6 @@ export function About() {
               transition={{ duration: reduce ? 0 : 0.45, ease: [0.16, 1, 0.3, 1] }}
             >
               <p className="label-upper tracking-[0.2em] text-gold/85">{studioAbout.snapshotEyebrow}</p>
-              <p className="mt-1 font-outfit text-[0.6875rem] tracking-[0.06em] text-ink-muted">
-                {studioAbout.snapshotSub}
-              </p>
             </motion.div>
             <span className="about-snapshot__index label-upper" aria-hidden>
               {studioAbout.sectionNumber}
@@ -118,16 +115,6 @@ export function About() {
           </motion.div>
 
           <div className="about-snapshot__body">
-            <motion.p
-              className="about-snapshot__intro"
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={revealInView}
-              transition={{ duration: reduce ? 0 : 0.55, delay: reduce ? 0 : 0.04, ease: [0.22, 1, 0.36, 1] }}
-            >
-              {studioAbout.introParagraph}
-            </motion.p>
-
             <h2 className="about-snapshot__headline">
               <RevealText as="span" className="block" splitByWords wordStagger={0.06} duration={0.85}>
                 {studioAbout.headlinePrimary}

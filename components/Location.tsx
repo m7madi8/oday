@@ -9,11 +9,6 @@ import { ExternalLink, Navigation } from "lucide-react";
 export function Location() {
   return (
     <SectionShell id="location">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"
-      />
-
       <SectionInner>
         <RevealChildren stagger={0.08}>
           <ScrollReveal dramatic>
