@@ -8,7 +8,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Project Gallery | OD ARCHITECTS",
   description:
-    "Case studies across Exterior Design, Interior Design, Ai Design, and Architect Dron.",
+    "Case studies across Exterior Design, Interior Design, Ai architect, and Architect Dron.",
 };
 
 export default function GalleryPage({

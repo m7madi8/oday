@@ -3,7 +3,9 @@
 import { isDesktopFinePointer } from "@/lib/animations";
 import { useEffect, useRef, useState } from "react";
 
-const TRAIL_LENGTH = 20;
+const TRAIL_LENGTH = 15;
+const TRAIL_HEAD_LERP = 0.72;
+const TRAIL_LINK_LERP = 0.52;
 const IDLE_TIMEOUT = 1000;
 
 const INTERACTIVE =
@@ -88,12 +90,12 @@ export function CustomCursor() {
       for (let i = TRAIL_LENGTH - 1; i > 0; i--) {
         const prev = trailPosRef.current[i - 1];
         const curr = trailPosRef.current[i];
-        curr.x += (prev.x - curr.x) * 0.35;
-        curr.y += (prev.y - curr.y) * 0.35;
+        curr.x += (prev.x - curr.x) * TRAIL_LINK_LERP;
+        curr.y += (prev.y - curr.y) * TRAIL_LINK_LERP;
       }
 
-      trailPosRef.current[0].x += (posRef.current.x - trailPosRef.current[0].x) * 0.5;
-      trailPosRef.current[0].y += (posRef.current.y - trailPosRef.current[0].y) * 0.5;
+      trailPosRef.current[0].x += (posRef.current.x - trailPosRef.current[0].x) * TRAIL_HEAD_LERP;
+      trailPosRef.current[0].y += (posRef.current.y - trailPosRef.current[0].y) * TRAIL_HEAD_LERP;
 
       if (cursorRef.current) {
         cursorRef.current.style.transform = `translate3d(${posRef.current.x}px, ${posRef.current.y}px, 0)`;
@@ -103,9 +105,9 @@ export function CustomCursor() {
         if (!el) return;
         const point = trailPosRef.current[i];
         const progress = 1 - i / TRAIL_LENGTH;
-        const size = 3 + progress * (hoveringRef.current ? 9 : 7);
+        const size = 3 + progress * (hoveringRef.current ? 6 : 5);
         el.style.transform = `translate3d(${point.x}px, ${point.y}px, 0) translate(-50%, -50%)`;
-        el.style.opacity = `${progress * (hoveringRef.current ? 0.72 : 0.58)}`;
+        el.style.opacity = `${Math.pow(progress, 1.35) * (hoveringRef.current ? 0.68 : 0.54)}`;
         el.style.width = `${size}px`;
         el.style.height = `${size}px`;
       });

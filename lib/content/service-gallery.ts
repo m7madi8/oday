@@ -10,9 +10,11 @@ export interface ServiceGalleryVideo {
 
 export interface ServiceGalleryCopy {
   eyebrow: string;
+  orderLabel?: string;
   title: string;
   titleAccent: string;
   description: string;
+  highlights?: string[];
   badge: string;
   ctaHref: string;
   ctaLabel: string;

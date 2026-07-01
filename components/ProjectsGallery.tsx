@@ -219,7 +219,7 @@ export function ProjectsGallery({
                 <div className="mt-16 md:mt-24">
                   <header className="mb-8 border-b border-white/[0.07] pb-6">
                     <p className="label-upper text-ink-muted">More services</p>
-                    <h2 className="mt-2 font-display text-3xl italic text-ink-primary md:text-4xl">AI &amp; Drone</h2>
+                    <h2 className="mt-2 font-display text-3xl italic text-ink-primary md:text-4xl">Ai architect &amp; Drone</h2>
                   </header>
                   <GalleryStagger
                     className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"

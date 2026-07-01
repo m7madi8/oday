@@ -218,7 +218,7 @@ export function GalleryPageView({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.28, ease: pageEase }}
           >
-            Case studies across Exterior Design, Interior Design, Ai Design, and Architect Dron.
+            Case studies across Exterior Design, Interior Design, Ai architect, and Architect Dron.
           </motion.p>
         </header>
       </div>
@@ -298,7 +298,7 @@ export function GalleryPageView({
                 />
                 {service === "All" && ancillaryFiltered.length > 0 ? (
                   <div className="mt-16 border-t border-white/[0.07] pt-12 md:mt-24">
-                    <h2 className="mb-8 font-display text-3xl italic text-ink-primary">AI &amp; Drone</h2>
+                    <h2 className="mb-8 font-display text-3xl italic text-ink-primary">Ai architect &amp; Drone</h2>
                     <div className="grid min-w-0 grid-cols-1 gap-px bg-white/[0.06] md:grid-cols-2 xl:grid-cols-3">
                       {ancillaryFiltered.map((project, index) => (
                         <ProjectCard

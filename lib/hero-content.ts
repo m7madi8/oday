@@ -13,7 +13,7 @@ export const hero = {
   titleLine1: "Design",
   titleLine2Words: ["That", "Drives", "Value"],
   description:
-    "Exterior Design, Interior Design, Ai Design, and Architect Dron — precision-focused delivery for high-value projects.",
+    "Exterior Design, Interior Design, Ai architect, and Architect Dron — precision-focused delivery for high-value projects.",
   image: heroVillaCover,
   imageAlt: "Villa 05 — exterior visualization",
   stats: [

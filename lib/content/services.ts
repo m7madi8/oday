@@ -34,7 +34,7 @@ export const services: ServiceItem[] = [
     id: "s5",
     slug: "architecture-ai",
     orderLabel: "03",
-    title: "Ai Design",
+    title: "Ai architect",
     description:
       "AI-assisted concept exploration, optimization, and performance-led design workflows.",
     icon: Layers3,

@@ -51,7 +51,7 @@ export const footer = {
   categoryLinks: [
     { href: "/projects?service=exterior", label: "Exterior Design" },
     { href: "/projects?service=interior", label: "Interior Design" },
-    { href: "/projects?service=architecture-ai", label: "Ai Design" },
+    { href: "/projects?service=architecture-ai", label: "Ai architect" },
     { href: "/projects?service=architecture-drone", label: "Architect Dron" },
   ],
   social: [

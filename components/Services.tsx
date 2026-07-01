@@ -54,11 +54,11 @@ const serviceProfiles: Record<string, ServiceProfile> = {
       "Drone-powered site data and visual reporting for faster, sharper project decisions.",
     verticalLabel: "Architect Dron",
   },
-  "Ai Design": {
+  "Ai architect": {
     tagline: "AI workflows",
     punchline:
       "AI-enhanced architecture workflows for speed, option exploration, and precision.",
-    verticalLabel: "Ai Design",
+    verticalLabel: "Ai architect",
   },
 };
 

@@ -16,7 +16,7 @@ export const aiDesignVideos: ServiceGalleryVideo[] = [
   {
     id: "ai-hamada",
     orderLabel: "02",
-    title: "AI Design Reel",
+    title: "Ai Architect Reel",
     client: "Hamada",
     description:
       "Workflow-led AI design study — rapid optioning, facade rhythm, and photoreal delivery for client presentation.",
@@ -25,13 +25,13 @@ export const aiDesignVideos: ServiceGalleryVideo[] = [
 ];
 
 export const aiDesignGalleryCopy: ServiceGalleryCopy = {
-  eyebrow: "Ai Design",
+  eyebrow: "Ai architect",
   title: "AI-Assisted Visualization",
   titleAccent: "Cinematic deliverables",
   description:
     "Motion studies and AI-enhanced concept films — built for fast alignment, premium presentation, and design clarity.",
   badge: "AI Film",
   ctaHref: "/request/architecture-ai",
-  ctaLabel: "Request Ai Design brief",
+  ctaLabel: "Request Ai architect brief",
   headingId: "ai-gallery-heading",
 };

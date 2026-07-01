@@ -1,4 +1,4 @@
-import type { ServiceGalleryCopy, ServiceGalleryVideo } from "@/lib/content/service-gallery";
+import type { ServiceGalleryVideo } from "@/lib/content/service-gallery";
 
 export const droneVideos: ServiceGalleryVideo[] = [
   {
@@ -13,14 +13,35 @@ export const droneVideos: ServiceGalleryVideo[] = [
   },
 ];
 
-export const droneGalleryCopy: ServiceGalleryCopy = {
+export const droneGalleryContent = {
+  orderLabel: "04",
   eyebrow: "Architect Dron",
   title: "Aerial Intelligence",
   titleAccent: "Site & progress films",
   description:
     "High-resolution drone footage for site surveys, context studies, and progress documentation — delivered with architectural clarity.",
+  highlights: ["Site surveys", "Context reads", "Progress reporting"],
+  specs: [
+    { label: "Delivery", value: "4K aerial reel" },
+    { label: "Use case", value: "Site & progress" },
+    { label: "Format", value: "Cinema aspect" },
+  ],
   badge: "Aerial Film",
   ctaHref: "/request/architecture-drone",
   ctaLabel: "Request Architect Dron brief",
   headingId: "drone-gallery-heading",
+} as const;
+
+/** @deprecated Use droneGalleryContent */
+export const droneGalleryCopy = {
+  eyebrow: droneGalleryContent.eyebrow,
+  orderLabel: droneGalleryContent.orderLabel,
+  title: droneGalleryContent.title,
+  titleAccent: droneGalleryContent.titleAccent,
+  description: droneGalleryContent.description,
+  highlights: [...droneGalleryContent.highlights],
+  badge: droneGalleryContent.badge,
+  ctaHref: droneGalleryContent.ctaHref,
+  ctaLabel: droneGalleryContent.ctaLabel,
+  headingId: droneGalleryContent.headingId,
 };
