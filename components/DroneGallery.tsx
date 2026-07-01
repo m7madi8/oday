@@ -16,8 +16,6 @@ export function DroneGallery() {
 
   return (
     <section className="drone-gallery" aria-labelledby={copy.headingId}>
-      <div className="drone-gallery__ambient" aria-hidden />
-
       <div className="drone-gallery__inner">
         <GalleryReveal dramatic>
           <aside className="drone-gallery__intro">
