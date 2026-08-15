@@ -32,34 +32,32 @@ const menuListContainer = {
 };
 
 const menuListItem = {
-  hidden: { opacity: 0, x: 18 },
+  hidden: { opacity: 0, y: 10 },
   show: {
     opacity: 1,
-    x: 0,
-    transition: { duration: 0.42, ease: softOut },
+    y: 0,
+    transition: { duration: 0.4, ease: softOut },
   },
 };
 
 const menuFooterVariants = {
-  hidden: { opacity: 0, y: 12 },
+  hidden: { opacity: 0, y: 10 },
   show: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.36, ease: loadEase, delay: 0.28 },
+    transition: { duration: 0.34, ease: loadEase, delay: 0.22 },
   },
 };
 
 const menuPanelVariants = {
-  hidden: { opacity: 0, x: "100%" },
+  hidden: { opacity: 0 },
   show: {
     opacity: 1,
-    x: 0,
-    transition: { duration: 0.42, ease: loadEase },
+    transition: { duration: 0.28, ease: loadEase },
   },
   exit: {
     opacity: 0,
-    x: "100%",
-    transition: { duration: 0.26, ease: loadEase },
+    transition: { duration: 0.2, ease: loadEase },
   },
 };
 
@@ -376,20 +374,7 @@ export function Navigation() {
             </button>
           </nav>
 
-          <div className="flex shrink-0 items-center justify-end gap-1.5 sm:gap-2">
-            <button
-              type="button"
-              data-no-glow
-              className={`site-nav-search-bar site-nav-search-bar--compact lg:hidden ${searchOpen ? "site-nav-search-bar--active" : ""}`}
-              aria-label="Search"
-              aria-expanded={searchOpen}
-              aria-controls="site-nav-search"
-              onClick={() => (searchOpen ? closeSearch() : openSearch())}
-            >
-              <Search className="site-nav-search-bar__icon" strokeWidth={1.5} aria-hidden />
-              <span className="site-nav-search-bar__label">Search</span>
-            </button>
-
+          <div className="flex shrink-0 items-center justify-end">
             <button
               type="button"
               data-no-glow
@@ -440,27 +425,20 @@ export function Navigation() {
           <motion.div
             key="menu-layer"
             id="site-menu-overlay"
-            className="site-menu-overlay nav-menu-layer pointer-events-auto fixed inset-0 z-[530] flex lg:hidden"
+            className="site-menu-overlay nav-menu-layer pointer-events-auto fixed inset-0 z-[530] lg:hidden"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1, transition: layerOpen }}
             exit={{ opacity: 0, transition: layerClose }}
           >
-            <button
-              type="button"
-              className="site-menu-overlay__backdrop min-h-0 min-w-0 flex-1"
-              aria-label="Close menu"
-              onClick={closeMobile}
-            />
             <motion.nav
               role="dialog"
               aria-modal="true"
               aria-label="Site menu"
-              className="site-menu-panel relative z-10 h-full shrink-0 overflow-y-auto"
+              className="site-menu-panel"
               variants={reduceMotion ? undefined : menuPanelVariants}
               initial={reduceMotion ? false : "hidden"}
               animate={reduceMotion ? false : "show"}
               exit={reduceMotion ? undefined : "exit"}
-              onClick={(e) => e.stopPropagation()}
             >
               <div className="site-menu-panel__head pt-5">
                 <p className="site-menu-panel__eyebrow">Navigation</p>
@@ -495,6 +473,7 @@ export function Navigation() {
                     <motion.li key={panel.id} variants={menuListItem}>
                       <button
                         type="button"
+                        data-no-glow
                         className={`site-menu-item group w-full text-left ${mobileExpand === panel.id ? "site-menu-item--active" : ""}`}
                         aria-expanded={mobileExpand === panel.id}
                         onClick={() =>
@@ -584,11 +563,6 @@ export function Navigation() {
                 initial={reduceMotion ? false : "hidden"}
                 animate={reduceMotion ? false : "show"}
               >
-                <button type="button" className="site-menu-search-launch" onClick={openSearch}>
-                  <Search className="h-4 w-4" strokeWidth={1.5} aria-hidden />
-                  Search projects &amp; services
-                </button>
-
                 <div className="site-menu-footer__meta">
                   <div className="site-menu-footer__social">
                     {socialLinks.map(({ href, label, Icon }) => (

@@ -337,24 +337,6 @@
   -webkit-backdrop-filter: blur(6px);
 }
 
-.site-nav-search-bar--compact {
-  margin-left: 0;
-  height: 2.35rem;
-  padding: 0 0.75rem;
-}
-
-@media (max-width: 420px) {
-  .site-nav-search-bar--compact .site-nav-search-bar__label {
-    display: none;
-  }
-
-  .site-nav-search-bar--compact {
-    width: 2.35rem;
-    padding: 0;
-    justify-content: center;
-  }
-}
-
 /* —— Desktop mega navigation (site dark theme) —— */
 .nav-mega {
   position: relative;
@@ -662,11 +644,13 @@
   grid-template-columns: 5.5rem 1fr;
   gap: 0.9rem;
   margin: 0.35rem 0 0.85rem;
-  padding: 0.75rem;
+  padding: 0.75rem 0;
   text-decoration: none;
   color: inherit;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.04), transparent 60%);
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: transparent;
+  box-shadow: none;
 }
 
 .site-menu-portrait__media {
@@ -926,32 +910,6 @@
   outline: none;
 }
 
-.site-menu-search-launch {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-  width: 100%;
-  margin-bottom: 1.25rem;
-  padding: 0.8rem 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(255, 255, 255, 0.04);
-  color: rgba(255, 255, 255, 0.78);
-  font-family: var(--font-ui);
-  font-size: 0.6875rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  text-align: left;
-  transition: border-color 0.25s ease, background-color 0.25s ease, color 0.25s ease;
-}
-
-.site-menu-search-launch:hover,
-.site-menu-search-launch:focus-visible {
-  border-color: rgba(var(--accent-gold-rgb), 0.45);
-  background: rgba(var(--accent-gold-rgb), 0.1);
-  color: #fff;
-  outline: none;
-}
-
 @media (max-width: 1023px) {
   .nav-mega {
     display: none;
@@ -990,39 +948,43 @@
   color: var(--accent-gold);
 }
 
-/* Mobile menu — right drawer (half width); dimmed backdrop on the left */
+/* Mobile menu — full-screen, no side drawer, no edge glow */
 .site-menu-overlay {
-  background: transparent;
+  background: var(--menu-surface);
+  box-shadow: none;
 }
 
-.site-menu-overlay__backdrop {
-  cursor: pointer;
-  border: none;
-  padding: 0;
-  background: rgba(0, 0, 0, 0.52);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
+.site-menu-overlay button,
+.site-menu-overlay a,
+.site-nav-menu-btn {
+  box-shadow: none !important;
+}
+
+.site-menu-overlay button::before,
+.site-menu-overlay a::before,
+.site-nav-menu-btn::before {
+  display: none !important;
+  content: none !important;
 }
 
 .site-menu-panel {
   display: flex;
-  width: min(50vw, 22rem);
-  max-width: 50vw;
+  width: 100%;
   height: 100%;
   flex-direction: column;
   overflow-y: auto;
+  overscroll-behavior: contain;
   background: var(--menu-surface);
-  border-left: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: -12px 0 40px rgba(0, 0, 0, 0.35);
-  padding: 0 1.25rem 1.5rem;
+  border: none;
+  box-shadow: none;
+  padding: 0 1.35rem 1.75rem;
   padding-top: var(--hero-nav-stack);
 }
 
 @media (min-width: 640px) {
   .site-menu-panel {
-    width: min(50vw, 24rem);
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
   }
 }
 
@@ -1097,12 +1059,11 @@
 
 .site-menu-item:hover .site-menu-item__arrow {
   opacity: 1;
-  transform: translate(2px, -2px);
 }
 
 .site-menu-footer {
   margin-top: auto;
-  padding-top: 1.25rem;
+  padding-top: 1.5rem;
 }
 
 .site-menu-footer__links {
@@ -1158,7 +1119,7 @@
   padding: 0.125rem 0;
   border: none;
   background: transparent;
-  box-shadow: none;
+  box-shadow: none !important;
   color: rgba(255, 255, 255, 0.68);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
@@ -1170,7 +1131,13 @@
   color: var(--accent-gold);
   background: transparent;
   border: none;
-  box-shadow: none;
+  box-shadow: none !important;
+}
+
+.site-nav-menu-btn:focus-visible {
+  outline: 1px solid rgba(var(--accent-gold-rgb), 0.55);
+  outline-offset: 4px;
+  box-shadow: none !important;
 }
 
 .site-nav-menu-btn:active {
