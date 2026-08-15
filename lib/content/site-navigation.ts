@@ -1,15 +1,12 @@
 import type { StaticImageData } from "next/image";
 import aboutImage from "@/imgs/about.jpg";
 import exteriorImage from "@/imgs/exterior.jpg";
-import interiorImage from "@/imgs/interior.jpg";
-import landscapeImage from "@/imgs/landscape.jpg";
 import directorPortrait from "@/imgs/oday.jpeg";
 import heroPrimary from "@/imgs/Exterior/Villa/villa 12 bh/ODAY_result.webp";
 import {
   exteriorTypeLabel,
   projects,
   type ExteriorProjectType,
-  type Project,
 } from "@/lib/data";
 import { about } from "@/lib/content/about";
 import { contact } from "@/lib/content/contact";
@@ -69,44 +66,6 @@ export interface SearchEntry {
   href: string;
   keywords: string[];
 }
-
-function firstProject(predicate: (p: Project) => boolean): Project | undefined {
-  return projects.find(predicate);
-}
-
-function projectVisual(
-  id: string,
-  label: string,
-  href: string,
-  description: string,
-  project: Project | undefined,
-  fallbackImage: string | StaticImageData,
-  fallbackAlt: string,
-  eyebrow?: string,
-): NavVisualItem {
-  if (project) {
-    return {
-      id,
-      label,
-      href,
-      description,
-      image: project.image,
-      imageAlt: project.imageAlt || `${label} — project preview`,
-      eyebrow,
-    };
-  }
-  return {
-    id,
-    label,
-    href,
-    description,
-    image: fallbackImage,
-    imageAlt: fallbackAlt,
-    eyebrow,
-  };
-}
-
-const fallbackProject = projects[0];
 
 export function getAboutPortrait(): NavPortraitContent {
   return {

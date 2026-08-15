@@ -13,7 +13,7 @@ import { ChevronDown, Facebook, Instagram, Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useCallback, useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import brandLogo from "@/imgs/oday-logo.png";
 
@@ -69,12 +69,6 @@ function MenuToggleIcon() {
       <span className="site-nav-menu-btn__line site-nav-menu-btn__line--bot" />
     </span>
   );
-}
-
-function resolveMenuHref(href: string): string {
-  if (href.startsWith("/")) return href;
-  if (href.startsWith("#")) return `/${href}`;
-  return href;
 }
 
 const socialLinks = [
@@ -198,14 +192,11 @@ export function Navigation() {
 
   const linkActive = (href: string) => isNavLinkActive(pathname, href, activeSection);
 
-  const handleMenuNavigate = useCallback(
-    (_e: MouseEvent<HTMLAnchorElement>, _href: string) => {
-      closeMobile();
-      closeDesktopPanels();
-      closeSearch();
-    },
-    [closeDesktopPanels, closeMobile, closeSearch],
-  );
+  const handleMenuNavigate = useCallback(() => {
+    closeMobile();
+    closeDesktopPanels();
+    closeSearch();
+  }, [closeDesktopPanels, closeMobile, closeSearch]);
 
   useEffect(() => () => clearTimers(), [clearTimers]);
 
@@ -345,7 +336,7 @@ export function Navigation() {
                       if (next && e.currentTarget.parentElement?.contains(next)) return;
                       scheduleClosePanel();
                     }}
-                    onClick={(e) => handleMenuNavigate(e, panel.href)}
+                    onClick={handleMenuNavigate}
                   >
                     {panel.label}
                     {hasPanel ? (
@@ -458,7 +449,7 @@ export function Navigation() {
                         <Link
                           href={panel.href}
                           className="site-menu-item group w-full text-left"
-                          onClick={(e) => handleMenuNavigate(e, panel.href)}
+                          onClick={handleMenuNavigate}
                         >
                           <span className="site-menu-item__index">
                             {String(index + 1).padStart(2, "0")}
@@ -502,7 +493,7 @@ export function Navigation() {
                               <Link
                                 href={panel.href}
                                 className="site-menu-portrait"
-                                onClick={(e) => handleMenuNavigate(e, panel.href)}
+                                onClick={handleMenuNavigate}
                               >
                                 <span className="site-menu-portrait__media">
                                   <Image
@@ -531,7 +522,7 @@ export function Navigation() {
                                   <Link
                                     href={panel.href}
                                     className="site-menu-subitem"
-                                    onClick={(e) => handleMenuNavigate(e, panel.href)}
+                                    onClick={handleMenuNavigate}
                                   >
                                     Overview
                                   </Link>
@@ -541,7 +532,7 @@ export function Navigation() {
                                     <Link
                                       href={item.href}
                                       className="site-menu-subitem"
-                                      onClick={(e) => handleMenuNavigate(e, item.href)}
+                                      onClick={handleMenuNavigate}
                                     >
                                       {item.label}
                                     </Link>
