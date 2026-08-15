@@ -13,6 +13,7 @@ import {
 } from "@/lib/data";
 import { galleryTransition } from "@/lib/gallery-motion";
 import { motion, useReducedMotion } from "@/components/ClientMotion";
+import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
 export function ProjectDetailView({
@@ -74,6 +75,14 @@ export function ProjectDetailView({
           <GalleryReveal delay={0.12}>
             <p className="label-upper text-ink-muted">Overview</p>
             <p className="mt-4 text-sm leading-[1.72] text-ink-secondary md:text-[0.9375rem]">{summary}</p>
+            {project.styleMaterials ? (
+              <div className="mt-6">
+                <p className="label-upper text-ink-muted">Style & materials</p>
+                <p className="mt-3 text-sm leading-[1.72] text-ink-secondary md:text-[0.9375rem]">
+                  {project.styleMaterials}
+                </p>
+              </div>
+            ) : null}
             <p className="mt-6 text-sm leading-[1.65] text-ink-muted">
               Swipe horizontally to browse frames, tap any image to open it fullscreen, or use arrow keys in the
               viewer.
@@ -95,7 +104,7 @@ export function ProjectDetailView({
                   transition={galleryTransition(!!reduce, 0.4, 0.2 + i * 0.05)}
                   className="flex items-baseline justify-between gap-4 px-4 py-3.5 sm:px-5"
                 >
-                  <dt className="font-outfit text-[11px] font-medium uppercase tracking-[0.14em] text-ink-muted">
+                  <dt className="shrink-0 font-outfit text-[11px] font-medium uppercase tracking-[0.14em] text-ink-muted">
                     {label}
                   </dt>
                   <dd className="text-right text-sm font-medium text-ink-primary">{value}</dd>
@@ -129,10 +138,16 @@ export function ProjectDetailView({
 
         <GalleryReveal delay={0.2} className="mt-12 md:mt-14">
           <Link
-            href="/projects"
-            className="label-upper inline-flex items-center gap-2 text-ink-secondary transition-colors hover:text-gold"
+            href={
+              project.serviceSlug === "exterior" && project.exteriorType
+                ? `/projects?service=exterior&type=${encodeURIComponent(project.exteriorType)}`
+                : `/projects?service=${encodeURIComponent(project.serviceSlug)}`
+            }
+            data-no-glow
+            className="project-detail__back btn-plain"
           >
-            <span aria-hidden>←</span> Back to gallery
+            <ArrowLeft className="project-detail__back-icon" strokeWidth={1.5} aria-hidden />
+            <span>Back to gallery</span>
           </Link>
         </GalleryReveal>
       </div>

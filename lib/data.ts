@@ -39,7 +39,6 @@ export const navLinks = [
   { href: "#about", label: "About" },
   { href: "#services", label: "Solutions" },
   { href: "/projects", label: "Case Studies" },
-  { href: "#faq", label: "FAQ" },
   { href: "#contact", label: "Contact" },
 ] as const;
 
@@ -104,6 +103,12 @@ export interface Project {
   imageAlt: string;
   /** Gallery frame shape: Instagram post (4:5) or cinematic 16:9. Inferred when omitted. */
   galleryFormat?: ProjectGalleryFormat;
+  /** Optional case-study fields (villas and other documented projects). */
+  projectType?: string;
+  year?: string;
+  area?: string;
+  concept?: string;
+  styleMaterials?: string;
 }
 
 export const projects: Project[] = [
@@ -154,10 +159,23 @@ export function getProjectBySlug(slug: string): Project | undefined {
 }
 
 export function getProjectSummary(project: Project): string {
+  if (project.concept) return project.concept;
   return `${project.title} — ${project.tag} in ${project.country}. A ${project.category.toLowerCase()} engagement delivered through our ${serviceFilterLabel(project.serviceSlug)} line with documentation and coordination built for serious developers.`;
 }
 
 export function getProjectDetailRows(project: Project): ProjectDetailRow[] {
+  if (project.projectType || project.year || project.area || project.styleMaterials) {
+    const rows: ProjectDetailRow[] = [
+      { label: "Project name", value: project.title },
+    ];
+    if (project.projectType) rows.push({ label: "Project type", value: project.projectType });
+    rows.push({ label: "Location", value: project.country });
+    if (project.year) rows.push({ label: "Year", value: project.year });
+    if (project.area) rows.push({ label: "Area", value: project.area });
+    rows.push({ label: "Case ref.", value: project.orderLabel });
+    return rows;
+  }
+
   const rows: ProjectDetailRow[] = [
     { label: "Location", value: project.country },
     { label: "Service line", value: serviceFilterLabel(project.serviceSlug) },

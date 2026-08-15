@@ -1,33 +1,42 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "@/components/ClientMotion";
+import { NavMegaPanel } from "@/components/navigation/NavMegaPanel";
+import { SearchOverlay } from "@/components/navigation/SearchOverlay";
 import { SiteBackButton } from "@/components/SiteBackButton";
-import { ArrowUpRight, Facebook, Instagram } from "lucide-react";
+import { useActiveSection } from "@/hooks/useActiveSection";
+import {
+  getPrimaryNavPanels,
+  type NavPanelId,
+} from "@/lib/content/site-navigation";
+import { ChevronDown, Facebook, Instagram, Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useActiveSection } from "@/hooks/useActiveSection";
-import { useCallback, useEffect, useState, type MouseEvent } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
 
 import brandLogo from "@/imgs/oday-logo.png";
 
 const loadEase = [0.22, 1, 0.36, 1] as const;
 const softOut = [0.33, 1, 0.68, 1] as const;
+const OPEN_DELAY = 90;
+const CLOSE_DELAY = 240;
+const SWITCH_DELAY = 0;
 
 const menuListContainer = {
   hidden: { opacity: 1 },
   show: {
     opacity: 1,
-    transition: { staggerChildren: 0.07, delayChildren: 0.08 },
+    transition: { staggerChildren: 0.06, delayChildren: 0.06 },
   },
 };
 
 const menuListItem = {
-  hidden: { opacity: 0, x: 20 },
+  hidden: { opacity: 0, x: 18 },
   show: {
     opacity: 1,
     x: 0,
-    transition: { duration: 0.48, ease: softOut },
+    transition: { duration: 0.42, ease: softOut },
   },
 };
 
@@ -36,7 +45,7 @@ const menuFooterVariants = {
   show: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.4, ease: loadEase, delay: 0.35 },
+    transition: { duration: 0.36, ease: loadEase, delay: 0.28 },
   },
 };
 
@@ -45,12 +54,12 @@ const menuPanelVariants = {
   show: {
     opacity: 1,
     x: 0,
-    transition: { duration: 0.45, ease: loadEase },
+    transition: { duration: 0.42, ease: loadEase },
   },
   exit: {
     opacity: 0,
     x: "100%",
-    transition: { duration: 0.28, ease: loadEase },
+    transition: { duration: 0.26, ease: loadEase },
   },
 };
 
@@ -70,20 +79,6 @@ function resolveMenuHref(href: string): string {
   return href;
 }
 
-const mainLinks = [
-  { href: "/#top", label: "Home" },
-  { href: "/#about", label: "About" },
-  { href: "/#services", label: "Services" },
-  { href: "/#gallery", label: "Gallery" },
-  { href: "/#location", label: "Location" },
-] as const;
-
-const secondaryLinks = [
-  { href: "/#contact", label: "Contact" },
-  { href: "/#faq", label: "FAQ" },
-  { href: "/#footer", label: "Legal" },
-] as const;
-
 const socialLinks = [
   { href: "https://instagram.com", label: "Instagram", Icon: Instagram },
   { href: "https://facebook.com", label: "Facebook", Icon: Facebook },
@@ -98,17 +93,8 @@ function hrefToSectionId(href: string): string | null {
 }
 
 function isNavLinkActive(pathname: string, href: string, activeSection: string): boolean {
-  if (
-    href === "/#gallery" ||
-    href === "#gallery" ||
-    href === "/projects" ||
-    href.startsWith("/projects")
-  ) {
-    if (pathname.startsWith("/projects")) return true;
-    if (pathname === "/" && (href === "/#gallery" || href === "#gallery")) {
-      return activeSection === "gallery";
-    }
-    return false;
+  if (href.startsWith("/projects") || href.includes("service=")) {
+    return pathname.startsWith("/projects");
   }
   if (pathname !== "/") return false;
   const sectionId = hrefToSectionId(href);
@@ -116,43 +102,114 @@ function isNavLinkActive(pathname: string, href: string, activeSection: string):
 }
 
 export function Navigation() {
-  const [open, setOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [mobileExpand, setMobileExpand] = useState<NavPanelId | null>(null);
+  const [activePanel, setActivePanel] = useState<NavPanelId | null>(null);
+  const openTimer = useRef<number | null>(null);
+  const closeTimer = useRef<number | null>(null);
   const reduceMotion = useReducedMotion();
   const pathname = usePathname();
   const isHome = pathname === "/";
   const isGallery = pathname.startsWith("/projects");
   const isRequest = pathname.startsWith("/request");
   const activeSection = useActiveSection(isHome);
-  const invertLogo = isGallery || isRequest || (isHome && scrolled);
-  const heroLogoGlow = isHome && !scrolled && !isGallery && !isRequest;
 
-  const close = useCallback(() => setOpen(false), []);
-  const linkActive = (href: string) => isNavLinkActive(pathname, href, activeSection);
-  const toggle = () => setOpen((v) => !v);
+  const panels = useMemo(() => getPrimaryNavPanels(), []);
+  const activePanelConfig = useMemo(
+    () => panels.find((p) => p.id === activePanel) ?? null,
+    [panels, activePanel],
+  );
+  const displayedPanelRef = useRef(activePanelConfig);
+  if (activePanelConfig) displayedPanelRef.current = activePanelConfig;
+  const displayedPanel = activePanelConfig ?? displayedPanelRef.current;
 
-  const handleMenuNavigate = useCallback(
-    (e: MouseEvent<HTMLAnchorElement>, href: string) => {
-      close();
+  const invertLogo =
+    isGallery || isRequest || (isHome && scrolled) || activePanel != null || searchOpen;
+  const heroLogoGlow =
+    isHome && !scrolled && !isGallery && !isRequest && !activePanel && !searchOpen;
 
-      const resolved = resolveMenuHref(href);
-      let path: string;
-      let hash = "";
+  const clearTimers = useCallback(() => {
+    if (openTimer.current) window.clearTimeout(openTimer.current);
+    if (closeTimer.current) window.clearTimeout(closeTimer.current);
+    openTimer.current = null;
+    closeTimer.current = null;
+  }, []);
 
-      try {
-        const url = new URL(resolved, window.location.origin);
-        path = url.pathname;
-        hash = url.hash.replace(/^#/, "");
-      } catch {
+  const openPanelNow = useCallback(
+    (id: NavPanelId) => {
+      if (searchOpen || mobileOpen) return;
+      const target = panels.find((p) => p.id === id);
+      if (!target || target.variant === "none") return;
+      clearTimers();
+      setActivePanel(id);
+    },
+    [clearTimers, mobileOpen, panels, searchOpen],
+  );
+
+  const scheduleOpenPanel = useCallback(
+    (id: NavPanelId) => {
+      if (searchOpen || mobileOpen) return;
+      const target = panels.find((p) => p.id === id);
+      if (!target || target.variant === "none") return;
+      if (closeTimer.current) {
+        window.clearTimeout(closeTimer.current);
+        closeTimer.current = null;
+      }
+      if (activePanel === id) return;
+      if (activePanel) {
+        clearTimers();
+        if (SWITCH_DELAY <= 0) {
+          setActivePanel(id);
+          return;
+        }
+        openTimer.current = window.setTimeout(() => setActivePanel(id), SWITCH_DELAY);
         return;
       }
-
-      if (path === pathname && hash) {
-        close();
-      }
+      openTimer.current = window.setTimeout(() => setActivePanel(id), OPEN_DELAY);
     },
-    [close, pathname],
+    [activePanel, clearTimers, mobileOpen, panels, searchOpen],
   );
+
+  const scheduleClosePanel = useCallback(() => {
+    if (openTimer.current) {
+      window.clearTimeout(openTimer.current);
+      openTimer.current = null;
+    }
+    closeTimer.current = window.setTimeout(() => setActivePanel(null), CLOSE_DELAY);
+  }, []);
+
+  const closeDesktopPanels = useCallback(() => {
+    clearTimers();
+    setActivePanel(null);
+  }, [clearTimers]);
+
+  const closeMobile = useCallback(() => {
+    setMobileOpen(false);
+    setMobileExpand(null);
+  }, []);
+
+  const openSearch = useCallback(() => {
+    closeDesktopPanels();
+    closeMobile();
+    setSearchOpen(true);
+  }, [closeDesktopPanels, closeMobile]);
+
+  const closeSearch = useCallback(() => setSearchOpen(false), []);
+
+  const linkActive = (href: string) => isNavLinkActive(pathname, href, activeSection);
+
+  const handleMenuNavigate = useCallback(
+    (_e: MouseEvent<HTMLAnchorElement>, _href: string) => {
+      closeMobile();
+      closeDesktopPanels();
+      closeSearch();
+    },
+    [closeDesktopPanels, closeMobile, closeSearch],
+  );
+
+  useEffect(() => () => clearTimers(), [clearTimers]);
 
   useEffect(() => {
     let frame = 0;
@@ -174,34 +231,60 @@ export function Navigation() {
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key === "Escape") {
+        if (searchOpen) closeSearch();
+        else if (activePanel) closeDesktopPanels();
+        else if (mobileOpen) closeMobile();
+      }
+      if ((e.key === "k" || e.key === "K") && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        if (searchOpen) closeSearch();
+        else openSearch();
+      }
     }
-    if (open) {
-      document.body.style.overflow = "hidden";
-      window.addEventListener("keydown", onKey);
-    } else {
-      document.body.style.overflow = "";
-    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [
+    activePanel,
+    closeDesktopPanels,
+    closeMobile,
+    closeSearch,
+    mobileOpen,
+    openSearch,
+    searchOpen,
+  ]);
+
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen || searchOpen ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
-      window.removeEventListener("keydown", onKey);
     };
-  }, [open]);
+  }, [mobileOpen, searchOpen]);
+
+  useEffect(() => {
+    closeDesktopPanels();
+    closeMobile();
+    closeSearch();
+  }, [pathname]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const layerOpen = reduceMotion ? { duration: 0 } : { duration: 0.32, ease: loadEase };
   const layerClose = reduceMotion ? { duration: 0 } : { duration: 0.22, ease: loadEase };
 
-  const navTone = open
+  const navTone = mobileOpen
     ? "site-nav--menu-open"
-    : isGallery || isRequest || scrolled
-      ? "site-nav--scrolled"
-      : "site-nav--at-hero";
+    : searchOpen || activePanel
+      ? "site-nav--panel-open"
+      : isGallery || isRequest || scrolled
+        ? "site-nav--scrolled"
+        : "site-nav--at-hero";
 
   return (
     <>
       <header
         suppressHydrationWarning
-        className={`site-nav fixed inset-x-0 top-0 overflow-visible pt-[var(--hero-gutter)] ${open ? "z-[560]" : "z-[500]"} ${navTone}`}
+        className={`site-nav fixed inset-x-0 top-0 overflow-visible pt-[var(--hero-gutter)] ${
+          mobileOpen || searchOpen || activePanel ? "z-[560]" : "z-[500]"
+        } ${navTone}`}
       >
         <div
           className={`mx-auto grid h-[var(--site-nav-height)] max-w-7xl items-center gap-3 overflow-visible px-4 sm:gap-4 sm:px-[var(--hero-gutter)] md:gap-6 md:px-8 lg:px-10 ${isHome ? "grid-cols-[auto_1fr_auto]" : "grid-cols-[auto_auto_1fr_auto]"}`}
@@ -211,7 +294,11 @@ export function Navigation() {
             href="/#top"
             className="site-nav-logo flex shrink-0 items-center overflow-visible transition-opacity duration-300 hover:opacity-90"
             aria-label="OD Architects home"
-            onClick={() => open && close()}
+            onClick={() => {
+              closeMobile();
+              closeDesktopPanels();
+              closeSearch();
+            }}
           >
             <Image
               src={brandLogo}
@@ -224,42 +311,132 @@ export function Navigation() {
           </Link>
 
           <nav
-            className="hidden min-w-0 items-center justify-center gap-5 lg:flex xl:gap-8"
+            className="hidden min-w-0 items-center justify-center gap-4 lg:flex xl:gap-7"
             aria-label="Primary"
           >
-            {mainLinks.map((link) => (
-              <Link
-                key={link.href + link.label}
-                href={link.href}
-                className={`site-nav-link whitespace-nowrap ${linkActive(link.href) ? "site-nav-link--active" : ""}`}
-                aria-current={linkActive(link.href) ? "page" : undefined}
-                onClick={(e) => handleMenuNavigate(e, link.href)}
-              >
-                {link.label}
-              </Link>
-            ))}
+            {panels.map((panel) => {
+              const hasPanel = panel.variant !== "none";
+              const isActive =
+                activePanel === panel.id ||
+                linkActive(panel.href) ||
+                (panel.id === "gallery" && isGallery);
+              return (
+                <div
+                  key={panel.id}
+                  className="relative"
+                  onMouseEnter={() => {
+                    if (hasPanel) scheduleOpenPanel(panel.id);
+                    else scheduleClosePanel();
+                  }}
+                  onMouseLeave={() => {
+                    if (hasPanel) scheduleClosePanel();
+                  }}
+                >
+                  <Link
+                    href={panel.href}
+                    className={`site-nav-link ${hasPanel ? "site-nav-link--trigger" : ""} whitespace-nowrap ${isActive ? "site-nav-link--active" : ""}`}
+                    aria-expanded={hasPanel ? activePanel === panel.id : undefined}
+                    aria-haspopup={hasPanel ? "true" : undefined}
+                    aria-current={linkActive(panel.href) ? "page" : undefined}
+                    onFocus={() => {
+                      if (hasPanel) openPanelNow(panel.id);
+                    }}
+                    onBlur={(e) => {
+                      if (!hasPanel) return;
+                      const next = e.relatedTarget as Node | null;
+                      if (next && e.currentTarget.parentElement?.contains(next)) return;
+                      scheduleClosePanel();
+                    }}
+                    onClick={(e) => handleMenuNavigate(e, panel.href)}
+                  >
+                    {panel.label}
+                    {hasPanel ? (
+                      <ChevronDown
+                        className={`site-nav-link__chevron ${activePanel === panel.id ? "site-nav-link__chevron--open" : ""}`}
+                        strokeWidth={1.5}
+                        aria-hidden
+                      />
+                    ) : null}
+                  </Link>
+                </div>
+              );
+            })}
+
+            <button
+              type="button"
+              data-no-glow
+              className={`site-nav-search-bar ${searchOpen ? "site-nav-search-bar--active" : ""}`}
+              aria-label="Search"
+              aria-expanded={searchOpen}
+              aria-controls="site-nav-search"
+              onClick={() => (searchOpen ? closeSearch() : openSearch())}
+            >
+              <Search className="site-nav-search-bar__icon" strokeWidth={1.5} aria-hidden />
+              <span className="site-nav-search-bar__label">Search</span>
+            </button>
           </nav>
 
-          <div className="flex shrink-0 items-center justify-end gap-2 sm:gap-3">
+          <div className="flex shrink-0 items-center justify-end gap-1.5 sm:gap-2">
+            <button
+              type="button"
+              data-no-glow
+              className={`site-nav-search-bar site-nav-search-bar--compact lg:hidden ${searchOpen ? "site-nav-search-bar--active" : ""}`}
+              aria-label="Search"
+              aria-expanded={searchOpen}
+              aria-controls="site-nav-search"
+              onClick={() => (searchOpen ? closeSearch() : openSearch())}
+            >
+              <Search className="site-nav-search-bar__icon" strokeWidth={1.5} aria-hidden />
+              <span className="site-nav-search-bar__label">Search</span>
+            </button>
+
             <button
               type="button"
               data-no-glow
               suppressHydrationWarning
-              className={`site-nav-menu-btn lg:hidden ${open ? "site-nav-menu-btn--open" : ""}`}
-              aria-label={open ? "Close menu" : "Open menu"}
-              aria-expanded={open}
+              className={`site-nav-menu-btn lg:hidden ${mobileOpen ? "site-nav-menu-btn--open" : ""}`}
+              aria-label={mobileOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileOpen}
               aria-controls="site-menu-overlay"
-              onClick={toggle}
+              onClick={() => {
+                closeSearch();
+                closeDesktopPanels();
+                setMobileOpen((v) => !v);
+              }}
             >
               <MenuToggleIcon />
-              <span className="site-nav-menu-btn__label">{open ? "Close" : "Menu"}</span>
+              <span className="site-nav-menu-btn__label">{mobileOpen ? "Close" : "Menu"}</span>
             </button>
+          </div>
+        </div>
+
+        <div
+          className="pointer-events-none absolute inset-x-0 top-full hidden lg:block"
+          onMouseEnter={() => {
+            if (activePanel) clearTimers();
+          }}
+        >
+          <div className="pointer-events-auto">
+            {displayedPanel && displayedPanel.variant !== "none" ? (
+              <NavMegaPanel
+                panel={displayedPanel}
+                open={activePanel != null}
+                onClose={closeDesktopPanels}
+                onNavigate={() => undefined}
+                onMouseEnter={() => {
+                  if (activePanel) openPanelNow(activePanel);
+                }}
+                onMouseLeave={scheduleClosePanel}
+              />
+            ) : null}
           </div>
         </div>
       </header>
 
+      <SearchOverlay open={searchOpen} onClose={closeSearch} />
+
       <AnimatePresence>
-        {open && (
+        {mobileOpen && (
           <motion.div
             key="menu-layer"
             id="site-menu-overlay"
@@ -272,13 +449,13 @@ export function Navigation() {
               type="button"
               className="site-menu-overlay__backdrop min-h-0 min-w-0 flex-1"
               aria-label="Close menu"
-              onClick={close}
+              onClick={closeMobile}
             />
             <motion.nav
               role="dialog"
               aria-modal="true"
               aria-label="Site menu"
-              className="site-menu-panel relative z-10 h-full shrink-0"
+              className="site-menu-panel relative z-10 h-full shrink-0 overflow-y-auto"
               variants={reduceMotion ? undefined : menuPanelVariants}
               initial={reduceMotion ? false : "hidden"}
               animate={reduceMotion ? false : "show"}
@@ -289,41 +466,117 @@ export function Navigation() {
                 <p className="site-menu-panel__eyebrow">Navigation</p>
               </div>
 
-              {reduceMotion ? (
-                <ul className="site-menu-list">
-                  {mainLinks.map((link, index) => (
-                    <li key={link.href + link.label}>
-                      <Link
-                        href={link.href}
-                        className={`site-menu-item group ${linkActive(link.href) ? "site-menu-item--active" : ""}`}
-                        aria-current={linkActive(link.href) ? "page" : undefined}
-                        onClick={(e) => handleMenuNavigate(e, link.href)}
+              <motion.ul
+                className="site-menu-list"
+                variants={reduceMotion ? undefined : menuListContainer}
+                initial={reduceMotion ? false : "hidden"}
+                animate={reduceMotion ? false : "show"}
+              >
+                {panels.map((panel, index) => {
+                  const hasPanel = panel.variant !== "none";
+                  if (!hasPanel) {
+                    return (
+                      <motion.li key={panel.id} variants={menuListItem}>
+                        <Link
+                          href={panel.href}
+                          className="site-menu-item group w-full text-left"
+                          onClick={(e) => handleMenuNavigate(e, panel.href)}
+                        >
+                          <span className="site-menu-item__index">
+                            {String(index + 1).padStart(2, "0")}
+                          </span>
+                          <span className="site-menu-item__label">{panel.label}</span>
+                        </Link>
+                      </motion.li>
+                    );
+                  }
+
+                  return (
+                    <motion.li key={panel.id} variants={menuListItem}>
+                      <button
+                        type="button"
+                        className={`site-menu-item group w-full text-left ${mobileExpand === panel.id ? "site-menu-item--active" : ""}`}
+                        aria-expanded={mobileExpand === panel.id}
+                        onClick={() =>
+                          setMobileExpand((v) => (v === panel.id ? null : panel.id))
+                        }
                       >
-                        <span className="site-menu-item__index">{String(index + 1).padStart(2, "0")}</span>
-                        <span className="site-menu-item__label">{link.label}</span>
-                        <ArrowUpRight className="site-menu-item__arrow h-5 w-5 stroke-[1.5]" aria-hidden />
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <motion.ul className="site-menu-list" variants={menuListContainer} initial="hidden" animate="show">
-                  {mainLinks.map((link, index) => (
-                    <motion.li key={link.href + link.label} variants={menuListItem}>
-                      <Link
-                        href={link.href}
-                        className={`site-menu-item group ${linkActive(link.href) ? "site-menu-item--active" : ""}`}
-                        aria-current={linkActive(link.href) ? "page" : undefined}
-                        onClick={(e) => handleMenuNavigate(e, link.href)}
-                      >
-                        <span className="site-menu-item__index">{String(index + 1).padStart(2, "0")}</span>
-                        <span className="site-menu-item__label">{link.label}</span>
-                        <ArrowUpRight className="site-menu-item__arrow h-5 w-5 stroke-[1.5]" aria-hidden />
-                      </Link>
+                        <span className="site-menu-item__index">
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
+                        <span className="site-menu-item__label">{panel.label}</span>
+                        <ChevronDown
+                          className={`site-menu-item__arrow h-5 w-5 stroke-[1.5] transition-transform ${mobileExpand === panel.id ? "rotate-180" : ""}`}
+                          aria-hidden
+                        />
+                      </button>
+                      <AnimatePresence initial={false}>
+                        {mobileExpand === panel.id ? (
+                          <motion.div
+                            initial={reduceMotion ? false : { height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={reduceMotion ? undefined : { height: 0, opacity: 0 }}
+                            transition={{ duration: reduceMotion ? 0 : 0.38, ease: loadEase }}
+                            className="overflow-hidden"
+                          >
+                            {panel.variant === "portrait" && panel.portrait ? (
+                              <Link
+                                href={panel.href}
+                                className="site-menu-portrait"
+                                onClick={(e) => handleMenuNavigate(e, panel.href)}
+                              >
+                                <span className="site-menu-portrait__media">
+                                  <Image
+                                    src={panel.portrait.image}
+                                    alt={panel.portrait.imageAlt}
+                                    fill
+                                    className="object-cover object-[center_18%]"
+                                    sizes="120px"
+                                  />
+                                </span>
+                                <span className="site-menu-portrait__copy">
+                                  <span className="site-menu-portrait__name">
+                                    {panel.portrait.name}
+                                  </span>
+                                  <span className="site-menu-portrait__role">
+                                    {panel.portrait.role}
+                                  </span>
+                                  <span className="site-menu-portrait__body">
+                                    {panel.portrait.description}
+                                  </span>
+                                </span>
+                              </Link>
+                            ) : (
+                              <ul className="site-menu-sublist">
+                                <li>
+                                  <Link
+                                    href={panel.href}
+                                    className="site-menu-subitem"
+                                    onClick={(e) => handleMenuNavigate(e, panel.href)}
+                                  >
+                                    Overview
+                                  </Link>
+                                </li>
+                                {panel.items.map((item) => (
+                                  <li key={item.id}>
+                                    <Link
+                                      href={item.href}
+                                      className="site-menu-subitem"
+                                      onClick={(e) => handleMenuNavigate(e, item.href)}
+                                    >
+                                      {item.label}
+                                    </Link>
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                          </motion.div>
+                        ) : null}
+                      </AnimatePresence>
                     </motion.li>
-                  ))}
-                </motion.ul>
-              )}
+                  );
+                })}
+              </motion.ul>
 
               <motion.div
                 className="site-menu-footer"
@@ -331,20 +584,10 @@ export function Navigation() {
                 initial={reduceMotion ? false : "hidden"}
                 animate={reduceMotion ? false : "show"}
               >
-                <ul className="site-menu-footer__links">
-                  {secondaryLinks.map((link) => (
-                    <li key={link.href + link.label}>
-                      <Link
-                        href={link.href}
-                        className={`site-menu-footer__link ${linkActive(link.href) ? "site-menu-footer__link--active" : ""}`}
-                        aria-current={linkActive(link.href) ? "page" : undefined}
-                        onClick={(e) => handleMenuNavigate(e, link.href)}
-                      >
-                        {link.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
+                <button type="button" className="site-menu-search-launch" onClick={openSearch}>
+                  <Search className="h-4 w-4" strokeWidth={1.5} aria-hidden />
+                  Search projects &amp; services
+                </button>
 
                 <div className="site-menu-footer__meta">
                   <div className="site-menu-footer__social">
@@ -355,7 +598,7 @@ export function Navigation() {
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label={label}
-                        onClick={close}
+                        onClick={closeMobile}
                       >
                         <Icon className="h-5 w-5" strokeWidth={1.4} aria-hidden />
                       </a>

@@ -51,79 +51,161 @@ import rb5_img5 from "@/imgs/Exterior/residential building/ruba natsheh 51/7 cop
 import rb5_img6 from "@/imgs/Exterior/residential building/ruba natsheh 51/9 copy_result.webp";
 import rb5_img7 from "@/imgs/Exterior/residential building/ruba natsheh 51/10 copy_result.webp";
 import rb5_img8 from "@/imgs/Exterior/residential building/ruba natsheh 51/12 copy_result.webp";
+import rb6_img0 from "@/imgs/Exterior/residential building/zz ab building 07/ODAY_result.webp";
+import rb6_img1 from "@/imgs/Exterior/residential building/zz ab building 07/1_result.webp";
+import rb6_img2 from "@/imgs/Exterior/residential building/zz ab building 07/2_result.webp";
+import rb6_img3 from "@/imgs/Exterior/residential building/zz ab building 07/3_result.webp";
+import rb6_img4 from "@/imgs/Exterior/residential building/zz ab building 07/4_result.webp";
+import rb6_img5 from "@/imgs/Exterior/residential building/zz ab building 07/5_result.webp";
+import rb6_img6 from "@/imgs/Exterior/residential building/zz ab building 07/6_result.webp";
+import rb6_img7 from "@/imgs/Exterior/residential building/zz ab building 07/7_result.webp";
+import rb7_img0 from "@/imgs/Exterior/residential building/zz hag 1213 08/ODAY_result.webp";
+import rb7_img1 from "@/imgs/Exterior/residential building/zz hag 1213 08/1_result.webp";
+import rb7_img2 from "@/imgs/Exterior/residential building/zz hag 1213 08/2_result.webp";
+import rb7_img3 from "@/imgs/Exterior/residential building/zz hag 1213 08/3_result.webp";
+import rb7_img4 from "@/imgs/Exterior/residential building/zz hag 1213 08/4_result.webp";
+import rb7_img5 from "@/imgs/Exterior/residential building/zz hag 1213 08/5_result.webp";
+import rb7_img6 from "@/imgs/Exterior/residential building/zz hag 1213 08/6_result.webp";
+import rb7_img7 from "@/imgs/Exterior/residential building/zz hag 1213 08/7_result.webp";
+import rb7_img8 from "@/imgs/Exterior/residential building/zz hag 1213 08/8_result.webp";
+import rb7_img9 from "@/imgs/Exterior/residential building/zz hag 1213 08/9_result.webp";
 
 export const residentialBuildingProjects = [
   {
     id: "res-abu-kareem-1",
     orderLabel: "01",
-    title: "01",
-    country: "Palestine",
+    title: "R I 01",
+    country: "Jaljulia",
     tag: "Residential Building",
     category: "Residential" as const,
     serviceSlug: "exterior" as const,
     exteriorType: "residential-buildings" as const,
+    projectType: "Residential Building",
+    year: "2026",
+    area: "785 m²",
+    concept: "A contemporary residential building designed with a clear vertical composition and a balanced contrast between light and dark volumes. Repeated balconies, generous openings, and integrated greenery create comfortable outdoor spaces for residents while adding rhythm and depth to the façade.",
+    styleMaterials: "Modern minimalist style with light plastered façades, dark textured cladding, warm wood soffits, glass balcony railings, large windows, black metal details, landscaped balconies, and integrated architectural lighting.",
     image: rb0_img0,
-    imageAlt: "Residential building 01 — exterior visualization",
+    imageAlt: "R I 01 — exterior visualization",
   },
   {
     id: "res-awad-allah-6",
-    orderLabel: "02",
-    title: "02",
-    country: "Palestine",
+    orderLabel: "03",
+    title: "ARANKI -1-",
+    country: "Birzeit, Ramallah, Palestine",
     tag: "Residential Building",
     category: "Residential" as const,
     serviceSlug: "exterior" as const,
     exteriorType: "residential-buildings" as const,
+    projectType: "Residential Building",
+    year: "2025",
+    area: "1,400 m²",
+    concept: "A contemporary residential building designed with a strong vertical presence and a refined sequence of curved balconies. The design combines generous openings, private outdoor spaces, and integrated greenery to create comfortable apartments while adding depth, rhythm, and elegance to the façade.",
+    styleMaterials: "Contemporary style with light natural stone façades, dark charcoal-colored horizontal bands, curved balcony edges, glass railings, black metal screens, warm wood ceiling accents, large glazed openings, and integrated LED lighting.",
     image: rb1_img0,
-    imageAlt: "Residential building 02 — exterior visualization",
+    imageAlt: "ARANKI -1- — exterior visualization",
   },
   {
     id: "res-hamada-25",
-    orderLabel: "03",
-    title: "03",
-    country: "Palestine",
+    orderLabel: "02",
+    title: "R. LINE",
+    country: "Birzeit, Palestine",
     tag: "Residential Building",
     category: "Residential" as const,
     serviceSlug: "exterior" as const,
     exteriorType: "residential-buildings" as const,
+    projectType: "Residential Building",
+    year: "2017",
+    area: "1,850 m²",
+    concept: "A contemporary residential development composed of several buildings arranged around shared pedestrian spaces, landscaped areas, and dedicated parking. The design creates a unified community through consistent architectural language, private balconies, rooftop terraces, and carefully planned circulation between the buildings.",
+    styleMaterials: "Modern minimalist style with white plastered façades, warm wood accents, glass balcony railings, decorative perforated screens, horizontal shading elements, large windows, landscaped courtyards, and integrated exterior lighting.",
     image: rb2_img0,
-    imageAlt: "Residential building 03 — exterior visualization",
+    imageAlt: "R. LINE — exterior visualization",
   },
   {
     id: "res-hamada-26",
     orderLabel: "04",
-    title: "04",
-    country: "Palestine",
+    title: "Aranki -1-",
+    country: "Birzeit, Ramallah, Palestine",
     tag: "Residential Building",
     category: "Residential" as const,
     serviceSlug: "exterior" as const,
     exteriorType: "residential-buildings" as const,
+    projectType: "Residential Building",
+    year: "2025",
+    area: "2,026 m²",
+    concept: "A contemporary mixed-use residential building designed to combine comfortable apartments with active commercial spaces at street level. The building creates a strong urban presence through a clear vertical composition, generous balconies, landscaped terraces, and inviting ground-floor uses that connect the project to the surrounding community.",
+    styleMaterials: "Contemporary style with light stone or plastered façades, dark gray horizontal cladding, geometric and curved balconies, glass railings, black metal details, warm wood soffits, large glazed openings, landscaped areas, and integrated architectural lighting.",
     image: rb3_img0,
-    imageAlt: "Residential building 04 — exterior visualization",
+    imageAlt: "Aranki -1- — exterior visualization",
   },
   {
     id: "res-luay-jeris-35",
     orderLabel: "05",
-    title: "05",
-    country: "Palestine",
+    title: "L. J",
+    country: "Birzeit, Ramallah, Palestine",
     tag: "Residential Building",
     category: "Residential" as const,
     serviceSlug: "exterior" as const,
     exteriorType: "residential-buildings" as const,
+    projectType: "Classical Residential Building",
+    year: "2026",
+    area: "2,650 m²",
+    concept: "A classical residential building designed with a strong symmetrical composition, elegant proportions, and a refined connection between residential and commercial functions. The façade is organized around a central architectural bay, generous balconies, and a welcoming ground-floor frontage, creating a distinguished urban presence.",
+    styleMaterials: "Classical style with natural stone façades, decorative pilasters, cornices, pediments, arched openings, ornate wrought-iron railings, large glazed windows, warm exterior lighting, and carefully detailed retail entrances at ground level.",
     image: rb4_img0,
-    imageAlt: "Residential building 05 — exterior visualization",
+    imageAlt: "L. J — exterior visualization",
   },
   {
     id: "res-ruba-natsheh-51",
     orderLabel: "06",
-    title: "06",
-    country: "Palestine",
+    title: "R. HEBRON",
+    country: "Hebron, Palestine",
     tag: "Residential Building",
     category: "Residential" as const,
     serviceSlug: "exterior" as const,
     exteriorType: "residential-buildings" as const,
+    projectType: "Residential Building",
+    year: "2022",
+    area: "860 m²",
+    concept: "A contemporary residential building designed with a dynamic interplay of solid volumes and open terraces. The design features prominent wood-textured frames that highlight specific balconies, creating a rhythmic and modern façade. Integrated greenery and layered outdoor spaces enhance the living experience and connect the building with its surroundings.",
+    styleMaterials: "Modern minimalist style with white stone façades, wood-textured accent frames, glass balcony railings, black metal details, and integrated planters for greenery.",
     image: rb5_img0,
-    imageAlt: "Residential building 06 — exterior visualization",
+    imageAlt: "R. HEBRON — exterior visualization",
+  },
+  {
+    id: "res-zz-ab-building-07",
+    orderLabel: "07",
+    title: "A.B BUILDING",
+    country: "Jaljulia",
+    tag: "Residential Building",
+    category: "Residential" as const,
+    serviceSlug: "exterior" as const,
+    exteriorType: "residential-buildings" as const,
+    projectType: "Residential Building",
+    year: "2026",
+    area: "800 m²",
+    concept: "A contemporary residential building designed with a clear vertical composition, generous balconies, and carefully framed openings. The project combines private outdoor spaces with integrated greenery and a welcoming ground-floor entrance, creating a strong architectural presence while maintaining comfort and privacy for its residents.",
+    styleMaterials: "Modern minimalist style with light stone or plastered façades, dark textured accents, curved and projecting balconies, glass railings, black metal details, wood-look soffits, large glazed openings, landscaped areas, and warm integrated lighting.",
+    image: rb6_img0,
+    imageAlt: "A.B BUILDING — exterior visualization",
+  },
+  {
+    id: "res-zz-hag-1213-08",
+    orderLabel: "08",
+    title: "HAG 1213",
+    country: "Jaljulia",
+    tag: "Residential Building",
+    category: "Residential" as const,
+    serviceSlug: "exterior" as const,
+    exteriorType: "residential-buildings" as const,
+    projectType: "Residential Building",
+    year: "2026",
+    area: "1,320 m²",
+    concept: "A contemporary residential building designed as a refined composition of stepped volumes, generous balconies, and carefully framed vertical openings. The project creates comfortable outdoor spaces for each residence through planted balconies and terraces, while the landscaped edges and transparent ground floor establish a welcoming connection with the surrounding streetscape.",
+    styleMaterials: "Modern minimalist style with light natural stone façades, charcoal-gray cladding, warm wood accents, curved and projecting balconies, glass railings, large glazed openings, black metal details, landscaped planters, rooftop terraces, and warm integrated lighting.",
+    image: rb7_img0,
+    imageAlt: "HAG 1213 — exterior visualization",
   },
 ];
 
@@ -134,6 +216,8 @@ const residentialGalleryById: Record<string, StaticImageData[]> = {
   ["res-hamada-26"]: [rb3_img0, rb3_img1, rb3_img2, rb3_img3, rb3_img4, rb3_img5, rb3_img6, rb3_img7, rb3_img8],
   ["res-luay-jeris-35"]: [rb4_img0, rb4_img1, rb4_img2, rb4_img3, rb4_img4, rb4_img5, rb4_img6],
   ["res-ruba-natsheh-51"]: [rb5_img0, rb5_img1, rb5_img2, rb5_img3, rb5_img4, rb5_img5, rb5_img6, rb5_img7, rb5_img8],
+  ["res-zz-ab-building-07"]: [rb6_img0, rb6_img1, rb6_img2, rb6_img3, rb6_img4, rb6_img5, rb6_img6, rb6_img7],
+  ["res-zz-hag-1213-08"]: [rb7_img0, rb7_img1, rb7_img2, rb7_img3, rb7_img4, rb7_img5, rb7_img6, rb7_img7, rb7_img8, rb7_img9],
 };
 
 export function getResidentialProjectGalleryImages(projectId: string): StaticImageData[] | undefined {

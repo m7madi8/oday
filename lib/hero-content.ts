@@ -1,4 +1,7 @@
-import heroVillaCover from "@/imgs/Exterior/Villa/hASSAN SALAMEH 27/ODAY_result.webp";
+import type { StaticImageData } from "next/image";
+import heroPrimary from "@/imgs/Exterior/Villa/villa 12 bh/ODAY_result.webp";
+import heroSlide2 from "@/imgs/Exterior/Villa/villa 10 viv/ODAY_result.webp";
+import heroSlide3 from "@/imgs/Exterior/Villa/nasim shawahneh 42/oday_result.webp";
 
 /** Homepage hero copy — kept separate from data.ts to avoid heavy module init cycles. */
 export const hero = {
@@ -14,8 +17,28 @@ export const hero = {
   titleLine2Words: ["That", "Drives", "Value"],
   description:
     "Exterior Design, Interior Design, Ai architect, and Architect Dron — precision-focused delivery for high-value projects.",
-  image: heroVillaCover,
-  imageAlt: "Villa 05 — exterior visualization",
+  /** Primary holds longer; secondary slides rotate a bit faster */
+  primaryIntervalMs: 8000,
+  slideIntervalMs: 6000,
+  images: [
+    {
+      src: heroPrimary,
+      alt: "B.H Villa — primary hero exterior",
+      primary: true,
+    },
+    {
+      src: heroSlide2,
+      alt: "V I V villa — hero exterior",
+      primary: false,
+    },
+    {
+      src: heroSlide3,
+      alt: "420 I Villa — hero exterior",
+      primary: false,
+    },
+  ] satisfies ReadonlyArray<{ src: StaticImageData; alt: string; primary: boolean }>,
+  image: heroPrimary,
+  imageAlt: "B.H Villa — primary hero exterior",
   stats: [
     { label: "Projects", value: 500, prefix: "+", suffix: "" },
     { label: "Value", value: 50, prefix: "+", suffix: " million" },

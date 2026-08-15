@@ -79,6 +79,7 @@ export function ProjectCard({ project, index, batchAnimate }: ProjectCardProps) 
               {project.country && (
                 <p className="min-w-0 truncate font-ui text-[9px] tracking-wide text-ink-muted">
                   {project.country}
+                  {project.year ? ` · ${project.year}` : ""}
                 </p>
               )}
             </div>

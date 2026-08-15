@@ -3,15 +3,13 @@
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import { SectionHeader, SectionInner, SectionShell } from "@/components/SectionShell";
 import { services } from "@/lib/content/services";
+import { serviceVisualBySlug } from "@/lib/content/service-visuals";
 import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 import { SafeButton } from "@/components/SafeButton";
 import { ArrowUpRight } from "lucide-react";
 import { useCallback, useRef, useState } from "react";
 import { useReducedMotion } from "@/components/ClientMotion";
-import aboutImage from "@/imgs/about.jpg";
-import interiorImage from "@/imgs/interior.jpg";
-import exteriorImage from "@/imgs/exterior.jpg";
 
 type ServiceProfile = {
   tagline: string;
@@ -62,46 +60,8 @@ const serviceProfiles: Record<string, ServiceProfile> = {
   },
 };
 
-function getServiceVisual(title: string): ServiceVisual {
-  const normalized = title.toLowerCase();
-
-  if (normalized.includes("interior")) {
-    return {
-      src: interiorImage,
-      alt: "Premium interior architecture with sculpted ceiling and warm lighting",
-      objectPosition: "50% 42%",
-    };
-  }
-
-  if (normalized.includes("exterior")) {
-    return {
-      src: exteriorImage,
-      alt: "Contemporary exterior architecture with strong identity",
-      objectPosition: "55% 40%",
-    };
-  }
-
-  if (normalized.includes("drone") || normalized.includes("dron")) {
-    return {
-      src: exteriorImage,
-      alt: "Aerial architectural perspective for site intelligence",
-      objectPosition: "62% 28%",
-    };
-  }
-
-  if (normalized.includes("ai")) {
-    return {
-      src: interiorImage,
-      alt: "Digital architecture scene symbolizing AI-powered workflows",
-      objectPosition: "48% 35%",
-    };
-  }
-
-  return {
-    src: aboutImage,
-    alt: "Modern architecture with balanced interior and exterior expression",
-    objectPosition: "50% 40%",
-  };
+function getServiceVisual(slug: (typeof services)[number]["slug"]): ServiceVisual {
+  return serviceVisualBySlug[slug];
 }
 
 const stripBezel =
@@ -279,7 +239,7 @@ function ServiceStoryCard({
   activeIndex: number;
 }) {
   const profile = serviceProfiles[service.title] ?? fallbackProfile;
-  const visual = getServiceVisual(service.title);
+  const visual = getServiceVisual(service.slug);
   const Icon = service.icon;
 
   return (
@@ -390,7 +350,7 @@ function ServicePanel({
   onActivate: () => void;
 }) {
   const profile = serviceProfiles[service.title] ?? fallbackProfile;
-  const visual = getServiceVisual(service.title);
+  const visual = getServiceVisual(service.slug);
   const Icon = service.icon;
 
   return (

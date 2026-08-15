@@ -41,5 +41,9 @@ export function getProjectCardPill(project: Project, section: PortfolioSectionId
 }
 
 export function getProjectCardDescription(project: Project): string {
+  if (project.year && project.area) {
+    return `${project.country} · ${project.year} · ${project.area}`;
+  }
+  if (project.year) return `${project.country} · ${project.year}`;
   return `${project.tag} — ${project.country}`;
 }

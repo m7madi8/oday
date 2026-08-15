@@ -7,8 +7,6 @@ const Services = dynamic(() => import("@/components/Services").then((m) => ({ de
 const FeaturedProjects = dynamic(() =>
   import("@/components/FeaturedProjects").then((m) => ({ default: m.FeaturedProjects })),
 );
-const Location = dynamic(() => import("@/components/Location").then((m) => ({ default: m.Location })));
-const FAQ = dynamic(() => import("@/components/FAQ").then((m) => ({ default: m.FAQ })));
 const Contact = dynamic(() => import("@/components/Contact").then((m) => ({ default: m.Contact })));
 
 export default function Home() {
@@ -20,8 +18,6 @@ export default function Home() {
         <About />
         <Services />
         <FeaturedProjects />
-        <Location />
-        <FAQ />
         <Contact />
       </main>
     </>
