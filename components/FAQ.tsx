@@ -27,7 +27,7 @@ export function FAQ() {
           />
           <motion.a
             href="#contact"
-            className="label-upper mt-6 inline-flex rounded-full border border-gold/45 bg-gold/15 px-6 py-2.5 text-ink-primary transition-colors hover:bg-gold/25"
+            className="btn btn--primary mt-6"
             whileHover={reduceMotion ? {} : { scale: 1.02 }}
             whileTap={reduceMotion ? {} : { scale: 0.98 }}
             aria-label="Talk to strategy team via contact section"

@@ -65,18 +65,18 @@ export function Location() {
                     href={studioLocation.directionsUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="label-upper inline-flex items-center justify-center gap-2 rounded-full border border-gold/45 bg-gold/15 px-5 py-2.5 text-[0.62rem] text-ink-primary backdrop-blur-sm transition-colors hover:bg-gold/25"
+                    className="btn btn--primary btn--sm"
                   >
-                    <Navigation className="h-3.5 w-3.5" aria-hidden />
+                    <Navigation className="btn__icon" aria-hidden />
                     Directions
                   </a>
                   <a
                     href={studioLocation.openInMapsUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="label-upper inline-flex items-center justify-center gap-2 rounded-full border border-white/20 bg-bg-primary/80 px-5 py-2.5 text-[0.62rem] text-ink-secondary backdrop-blur-sm transition-colors hover:border-gold/35 hover:text-ink-primary"
+                    className="btn btn--ghost btn--sm bg-bg-primary/80 backdrop-blur-sm"
                   >
-                    <ExternalLink className="h-3.5 w-3.5" aria-hidden />
+                    <ExternalLink className="btn__icon" aria-hidden />
                     Google Maps
                   </a>
                 </div>

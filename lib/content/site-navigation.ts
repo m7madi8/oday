@@ -1,23 +1,15 @@
 import type { StaticImageData } from "next/image";
-import aboutImage from "@/imgs/about.jpg";
 import exteriorImage from "@/imgs/exterior.jpg";
 import directorPortrait from "@/imgs/oday.jpeg";
-import heroPrimary from "@/imgs/Exterior/Villa/villa 12 bh/ODAY_result.webp";
-import {
-  exteriorTypeLabel,
-  projects,
-  type ExteriorProjectType,
-} from "@/lib/data";
 import { about } from "@/lib/content/about";
 import { contact } from "@/lib/content/contact";
-import { getFeaturedProjects } from "@/lib/content/featured-projects";
 import { services } from "@/lib/content/services";
+import { exteriorProjectTypes, exteriorTypeLabel } from "@/lib/content/types";
 import { studioLocation } from "@/lib/content/location";
 import {
   galleryNavCovers,
   serviceVisualBySlug,
 } from "@/lib/content/service-visuals";
-import type { ServiceSlug } from "@/lib/content/types";
 
 export type NavPanelId = "home" | "about" | "gallery" | "services" | "contact";
 
@@ -56,6 +48,8 @@ export interface NavPanelConfig {
   variant: NavPanelVariant;
   items: NavVisualItem[];
   portrait?: NavPortraitContent;
+  /** Keep the mega stage image fixed while the rail caption still updates. */
+  lockStageVisual?: boolean;
 }
 
 export interface SearchEntry {
@@ -80,13 +74,6 @@ export function getAboutPortrait(): NavPortraitContent {
 }
 
 export function getGalleryNavItems(): NavVisualItem[] {
-  const exteriorTypes: ExteriorProjectType[] = [
-    "villas",
-    "residential-buildings",
-    "cottage",
-    "landscape",
-  ];
-
   const coverItem = (
     id: keyof typeof galleryNavCovers,
     label: string,
@@ -137,7 +124,7 @@ export function getGalleryNavItems(): NavVisualItem[] {
     ),
   ];
 
-  for (const type of exteriorTypes) {
+  for (const type of exteriorProjectTypes) {
     items.push(
       coverItem(
         type,
@@ -203,8 +190,8 @@ export function getContactNavItems(): NavVisualItem[] {
       label: "Get Directions",
       href: studioLocation.directionsUrl,
       description: "Open Google Maps driving directions to the studio.",
-      image: exteriorImage,
-      imageAlt: "Directions to OD Architects",
+      image: contact.backgroundImage,
+      imageAlt: contact.backgroundAlt,
       eyebrow: "Maps",
     },
     {
@@ -212,8 +199,8 @@ export function getContactNavItems(): NavVisualItem[] {
       label: "Email",
       href: contact.items.find((i) => i.label === "Email")?.href ?? "mailto:abodohaoday@gmail.com",
       description: contact.items.find((i) => i.label === "Email")?.value ?? "",
-      image: aboutImage,
-      imageAlt: "Contact OD Architects by email",
+      image: contact.backgroundImage,
+      imageAlt: contact.backgroundAlt,
       eyebrow: "Write",
     },
     {
@@ -221,8 +208,8 @@ export function getContactNavItems(): NavVisualItem[] {
       label: "Phone",
       href: contact.items.find((i) => i.label === "Phone")?.href ?? "tel:+972568123413",
       description: contact.items.find((i) => i.label === "Phone")?.value ?? "",
-      image: directorPortrait,
-      imageAlt: "Call OD Architects",
+      image: contact.backgroundImage,
+      imageAlt: contact.backgroundAlt,
       eyebrow: "Call",
     },
     {
@@ -230,8 +217,8 @@ export function getContactNavItems(): NavVisualItem[] {
       label: contact.ctaLabel,
       href: contact.items.find((i) => i.label === "Email")?.href ?? "mailto:abodohaoday@gmail.com",
       description: contact.description,
-      image: heroPrimary,
-      imageAlt: "Book a discovery call",
+      image: contact.backgroundImage,
+      imageAlt: contact.backgroundAlt,
       eyebrow: "Start",
     },
   ];
@@ -267,6 +254,7 @@ export function getPrimaryNavPanels(): NavPanelConfig[] {
       label: "Contact",
       href: "/#contact",
       variant: "mega",
+      lockStageVisual: true,
       items: getContactNavItems(),
     },
   ];
@@ -297,8 +285,8 @@ export function getSiteSections(): NavVisualItem[] {
       label: "Gallery",
       href: "/#gallery",
       description: "Featured case studies and curated project highlights.",
-      image: getFeaturedProjects()[0]?.image ?? aboutImage,
-      imageAlt: "Featured gallery",
+      image: galleryNavCovers.all.src,
+      imageAlt: galleryNavCovers.all.alt,
       eyebrow: "Studio",
     },
     {
@@ -313,105 +301,16 @@ export function getSiteSections(): NavVisualItem[] {
   ];
 }
 
-export const searchExploreTerms = [
+/** Empty-state shortcuts — labels come from the same sources the nav and filters use. */
+export const searchExploreTerms: ReadonlyArray<{ label: string; href: string }> = [
   { label: "Interior", href: "/projects?service=interior" },
   { label: "Exterior", href: "/projects?service=exterior" },
-  { label: "Villas", href: "/projects?service=exterior&type=villas" },
-  { label: "Residential Buildings", href: "/projects?service=exterior&type=residential-buildings" },
-  { label: "Cottage", href: "/projects?service=exterior&type=cottage" },
-  { label: "Landscape", href: "/projects?service=exterior&type=landscape" },
+  ...exteriorProjectTypes.map((type) => ({
+    label: exteriorTypeLabel(type),
+    href: `/projects?service=exterior&type=${type}`,
+  })),
   { label: "Ai architect", href: "/projects?service=architecture-ai" },
   { label: "Architect Dron", href: "/projects?service=architecture-drone" },
   { label: "About", href: "/#about" },
   { label: "Contact", href: "/#contact" },
-] as const;
-
-export function buildSearchIndex(): SearchEntry[] {
-  const entries: SearchEntry[] = [];
-
-  for (const project of projects) {
-    const keywords = [
-      project.title,
-      project.tag,
-      project.country,
-      project.category,
-      project.serviceSlug,
-      project.exteriorType ?? "",
-      project.projectType ?? "",
-      project.year ?? "",
-      project.orderLabel,
-    ]
-      .filter(Boolean)
-      .map((k) => k.toLowerCase());
-
-    entries.push({
-      id: `project-${project.id}`,
-      group: "Projects",
-      title: project.title,
-      subtitle: [project.tag, project.country].filter(Boolean).join(" · "),
-      href: `/projects/${project.id}`,
-      keywords,
-    });
-  }
-
-  for (const service of services) {
-    entries.push({
-      id: `service-${service.slug}`,
-      group: "Services",
-      title: service.title,
-      subtitle: service.description,
-      href: `/#services`,
-      keywords: [service.title, service.description, service.slug].map((k) =>
-        k.toLowerCase(),
-      ),
-    });
-    entries.push({
-      id: `service-gallery-${service.slug}`,
-      group: "Services",
-      title: `${service.title} gallery`,
-      subtitle: "Open filtered project gallery",
-      href: `/projects?service=${encodeURIComponent(service.slug as ServiceSlug)}`,
-      keywords: [service.title, service.slug, "gallery", "projects"].map((k) =>
-        k.toLowerCase(),
-      ),
-    });
-  }
-
-  for (const section of getSiteSections()) {
-    entries.push({
-      id: `section-${section.id}`,
-      group: "Sections",
-      title: section.label,
-      subtitle: section.description,
-      href: section.href,
-      keywords: [section.label, section.description, section.id].map((k) =>
-        k.toLowerCase(),
-      ),
-    });
-  }
-
-  return entries;
-}
-
-export function filterSearchIndex(query: string, index: SearchEntry[]): SearchEntry[] {
-  const q = query.trim().toLowerCase();
-  if (!q) return [];
-  const tokens = q.split(/\s+/).filter(Boolean);
-
-  return index
-    .map((entry) => {
-      const hay = [entry.title, entry.subtitle ?? "", ...entry.keywords]
-        .join(" ")
-        .toLowerCase();
-      const score = tokens.reduce((acc, token) => {
-        if (entry.title.toLowerCase().includes(token)) return acc + 6;
-        if (hay.includes(token)) return acc + 2;
-        return acc;
-      }, 0);
-      return { entry, score };
-    })
-    .filter((row) => row.score > 0)
-    .sort((a, b) => b.score - a.score || a.entry.title.localeCompare(b.entry.title))
-    .slice(0, 24)
-    .map((row) => row.entry);
-}
+];

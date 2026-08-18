@@ -42,7 +42,7 @@ export function Process() {
               <div className="h-px w-[4.5rem] bg-gradient-to-r from-transparent via-gold/60 to-transparent md:w-24" />
             </div>
 
-            <h2 className="mx-auto mt-6 max-w-[18ch] font-display text-[clamp(2.35rem,5.8vw,3.85rem)] font-light leading-[1.06] tracking-[-0.02em] md:max-w-[22ch]">
+            <h2 className="section-title section-title--lead mx-auto mt-6 max-w-[18ch] not-italic md:max-w-[22ch]">
               <span className="block italic text-ink-primary">From Brief to</span>
               <span className="mt-1.5 block bg-gradient-to-r from-[#fff9d6] via-[#f5c518] to-[#fff9d6] bg-clip-text italic text-transparent md:mt-2">
                 Market Impact

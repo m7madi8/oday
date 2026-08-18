@@ -1,18 +1,41 @@
 import type { StaticImageData } from "next/image";
-import type { ExteriorProjectType, Project, ProjectGalleryFormat } from "@/lib/data";
-
-const EXTERIOR_TYPE_LABELS: Record<ExteriorProjectType, string> = {
-  villas: "Villas",
-  "residential-buildings": "Residential Buildings",
-  cottage: "Cottage",
-  landscape: "Landscape",
-};
+import {
+  exteriorTypeLabel,
+  projectGalleryFormatSpecs,
+  type Project,
+  type ProjectGalleryFormat,
+} from "@/lib/data";
 
 const PORTRAIT_MAX_ASPECT = 0.92;
 
 export type ProjectCardRatio = "landscape" | "portrait";
 
 export type PortfolioSectionId = "interior" | "exterior";
+
+export type ImageIntrinsic = {
+  width: number;
+  height: number;
+  aspectRatio: string;
+};
+
+/** Pixel dimensions + CSS aspect-ratio for responsive full-frame project covers. */
+export function resolveImageIntrinsic(
+  image: string | StaticImageData,
+  fallbackFormat: ProjectGalleryFormat = "cinema",
+): ImageIntrinsic {
+  if (typeof image !== "string") {
+    const { width, height } = image;
+    if (width > 0 && height > 0) {
+      return { width, height, aspectRatio: `${width} / ${height}` };
+    }
+  }
+  const spec = projectGalleryFormatSpecs[fallbackFormat];
+  return {
+    width: spec.width,
+    height: spec.height,
+    aspectRatio: `${spec.width} / ${spec.height}`,
+  };
+}
 
 export function resolveProjectCardRatio(
   image: string | StaticImageData,
@@ -35,7 +58,7 @@ export function getProjectCardPill(project: Project, section: PortfolioSectionId
     return "Interior";
   }
   if (project.exteriorType) {
-    return `Exterior · ${EXTERIOR_TYPE_LABELS[project.exteriorType]}`;
+    return `Exterior · ${exteriorTypeLabel(project.exteriorType)}`;
   }
   return `Exterior · ${project.category}`;
 }

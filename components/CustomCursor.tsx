@@ -114,8 +114,20 @@ export function CustomCursor() {
     }
 
     function animate() {
-      if (visibleRef.current) applyTrail();
+      applyTrail();
       rafRef.current = requestAnimationFrame(animate);
+    }
+
+    // Only spin the frame loop while the pointer is actually on the page.
+    function startLoop() {
+      if (rafRef.current === null) rafRef.current = requestAnimationFrame(animate);
+    }
+
+    function stopLoop() {
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
     }
 
     function move(e: MouseEvent) {
@@ -124,6 +136,7 @@ export function CustomCursor() {
       if (!visibleRef.current) {
         visibleRef.current = true;
         setVisible(true);
+        startLoop();
       }
 
       let nextHover = false;
@@ -143,25 +156,33 @@ export function CustomCursor() {
       setVisible(false);
       setIdle(false);
       setBubbles([]);
+      stopLoop();
       if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
     }
 
     function onEnter() {
       visibleRef.current = true;
       setVisible(true);
+      startLoop();
       resetIdle();
+    }
+
+    function onVisibilityChange() {
+      if (document.hidden) stopLoop();
+      else if (visibleRef.current) startLoop();
     }
 
     window.addEventListener("mousemove", move, { passive: true });
     document.documentElement.addEventListener("mouseleave", onLeave);
     document.documentElement.addEventListener("mouseenter", onEnter);
-    rafRef.current = requestAnimationFrame(animate);
+    document.addEventListener("visibilitychange", onVisibilityChange);
 
     return () => {
       window.removeEventListener("mousemove", move);
       document.documentElement.removeEventListener("mouseleave", onLeave);
       document.documentElement.removeEventListener("mouseenter", onEnter);
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+      stopLoop();
       if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
     };
   }, [enabled]);

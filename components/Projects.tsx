@@ -60,7 +60,7 @@ export function Projects() {
         >
           <div>
             <p className="label-upper text-gold">Case Studies</p>
-            <h2 className="mt-3 font-display text-4xl italic text-ink-primary md:text-5xl">
+            <h2 className="section-title section-title--lead mt-3">
               Projects That Perform
             </h2>
             <p className="mt-5 max-w-xl text-sm leading-relaxed text-ink-secondary md:text-base">

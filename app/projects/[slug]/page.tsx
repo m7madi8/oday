@@ -1,10 +1,5 @@
 import { ProjectDetailView } from "@/components/ProjectDetailView";
-import {
-  getProjectBySlug,
-  getProjectGallery,
-  getProjectSummary,
-  projects,
-} from "@/lib/data";
+import { getProjectBySlug, getProjectSiblings, getProjectSummary, projects } from "@/lib/data";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -31,7 +26,23 @@ export default function ProjectDetailPage({ params }: Props) {
     notFound();
   }
 
-  const gallery = getProjectGallery(project);
+  const rawSiblings = getProjectSiblings(project);
+  const siblings = rawSiblings
+    ? {
+        previous: {
+          id: rawSiblings.previous.id,
+          title: rawSiblings.previous.title,
+          country: rawSiblings.previous.country,
+        },
+        next: {
+          id: rawSiblings.next.id,
+          title: rawSiblings.next.title,
+          country: rawSiblings.next.country,
+        },
+        position: rawSiblings.position,
+        total: rawSiblings.total,
+      }
+    : null;
 
-  return <ProjectDetailView project={project} gallery={gallery} />;
+  return <ProjectDetailView project={project} siblings={siblings} />;
 }

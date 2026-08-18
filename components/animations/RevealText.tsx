@@ -5,7 +5,7 @@ import {
   createMaskRevealTransition,
 } from "@/lib/animations";
 import { revealInView } from "@/lib/motion-viewport";
-import { motion } from "@/components/ClientMotion";
+import { motion, useReducedMotion } from "@/components/ClientMotion";
 import { useMemo } from "react";
 
 type RevealTag = "h1" | "h2" | "h3" | "h4" | "p" | "span" | "div";
@@ -35,11 +35,17 @@ export function RevealText({
   yFrom = "120%",
   once = true,
 }: RevealTextProps) {
+  const reduceMotion = useReducedMotion();
   const words = useMemo(
     () => children.trim().split(/\s+/).filter(Boolean),
     [children],
   );
   const Tag = as;
+
+  // Word-by-word masking is pure decoration — render the text as-is when motion is off.
+  if (reduceMotion) {
+    return <Tag className={className}>{children}</Tag>;
+  }
 
   if (!splitByWords) {
     return (

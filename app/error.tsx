@@ -14,7 +14,10 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="mx-auto flex min-h-[60svh] max-w-lg flex-col items-center justify-center px-6 py-16 text-center">
+    <main
+      id="main-content"
+      className="mx-auto flex min-h-[60svh] max-w-lg flex-col items-center justify-center px-6 py-16 text-center"
+    >
       <p className="text-xs uppercase tracking-[0.2em] text-gold">Error</p>
       <h1 className="mt-3 font-outfit text-2xl font-medium text-ink-primary">
         Something went wrong
@@ -25,10 +28,10 @@ export default function Error({
       <button
         type="button"
         onClick={reset}
-        className="mt-8 rounded-full border border-gold/40 bg-bg-card px-6 py-3 text-xs uppercase tracking-[0.12em] text-ink-primary transition-colors hover:border-gold hover:bg-bg-secondary"
+        className="btn btn--primary mt-8"
       >
         Try again
       </button>
-    </div>
+    </main>
   );
 }

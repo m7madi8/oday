@@ -18,6 +18,8 @@ const MAX_CARD_W = 720;
 const MAX_CARD_H_MOBILE = 360;
 const MAX_CARD_W_MOBILE = 320;
 
+const VISIBLE_WINDOW = 2;
+
 function GalleryCard({
   image,
   index,
@@ -25,6 +27,7 @@ function GalleryCard({
   format,
   maxHeight,
   maxWidth,
+  mountImage,
   onOpen,
   onNavigate,
 }: {
@@ -34,6 +37,7 @@ function GalleryCard({
   format: ProjectGalleryFormat;
   maxHeight: number;
   maxWidth: number;
+  mountImage: boolean;
   onOpen: () => void;
   onNavigate: () => void;
 }) {
@@ -69,16 +73,21 @@ function GalleryCard({
       className={`project-gallery__card${isActive ? " project-gallery__card--active" : ""}`}
       style={{ width, height }}
     >
-      <Image
-        src={image.src}
-        alt={image.alt}
-        width={width}
-        height={height}
-        className="project-gallery__img"
-        sizes={`(max-width: 640px) ${maxWidth}px, ${maxWidth}px`}
-        priority={index < 2}
-        draggable={false}
-      />
+      {mountImage ? (
+        <Image
+          src={image.src}
+          alt={image.alt}
+          width={width}
+          height={height}
+          className="project-gallery__img"
+          sizes={`(max-width: 640px) ${maxWidth}px, ${maxWidth}px`}
+          priority={index < 2}
+          loading={index < 2 ? "eager" : "lazy"}
+          draggable={false}
+        />
+      ) : (
+        <div className="project-gallery__img" aria-hidden />
+      )}
       <span className="project-gallery__badge" aria-hidden>
         {label}
       </span>
@@ -310,6 +319,7 @@ export function ProjectGallery({
               format={format}
               maxHeight={maxHeight}
               maxWidth={maxWidth}
+              mountImage={index < 2 || Math.abs(index - activeIndex) <= VISIBLE_WINDOW}
               onNavigate={() => navigateTo(index)}
               onOpen={() => openLightbox(index)}
             />

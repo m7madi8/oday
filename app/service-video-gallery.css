@@ -480,3 +480,11 @@
     transition: none;
   }
 }
+
+/* 44px minimum for finger input; pointer-precise devices keep the tighter pill. */
+@media (pointer: coarse) {
+  .svc-video-card__btn {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+}

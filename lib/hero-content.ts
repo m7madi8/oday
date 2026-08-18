@@ -25,18 +25,30 @@ export const hero = {
       src: heroPrimary,
       alt: "B.H Villa — primary hero exterior",
       primary: true,
+      objectPosition: "52% 36%",
+      objectPositionMobile: "60% 40%",
     },
     {
       src: heroSlide2,
       alt: "V I V villa — hero exterior",
       primary: false,
+      objectPosition: "44% 42%",
+      objectPositionMobile: "38% 48%",
     },
     {
       src: heroSlide3,
       alt: "420 I Villa — hero exterior",
       primary: false,
+      objectPosition: "54% 36%",
+      objectPositionMobile: "58% 38%",
     },
-  ] satisfies ReadonlyArray<{ src: StaticImageData; alt: string; primary: boolean }>,
+  ] satisfies ReadonlyArray<{
+    src: StaticImageData;
+    alt: string;
+    primary: boolean;
+    objectPosition: string;
+    objectPositionMobile: string;
+  }>,
   image: heroPrimary,
   imageAlt: "B.H Villa — primary hero exterior",
   stats: [

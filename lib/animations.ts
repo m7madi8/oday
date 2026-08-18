@@ -163,7 +163,7 @@ export type GsapCinematicRuntime = {
 export function runHeroCinematicTimeline(
   gsap: GsapCinematicRuntime,
   selectors: HeroCinematicSelectors,
-  accentColor = "#C9A84C",
+  accentColor = "var(--accent-gold)",
 ): TimelineLike {
   return gsap
     .timeline()

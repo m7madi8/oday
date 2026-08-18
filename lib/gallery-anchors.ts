@@ -1,21 +1,25 @@
-import type { ExteriorProjectType } from "@/lib/data";
+import { exteriorTypeLabel, type ExteriorProjectType } from "@/lib/data";
 
-export const GALLERY_CATEGORY_ANCHORS = [
-  { id: "villas", type: "villas" as const, label: "Villas", order: "01" },
-  { id: "resid", type: "residential-buildings" as const, label: "Resid.", order: "02" },
-  { id: "cottage", type: "cottage" as const, label: "Cottage", order: "03" },
-  { id: "land", type: "landscape" as const, label: "Land.", order: "04" },
+/** Short hash ids kept for inbound links; labels resolve from the single label source. */
+const ANCHOR_IDS = [
+  { id: "villas", type: "villas" as const, order: "01" },
+  { id: "resid", type: "residential-buildings" as const, order: "02" },
+  { id: "cottage", type: "cottage" as const, order: "03" },
+  { id: "land", type: "landscape" as const, order: "04" },
 ] as const;
 
-export type GalleryCategoryAnchorId = (typeof GALLERY_CATEGORY_ANCHORS)[number]["id"];
+export const GALLERY_CATEGORY_ANCHORS = ANCHOR_IDS.map((anchor) => ({
+  ...anchor,
+  label: exteriorTypeLabel(anchor.type),
+}));
+
+export type GalleryCategoryAnchorId = (typeof ANCHOR_IDS)[number]["id"];
 
 export function galleryHashToExteriorType(hash: string): ExteriorProjectType | null {
   const normalized = hash.replace(/^#/, "").trim();
-  const match = GALLERY_CATEGORY_ANCHORS.find((item) => item.id === normalized);
-  return match?.type ?? null;
+  return ANCHOR_IDS.find((item) => item.id === normalized)?.type ?? null;
 }
 
 export function exteriorTypeToGalleryHash(type: ExteriorProjectType): GalleryCategoryAnchorId {
-  const match = GALLERY_CATEGORY_ANCHORS.find((item) => item.type === type);
-  return match?.id ?? "villas";
+  return ANCHOR_IDS.find((item) => item.type === type)?.id ?? "villas";
 }

@@ -3,39 +3,9 @@
 import type { StaticImageData } from "next/image";
 
 import ct0_img0 from "@/imgs/Exterior/Cottage/amer abu hamdieh 5/ODAY_result.webp";
-import ct0_img1 from "@/imgs/Exterior/Cottage/amer abu hamdieh 5/1_result.webp";
-import ct0_img2 from "@/imgs/Exterior/Cottage/amer abu hamdieh 5/3_result.webp";
-import ct0_img3 from "@/imgs/Exterior/Cottage/amer abu hamdieh 5/5_result.webp";
 import ct1_img0 from "@/imgs/Exterior/Cottage/COTATGE ADAM 12/ODAY_result.webp";
-import ct1_img1 from "@/imgs/Exterior/Cottage/COTATGE ADAM 12/2 copy_result.webp";
-import ct1_img2 from "@/imgs/Exterior/Cottage/COTATGE ADAM 12/4 copy_result.webp";
-import ct1_img3 from "@/imgs/Exterior/Cottage/COTATGE ADAM 12/5 copy_result.webp";
-import ct1_img4 from "@/imgs/Exterior/Cottage/COTATGE ADAM 12/6 copy_result.webp";
-import ct1_img5 from "@/imgs/Exterior/Cottage/COTATGE ADAM 12/7 copy_result.webp";
-import ct1_img6 from "@/imgs/Exterior/Cottage/COTATGE ADAM 12/8 copy_result.webp";
-import ct1_img7 from "@/imgs/Exterior/Cottage/COTATGE ADAM 12/9 copy_result.webp";
-import ct1_img8 from "@/imgs/Exterior/Cottage/COTATGE ADAM 12/10 copy_result.webp";
-import ct1_img9 from "@/imgs/Exterior/Cottage/COTATGE ADAM 12/11 copy_result.webp";
-import ct1_img10 from "@/imgs/Exterior/Cottage/COTATGE ADAM 12/12 copy_result.webp";
 import ct2_img0 from "@/imgs/Exterior/Cottage/mahdi abu shariif 36/oday_result.webp";
-import ct2_img1 from "@/imgs/Exterior/Cottage/mahdi abu shariif 36/Untitled-2_result.webp";
-import ct2_img2 from "@/imgs/Exterior/Cottage/mahdi abu shariif 36/Untitled-3_result.webp";
-import ct2_img3 from "@/imgs/Exterior/Cottage/mahdi abu shariif 36/Untitled-4_result.webp";
-import ct2_img4 from "@/imgs/Exterior/Cottage/mahdi abu shariif 36/Untitled-5_result.webp";
-import ct2_img5 from "@/imgs/Exterior/Cottage/mahdi abu shariif 36/Untitled-6_result.webp";
-import ct2_img6 from "@/imgs/Exterior/Cottage/mahdi abu shariif 36/Untitled-7_result.webp";
 import ct3_img0 from "@/imgs/Exterior/Cottage/majed cottage 37/oday_result.webp";
-import ct3_img1 from "@/imgs/Exterior/Cottage/majed cottage 37/2_result.webp";
-import ct3_img2 from "@/imgs/Exterior/Cottage/majed cottage 37/3_result.webp";
-import ct3_img3 from "@/imgs/Exterior/Cottage/majed cottage 37/4_result.webp";
-import ct3_img4 from "@/imgs/Exterior/Cottage/majed cottage 37/5_result.webp";
-import ct3_img5 from "@/imgs/Exterior/Cottage/majed cottage 37/7_result.webp";
-import ct3_img6 from "@/imgs/Exterior/Cottage/majed cottage 37/8_result.webp";
-import ct3_img7 from "@/imgs/Exterior/Cottage/majed cottage 37/9_result.webp";
-import ct3_img8 from "@/imgs/Exterior/Cottage/majed cottage 37/12_result.webp";
-import ct3_img9 from "@/imgs/Exterior/Cottage/majed cottage 37/13_result.webp";
-import ct3_img10 from "@/imgs/Exterior/Cottage/majed cottage 37/14_result.webp";
-import ct3_img11 from "@/imgs/Exterior/Cottage/majed cottage 37/16_result.webp";
 
 export const cottageProjects = [
   {
@@ -107,14 +77,3 @@ export const cottageProjects = [
     imageAlt: "MAJED'S COTTAGE — exterior visualization",
   },
 ];
-
-const cottageGalleryById: Record<string, StaticImageData[]> = {
-  ["cot-amer-abu-hamdieh-5"]: [ct0_img0, ct0_img1, ct0_img2, ct0_img3],
-  ["cot-cotatge-adam-12"]: [ct1_img0, ct1_img1, ct1_img2, ct1_img3, ct1_img4, ct1_img5, ct1_img6, ct1_img7, ct1_img8, ct1_img9, ct1_img10],
-  ["cot-mahdi-abu-shariif-36"]: [ct2_img0, ct2_img1, ct2_img2, ct2_img3, ct2_img4, ct2_img5, ct2_img6],
-  ["cot-majed-cottage-37"]: [ct3_img0, ct3_img1, ct3_img2, ct3_img3, ct3_img4, ct3_img5, ct3_img6, ct3_img7, ct3_img8, ct3_img9, ct3_img10, ct3_img11],
-};
-
-export function getCottageProjectGalleryImages(projectId: string): StaticImageData[] | undefined {
-  return cottageGalleryById[projectId];
-}

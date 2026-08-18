@@ -93,13 +93,13 @@ export default function ServiceRequestPage({ params }: Props) {
         <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-4">
           <Link
             href={`/projects?service=${encodeURIComponent(service.slug)}`}
-            className="label-upper inline-flex items-center justify-center rounded-full border border-gold/40 bg-gold/10 px-6 py-3 text-center text-ink-primary transition-colors hover:border-gold/55 hover:bg-gold/18"
+            className="btn btn--primary"
           >
             View gallery — {service.title}
           </Link>
           <Link
             href="/#services"
-            className="label-upper inline-flex items-center justify-center rounded-full border border-white/[0.12] px-6 py-3 text-center text-ink-secondary transition-colors hover:border-gold/35 hover:text-ink-primary"
+            className="btn btn--ghost"
           >
             All services
           </Link>

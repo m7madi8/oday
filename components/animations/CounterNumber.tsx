@@ -18,6 +18,8 @@ export interface CounterNumberProps {
   /** When disabled, show zero instead of the final value (for pre-scroll hold). */
   holdAtZero?: boolean;
   triggerRef?: RefObject<HTMLElement | null>;
+  /** Start counting as soon as enabled — skip IntersectionObserver. */
+  playOnMount?: boolean;
 }
 
 function easeOutCubic(t: number): number {
@@ -35,6 +37,7 @@ export function CounterNumber({
   enabled = true,
   holdAtZero = false,
   triggerRef,
+  playOnMount = false,
 }: CounterNumberProps) {
   const valueRef = useRef<HTMLSpanElement>(null);
   const hasAnimatedRef = useRef(false);
@@ -93,7 +96,8 @@ export function CounterNumber({
         }
 
         const elapsed = now - startAt;
-        const progress = Math.min(1, elapsed / (duration * 1000));
+        const durationMs = Math.max(duration, 0.05) * 1000;
+        const progress = Math.min(1, elapsed / durationMs);
         const current = from + (to - from) * easeOutCubic(progress);
         valueRef.current.textContent = formatValue(current);
 
@@ -106,6 +110,11 @@ export function CounterNumber({
 
       rafRef.current = requestAnimationFrame(tick);
     };
+
+    if (playOnMount) {
+      runCount();
+      return () => cancelAnimationFrame(rafRef.current);
+    }
 
     const observeTarget = triggerRef?.current ?? valueEl;
     const observerOptions: IntersectionObserverInit = triggerRef?.current
@@ -136,7 +145,7 @@ export function CounterNumber({
       cancelAnimationFrame(rafRef.current);
       window.clearTimeout(safety);
     };
-  }, [enabled, targetNumber, duration, delay, formatValue, finalText, triggerRef]);
+  }, [enabled, targetNumber, duration, delay, formatValue, finalText, triggerRef, playOnMount]);
 
   if (!enabled) {
     return (

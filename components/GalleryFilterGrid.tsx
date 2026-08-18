@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { useCallback, useRef, type KeyboardEvent, type ReactNode } from "react";
 
 export type GalleryFilterTier = "primary" | "secondary";
 
@@ -18,6 +18,8 @@ export function GalleryFilterGrid({
   ariaLabel: string;
   className?: string;
 }) {
+  const listRef = useRef<HTMLDivElement | null>(null);
+
   const resolvedTier: GalleryFilterTier =
     tier ?? (variant === "services" ? "primary" : variant === "exterior" ? "secondary" : "secondary");
 
@@ -28,14 +30,41 @@ export function GalleryFilterGrid({
         ? "gallery-filter-grid--exterior"
         : "";
 
+  // Tablist keyboard contract: arrows move between tabs, Home/End jump to the ends.
+  const onKeyDown = useCallback((e: KeyboardEvent<HTMLDivElement>) => {
+    const keys = ["ArrowRight", "ArrowDown", "ArrowLeft", "ArrowUp", "Home", "End"];
+    if (!keys.includes(e.key)) return;
+
+    const tabs = Array.from(
+      listRef.current?.querySelectorAll<HTMLButtonElement>('[role="tab"]') ?? [],
+    );
+    if (tabs.length === 0) return;
+
+    const current = tabs.indexOf(document.activeElement as HTMLButtonElement);
+    if (current === -1) return;
+
+    e.preventDefault();
+    const forward = e.key === "ArrowRight" || e.key === "ArrowDown";
+    const next =
+      e.key === "Home"
+        ? 0
+        : e.key === "End"
+          ? tabs.length - 1
+          : (current + (forward ? 1 : -1) + tabs.length) % tabs.length;
+
+    tabs[next].focus();
+  }, []);
+
   return (
-    <nav
+    <div
+      ref={listRef}
       className={`gallery-filter-grid gallery-filter-grid--${resolvedTier} ${variantClass} ${className}`.trim()}
       role="tablist"
       aria-label={ariaLabel}
+      onKeyDown={onKeyDown}
     >
       {children}
-    </nav>
+    </div>
   );
 }
 
@@ -76,6 +105,7 @@ export function GalleryFilterCell({
       type="button"
       role="tab"
       aria-selected={active}
+      tabIndex={active ? 0 : -1}
       data-no-glow
       onClick={onClick}
       className={`gallery-filter-cell gallery-filter-cell--${tier}${active ? " is-active" : ""}`}

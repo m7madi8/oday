@@ -3,22 +3,26 @@ import aboutImage from "@/imgs/about.jpg";
 import exteriorImage from "@/imgs/exterior.jpg";
 import interiorImage from "@/imgs/interior.jpg";
 import landscapeImage from "@/imgs/landscape.jpg";
-import { cottageProjects, getCottageProjectGalleryImages } from "@/lib/exterior-cottage-projects";
-import {
-  getLandscapeProjectGalleryImages,
-  landscapeProjects,
-} from "@/lib/exterior-landscape-projects";
-import {
-  getResidentialProjectGalleryImages,
-  residentialBuildingProjects,
-} from "@/lib/exterior-residential-projects";
-import { getVillaProjectGalleryImages, villaProjects } from "@/lib/exterior-villa-projects";
-import { getInteriorProjectGalleryImages, interiorProjects } from "@/lib/interior-projects";
+import { cottageProjects } from "@/lib/exterior-cottage-projects";
+import { landscapeProjects } from "@/lib/exterior-landscape-projects";
+import { residentialBuildingProjects } from "@/lib/exterior-residential-projects";
+import { villaProjects } from "@/lib/exterior-villa-projects";
+import { interiorProjects } from "@/lib/interior-projects";
 import { services } from "@/lib/content/services";
-import { serviceSlugs, type ServiceSlug } from "@/lib/content/types";
+import {
+  exteriorProjectTypes,
+  serviceSlugs,
+  type ExteriorProjectType,
+  type ServiceSlug,
+} from "@/lib/content/types";
 
-export { serviceSlugs } from "@/lib/content/types";
-export type { ServiceSlug } from "@/lib/content/types";
+export {
+  exteriorProjectTypes,
+  exteriorTypeLabel,
+  exteriorTypeLabels,
+  serviceSlugs,
+} from "@/lib/content/types";
+export type { ExteriorProjectType, ServiceSlug } from "@/lib/content/types";
 export { about } from "@/lib/content/about";
 export type { Strength } from "@/lib/content/about";
 export { services } from "@/lib/content/services";
@@ -43,16 +47,6 @@ export const navLinks = [
 ] as const;
 
 export type ProjectCategory = "Residential" | "Cultural";
-
-/** Sub-categories within the Exterior gallery (includes former Landscape work). */
-export const exteriorProjectTypes = [
-  "villas",
-  "residential-buildings",
-  "cottage",
-  "landscape",
-] as const;
-
-export type ExteriorProjectType = (typeof exteriorProjectTypes)[number];
 
 export const defaultExteriorProjectType = exteriorProjectTypes[0];
 
@@ -112,7 +106,7 @@ export interface Project {
 }
 
 export const projects: Project[] = [
-  // Interior — imgs/Interior (37 projects)
+  // Interior — cover images only; full frames load via lib/project-gallery.ts
   ...(interiorProjects as Project[]),
   // Exterior — folder imports
   ...(villaProjects as Project[]),
@@ -121,106 +115,59 @@ export const projects: Project[] = [
   ...(landscapeProjects as Project[]),
 ];
 
-export const PROJECT_GALLERY_IMAGE_COUNT = 20;
-
-const projectGalleryPool = [
-  interiorImage,
-  exteriorImage,
-  landscapeImage,
-  aboutImage,
-] as const;
-
 export interface ProjectGalleryImage {
   src: string | StaticImageData;
   alt: string;
   format: ProjectGalleryFormat;
 }
 
-export function resolveProjectGalleryFormat(project: Project): ProjectGalleryFormat {
-  if (project.galleryFormat) return project.galleryFormat;
-  if (project.serviceSlug === "exterior") {
-    return project.exteriorType === "residential-buildings"
-      ? "cinema"
-      : "instagram";
-  }
-  if (project.serviceSlug === "architecture-drone") return "cinema";
-  if (project.serviceSlug === "architecture-ai") return "instagram";
-  const n = Number.parseInt(project.orderLabel, 10);
-  return Number.isFinite(n) && n % 2 === 0 ? "cinema" : "instagram";
-}
+export {
+  getProjectDetailRows,
+  getProjectSummary,
+  projectDetailPath,
+  resolveProjectGalleryFormat,
+  serviceFilterLabel,
+} from "@/lib/project-view";
+export type { ProjectPagerLink, ProjectSiblings } from "@/lib/project-view";
 
 export interface ProjectDetailRow {
   label: string;
   value: string;
+  /** Long prose — render stacked full-width instead of right-aligned. */
+  wide?: boolean;
 }
 
 export function getProjectBySlug(slug: string): Project | undefined {
   return projects.find((p) => p.id === slug);
 }
 
-export function getProjectSummary(project: Project): string {
-  if (project.concept) return project.concept;
-  return `${project.title} — ${project.tag} in ${project.country}. A ${project.category.toLowerCase()} engagement delivered through our ${serviceFilterLabel(project.serviceSlug)} line with documentation and coordination built for serious developers.`;
-}
-
-export function getProjectDetailRows(project: Project): ProjectDetailRow[] {
-  if (project.projectType || project.year || project.area || project.styleMaterials) {
-    const rows: ProjectDetailRow[] = [
-      { label: "Project name", value: project.title },
-    ];
-    if (project.projectType) rows.push({ label: "Project type", value: project.projectType });
-    rows.push({ label: "Location", value: project.country });
-    if (project.year) rows.push({ label: "Year", value: project.year });
-    if (project.area) rows.push({ label: "Area", value: project.area });
-    rows.push({ label: "Case ref.", value: project.orderLabel });
-    return rows;
-  }
-
-  const rows: ProjectDetailRow[] = [
-    { label: "Location", value: project.country },
-    { label: "Service line", value: serviceFilterLabel(project.serviceSlug) },
-  ];
-  if (project.serviceSlug === "exterior" && project.exteriorType) {
-    rows.push({ label: "Exterior type", value: exteriorTypeLabel(project.exteriorType) });
-  }
-  rows.push(
-    { label: "Category", value: project.category },
-    { label: "Focus", value: project.tag },
-    { label: "Case ref.", value: project.orderLabel },
-  );
-  return rows;
-}
-
-/** Gallery frames — folder-backed projects use local imagery; others cycle the portfolio pool. */
-export function getProjectGallery(project: Project): ProjectGalleryImage[] {
-  const format = resolveProjectGalleryFormat(project);
-  const folderImages =
-    getInteriorProjectGalleryImages(project.id) ??
-    getVillaProjectGalleryImages(project.id) ??
-    getResidentialProjectGalleryImages(project.id) ??
-    getCottageProjectGalleryImages(project.id) ??
-    getLandscapeProjectGalleryImages(project.id);
-  if (folderImages?.length) {
-    const total = folderImages.length;
-    return folderImages.map((src, i) => ({
-      src,
-      alt: `${project.title} — gallery frame ${String(i + 1).padStart(2, "0")} of ${total}`,
-      format,
-    }));
-  }
-  return Array.from({ length: PROJECT_GALLERY_IMAGE_COUNT }, (_, i) => {
-    const src = projectGalleryPool[i % projectGalleryPool.length];
-    return {
-      src,
-      alt: `${project.title} — gallery frame ${String(i + 1).padStart(2, "0")} of ${PROJECT_GALLERY_IMAGE_COUNT}`,
-      format,
-    };
+/**
+ * Previous/next within the same collection, wrapping at the ends. Scoped to the
+ * collection a visitor arrived from so browsing stays inside one body of work.
+ */
+export function getProjectSiblings(project: Project): {
+  previous: Project;
+  next: Project;
+  position: number;
+  total: number;
+} | null {
+  const collection = projects.filter((p) => {
+    if (p.serviceSlug !== project.serviceSlug) return false;
+    if (project.serviceSlug !== "exterior") return true;
+    return p.exteriorType === project.exteriorType;
   });
+
+  const at = collection.findIndex((p) => p.id === project.id);
+  if (at === -1 || collection.length < 2) return null;
+
+  return {
+    previous: collection[(at - 1 + collection.length) % collection.length],
+    next: collection[(at + 1) % collection.length],
+    position: at + 1,
+    total: collection.length,
+  };
 }
 
-export function projectDetailPath(project: Project): string {
-  return `/projects/${project.id}`;
-}
 
 export { hero } from "@/lib/hero-content";
 
@@ -230,16 +177,6 @@ export function isValidServiceSlug(value: string): value is ServiceSlug {
 
 export function isValidExteriorProjectType(value: string): value is ExteriorProjectType {
   return (exteriorProjectTypes as readonly string[]).includes(value);
-}
-
-export function exteriorTypeLabel(type: ExteriorProjectType): string {
-  const labels: Record<ExteriorProjectType, string> = {
-    villas: "Villas",
-    "residential-buildings": "Residential Buildings",
-    cottage: "Cottage",
-    landscape: "Landscape",
-  };
-  return labels[type];
 }
 
 export type ExteriorGalleryLayout =
@@ -446,11 +383,6 @@ export function getProjectsByServiceSlug(slug: ServiceSlug) {
   return projects.filter((p) => p.serviceSlug === slug);
 }
 
-export function serviceFilterLabel(filter: ProjectServiceFilter): string {
-  if (filter === "All") return "All";
-  const svc = services.find((s) => s.slug === filter);
-  return svc?.title ?? filter;
-}
 
 export interface ProcessStep {
   step: string;

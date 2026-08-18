@@ -17,13 +17,6 @@ import { useMemo } from "react";
 
 export type GalleryCategoryFilter = ExteriorProjectTypeFilter | ProjectCategory | "All";
 
-export const EXTERIOR_CATEGORY_SHORT: Record<ExteriorProjectType, string> = {
-  villas: "Villas",
-  "residential-buildings": "Resid.",
-  cottage: "Cottage",
-  landscape: "Land.",
-};
-
 export const PROJECT_CATEGORIES: ProjectCategory[] = ["Residential", "Cultural"];
 
 const SERVICES_WITHOUT_CATEGORY_FILTER: ProjectServiceFilter[] = [

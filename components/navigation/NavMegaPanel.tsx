@@ -5,12 +5,14 @@ import { AnimatePresence, motion, useReducedMotion } from "@/components/ClientMo
 import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from "react";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 const soft = [0.33, 1, 0.68, 1] as const;
 
 type NavMegaPanelProps = {
+  /** Owned by the header so triggers can point `aria-controls` at this panel. */
+  id: string;
   panel: NavPanelConfig;
   open: boolean;
   onClose: () => void;
@@ -109,6 +111,7 @@ function MegaRail({
   onNavigate,
   onClose,
   reduceMotion,
+  lockStageVisual,
 }: {
   items: NavVisualItem[];
   label: string;
@@ -117,15 +120,36 @@ function MegaRail({
   onNavigate: () => void;
   onClose: () => void;
   reduceMotion: boolean | null;
+  lockStageVisual?: boolean;
 }) {
+  const listRef = useRef<HTMLUListElement>(null);
   const active = items.find((item) => item.id === activeId) ?? items[0];
+
+  /** Up/Down walk the rail; Escape is handled once, by the header. */
+  const onRailKeyDown = (e: ReactKeyboardEvent<HTMLUListElement>) => {
+    if (!["ArrowDown", "ArrowUp", "Home", "End"].includes(e.key)) return;
+
+    const links = Array.from(listRef.current?.querySelectorAll<HTMLAnchorElement>("a[href]") ?? []);
+    const current = links.indexOf(document.activeElement as HTMLAnchorElement);
+    if (links.length === 0 || current === -1) return;
+
+    e.preventDefault();
+    const next =
+      e.key === "Home"
+        ? 0
+        : e.key === "End"
+          ? links.length - 1
+          : (current + (e.key === "ArrowDown" ? 1 : -1) + links.length) % links.length;
+    links[next].focus();
+  };
+
   if (!active) return null;
 
   return (
     <div className="nav-mega__inner">
       <div className="nav-mega__rail">
         <p className="nav-mega__eyebrow">{label}</p>
-        <ul className="nav-mega__list" role="list">
+        <ul className="nav-mega__list" role="list" ref={listRef} onKeyDown={onRailKeyDown}>
           {items.map((item, index) => {
             const isActive = item.id === active.id;
             return (
@@ -150,14 +174,8 @@ function MegaRail({
                   }}
                   {...externalProps(item.href)}
                 >
-                  <span className="nav-mega__thumb">
-                    <Image
-                      src={item.image}
-                      alt=""
-                      fill
-                      className="object-cover"
-                      sizes="56px"
-                    />
+                  <span className="nav-mega__thumb" aria-hidden>
+                    <Image src={item.image} alt="" fill className="object-cover" sizes="56px" />
                   </span>
                   <span className="nav-mega__index">
                     {String(index + 1).padStart(2, "0")}
@@ -176,25 +194,28 @@ function MegaRail({
       </div>
 
       <div className="nav-mega__stage">
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.div
-            key={active.id}
-            className="nav-mega__visual"
-            initial={reduceMotion ? false : { opacity: 0, scale: 1.035 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={reduceMotion ? undefined : { opacity: 0, scale: 1.01 }}
-            transition={{ duration: reduceMotion ? 0 : 0.48, ease }}
-          >
-            <NavMegaClip item={active} reduceMotion={reduceMotion} />
-            <div className="nav-mega__caption">
+        <div className="nav-mega__visual">
+          <NavMegaClip
+            item={lockStageVisual ? items[0] : active}
+            reduceMotion={reduceMotion}
+          />
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={active.id}
+              className="nav-mega__caption"
+              initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={reduceMotion ? undefined : { opacity: 0, y: -6 }}
+              transition={{ duration: reduceMotion ? 0 : 0.32, ease }}
+            >
               {active.eyebrow ? (
                 <p className="nav-mega__caption-eyebrow">{active.eyebrow}</p>
               ) : null}
               <p className="nav-mega__caption-title">{active.label}</p>
               <p className="nav-mega__caption-copy">{active.description}</p>
-            </div>
-          </motion.div>
-        </AnimatePresence>
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </div>
     </div>
   );
@@ -259,6 +280,7 @@ function PortraitRail({
 }
 
 export function NavMegaPanel({
+  id,
   panel,
   open,
   onClose,
@@ -267,7 +289,6 @@ export function NavMegaPanel({
   onMouseLeave,
 }: NavMegaPanelProps) {
   const reduceMotion = useReducedMotion();
-  const panelId = useId();
   const [activeId, setActiveId] = useState(panel.items[0]?.id ?? "");
 
   useEffect(() => {
@@ -281,7 +302,7 @@ export function NavMegaPanel({
       {open ? (
         <motion.div
           key="nav-mega-shell"
-          id={panelId}
+          id={id}
           role="region"
           aria-label={`${panel.label} menu`}
           className={`nav-mega ${panel.variant === "portrait" ? "nav-mega--portrait" : ""}`}
@@ -316,6 +337,7 @@ export function NavMegaPanel({
                   onNavigate={onNavigate}
                   onClose={onClose}
                   reduceMotion={reduceMotion}
+                  lockStageVisual={panel.lockStageVisual}
                 />
               )}
             </motion.div>

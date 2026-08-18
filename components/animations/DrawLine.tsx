@@ -32,7 +32,7 @@ export function DrawLine({
   svgClassName,
   lineClassName,
   children,
-  stroke = "#C9A84C",
+  stroke = "var(--accent-gold)",
   strokeWidth = drawLineDefaults.strokeWidth,
   strokeDasharray = drawLineDefaults.strokeDasharray,
   duration = drawLineDefaults.duration,

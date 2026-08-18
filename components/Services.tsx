@@ -1,10 +1,10 @@
 "use client";
 
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
+import { ServicePanelMedia } from "@/components/ServicePanelMedia";
 import { SectionHeader, SectionInner, SectionShell } from "@/components/SectionShell";
 import { services } from "@/lib/content/services";
 import { serviceVisualBySlug } from "@/lib/content/service-visuals";
-import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 import { SafeButton } from "@/components/SafeButton";
 import { ArrowUpRight } from "lucide-react";
@@ -17,15 +17,8 @@ type ServiceProfile = {
   verticalLabel: string;
 };
 
-type ServiceVisual = {
-  src: StaticImageData;
-  alt: string;
-  objectPosition: string;
-};
-
-const IMAGE_SIZES_DESKTOP = "(max-width: 1024px) 55vw, 65vw";
+const IMAGE_SIZES_DESKTOP = "(max-width: 1280px) 28vw, (max-width: 1536px) 24vw, 22vw";
 const IMAGE_SIZES_STORY = "(max-width: 768px) 85vw, 320px";
-const IMAGE_QUALITY = 82;
 
 const fallbackProfile: ServiceProfile = {
   tagline: "Oday scope",
@@ -60,7 +53,7 @@ const serviceProfiles: Record<string, ServiceProfile> = {
   },
 };
 
-function getServiceVisual(slug: (typeof services)[number]["slug"]): ServiceVisual {
+function getServiceVisual(slug: (typeof services)[number]["slug"]) {
   return serviceVisualBySlug[slug];
 }
 
@@ -76,48 +69,55 @@ export function Services() {
   if (!services.length) return null;
 
   return (
-    <SectionShell id="services" snap={false} containOverflow={false}>
-      <SectionInner className="relative flex flex-col">
+    <SectionShell id="services" snap={false} containOverflow={false} className="services-section">
+      <SectionInner className="services-section__head">
         <ScrollReveal dramatic>
-          <SectionHeader
-            eyebrow="Solutions"
-            title={
-              <>
-                Four disciplines.
-                <span className="mt-1 block bg-gradient-to-r from-gold via-[#fff3b0] to-gold/70 bg-clip-text text-transparent">
-                  One cinematic frame.
-                </span>
-              </>
-            }
-            description="Architecture, interiors, drone intelligence, and AI workflows — integrated under OD Architects."
-          />
-        </ScrollReveal>
-
-        {/* Mobile / tablet: transform carousel — no overflow scroll trap */}
-        <ServicesMobileCarousel />
-
-        {/* Desktop: panoramic accordion strip */}
-        <ScrollReveal dramatic delay={0.06} className="mt-3 hidden flex-col lg:flex">
-          <div className={`${stripBezel} flex flex-col`}>
-            <div
-              className="services-panel-scroll"
-              onMouseLeave={() => setActiveId(services[0]?.id ?? "")}
-            >
-              <div className={`${stripInner} services-panel-track`}>
-                {services.map((service, index) => (
-                  <ServicePanel
-                    key={service.id}
-                    service={service}
-                    index={index}
-                    isActive={activeId === service.id}
-                    onActivate={() => setActiveId(service.id)}
-                  />
-                ))}
-              </div>
-            </div>
+          <div className="section-editorial-head">
+            <span className="section-editorial-head__index" aria-hidden>
+              02
+            </span>
+            <SectionHeader
+              eyebrow="Solutions"
+              title={
+                <>
+                  Four disciplines.
+                  <span className="mt-1 block bg-gradient-to-r from-gold via-[#fff3b0] to-gold/70 bg-clip-text text-transparent">
+                    One cinematic frame.
+                  </span>
+                </>
+              }
+              description="Architecture, interiors, drone intelligence, and AI workflows — integrated under OD Architects."
+            />
           </div>
         </ScrollReveal>
+      </SectionInner>
 
+      {/* Mobile / tablet carousel */}
+      <ServicesMobileCarousel />
+
+      {/* Desktop — full-width stage */}
+      <ScrollReveal dramatic delay={0.06} className="services-stage mt-3 hidden lg:block">
+        <div className={`${stripBezel} services-stage__frame`}>
+          <div
+            className="services-panel-scroll"
+            onMouseLeave={() => setActiveId(services[0]?.id ?? "")}
+          >
+            <div className={`${stripInner} services-panel-track`}>
+              {services.map((service, index) => (
+                <ServicePanel
+                  key={service.id}
+                  service={service}
+                  index={index}
+                  isActive={activeId === service.id}
+                  onActivate={() => setActiveId(service.id)}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </ScrollReveal>
+
+      <SectionInner className="services-section__foot">
         <ScrollReveal
           dramatic
           delay={0.1}
@@ -128,7 +128,7 @@ export function Services() {
           </p>
           <Link
             href="#contact"
-            className="mt-3 inline-flex items-center justify-center rounded-full border border-gold/50 bg-gold/20 px-5 py-2 text-[10px] uppercase tracking-[0.18em] text-ink-primary shadow-[0_8px_28px_rgba(245, 197, 24,0.2)] transition-all hover:bg-gold/28 hover:shadow-[0_12px_36px_rgba(245, 197, 24,0.28)] md:mt-0"
+            className="btn btn--primary btn--sm mt-3 md:mt-0"
             aria-label="Build custom service scope"
           >
             Build My Scope
@@ -209,7 +209,7 @@ function ServicesMobileCarousel() {
         </div>
       </div>
 
-      <div className="mt-3 flex justify-center gap-2" role="tablist" aria-label="Service slides">
+      <div className="services-dots mt-3 flex items-center justify-center" role="tablist" aria-label="Service slides">
         {services.map((service, index) => (
           <SafeButton
             key={service.id}
@@ -218,10 +218,14 @@ function ServicesMobileCarousel() {
             aria-selected={activeIndex === index}
             aria-label={`Go to ${service.title}`}
             onClick={() => goTo(index)}
-            className={`h-1.5 rounded-full transition-all duration-300 ${
-              activeIndex === index ? "w-7 bg-gold" : "w-1.5 bg-gold/35"
-            }`}
-          />
+            className="services-dots__btn"
+          >
+            <span
+              className={`block h-1.5 rounded-full transition-all duration-300 ${
+                activeIndex === index ? "w-7 bg-gold" : "w-1.5 bg-gold/35"
+              }`}
+            />
+          </SafeButton>
         ))}
       </div>
     </div>
@@ -250,15 +254,11 @@ function ServiceStoryCard({
     >
       <div className="relative h-full w-full overflow-hidden rounded-[1.12rem] shadow-[0_16px_40px_rgba(0,0,0,0.35)] ring-1 ring-white/[0.08]">
         <div className="absolute inset-0">
-          <Image
-            src={visual.src}
-            alt={visual.alt}
-            fill
-            quality={IMAGE_QUALITY}
+          <ServicePanelMedia
+            visual={visual}
+            isPlaying={isActive}
             sizes={IMAGE_SIZES_STORY}
-            loading="lazy"
-            className="services-panel-image object-cover brightness-[1.03] contrast-[1.02] saturate-[1.06]"
-            style={{ objectPosition: visual.objectPosition }}
+            imageClassName="services-panel-image object-cover brightness-[1.03] contrast-[1.02] saturate-[1.06]"
           />
         </div>
 
@@ -313,11 +313,11 @@ function ServiceStoryCard({
             <div className="flex flex-col gap-2.5 pt-1">
               <Link
                 href={`/request/${service.slug}`}
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-gold/50 bg-gold/20 py-3 text-[11px] uppercase tracking-[0.16em] text-white transition-colors hover:bg-gold/30"
+                className="btn btn--primary btn--sm w-full"
                 aria-label={`Request ${service.title}`}
               >
                 Request
-                <ArrowUpRight className="h-4 w-4" aria-hidden />
+                <ArrowUpRight className="btn__icon btn__icon--nudge" aria-hidden />
               </Link>
               <Link
                 href={
@@ -325,7 +325,7 @@ function ServiceStoryCard({
                     ? "/projects?service=exterior"
                     : `/projects?service=${encodeURIComponent(service.slug)}`
                 }
-                className="inline-flex items-center justify-center rounded-full border border-white/25 py-2.5 text-[10px] uppercase tracking-[0.14em] text-white/75 transition-colors hover:border-gold/40 hover:text-gold"
+                className="btn btn--ghost btn--sm w-full"
               >
                 View gallery
               </Link>
@@ -357,7 +357,7 @@ function ServicePanel({
     <article
       className={`services-panel-card group/panel relative flex min-w-[min(100%,14rem)] shrink-0 cursor-pointer overflow-hidden sm:min-w-[min(100%,16rem)] lg:min-w-0 ${
         isActive
-          ? "services-panel-card--active z-20 flex-[3] shadow-[inset_0_0_0_1px_rgba(245,197,24,0.45),0_0_40px_rgba(245,197,24,0.1)]"
+          ? "services-panel-card--active z-20 flex-[3] xl:flex-[3.5] 2xl:flex-[4] shadow-[inset_0_0_0_1px_rgba(245,197,24,0.45),0_0_40px_rgba(245,197,24,0.1)]"
           : "z-0 flex-1 hover:z-10"
       }`}
       onMouseEnter={onActivate}
@@ -366,15 +366,11 @@ function ServicePanel({
       tabIndex={0}
     >
       <div className="absolute inset-0 overflow-hidden">
-        <Image
-          src={visual.src}
-          alt={visual.alt}
-          fill
-          quality={IMAGE_QUALITY}
+        <ServicePanelMedia
+          visual={visual}
+          isPlaying={isActive}
           sizes={IMAGE_SIZES_DESKTOP}
           priority={index === 0}
-          className="services-panel-image object-cover"
-          style={{ objectPosition: visual.objectPosition }}
         />
       </div>
 
@@ -467,15 +463,12 @@ function ServicePanel({
               <div className="mt-5 flex flex-wrap items-center gap-4 border-t border-white/10 pt-4">
                 <Link
                   href={`/request/${service.slug}`}
-                  className="group/link label-upper inline-flex items-center gap-2 rounded-full border border-gold/45 bg-gold/12 px-5 py-2.5 font-display text-[clamp(1rem,2.2vw,1.35rem)] italic leading-none text-white transition-colors hover:text-gold"
+                  className="btn btn--primary"
                   onClick={(e) => e.stopPropagation()}
                   aria-label={`Request ${service.title}`}
                 >
                   Request
-                  <ArrowUpRight
-                    className="h-5 w-5 shrink-0 transition-transform duration-300 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 sm:h-6 sm:w-6"
-                    aria-hidden
-                  />
+                  <ArrowUpRight className="btn__icon btn__icon--nudge" aria-hidden />
                 </Link>
                 <Link
                   href={
@@ -483,7 +476,7 @@ function ServicePanel({
                     ? "/projects?service=exterior"
                     : `/projects?service=${encodeURIComponent(service.slug)}`
                 }
-                  className="label-upper rounded-full border border-gold/35 bg-gold/10 px-4 py-2 text-[10px] text-gold/90 transition-all hover:border-gold/55 hover:bg-gold/20"
+                  className="btn btn--ghost btn--sm"
                   onClick={(e) => e.stopPropagation()}
                 >
                   Gallery

@@ -1,11 +1,9 @@
 "use client";
 
 import { CounterNumber } from "@/components/animations/CounterNumber";
-import { RevealChildren } from "@/components/animations/RevealChildren";
 import { RevealText } from "@/components/animations/RevealText";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import { motion, useReducedMotion } from "@/components/ClientMotion";
-import { revealInView } from "@/lib/motion-viewport";
 import { about as studioAbout } from "@/lib/content/about";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
@@ -13,7 +11,7 @@ import { SectionInner, SectionShell } from "@/components/SectionShell";
 
 export function About() {
   const reduce = useReducedMotion();
-  const statsTriggerRef = useRef<HTMLDivElement>(null);
+  const statsRef = useRef<HTMLDivElement>(null);
   const [statsInView, setStatsInView] = useState(false);
 
   useEffect(() => {
@@ -32,7 +30,7 @@ export function About() {
           observer.disconnect();
         }
       },
-      { threshold: 0.18, rootMargin: "0px 0px -12% 0px" },
+      { threshold: 0.2, rootMargin: "0px 0px -8% 0px" },
     );
 
     observer.observe(section);
@@ -40,148 +38,111 @@ export function About() {
   }, [reduce]);
 
   return (
-    <SectionShell id="about">
-      <SectionInner>
-      <RevealChildren
-        className="relative grid w-full items-center gap-5 md:gap-6 lg:grid-cols-[minmax(0,1.08fr)_minmax(240px,0.92fr)] lg:gap-8"
-        stagger={0.07}
-      >
-        <ScrollReveal
-          as="article"
-          dramatic
-          className="about-snapshot"
-        >
-          <span className="about-snapshot__frame" aria-hidden />
-          <span className="about-snapshot__corner about-snapshot__corner--tl" aria-hidden />
-          <span className="about-snapshot__corner about-snapshot__corner--tr" aria-hidden />
-          <span className="about-snapshot__corner about-snapshot__corner--bl" aria-hidden />
-          <span className="about-snapshot__corner about-snapshot__corner--br" aria-hidden />
-          <span className="about-snapshot__grid" aria-hidden />
-
-          <header className="about-snapshot__header">
-            <motion.div
-              className="about-snapshot__header-copy"
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={revealInView}
-              transition={{ duration: reduce ? 0 : 0.45, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <p className="label-upper tracking-[0.2em] text-gold/85">{studioAbout.snapshotEyebrow}</p>
-            </motion.div>
-            <span className="about-snapshot__index label-upper" aria-hidden>
-              {studioAbout.sectionNumber}
-            </span>
-          </header>
-
-          <motion.div
-            ref={statsTriggerRef}
-            className="about-snapshot__stats"
-            initial={reduce ? false : { opacity: 0, y: 14 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.35, margin: "0px 0px -8% 0px" }}
-            transition={{ duration: reduce ? 0 : 0.55, ease: [0.22, 1, 0.36, 1] }}
-          >
-            {studioAbout.stats.map((stat, idx) => (
-              <motion.div
-                key={stat.label}
-                className="about-snapshot__stat"
-                initial={reduce ? false : { opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.25 }}
-                transition={{
-                  duration: reduce ? 0 : 0.45,
-                  delay: reduce ? 0 : 0.04 + idx * 0.05,
-                  ease: [0.16, 1, 0.3, 1],
-                }}
-              >
-                <span className="about-snapshot__stat-index" aria-hidden>
-                  {String(idx + 1).padStart(2, "0")}
-                </span>
-                <p className="about-snapshot__stat-value">
-                  <CounterNumber
-                    targetNumber={stat.target}
-                    prefix={stat.prefix}
-                    suffix={stat.suffix}
-                    delay={reduce ? 0 : 0.15 + idx * 0.35}
-                    duration={reduce ? 0 : 2.2}
-                    enabled={statsInView && !reduce}
-                    holdAtZero={!statsInView && !reduce}
-                    triggerRef={statsTriggerRef}
-                  />
-                </p>
-                <p className="about-snapshot__stat-label">{stat.label}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-
-          <div className="about-snapshot__body">
-            <h2 className="about-snapshot__headline">
-              <RevealText as="span" className="block" splitByWords wordStagger={0.06} duration={0.85}>
-                {studioAbout.headlinePrimary}
-              </RevealText>{" "}
-              <RevealText as="span" className="text-gold/90" splitByWords wordStagger={0.07} duration={0.85} delay={0.12}>
-                {studioAbout.headlineAccent}
-              </RevealText>
-            </h2>
-
-            <motion.ul
-              className="about-snapshot__strengths"
-              initial={{ opacity: 0, y: 14 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={revealInView}
-              transition={{ duration: reduce ? 0 : 0.5, delay: reduce ? 0 : 0.08 }}
-            >
-              {studioAbout.strengths.map(({ title, description }, idx) => (
-                <li key={title} className="about-snapshot__strength">
-                  <span className="about-snapshot__strength-index" aria-hidden>
-                    {String(idx + 1).padStart(2, "0")}
-                  </span>
-                  <div className="about-snapshot__strength-copy">
-                    <p className="about-snapshot__strength-title">{title}</p>
-                    <p className="about-snapshot__strength-desc">{description}</p>
-                  </div>
-                </li>
-              ))}
-            </motion.ul>
-          </div>
-        </ScrollReveal>
-
-        <ScrollReveal
-          dramatic
-          delay={0.05}
-          className="about-portrait-wrap flex items-center justify-center lg:justify-end"
-        >
-          <figure className="about-portrait">
-            <div className="about-portrait__ghost" aria-hidden />
-
-            <div className="about-portrait__shell">
-              <span className="about-portrait__corner about-portrait__corner--tl" aria-hidden />
-              <span className="about-portrait__corner about-portrait__corner--br" aria-hidden />
-              <span className="about-portrait__index label-upper" aria-hidden>
-                {studioAbout.sectionNumber}
+    <SectionShell id="about" className="about-arch" snap={false}>
+      <SectionInner className="about-arch__inner">
+        <ScrollReveal dramatic className="about-arch__visual">
+          <figure className="about-arch__figure">
+            <div className="about-arch__plate">
+              <span className="about-arch__spine" aria-hidden>
+                Principal
               </span>
-
-              <div className="about-portrait__media">
+              <div className="about-arch__media">
                 <Image
                   src={studioAbout.directorPortrait}
                   alt={studioAbout.directorPortraitAlt}
                   fill
-                  className="about-portrait__img"
-                  sizes="(max-width: 1024px) 88vw, 360px"
+                  className="about-arch__img"
+                  sizes="(max-width: 1023px) 92vw, 420px"
                   loading="lazy"
                 />
-                <div className="about-portrait__veil" aria-hidden />
+                <span className="about-arch__mark" aria-hidden />
               </div>
-
-              <figcaption className="about-portrait__caption">
-                <p className="label-upper text-gold/80">{studioAbout.logoWordmark} {studioAbout.logoSub}</p>
-                <p className="about-portrait__name">{studioAbout.directorName}</p>
-                <p className="about-portrait__role">{studioAbout.directorRole}</p>
-              </figcaption>
             </div>
+            <figcaption className="about-arch__titleblock">
+              <span className="about-arch__titleblock-no">{studioAbout.sectionNumber}</span>
+              <span className="about-arch__titleblock-name">{studioAbout.directorName}</span>
+              <span className="about-arch__titleblock-role">{studioAbout.directorRole}</span>
+            </figcaption>
           </figure>
         </ScrollReveal>
-      </RevealChildren>
+
+        <div className="about-arch__content">
+          <ScrollReveal dramatic>
+            <p className="label-upper about-arch__eyebrow">{studioAbout.snapshotEyebrow}</p>
+          </ScrollReveal>
+
+          <ScrollReveal dramatic delay={0.04}>
+            <h2 className="about-arch__headline">
+              <RevealText as="span" className="about-arch__headline-main" splitByWords wordStagger={0.05} duration={0.75}>
+                {studioAbout.headlinePrimary}
+              </RevealText>
+              <RevealText
+                as="span"
+                className="about-arch__headline-accent"
+                splitByWords
+                wordStagger={0.05}
+                duration={0.75}
+                delay={0.08}
+              >
+                {studioAbout.headlineAccent}
+              </RevealText>
+            </h2>
+          </ScrollReveal>
+
+          <ScrollReveal delay={0.06}>
+            <p className="about-arch__lede">
+              <span className="about-arch__lede-brand">
+                {studioAbout.logoWordmark} {studioAbout.logoSub}
+              </span>
+              <span className="about-arch__lede-text">{studioAbout.studioTagline}</span>
+            </p>
+          </ScrollReveal>
+
+          <ScrollReveal delay={0.08}>
+            <div className="about-arch__proof">
+              <ol className="about-arch__manifesto">
+                {studioAbout.strengths.map(({ title, description }, idx) => (
+                  <li key={title} className="about-arch__manifesto-item">
+                    <span className="about-arch__manifesto-no" aria-hidden>
+                      {String(idx + 1).padStart(2, "0")}
+                    </span>
+                    <div className="about-arch__manifesto-body">
+                      <p className="about-arch__manifesto-title">{title}</p>
+                      <p className="about-arch__manifesto-desc">{description}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+
+              <motion.div
+                ref={statsRef}
+                className="about-arch__stats"
+                initial={reduce ? false : { opacity: 0, y: 8 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.4 }}
+                transition={{ duration: reduce ? 0 : 0.45, ease: [0.22, 1, 0.36, 1] }}
+              >
+                {studioAbout.stats.map((stat, idx) => (
+                  <p key={stat.label} className="about-arch__stat">
+                    <span className="about-arch__stat-value">
+                      <CounterNumber
+                        targetNumber={stat.target}
+                        prefix={stat.prefix}
+                        suffix={stat.suffix}
+                        delay={reduce ? 0 : 0.1 + idx * 0.2}
+                        duration={reduce ? 0 : 1.6}
+                        enabled={statsInView}
+                        holdAtZero={!statsInView && !reduce}
+                        triggerRef={statsRef}
+                      />
+                    </span>
+                    <span className="about-arch__stat-label">{stat.label}</span>
+                  </p>
+                ))}
+              </motion.div>
+            </div>
+          </ScrollReveal>
+        </div>
       </SectionInner>
     </SectionShell>
   );

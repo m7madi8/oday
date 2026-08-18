@@ -52,7 +52,7 @@ export function Testimonials() {
           transition={{ duration: reduceMotion ? 0 : 0.55 }}
         >
           <p className="label-upper text-gold">Proof</p>
-          <h2 className="mt-4 font-display text-4xl italic text-gold md:text-5xl">
+          <h2 className="section-title section-title--lead mt-4 text-gold">
             What Clients Achieve
           </h2>
           <p className="mt-6 text-sm leading-relaxed text-ink-secondary md:text-base">

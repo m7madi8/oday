@@ -1,13 +1,16 @@
 import { projects, type Project } from "@/lib/data";
 
-/** Curated homepage highlights — mix of exterior villas and interior work. */
+/** Homepage anchor — B.H Villa 12 leads the Selected Work editorial spread. */
+export const featuredAnchorProjectId = "vil-villa-12-bh" as const;
+
+/** Supporting case studies — strong exteriors with real project names for a clean editorial grid. */
 export const featuredProjectIds = [
   "vil-hassan-salameh-27",
-  "vil-baha-hamdallah-8",
+  "vil-villa-10-viv",
+  "vil-nasim-shawahneh-42",
   "vil-dr-baha-14",
-  "in-baha-ahmad-7",
-  "in-batool-10",
-  "in-dr-salah-17",
+  "vil-baha-hamdallah-8",
+  "vil-tareq-fifil-58",
 ] as const;
 
 export const featuredProjectsSection = {
@@ -19,6 +22,10 @@ export const featuredProjectsSection = {
   ctaLabel: "View full gallery",
   ctaHref: "/projects",
 } as const;
+
+export function getFeaturedAnchorProject(): Project | undefined {
+  return projects.find((project) => project.id === featuredAnchorProjectId);
+}
 
 export function getFeaturedProjects(): Project[] {
   return featuredProjectIds

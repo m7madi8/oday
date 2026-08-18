@@ -19,11 +19,9 @@ const socialIcons = {
   instagram: Instagram,
 } as const;
 
-const glassPill =
-  "inline-flex items-center justify-center rounded-full border border-white/25 bg-white/[0.1] px-8 py-3.5 text-[13px] font-normal tracking-[0.14em] text-white shadow-[0_8px_40px_rgba(0,0,0,0.2)] backdrop-blur-xl transition-[background-color,transform,border-color] duration-300 hover:border-white/40 hover:bg-white/[0.16] active:scale-[0.98]";
+const glassPill = "btn btn--on-media";
 
-const glassPillGold =
-  "inline-flex items-center justify-center gap-2 rounded-full border border-gold/45 bg-gold/15 px-8 py-3.5 text-[13px] font-normal tracking-[0.14em] text-white shadow-[0_8px_40px_rgba(0,0,0,0.2)] backdrop-blur-xl transition-[background-color,transform,border-color] duration-300 hover:border-gold/60 hover:bg-gold/25 active:scale-[0.98]";
+const glassPillGold = "btn btn--on-media-gold";
 
 export function Contact() {
   const reduceMotion = useReducedMotion();
@@ -66,14 +64,16 @@ export function Contact() {
     <SectionShell
       id="contact"
       variant="media"
-      className="h-[100svh] max-h-[100svh] overflow-hidden"
+      /* Locked to the viewport where the composition fits; below that it grows so
+         the CTA and the footer cannot collide inside a clipped panel. */
+      className="min-h-[100svh] lg:h-[100svh] lg:max-h-[100svh]"
     >
       <div className="absolute inset-0">
         <Image
           src={contact.backgroundImage}
           alt={contact.backgroundAlt}
           fill
-          className="object-cover object-center"
+          className="object-cover object-[68%_center]"
           sizes="100vw"
           loading="lazy"
         />
@@ -109,7 +109,8 @@ export function Contact() {
               eyebrow="Start Here"
               title={<span className="text-white">{contact.heading}</span>}
               description={contact.description}
-              className="[&_.label-upper]:text-white/70 [&_.section-lead]:max-w-[42ch] [&_.section-lead]:text-white/80 [&_.section-title]:max-w-[22ch] [&_.section-title]:text-[clamp(2rem,4.8vw,3.15rem)] [&_.section-title]:text-white"
+              className="[&_.label-upper]:text-white/70 [&_.section-lead]:max-w-[42ch] [&_.section-lead]:text-white/80 [&_.section-title]:max-w-[22ch] [&_.section-title]:text-white"
+              titleClassName="section-title--lead"
             />
             <motion.div
               className="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:flex-wrap sm:items-center"
@@ -132,7 +133,7 @@ export function Contact() {
                 className={glassPillGold}
                 aria-label={`Get directions to OD Architects, ${studioLocation.addressLine2}`}
               >
-                <Navigation className="h-4 w-4 shrink-0" strokeWidth={1.75} aria-hidden />
+                <Navigation className="btn__icon" strokeWidth={1.75} aria-hidden />
                 Get Directions
               </a>
             </motion.div>
@@ -150,7 +151,9 @@ export function Contact() {
           >
             <div className="grid grid-cols-1 gap-5 md:grid-cols-12 md:items-start md:gap-7">
               {/* Contact channels */}
-              <div className="grid grid-cols-3 gap-4 md:col-span-7 md:gap-6">
+              {/* Three columns need ~135px each to hold the email without spilling
+                  into the next channel, so they stack below that. */}
+              <div className="grid grid-cols-1 gap-4 min-[460px]:grid-cols-3 md:col-span-7 md:gap-6">
                 {contact.items.map((item) => (
                   <div key={item.label} className="min-w-0">
                     <p className="font-outfit text-[10px] font-medium uppercase tracking-[0.2em] text-white/50">
@@ -159,7 +162,7 @@ export function Contact() {
                     {item.href ? (
                       <a
                         href={item.href}
-                        className="mt-1.5 block text-[13px] leading-snug text-white/90 transition-colors hover:text-white md:text-sm"
+                        className="contact-channel__link mt-1.5 block text-[13px] leading-snug text-white/90 transition-colors hover:text-white md:text-sm"
                         {...(item.label === "Location"
                           ? { target: "_blank", rel: "noopener noreferrer" }
                           : {})}
@@ -176,7 +179,7 @@ export function Contact() {
                         href={studioLocation.directionsUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="mt-2 inline-flex items-center gap-1.5 font-outfit text-[10px] font-medium uppercase tracking-[0.16em] text-gold/90 transition-colors hover:text-gold"
+                        className="contact-channel__directions mt-2 inline-flex items-center gap-1.5 font-outfit text-[10px] font-medium uppercase tracking-[0.16em] text-gold/90 transition-colors hover:text-gold"
                       >
                         <Navigation className="h-3 w-3" strokeWidth={2} aria-hidden />
                         Directions
@@ -224,7 +227,7 @@ export function Contact() {
                   <button
                     type="submit"
                     disabled={newsletterSubmitting || newsletterSent}
-                    className={`${glassPill} shrink-0 px-6 py-2.5 tracking-[0.12em] disabled:cursor-not-allowed disabled:opacity-60`}
+                    className={`${glassPill} btn--sm shrink-0`}
                   >
                     {newsletterSubmitting ? "Sending…" : newsletterSent ? "Subscribed" : "Submit"}
                   </button>
@@ -248,7 +251,7 @@ export function Contact() {
                   <Link
                     key={l.href + l.label}
                     href={l.href}
-                    className="font-outfit text-[12px] font-normal uppercase tracking-[0.14em] text-white/75 transition-colors duration-300 hover:text-gold md:text-[13px]"
+                    className="footer-bar__link font-outfit text-[12px] font-normal uppercase tracking-[0.14em] text-white/75 transition-colors duration-300 hover:text-gold md:text-[13px]"
                   >
                     {l.label}
                   </Link>
@@ -267,7 +270,7 @@ export function Contact() {
                         aria-label={s.label}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 text-white/80 transition-[background-color,color,border-color] duration-300 hover:border-white/35 hover:bg-white/[0.08] hover:text-white"
+                        className="footer-social__link flex h-9 w-9 items-center justify-center rounded-full border border-white/20 text-white/80 transition-[background-color,color,border-color] duration-300 hover:border-white/35 hover:bg-white/[0.08] hover:text-white"
                       >
                         <Icon className="h-4 w-4" strokeWidth={1.5} aria-hidden />
                       </a>

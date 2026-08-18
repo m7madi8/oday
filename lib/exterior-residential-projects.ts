@@ -3,72 +3,13 @@
 import type { StaticImageData } from "next/image";
 
 import rb0_img0 from "@/imgs/Exterior/residential building/abu kareem 1/ODAY_result.webp";
-import rb0_img1 from "@/imgs/Exterior/residential building/abu kareem 1/freepik__-__36922_result.webp";
-import rb0_img2 from "@/imgs/Exterior/residential building/abu kareem 1/freepik__enhance__1876_result.webp";
-import rb0_img3 from "@/imgs/Exterior/residential building/abu kareem 1/freepik__enhance__9977_result.webp";
-import rb0_img4 from "@/imgs/Exterior/residential building/abu kareem 1/freepik__enhance__10229_result.webp";
-import rb0_img5 from "@/imgs/Exterior/residential building/abu kareem 1/freepik__enhance__22746_result.webp";
-import rb0_img6 from "@/imgs/Exterior/residential building/abu kareem 1/freepik__enhance__36088_result.webp";
-import rb0_img7 from "@/imgs/Exterior/residential building/abu kareem 1/freepik__enhance__60862_result.webp";
-import rb0_img8 from "@/imgs/Exterior/residential building/abu kareem 1/freepik__enhance__70275_result.webp";
-import rb0_img9 from "@/imgs/Exterior/residential building/abu kareem 1/freepik__enhance__71958_result.webp";
-import rb0_img10 from "@/imgs/Exterior/residential building/abu kareem 1/freepik__enhance__88226_result.webp";
-import rb0_img11 from "@/imgs/Exterior/residential building/abu kareem 1/freepik__enhance__88996_result.webp";
-import rb0_img12 from "@/imgs/Exterior/residential building/abu kareem 1/freepik__enhance__95458_result.webp";
 import rb1_img0 from "@/imgs/Exterior/residential building/awad allah  6/ODAY_result.webp";
-import rb1_img1 from "@/imgs/Exterior/residential building/awad allah  6/10_result.webp";
-import rb1_img2 from "@/imgs/Exterior/residential building/awad allah  6/a1_result.webp";
-import rb1_img3 from "@/imgs/Exterior/residential building/awad allah  6/a2_result.webp";
-import rb1_img4 from "@/imgs/Exterior/residential building/awad allah  6/a4_result.webp";
-import rb1_img5 from "@/imgs/Exterior/residential building/awad allah  6/a6_result.webp";
-import rb1_img6 from "@/imgs/Exterior/residential building/awad allah  6/a10_result.webp";
-import rb1_img7 from "@/imgs/Exterior/residential building/awad allah  6/a11_result.webp";
 import rb2_img0 from "@/imgs/Exterior/residential building/hamada 25/ODAY_result.webp";
-import rb2_img1 from "@/imgs/Exterior/residential building/hamada 25/magnific__enhance__87047_result.webp";
-import rb2_img2 from "@/imgs/Exterior/residential building/hamada 25/magnific__enhance__87049_result.webp";
 import rb3_img0 from "@/imgs/Exterior/residential building/hamada 26/ODAY_result.webp";
-import rb3_img1 from "@/imgs/Exterior/residential building/hamada 26/1 (2)_result.webp";
-import rb3_img2 from "@/imgs/Exterior/residential building/hamada 26/1 (3)_result.webp";
-import rb3_img3 from "@/imgs/Exterior/residential building/hamada 26/1 (4)_result.webp";
-import rb3_img4 from "@/imgs/Exterior/residential building/hamada 26/1 (5)_result.webp";
-import rb3_img5 from "@/imgs/Exterior/residential building/hamada 26/1 (6)_result.webp";
-import rb3_img6 from "@/imgs/Exterior/residential building/hamada 26/1 (7)_result.webp";
-import rb3_img7 from "@/imgs/Exterior/residential building/hamada 26/1 (8)_result.webp";
-import rb3_img8 from "@/imgs/Exterior/residential building/hamada 26/w_result.webp";
 import rb4_img0 from "@/imgs/Exterior/residential building/luay jeris 35/oday_result.webp";
-import rb4_img1 from "@/imgs/Exterior/residential building/luay jeris 35/A1_result.webp";
-import rb4_img2 from "@/imgs/Exterior/residential building/luay jeris 35/A3_result.webp";
-import rb4_img3 from "@/imgs/Exterior/residential building/luay jeris 35/A4_result.webp";
-import rb4_img4 from "@/imgs/Exterior/residential building/luay jeris 35/A6_result.webp";
-import rb4_img5 from "@/imgs/Exterior/residential building/luay jeris 35/B4_result.webp";
-import rb4_img6 from "@/imgs/Exterior/residential building/luay jeris 35/E1_result.webp";
 import rb5_img0 from "@/imgs/Exterior/residential building/ruba natsheh 51/oday_result.webp";
-import rb5_img1 from "@/imgs/Exterior/residential building/ruba natsheh 51/1 copy_result.webp";
-import rb5_img2 from "@/imgs/Exterior/residential building/ruba natsheh 51/2 copy_result.webp";
-import rb5_img3 from "@/imgs/Exterior/residential building/ruba natsheh 51/3 copy_result.webp";
-import rb5_img4 from "@/imgs/Exterior/residential building/ruba natsheh 51/4 copy_result.webp";
-import rb5_img5 from "@/imgs/Exterior/residential building/ruba natsheh 51/7 copy_result.webp";
-import rb5_img6 from "@/imgs/Exterior/residential building/ruba natsheh 51/9 copy_result.webp";
-import rb5_img7 from "@/imgs/Exterior/residential building/ruba natsheh 51/10 copy_result.webp";
-import rb5_img8 from "@/imgs/Exterior/residential building/ruba natsheh 51/12 copy_result.webp";
 import rb6_img0 from "@/imgs/Exterior/residential building/zz ab building 07/ODAY_result.webp";
-import rb6_img1 from "@/imgs/Exterior/residential building/zz ab building 07/1_result.webp";
-import rb6_img2 from "@/imgs/Exterior/residential building/zz ab building 07/2_result.webp";
-import rb6_img3 from "@/imgs/Exterior/residential building/zz ab building 07/3_result.webp";
-import rb6_img4 from "@/imgs/Exterior/residential building/zz ab building 07/4_result.webp";
-import rb6_img5 from "@/imgs/Exterior/residential building/zz ab building 07/5_result.webp";
-import rb6_img6 from "@/imgs/Exterior/residential building/zz ab building 07/6_result.webp";
-import rb6_img7 from "@/imgs/Exterior/residential building/zz ab building 07/7_result.webp";
 import rb7_img0 from "@/imgs/Exterior/residential building/zz hag 1213 08/ODAY_result.webp";
-import rb7_img1 from "@/imgs/Exterior/residential building/zz hag 1213 08/1_result.webp";
-import rb7_img2 from "@/imgs/Exterior/residential building/zz hag 1213 08/2_result.webp";
-import rb7_img3 from "@/imgs/Exterior/residential building/zz hag 1213 08/3_result.webp";
-import rb7_img4 from "@/imgs/Exterior/residential building/zz hag 1213 08/4_result.webp";
-import rb7_img5 from "@/imgs/Exterior/residential building/zz hag 1213 08/5_result.webp";
-import rb7_img6 from "@/imgs/Exterior/residential building/zz hag 1213 08/6_result.webp";
-import rb7_img7 from "@/imgs/Exterior/residential building/zz hag 1213 08/7_result.webp";
-import rb7_img8 from "@/imgs/Exterior/residential building/zz hag 1213 08/8_result.webp";
-import rb7_img9 from "@/imgs/Exterior/residential building/zz hag 1213 08/9_result.webp";
 
 export const residentialBuildingProjects = [
   {
@@ -208,18 +149,3 @@ export const residentialBuildingProjects = [
     imageAlt: "HAG 1213 — exterior visualization",
   },
 ];
-
-const residentialGalleryById: Record<string, StaticImageData[]> = {
-  ["res-abu-kareem-1"]: [rb0_img0, rb0_img1, rb0_img2, rb0_img3, rb0_img4, rb0_img5, rb0_img6, rb0_img7, rb0_img8, rb0_img9, rb0_img10, rb0_img11, rb0_img12],
-  ["res-awad-allah-6"]: [rb1_img0, rb1_img1, rb1_img2, rb1_img3, rb1_img4, rb1_img5, rb1_img6, rb1_img7],
-  ["res-hamada-25"]: [rb2_img0, rb2_img1, rb2_img2],
-  ["res-hamada-26"]: [rb3_img0, rb3_img1, rb3_img2, rb3_img3, rb3_img4, rb3_img5, rb3_img6, rb3_img7, rb3_img8],
-  ["res-luay-jeris-35"]: [rb4_img0, rb4_img1, rb4_img2, rb4_img3, rb4_img4, rb4_img5, rb4_img6],
-  ["res-ruba-natsheh-51"]: [rb5_img0, rb5_img1, rb5_img2, rb5_img3, rb5_img4, rb5_img5, rb5_img6, rb5_img7, rb5_img8],
-  ["res-zz-ab-building-07"]: [rb6_img0, rb6_img1, rb6_img2, rb6_img3, rb6_img4, rb6_img5, rb6_img6, rb6_img7],
-  ["res-zz-hag-1213-08"]: [rb7_img0, rb7_img1, rb7_img2, rb7_img3, rb7_img4, rb7_img5, rb7_img6, rb7_img7, rb7_img8, rb7_img9],
-};
-
-export function getResidentialProjectGalleryImages(projectId: string): StaticImageData[] | undefined {
-  return residentialGalleryById[projectId];
-}

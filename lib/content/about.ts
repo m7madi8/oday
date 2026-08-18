@@ -16,6 +16,8 @@ export const about = {
   headlineAccent: "serious developers",
   logoWordmark: "OD",
   logoSub: "ARCHITECTS",
+  studioTagline:
+    "Full-scope architecture, interiors, and engineering — one accountable studio from concept to site.",
   strengths: [
     {
       title: "One team",

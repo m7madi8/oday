@@ -1,6 +1,5 @@
 import { ProjectsGallery } from "@/components/ProjectsGallery";
 import {
-  defaultExteriorProjectType,
   isValidExteriorProjectType,
   isValidServiceSlug,
   type ExteriorProjectTypeFilter,
@@ -30,9 +29,9 @@ export default function ProjectsPage({
     initialExteriorType = "landscape";
   } else if (rawService && isValidServiceSlug(rawService)) {
     initialFilter = rawService;
-    if (rawService === "exterior") {
-      initialExteriorType =
-        rawType && isValidExteriorProjectType(rawType) ? rawType : defaultExteriorProjectType;
+    // Bare `?service=exterior` means the whole exterior archive, not one collection.
+    if (rawService === "exterior" && rawType && isValidExteriorProjectType(rawType)) {
+      initialExteriorType = rawType;
     }
   }
 

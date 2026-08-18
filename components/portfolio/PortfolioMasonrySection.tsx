@@ -5,7 +5,10 @@ import { GalleryGoldLine, GalleryReveal } from "@/components/animations/GalleryM
 import { buildPortfolioMasonryRows } from "@/lib/portfolio-masonry-layout";
 import type { PortfolioSectionId } from "@/lib/project-card-ratio";
 import type { Project } from "@/lib/data";
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+
+const INITIAL_VISIBLE_ROWS = 4;
+const ROWS_PER_PAGE = 4;
 
 const SECTION_COPY: Record<
   PortfolioSectionId,
@@ -32,8 +35,32 @@ export function PortfolioMasonrySection({
 }) {
   const copy = SECTION_COPY[section];
   const rows = useMemo(() => buildPortfolioMasonryRows(projects), [projects]);
+  const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_ROWS);
+  const sentinelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setVisibleCount(INITIAL_VISIBLE_ROWS);
+  }, [projects]);
+
+  useEffect(() => {
+    if (visibleCount >= rows.length) return;
+    const el = sentinelRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisibleCount((count) => Math.min(count + ROWS_PER_PAGE, rows.length));
+        }
+      },
+      { rootMargin: "900px 0px" },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [visibleCount, rows.length]);
 
   if (projects.length === 0) return null;
+
+  const visibleRows = rows.slice(0, visibleCount);
 
   return (
     <section
@@ -53,10 +80,13 @@ export function PortfolioMasonrySection({
       </GalleryReveal>
 
       <div className="portfolio-masonry-rows">
-        {rows.map((row, index) => (
+        {visibleRows.map((row, index) => (
           <PortfolioMasonryRowView key={`${row.kind}-${index}`} row={row} section={section} />
         ))}
       </div>
+      {visibleCount < rows.length ? (
+        <div ref={sentinelRef} className="h-px w-full" aria-hidden />
+      ) : null}
     </section>
   );
 }

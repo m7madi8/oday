@@ -55,10 +55,10 @@ export function DroneGallery() {
 
             <Link
               href={copy.ctaHref}
-              className="label-upper drone-gallery__cta inline-flex items-center justify-center gap-2 rounded-full border border-gold/50 bg-gold/15 px-7 py-3 text-ink-primary transition-[background-color,border-color,transform] hover:border-gold/65 hover:bg-gold/25 active:scale-[0.99]"
+              className="btn btn--primary drone-gallery__cta"
             >
               {copy.ctaLabel}
-              <ArrowUpRight className="h-4 w-4" aria-hidden />
+              <ArrowUpRight className="btn__icon btn__icon--nudge" aria-hidden />
             </Link>
           </aside>
         </GalleryReveal>

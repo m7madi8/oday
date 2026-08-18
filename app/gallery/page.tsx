@@ -1,16 +1,10 @@
-import { GalleryPageView } from "@/components/GalleryPageView";
-import {
-  isValidExteriorProjectType,
-  type ExteriorProjectTypeFilter,
-} from "@/lib/data";
-import type { Metadata } from "next";
+import { isValidExteriorProjectType } from "@/lib/data";
+import { redirect } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: "Project Gallery | OD ARCHITECTS",
-  description:
-    "Case studies across Exterior Design, Interior Design, Ai architect, and Architect Dron.",
-};
-
+/**
+ * Legacy archive route. `/projects` is the canonical gallery — this preserves any
+ * inbound `?type=` deep link rather than dropping visitors on an unfiltered page.
+ */
 export default function GalleryPage({
   searchParams,
 }: {
@@ -18,17 +12,9 @@ export default function GalleryPage({
 }) {
   const rawType = typeof searchParams.type === "string" ? searchParams.type : undefined;
 
-  let initialExteriorType: ExteriorProjectTypeFilter = "villas";
-
-  if (rawType && isValidExteriorProjectType(rawType)) {
-    initialExteriorType = rawType;
-  }
-
-  return (
-    <GalleryPageView
-      basePath="/gallery"
-      initialFilter="exterior"
-      initialExteriorType={initialExteriorType}
-    />
+  redirect(
+    rawType && isValidExteriorProjectType(rawType)
+      ? `/projects?service=exterior&type=${rawType}`
+      : "/projects?service=exterior",
   );
 }

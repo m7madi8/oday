@@ -3,601 +3,138 @@
 import type { StaticImageData } from "next/image";
 
 import in0_img0 from "@/imgs/Interior/جمعية عطاء 62/oday_result.webp";
-import in0_img1 from "@/imgs/Interior/جمعية عطاء 62/Untitled-1_result.webp";
-import in0_img2 from "@/imgs/Interior/جمعية عطاء 62/Untitled-2_result.webp";
-import in0_img3 from "@/imgs/Interior/جمعية عطاء 62/Untitled-3_result.webp";
-import in0_img4 from "@/imgs/Interior/جمعية عطاء 62/Untitled-4_result.webp";
-import in0_img5 from "@/imgs/Interior/جمعية عطاء 62/Untitled-5_result.webp";
-import in0_img6 from "@/imgs/Interior/جمعية عطاء 62/Untitled-6_result.webp";
-import in0_img7 from "@/imgs/Interior/جمعية عطاء 62/Untitled-7_result.webp";
-import in0_img8 from "@/imgs/Interior/جمعية عطاء 62/Untitled-8_result.webp";
-import in0_img9 from "@/imgs/Interior/جمعية عطاء 62/Untitled-9_result.webp";
-import in0_img10 from "@/imgs/Interior/جمعية عطاء 62/Untitled-10_result.webp";
-import in0_img11 from "@/imgs/Interior/جمعية عطاء 62/Untitled-11_result.webp";
-import in0_img12 from "@/imgs/Interior/جمعية عطاء 62/Untitled-12_result.webp";
-import in0_img13 from "@/imgs/Interior/جمعية عطاء 62/Untitled-14_result.webp";
-import in0_img14 from "@/imgs/Interior/جمعية عطاء 62/Untitled-15_result.webp";
-import in0_img15 from "@/imgs/Interior/جمعية عطاء 62/Untitled-16_result.webp";
-import in0_img16 from "@/imgs/Interior/جمعية عطاء 62/Untitled-17_result.webp";
-import in0_img17 from "@/imgs/Interior/جمعية عطاء 62/Untitled-18_result.webp";
-import in0_img18 from "@/imgs/Interior/جمعية عطاء 62/Untitled-19_result.webp";
-import in0_img19 from "@/imgs/Interior/جمعية عطاء 62/Untitled-20_result.webp";
-import in0_img20 from "@/imgs/Interior/جمعية عطاء 62/Untitled-21_result.webp";
-import in0_img21 from "@/imgs/Interior/جمعية عطاء 62/Untitled-22_result.webp";
 import in1_img0 from "@/imgs/Interior/ala absi 2/ODAY_result.webp";
-import in1_img1 from "@/imgs/Interior/ala absi 2/Untitled-1_result.webp";
-import in1_img2 from "@/imgs/Interior/ala absi 2/Untitled-2_result.webp";
-import in1_img3 from "@/imgs/Interior/ala absi 2/Untitled-4_result.webp";
-import in1_img4 from "@/imgs/Interior/ala absi 2/Untitled-6_result.webp";
-import in1_img5 from "@/imgs/Interior/ala absi 2/Untitled-7_result.webp";
-import in1_img6 from "@/imgs/Interior/ala absi 2/Untitled-8_result.webp";
-import in1_img7 from "@/imgs/Interior/ala absi 2/Untitled-9_result.webp";
-import in1_img8 from "@/imgs/Interior/ala absi 2/Untitled-10_result.webp";
-import in1_img9 from "@/imgs/Interior/ala absi 2/Untitled-12_result.webp";
-import in1_img10 from "@/imgs/Interior/ala absi 2/Untitled-14_result.webp";
-import in1_img11 from "@/imgs/Interior/ala absi 2/Untitled-16_result.webp";
-import in1_img12 from "@/imgs/Interior/ala absi 2/Untitled-17_result.webp";
 import in2_img0 from "@/imgs/Interior/baha ahmad 7/ODAY_result.webp";
-import in2_img1 from "@/imgs/Interior/baha ahmad 7/Untitled-2 copy_result.webp";
-import in2_img2 from "@/imgs/Interior/baha ahmad 7/Untitled-3 copy_result.webp";
-import in2_img3 from "@/imgs/Interior/baha ahmad 7/Untitled-4 copy_result.webp";
-import in2_img4 from "@/imgs/Interior/baha ahmad 7/Untitled-5 copy_result.webp";
-import in2_img5 from "@/imgs/Interior/baha ahmad 7/Untitled-6 copy_result.webp";
-import in2_img6 from "@/imgs/Interior/baha ahmad 7/Untitled-7 copy_result.webp";
-import in2_img7 from "@/imgs/Interior/baha ahmad 7/Untitled-8 copy_result.webp";
-import in2_img8 from "@/imgs/Interior/baha ahmad 7/Untitled-9 copy_result.webp";
-import in2_img9 from "@/imgs/Interior/baha ahmad 7/Untitled-10 copy_result.webp";
-import in2_img10 from "@/imgs/Interior/baha ahmad 7/Untitled-11 copy_result.webp";
-import in2_img11 from "@/imgs/Interior/baha ahmad 7/Untitled-13 copy_result.webp";
-import in2_img12 from "@/imgs/Interior/baha ahmad 7/Untitled-14 copy_result.webp";
 import in3_img0 from "@/imgs/Interior/barber shop 9/ODAY_result.webp";
-import in3_img1 from "@/imgs/Interior/barber shop 9/1_result.webp";
-import in3_img2 from "@/imgs/Interior/barber shop 9/2_result.webp";
-import in3_img3 from "@/imgs/Interior/barber shop 9/3 _result.webp";
-import in3_img4 from "@/imgs/Interior/barber shop 9/5 _result.webp";
-import in3_img5 from "@/imgs/Interior/barber shop 9/6_result.webp";
-import in3_img6 from "@/imgs/Interior/barber shop 9/8_result.webp";
-import in3_img7 from "@/imgs/Interior/barber shop 9/9_result.webp";
 import in4_img0 from "@/imgs/Interior/batool 10/ODAY_result.webp";
-import in4_img1 from "@/imgs/Interior/batool 10/2 copy_result.webp";
-import in4_img2 from "@/imgs/Interior/batool 10/4 copy_result.webp";
-import in4_img3 from "@/imgs/Interior/batool 10/5 copy_result.webp";
-import in4_img4 from "@/imgs/Interior/batool 10/6 copy_result.webp";
-import in4_img5 from "@/imgs/Interior/batool 10/10 copy_result.webp";
-import in4_img6 from "@/imgs/Interior/batool 10/13 copy_result.webp";
-import in4_img7 from "@/imgs/Interior/batool 10/15 copy_result.webp";
-import in4_img8 from "@/imgs/Interior/batool 10/16 copy_result.webp";
-import in4_img9 from "@/imgs/Interior/batool 10/18 copy_result.webp";
-import in4_img10 from "@/imgs/Interior/batool 10/19 copy_result.webp";
-import in4_img11 from "@/imgs/Interior/batool 10/20 copy_result.webp";
 import in5_img0 from "@/imgs/Interior/COCO nails 11/ODAY_result.webp";
-import in5_img1 from "@/imgs/Interior/COCO nails 11/18_result.webp";
-import in5_img2 from "@/imgs/Interior/COCO nails 11/20_result.webp";
-import in5_img3 from "@/imgs/Interior/COCO nails 11/21_result.webp";
-import in5_img4 from "@/imgs/Interior/COCO nails 11/22_result.webp";
-import in5_img5 from "@/imgs/Interior/COCO nails 11/23_result.webp";
-import in5_img6 from "@/imgs/Interior/COCO nails 11/24_result.webp";
-import in5_img7 from "@/imgs/Interior/COCO nails 11/25_result.webp";
-import in5_img8 from "@/imgs/Interior/COCO nails 11/26_result.webp";
-import in5_img9 from "@/imgs/Interior/COCO nails 11/27_result.webp";
-import in5_img10 from "@/imgs/Interior/COCO nails 11/28_result.webp";
-import in5_img11 from "@/imgs/Interior/COCO nails 11/final rend copy_result.webp";
 import in6_img0 from "@/imgs/Interior/diaaab 11/ODAY_result.webp";
-import in6_img1 from "@/imgs/Interior/diaaab 11/1 copy_result.webp";
-import in6_img2 from "@/imgs/Interior/diaaab 11/3 copy_result.webp";
-import in6_img3 from "@/imgs/Interior/diaaab 11/4 copy_result.webp";
-import in6_img4 from "@/imgs/Interior/diaaab 11/6 copy_result.webp";
-import in6_img5 from "@/imgs/Interior/diaaab 11/7 copy_result.webp";
-import in6_img6 from "@/imgs/Interior/diaaab 11/8 copy_result.webp";
-import in6_img7 from "@/imgs/Interior/diaaab 11/9 copy_result.webp";
-import in6_img8 from "@/imgs/Interior/diaaab 11/10 copy_result.webp";
-import in6_img9 from "@/imgs/Interior/diaaab 11/12 copy_result.webp";
-import in6_img10 from "@/imgs/Interior/diaaab 11/13 copy_result.webp";
 import in7_img0 from "@/imgs/Interior/DR ABED EL9ADER 12/ODAY_result.webp";
-import in7_img1 from "@/imgs/Interior/DR ABED EL9ADER 12/Untitled-1_result.webp";
-import in7_img2 from "@/imgs/Interior/DR ABED EL9ADER 12/Untitled-2_result.webp";
-import in7_img3 from "@/imgs/Interior/DR ABED EL9ADER 12/Untitled-3_result.webp";
-import in7_img4 from "@/imgs/Interior/DR ABED EL9ADER 12/Untitled-4_result.webp";
-import in7_img5 from "@/imgs/Interior/DR ABED EL9ADER 12/Untitled-5_result.webp";
-import in7_img6 from "@/imgs/Interior/DR ABED EL9ADER 12/Untitled-6_result.webp";
-import in7_img7 from "@/imgs/Interior/DR ABED EL9ADER 12/Untitled-7_result.webp";
-import in7_img8 from "@/imgs/Interior/DR ABED EL9ADER 12/Untitled-9_result.webp";
-import in7_img9 from "@/imgs/Interior/DR ABED EL9ADER 12/Untitled-10_result.webp";
-import in7_img10 from "@/imgs/Interior/DR ABED EL9ADER 12/Untitled-11_result.webp";
-import in7_img11 from "@/imgs/Interior/DR ABED EL9ADER 12/Untitled-12_result.webp";
-import in7_img12 from "@/imgs/Interior/DR ABED EL9ADER 12/Untitled-13_result.webp";
 import in8_img0 from "@/imgs/Interior/dr amal duaibes 13/ODAY_result.webp";
-import in8_img1 from "@/imgs/Interior/dr amal duaibes 13/OF 1.1 copy_result.webp";
-import in8_img2 from "@/imgs/Interior/dr amal duaibes 13/OF 1.2 copy_result.webp";
-import in8_img3 from "@/imgs/Interior/dr amal duaibes 13/OF 1.003 copy_result.webp";
-import in8_img4 from "@/imgs/Interior/dr amal duaibes 13/OF 1.004 copy_result.webp";
-import in8_img5 from "@/imgs/Interior/dr amal duaibes 13/OF 1.005 copy_result.webp";
-import in8_img6 from "@/imgs/Interior/dr amal duaibes 13/OF 1.008 copy_result.webp";
-import in8_img7 from "@/imgs/Interior/dr amal duaibes 13/OF 1.012 copy_result.webp";
-import in8_img8 from "@/imgs/Interior/dr amal duaibes 13/OF 1.013 copy_result.webp";
-import in8_img9 from "@/imgs/Interior/dr amal duaibes 13/OF 1.014 copy_result.webp";
-import in8_img10 from "@/imgs/Interior/dr amal duaibes 13/OF 1.015 copy_result.webp";
-import in8_img11 from "@/imgs/Interior/dr amal duaibes 13/OF 2.1 copy_result.webp";
-import in8_img12 from "@/imgs/Interior/dr amal duaibes 13/OF 2.2 copy_result.webp";
-import in8_img13 from "@/imgs/Interior/dr amal duaibes 13/OF 2.003 copy_result.webp";
-import in8_img14 from "@/imgs/Interior/dr amal duaibes 13/OF 2.004 copy_result.webp";
-import in8_img15 from "@/imgs/Interior/dr amal duaibes 13/OF 3.1 copy_result.webp";
-import in8_img16 from "@/imgs/Interior/dr amal duaibes 13/OF 3.2 copy_result.webp";
-import in8_img17 from "@/imgs/Interior/dr amal duaibes 13/R 02 copy_result.webp";
-import in8_img18 from "@/imgs/Interior/dr amal duaibes 13/R 03 copy_result.webp";
-import in8_img19 from "@/imgs/Interior/dr amal duaibes 13/R 04 copy_result.webp";
-import in8_img20 from "@/imgs/Interior/dr amal duaibes 13/R 05 copy_result.webp";
 import in9_img0 from "@/imgs/Interior/dr raed medical center 15/ODAY_result.webp";
-import in9_img1 from "@/imgs/Interior/dr raed medical center 15/C2_result.webp";
-import in9_img2 from "@/imgs/Interior/dr raed medical center 15/C3_result.webp";
-import in9_img3 from "@/imgs/Interior/dr raed medical center 15/C4_result.webp";
-import in9_img4 from "@/imgs/Interior/dr raed medical center 15/C5_result.webp";
-import in9_img5 from "@/imgs/Interior/dr raed medical center 15/C6_result.webp";
-import in9_img6 from "@/imgs/Interior/dr raed medical center 15/C7_result.webp";
-import in9_img7 from "@/imgs/Interior/dr raed medical center 15/C8_result.webp";
-import in9_img8 from "@/imgs/Interior/dr raed medical center 15/C9_result.webp";
-import in9_img9 from "@/imgs/Interior/dr raed medical center 15/C11_result.webp";
-import in9_img10 from "@/imgs/Interior/dr raed medical center 15/C12_result.webp";
-import in9_img11 from "@/imgs/Interior/dr raed medical center 15/C13_result.webp";
-import in9_img12 from "@/imgs/Interior/dr raed medical center 15/C14_result.webp";
 import in10_img0 from "@/imgs/Interior/dr raya 16/ODAY_result.webp";
-import in10_img1 from "@/imgs/Interior/dr raya 16/Corona Camera001 copy_result.webp";
-import in10_img2 from "@/imgs/Interior/dr raya 16/Corona Camera002 copy_result.webp";
-import in10_img3 from "@/imgs/Interior/dr raya 16/Corona Camera003 copy_result.webp";
-import in10_img4 from "@/imgs/Interior/dr raya 16/Corona Camera006 copy_result.webp";
-import in10_img5 from "@/imgs/Interior/dr raya 16/Corona Camera007 copy_result.webp";
-import in10_img6 from "@/imgs/Interior/dr raya 16/Corona Camera008 copy_result.webp";
-import in10_img7 from "@/imgs/Interior/dr raya 16/Corona Camera009 copy_result.webp";
-import in10_img8 from "@/imgs/Interior/dr raya 16/Corona Camera010 copy_result.webp";
-import in10_img9 from "@/imgs/Interior/dr raya 16/Corona Camera011 copy_result.webp";
-import in10_img10 from "@/imgs/Interior/dr raya 16/Corona Camera012 copy_result.webp";
-import in10_img11 from "@/imgs/Interior/dr raya 16/Corona Camera013 copy_result.webp";
-import in10_img12 from "@/imgs/Interior/dr raya 16/Corona Camera014 copy_result.webp";
-import in10_img13 from "@/imgs/Interior/dr raya 16/Corona Camera015 copy_result.webp";
-import in10_img14 from "@/imgs/Interior/dr raya 16/Corona Camera016 copy_result.webp";
-import in10_img15 from "@/imgs/Interior/dr raya 16/Corona Camera017 copy_result.webp";
-import in10_img16 from "@/imgs/Interior/dr raya 16/Corona Camera018 copy_result.webp";
-import in10_img17 from "@/imgs/Interior/dr raya 16/Corona Camera019 copy_result.webp";
 import in11_img0 from "@/imgs/Interior/dr salah 17/ODAY_result.webp";
-import in11_img1 from "@/imgs/Interior/dr salah 17/1 copy_result.webp";
-import in11_img2 from "@/imgs/Interior/dr salah 17/2 copy_result.webp";
-import in11_img3 from "@/imgs/Interior/dr salah 17/3 copy_result.webp";
-import in11_img4 from "@/imgs/Interior/dr salah 17/4 copy_result.webp";
-import in11_img5 from "@/imgs/Interior/dr salah 17/5 copy_result.webp";
-import in11_img6 from "@/imgs/Interior/dr salah 17/6 copy_result.webp";
-import in11_img7 from "@/imgs/Interior/dr salah 17/7 copy_result.webp";
-import in11_img8 from "@/imgs/Interior/dr salah 17/8 copy_result.webp";
-import in11_img9 from "@/imgs/Interior/dr salah 17/9 copy_result.webp";
-import in11_img10 from "@/imgs/Interior/dr salah 17/10 copy_result.webp";
-import in11_img11 from "@/imgs/Interior/dr salah 17/11 copy_result.webp";
-import in11_img12 from "@/imgs/Interior/dr salah 17/13 copy_result.webp";
-import in11_img13 from "@/imgs/Interior/dr salah 17/14 copy_result.webp";
-import in11_img14 from "@/imgs/Interior/dr salah 17/15 copy_result.webp";
-import in11_img15 from "@/imgs/Interior/dr salah 17/16 copy_result.webp";
-import in11_img16 from "@/imgs/Interior/dr salah 17/17 copy_result.webp";
-import in11_img17 from "@/imgs/Interior/dr salah 17/18 copy_result.webp";
-import in11_img18 from "@/imgs/Interior/dr salah 17/20 copy_result.webp";
-import in11_img19 from "@/imgs/Interior/dr salah 17/22 copy_result.webp";
-import in11_img20 from "@/imgs/Interior/dr salah 17/25 copy_result.webp";
 import in12_img0 from "@/imgs/Interior/dunats 19/ODAY_result.webp";
-import in12_img1 from "@/imgs/Interior/dunats 19/Untitled-1_result.webp";
-import in12_img2 from "@/imgs/Interior/dunats 19/Untitled-2_result.webp";
-import in12_img3 from "@/imgs/Interior/dunats 19/Untitled-4_result.webp";
-import in12_img4 from "@/imgs/Interior/dunats 19/Untitled-5_result.webp";
-import in12_img5 from "@/imgs/Interior/dunats 19/Untitled-6_result.webp";
-import in12_img6 from "@/imgs/Interior/dunats 19/Untitled-7_result.webp";
-import in12_img7 from "@/imgs/Interior/dunats 19/Untitled-8_result.webp";
-import in12_img8 from "@/imgs/Interior/dunats 19/Untitled-9_result.webp";
-import in12_img9 from "@/imgs/Interior/dunats 19/Untitled-10_result.webp";
-import in12_img10 from "@/imgs/Interior/dunats 19/Untitled-11_result.webp";
-import in12_img11 from "@/imgs/Interior/dunats 19/Untitled-12_result.webp";
 import in13_img0 from "@/imgs/Interior/FARED MALABES 20/ODAY_result.webp";
-import in13_img1 from "@/imgs/Interior/FARED MALABES 20/2bb60687-36bf-452a-9d03-ae80c4f01946_result.webp";
-import in13_img2 from "@/imgs/Interior/FARED MALABES 20/2fa0e993-6f91-49aa-8d2a-ccf10249bdf0_result.webp";
-import in13_img3 from "@/imgs/Interior/FARED MALABES 20/03ecb243-c445-409d-991b-3710278efd3f_result.webp";
-import in13_img4 from "@/imgs/Interior/FARED MALABES 20/8e2bd822-ad2f-4292-82d4-809c231c758b_result.webp";
-import in13_img5 from "@/imgs/Interior/FARED MALABES 20/9aee33ce-c640-4777-96ff-dba5249b42f8_result.webp";
-import in13_img6 from "@/imgs/Interior/FARED MALABES 20/023a56fc-3209-4ee3-b862-c641f976a38c_result.webp";
-import in13_img7 from "@/imgs/Interior/FARED MALABES 20/51f58fad-2ae6-4973-8df1-13cdbd99423e_result.webp";
-import in13_img8 from "@/imgs/Interior/FARED MALABES 20/be960a3b-0071-44d2-bbcb-855cf86d9a63_result.webp";
 import in14_img0 from "@/imgs/Interior/fareed bridal shop 21/ODAY_result.webp";
-import in14_img1 from "@/imgs/Interior/fareed bridal shop 21/WhatsApp Image 2024-06-17 at 7.13.17 PM (1) copy_result.webp";
-import in14_img2 from "@/imgs/Interior/fareed bridal shop 21/WhatsApp Image 2024-06-17 at 7.13.17 PM (2) copy_result.webp";
-import in14_img3 from "@/imgs/Interior/fareed bridal shop 21/WhatsApp Image 2024-06-17 at 7.13.18 PM (1) copy_result.webp";
-import in14_img4 from "@/imgs/Interior/fareed bridal shop 21/WhatsApp Image 2024-06-17 at 7.13.18 PM (3) copy_result.webp";
-import in14_img5 from "@/imgs/Interior/fareed bridal shop 21/WhatsApp Image 2024-06-17 at 7.13.18 PM (4) copy_result.webp";
-import in14_img6 from "@/imgs/Interior/fareed bridal shop 21/WhatsApp Image 2024-06-17 at 7.13.18 PM (5) copy_result.webp";
-import in14_img7 from "@/imgs/Interior/fareed bridal shop 21/WhatsApp Image 2024-06-17 at 7.13.18 PM (6) copy_result.webp";
-import in14_img8 from "@/imgs/Interior/fareed bridal shop 21/WhatsApp Image 2024-06-17 at 7.13.18 PM (7) copy_result.webp";
-import in14_img9 from "@/imgs/Interior/fareed bridal shop 21/WhatsApp Image 2024-06-17 at 7.13.18 PM (8) copy_result.webp";
-import in14_img10 from "@/imgs/Interior/fareed bridal shop 21/WhatsApp Image 2024-06-17 at 7.13.18 PM (9) copy_result.webp";
-import in14_img11 from "@/imgs/Interior/fareed bridal shop 21/WhatsApp Image 2024-06-17 at 7.13.18 PM copy_result.webp";
 import in15_img0 from "@/imgs/Interior/ghaleb 22/ODAY_result.webp";
-import in15_img1 from "@/imgs/Interior/ghaleb 22/Corona Camera001 copy_result.webp";
-import in15_img2 from "@/imgs/Interior/ghaleb 22/Corona Camera003 copy_result.webp";
-import in15_img3 from "@/imgs/Interior/ghaleb 22/Corona Camera004 copy_result.webp";
-import in15_img4 from "@/imgs/Interior/ghaleb 22/Corona Camera006 copy_result.webp";
-import in15_img5 from "@/imgs/Interior/ghaleb 22/Corona Camera007 copy_result.webp";
-import in15_img6 from "@/imgs/Interior/ghaleb 22/Corona Camera008 copy_result.webp";
-import in15_img7 from "@/imgs/Interior/ghaleb 22/Corona Camera009 copy_result.webp";
-import in15_img8 from "@/imgs/Interior/ghaleb 22/Corona Camera010 copy_result.webp";
-import in15_img9 from "@/imgs/Interior/ghaleb 22/Corona Camera011 copy_result.webp";
-import in15_img10 from "@/imgs/Interior/ghaleb 22/Corona Camera012 copy_result.webp";
-import in15_img11 from "@/imgs/Interior/ghaleb 22/Corona Camera013 copy_result.webp";
 import in16_img0 from "@/imgs/Interior/ghaleb 23/ODAY_result.webp";
-import in16_img1 from "@/imgs/Interior/ghaleb 23/3 copy_result.webp";
-import in16_img2 from "@/imgs/Interior/ghaleb 23/4 copy_result.webp";
-import in16_img3 from "@/imgs/Interior/ghaleb 23/5 copy_result.webp";
-import in16_img4 from "@/imgs/Interior/ghaleb 23/6 copy_result.webp";
-import in16_img5 from "@/imgs/Interior/ghaleb 23/7 copy_result.webp";
-import in16_img6 from "@/imgs/Interior/ghaleb 23/8 copy_result.webp";
-import in16_img7 from "@/imgs/Interior/ghaleb 23/13 copy_result.webp";
-import in16_img8 from "@/imgs/Interior/ghaleb 23/14 copy_result.webp";
-import in16_img9 from "@/imgs/Interior/ghaleb 23/15 copy_result.webp";
-import in16_img10 from "@/imgs/Interior/ghaleb 23/18 copy_result.webp";
-import in16_img11 from "@/imgs/Interior/ghaleb 23/19 copy_result.webp";
-import in16_img12 from "@/imgs/Interior/ghaleb 23/20 copy_result.webp";
-import in16_img13 from "@/imgs/Interior/ghaleb 23/23 copy_result.webp";
-import in16_img14 from "@/imgs/Interior/ghaleb 23/24 copy_result.webp";
-import in16_img15 from "@/imgs/Interior/ghaleb 23/27 copy_result.webp";
 import in17_img0 from "@/imgs/Interior/Howida  cottage 28/ODAY_result.webp";
-import in17_img1 from "@/imgs/Interior/Howida  cottage 28/2 copy_result.webp";
-import in17_img2 from "@/imgs/Interior/Howida  cottage 28/4 copy_result.webp";
-import in17_img3 from "@/imgs/Interior/Howida  cottage 28/5 copy_result.webp";
-import in17_img4 from "@/imgs/Interior/Howida  cottage 28/6 copy_result.webp";
-import in17_img5 from "@/imgs/Interior/Howida  cottage 28/7 copy_result.webp";
-import in17_img6 from "@/imgs/Interior/Howida  cottage 28/8 copy_result.webp";
-import in17_img7 from "@/imgs/Interior/Howida  cottage 28/9 copy_result.webp";
-import in17_img8 from "@/imgs/Interior/Howida  cottage 28/10 copy_result.webp";
-import in17_img9 from "@/imgs/Interior/Howida  cottage 28/11 copy_result.webp";
-import in17_img10 from "@/imgs/Interior/Howida  cottage 28/12 copy_result.webp";
-import in17_img11 from "@/imgs/Interior/Howida  cottage 28/13 copy_result.webp";
-import in17_img12 from "@/imgs/Interior/Howida  cottage 28/14 copy_result.webp";
-import in17_img13 from "@/imgs/Interior/Howida  cottage 28/15 copy_result.webp";
-import in17_img14 from "@/imgs/Interior/Howida  cottage 28/16 copy_result.webp";
-import in17_img15 from "@/imgs/Interior/Howida  cottage 28/17 copy_result.webp";
 import in18_img0 from "@/imgs/Interior/Howida  Living Room Render's 29/ODAY_result.webp";
-import in18_img1 from "@/imgs/Interior/Howida  Living Room Render's 29/1_result.webp";
-import in18_img2 from "@/imgs/Interior/Howida  Living Room Render's 29/2_result.webp";
-import in18_img3 from "@/imgs/Interior/Howida  Living Room Render's 29/3_result.webp";
-import in18_img4 from "@/imgs/Interior/Howida  Living Room Render's 29/4_result.webp";
-import in18_img5 from "@/imgs/Interior/Howida  Living Room Render's 29/5_result.webp";
-import in18_img6 from "@/imgs/Interior/Howida  Living Room Render's 29/6_result.webp";
-import in18_img7 from "@/imgs/Interior/Howida  Living Room Render's 29/7_result.webp";
-import in18_img8 from "@/imgs/Interior/Howida  Living Room Render's 29/8_result.webp";
-import in18_img9 from "@/imgs/Interior/Howida  Living Room Render's 29/9_result.webp";
-import in18_img10 from "@/imgs/Interior/Howida  Living Room Render's 29/10_result.webp";
-import in18_img11 from "@/imgs/Interior/Howida  Living Room Render's 29/11_result.webp";
-import in18_img12 from "@/imgs/Interior/Howida  Living Room Render's 29/12_result.webp";
-import in18_img13 from "@/imgs/Interior/Howida  Living Room Render's 29/13_result.webp";
-import in18_img14 from "@/imgs/Interior/Howida  Living Room Render's 29/14_result.webp";
-import in18_img15 from "@/imgs/Interior/Howida  Living Room Render's 29/15 copy_result.webp";
-import in18_img16 from "@/imgs/Interior/Howida  Living Room Render's 29/16 copy_result.webp";
-import in18_img17 from "@/imgs/Interior/Howida  Living Room Render's 29/17_result.webp";
-import in18_img18 from "@/imgs/Interior/Howida  Living Room Render's 29/19_result.webp";
-import in18_img19 from "@/imgs/Interior/Howida  Living Room Render's 29/20 copy_result.webp";
-import in18_img20 from "@/imgs/Interior/Howida  Living Room Render's 29/21 copy_result.webp";
 import in19_img0 from "@/imgs/Interior/Howida  Master Bed Room render's 31/ODAY_result.webp";
-import in19_img1 from "@/imgs/Interior/Howida  Master Bed Room render's 31/1 copy_result.webp";
-import in19_img2 from "@/imgs/Interior/Howida  Master Bed Room render's 31/4 copy_result.webp";
-import in19_img3 from "@/imgs/Interior/Howida  Master Bed Room render's 31/9c_result.webp";
-import in19_img4 from "@/imgs/Interior/Howida  Master Bed Room render's 31/10c_result.webp";
-import in19_img5 from "@/imgs/Interior/Howida  Master Bed Room render's 31/11 copy_result.webp";
-import in19_img6 from "@/imgs/Interior/Howida  Master Bed Room render's 31/12c_result.webp";
-import in19_img7 from "@/imgs/Interior/Howida  Master Bed Room render's 31/13 copy_result.webp";
-import in19_img8 from "@/imgs/Interior/Howida  Master Bed Room render's 31/14 copy_result.webp";
-import in19_img9 from "@/imgs/Interior/Howida  Master Bed Room render's 31/15_result.webp";
-import in19_img10 from "@/imgs/Interior/Howida  Master Bed Room render's 31/16_result.webp";
-import in19_img11 from "@/imgs/Interior/Howida  Master Bed Room render's 31/17 copy_result.webp";
-import in19_img12 from "@/imgs/Interior/Howida  Master Bed Room render's 31/18 copy_result.webp";
-import in19_img13 from "@/imgs/Interior/Howida  Master Bed Room render's 31/19 copy_result.webp";
-import in19_img14 from "@/imgs/Interior/Howida  Master Bed Room render's 31/21_result.webp";
-import in19_img15 from "@/imgs/Interior/Howida  Master Bed Room render's 31/22 copy_result.webp";
-import in19_img16 from "@/imgs/Interior/Howida  Master Bed Room render's 31/23_result.webp";
-import in19_img17 from "@/imgs/Interior/Howida  Master Bed Room render's 31/24 copy_result.webp";
-import in19_img18 from "@/imgs/Interior/Howida  Master Bed Room render's 31/25 copy_result.webp";
-import in19_img19 from "@/imgs/Interior/Howida  Master Bed Room render's 31/26 copy_result.webp";
-import in19_img20 from "@/imgs/Interior/Howida  Master Bed Room render's 31/27 copy_result.webp";
-import in19_img21 from "@/imgs/Interior/Howida  Master Bed Room render's 31/28 copy_result.webp";
-import in19_img22 from "@/imgs/Interior/Howida  Master Bed Room render's 31/31 copy_result.webp";
-import in19_img23 from "@/imgs/Interior/Howida  Master Bed Room render's 31/32 copy_result.webp";
-import in19_img24 from "@/imgs/Interior/Howida  Master Bed Room render's 31/33_result.webp";
-import in19_img25 from "@/imgs/Interior/Howida  Master Bed Room render's 31/34 copy_result.webp";
-import in19_img26 from "@/imgs/Interior/Howida  Master Bed Room render's 31/60 copy_result.webp";
-import in19_img27 from "@/imgs/Interior/Howida  Master Bed Room render's 31/63 copy_result.webp";
 import in20_img0 from "@/imgs/Interior/Howida 3th floor option 32/ODAY_result.webp";
-import in20_img1 from "@/imgs/Interior/Howida 3th floor option 32/34 copy_result.webp";
-import in20_img2 from "@/imgs/Interior/Howida 3th floor option 32/35 copy_result.webp";
-import in20_img3 from "@/imgs/Interior/Howida 3th floor option 32/36  copy_result.webp";
-import in20_img4 from "@/imgs/Interior/Howida 3th floor option 32/37 copy_result.webp";
-import in20_img5 from "@/imgs/Interior/Howida 3th floor option 32/38 copy_result.webp";
-import in20_img6 from "@/imgs/Interior/Howida 3th floor option 32/39 copy_result.webp";
-import in20_img7 from "@/imgs/Interior/Howida 3th floor option 32/40  copy_result.webp";
-import in20_img8 from "@/imgs/Interior/Howida 3th floor option 32/41 copy_result.webp";
-import in20_img9 from "@/imgs/Interior/Howida 3th floor option 32/42 copy_result.webp";
-import in20_img10 from "@/imgs/Interior/Howida 3th floor option 32/43 copy_result.webp";
-import in20_img11 from "@/imgs/Interior/Howida 3th floor option 32/44 copy_result.webp";
-import in20_img12 from "@/imgs/Interior/Howida 3th floor option 32/45 copy_result.webp";
-import in20_img13 from "@/imgs/Interior/Howida 3th floor option 32/47 copy_result.webp";
 import in21_img0 from "@/imgs/Interior/kitchen omar 34/oday_result.webp";
-import in21_img1 from "@/imgs/Interior/kitchen omar 34/C1 copy_result.webp";
-import in21_img2 from "@/imgs/Interior/kitchen omar 34/C2 copy_result.webp";
-import in21_img3 from "@/imgs/Interior/kitchen omar 34/C3 copy_result.webp";
-import in21_img4 from "@/imgs/Interior/kitchen omar 34/C4 copy_result.webp";
-import in21_img5 from "@/imgs/Interior/kitchen omar 34/C5 copy_result.webp";
-import in21_img6 from "@/imgs/Interior/kitchen omar 34/C7 copy_result.webp";
-import in21_img7 from "@/imgs/Interior/kitchen omar 34/C8 copy_result.webp";
-import in21_img8 from "@/imgs/Interior/kitchen omar 34/C9 copy_result.webp";
 import in22_img0 from "@/imgs/Interior/market 38/oday_result.webp";
-import in22_img1 from "@/imgs/Interior/market 38/1_View01 copy_result.webp";
-import in22_img2 from "@/imgs/Interior/market 38/1_View03 copy_result.webp";
-import in22_img3 from "@/imgs/Interior/market 38/1_View04 copy_result.webp";
-import in22_img4 from "@/imgs/Interior/market 38/1_View05 copy_result.webp";
-import in22_img5 from "@/imgs/Interior/market 38/1_View06 copy_result.webp";
-import in22_img6 from "@/imgs/Interior/market 38/1_View07 copy_result.webp";
-import in22_img7 from "@/imgs/Interior/market 38/1_View08 copy_result.webp";
-import in22_img8 from "@/imgs/Interior/market 38/1_View10 copy_result.webp";
-import in22_img9 from "@/imgs/Interior/market 38/1_View11 copy_result.webp";
-import in22_img10 from "@/imgs/Interior/market 38/1_View13 copy_result.webp";
-import in22_img11 from "@/imgs/Interior/market 38/1_View14 copy_result.webp";
-import in22_img12 from "@/imgs/Interior/market 38/1_View15 copy_result.webp";
-import in22_img13 from "@/imgs/Interior/market 38/1_View16 copy_result.webp";
-import in22_img14 from "@/imgs/Interior/market 38/1_View17 copy_result.webp";
-import in22_img15 from "@/imgs/Interior/market 38/1_View18 copy_result.webp";
-import in22_img16 from "@/imgs/Interior/market 38/1_View19 copy_result.webp";
 import in23_img0 from "@/imgs/Interior/mohammad nassrallah 39/oday_result.webp";
-import in23_img1 from "@/imgs/Interior/mohammad nassrallah 39/Untitled-1_result.webp";
-import in23_img2 from "@/imgs/Interior/mohammad nassrallah 39/Untitled-2_result.webp";
-import in23_img3 from "@/imgs/Interior/mohammad nassrallah 39/Untitled-3_result.webp";
-import in23_img4 from "@/imgs/Interior/mohammad nassrallah 39/Untitled-4_result.webp";
-import in23_img5 from "@/imgs/Interior/mohammad nassrallah 39/Untitled-5_result.webp";
-import in23_img6 from "@/imgs/Interior/mohammad nassrallah 39/Untitled-7_result.webp";
-import in23_img7 from "@/imgs/Interior/mohammad nassrallah 39/Untitled-8_result.webp";
-import in23_img8 from "@/imgs/Interior/mohammad nassrallah 39/Untitled-9_result.webp";
-import in23_img9 from "@/imgs/Interior/mohammad nassrallah 39/Untitled-10_result.webp";
-import in23_img10 from "@/imgs/Interior/mohammad nassrallah 39/Untitled-11_result.webp";
-import in23_img11 from "@/imgs/Interior/mohammad nassrallah 39/Untitled-12_result.webp";
-import in23_img12 from "@/imgs/Interior/mohammad nassrallah 39/Untitled-13_result.webp";
-import in23_img13 from "@/imgs/Interior/mohammad nassrallah 39/Untitled-14_result.webp";
-import in23_img14 from "@/imgs/Interior/mohammad nassrallah 39/Untitled-15_result.webp";
 import in24_img0 from "@/imgs/Interior/motaz falah 41/oday_result.webp";
-import in24_img1 from "@/imgs/Interior/motaz falah 41/C1 copy1_result.webp";
-import in24_img2 from "@/imgs/Interior/motaz falah 41/C3 copy3_result.webp";
-import in24_img3 from "@/imgs/Interior/motaz falah 41/C4 copy4_result.webp";
-import in24_img4 from "@/imgs/Interior/motaz falah 41/C5 copy5_result.webp";
-import in24_img5 from "@/imgs/Interior/motaz falah 41/C6 copy6_result.webp";
-import in24_img6 from "@/imgs/Interior/motaz falah 41/C7 copy7_result.webp";
-import in24_img7 from "@/imgs/Interior/motaz falah 41/C8 copy8_result.webp";
-import in24_img8 from "@/imgs/Interior/motaz falah 41/C9 copy9_result.webp";
-import in24_img9 from "@/imgs/Interior/motaz falah 41/c10 copy10_result.webp";
-import in24_img10 from "@/imgs/Interior/motaz falah 41/c11 copy_result.webp";
-import in24_img11 from "@/imgs/Interior/motaz falah 41/c12 copy12_result.webp";
-import in24_img12 from "@/imgs/Interior/motaz falah 41/c13 copy13_result.webp";
-import in24_img13 from "@/imgs/Interior/motaz falah 41/c14 copy14_result.webp";
 import in25_img0 from "@/imgs/Interior/NEVADA BATH 45/oday_result.webp";
-import in25_img1 from "@/imgs/Interior/NEVADA BATH 45/c (1)_result.webp";
-import in25_img2 from "@/imgs/Interior/NEVADA BATH 45/c (3)_result.webp";
-import in25_img3 from "@/imgs/Interior/NEVADA BATH 45/c (4)_result.webp";
-import in25_img4 from "@/imgs/Interior/NEVADA BATH 45/C11_result.webp";
-import in25_img5 from "@/imgs/Interior/NEVADA BATH 45/C12_result.webp";
-import in25_img6 from "@/imgs/Interior/NEVADA BATH 45/C22_result.webp";
-import in25_img7 from "@/imgs/Interior/NEVADA BATH 45/C33_result.webp";
-import in25_img8 from "@/imgs/Interior/NEVADA BATH 45/C44_result.webp";
-import in25_img9 from "@/imgs/Interior/NEVADA BATH 45/C55_result.webp";
-import in25_img10 from "@/imgs/Interior/NEVADA BATH 45/C66_result.webp";
-import in25_img11 from "@/imgs/Interior/NEVADA BATH 45/C77_result.webp";
-import in25_img12 from "@/imgs/Interior/NEVADA BATH 45/C88_result.webp";
 import in26_img0 from "@/imgs/Interior/nizzar laserroom 47/oday_result.webp";
-import in26_img1 from "@/imgs/Interior/nizzar laserroom 47/L 01 copy_result.webp";
-import in26_img2 from "@/imgs/Interior/nizzar laserroom 47/L 02.1 copy_result.webp";
-import in26_img3 from "@/imgs/Interior/nizzar laserroom 47/L 02.2 copy_result.webp";
-import in26_img4 from "@/imgs/Interior/nizzar laserroom 47/L 2.3 copy_result.webp";
-import in26_img5 from "@/imgs/Interior/nizzar laserroom 47/L 2.004 copy_result.webp";
-import in26_img6 from "@/imgs/Interior/nizzar laserroom 47/L 2.005 copy_result.webp";
-import in26_img7 from "@/imgs/Interior/nizzar laserroom 47/L 2.006 copy_result.webp";
-import in26_img8 from "@/imgs/Interior/nizzar laserroom 47/L 2.007 copy_result.webp";
-import in26_img9 from "@/imgs/Interior/nizzar laserroom 47/L 2.008 copy_result.webp";
-import in26_img10 from "@/imgs/Interior/nizzar laserroom 47/L 2.009 copy_result.webp";
-import in26_img11 from "@/imgs/Interior/nizzar laserroom 47/L 2.010 copy_result.webp";
-import in26_img12 from "@/imgs/Interior/nizzar laserroom 47/R 05 copy_result.webp";
-import in26_img13 from "@/imgs/Interior/nizzar laserroom 47/R 007 copy_result.webp";
-import in26_img14 from "@/imgs/Interior/nizzar laserroom 47/R 008 copy_result.webp";
-import in26_img15 from "@/imgs/Interior/nizzar laserroom 47/R 0100 copy_result.webp";
 import in27_img0 from "@/imgs/Interior/nizzar showroom 48/oday_result.webp";
-import in27_img1 from "@/imgs/Interior/nizzar showroom 48/Corona Camera001 copy_result.webp";
-import in27_img2 from "@/imgs/Interior/nizzar showroom 48/Corona Camera002 copy_result.webp";
-import in27_img3 from "@/imgs/Interior/nizzar showroom 48/Corona Camera003 copy_result.webp";
-import in27_img4 from "@/imgs/Interior/nizzar showroom 48/Corona Camera004 copy_result.webp";
-import in27_img5 from "@/imgs/Interior/nizzar showroom 48/Corona Camera005 copy_result.webp";
-import in27_img6 from "@/imgs/Interior/nizzar showroom 48/Corona Camera006 copy_result.webp";
-import in27_img7 from "@/imgs/Interior/nizzar showroom 48/Corona Camera008 copy_result.webp";
-import in27_img8 from "@/imgs/Interior/nizzar showroom 48/Corona Camera009 copy_result.webp";
-import in27_img9 from "@/imgs/Interior/nizzar showroom 48/Corona Camera010 copy_result.webp";
-import in27_img10 from "@/imgs/Interior/nizzar showroom 48/Corona Camera011 copy_result.webp";
-import in27_img11 from "@/imgs/Interior/nizzar showroom 48/Corona Camera012 copy_result.webp";
-import in27_img12 from "@/imgs/Interior/nizzar showroom 48/R 04 copy_result.webp";
-import in27_img13 from "@/imgs/Interior/nizzar showroom 48/R 06 copy_result.webp";
 import in28_img0 from "@/imgs/Interior/rabee decor 49/oday_result.webp";
-import in28_img1 from "@/imgs/Interior/rabee decor 49/2copy_result.webp";
-import in28_img2 from "@/imgs/Interior/rabee decor 49/7 copy_result.webp";
-import in28_img3 from "@/imgs/Interior/rabee decor 49/8 copy_result.webp";
-import in28_img4 from "@/imgs/Interior/rabee decor 49/11copy_result.webp";
-import in28_img5 from "@/imgs/Interior/rabee decor 49/12 copy_result.webp";
-import in28_img6 from "@/imgs/Interior/rabee decor 49/Corona Camera003GRAY _result.webp";
-import in28_img7 from "@/imgs/Interior/rabee decor 49/Corona Camera004 copy_result.webp";
-import in28_img8 from "@/imgs/Interior/rabee decor 49/Corona Camera005 copy_result.webp";
-import in28_img9 from "@/imgs/Interior/rabee decor 49/Corona Camera009 GRAY_result.webp";
-import in28_img10 from "@/imgs/Interior/rabee decor 49/Corona Camera010 copy_result.webp";
-import in28_img11 from "@/imgs/Interior/rabee decor 49/Corona Camera013 copy_result.webp";
-import in28_img12 from "@/imgs/Interior/rabee decor 49/Corona Camera014 copy_result.webp";
-import in28_img13 from "@/imgs/Interior/rabee decor 49/Corona Camera015 copy_result.webp";
-import in28_img14 from "@/imgs/Interior/rabee decor 49/Corona Camera016 copy_result.webp";
 import in29_img0 from "@/imgs/Interior/rami render 50/oday_result.webp";
-import in29_img1 from "@/imgs/Interior/rami render 50/Untitled-1_result.webp";
-import in29_img2 from "@/imgs/Interior/rami render 50/Untitled-2_result.webp";
-import in29_img3 from "@/imgs/Interior/rami render 50/Untitled-3_result.webp";
-import in29_img4 from "@/imgs/Interior/rami render 50/Untitled-5_result.webp";
-import in29_img5 from "@/imgs/Interior/rami render 50/Untitled-6_result.webp";
-import in29_img6 from "@/imgs/Interior/rami render 50/Untitled-7_result.webp";
-import in29_img7 from "@/imgs/Interior/rami render 50/Untitled-8_result.webp";
-import in29_img8 from "@/imgs/Interior/rami render 50/Untitled-11_result.webp";
-import in29_img9 from "@/imgs/Interior/rami render 50/Untitled-12_result.webp";
-import in29_img10 from "@/imgs/Interior/rami render 50/Untitled-13_result.webp";
-import in29_img11 from "@/imgs/Interior/rami render 50/Untitled-14_result.webp";
-import in29_img12 from "@/imgs/Interior/rami render 50/Untitled-15_result.webp";
-import in29_img13 from "@/imgs/Interior/rami render 50/Untitled-16_result.webp";
-import in29_img14 from "@/imgs/Interior/rami render 50/Untitled-17_result.webp";
 import in30_img0 from "@/imgs/Interior/saleh bedroom 52/oday_result.webp";
-import in30_img1 from "@/imgs/Interior/saleh bedroom 52/1_Interactive LightMix_View01 copy_result.webp";
-import in30_img2 from "@/imgs/Interior/saleh bedroom 52/1_Interactive LightMix_View02 copy_result.webp";
-import in30_img3 from "@/imgs/Interior/saleh bedroom 52/1_Interactive LightMix_View04 copy_result.webp";
-import in30_img4 from "@/imgs/Interior/saleh bedroom 52/1_Interactive LightMix_View05 copy_result.webp";
-import in30_img5 from "@/imgs/Interior/saleh bedroom 52/1_Interactive LightMix_View06 copy_result.webp";
-import in30_img6 from "@/imgs/Interior/saleh bedroom 52/2 copy_result.webp";
-import in30_img7 from "@/imgs/Interior/saleh bedroom 52/3 copy_result.webp";
-import in30_img8 from "@/imgs/Interior/saleh bedroom 52/4 copy_result.webp";
-import in30_img9 from "@/imgs/Interior/saleh bedroom 52/5 copy_result.webp";
 import in31_img0 from "@/imgs/Interior/saleh pizza 53/oday_result.webp";
-import in31_img1 from "@/imgs/Interior/saleh pizza 53/Corona Camera001 copy_result.webp";
-import in31_img2 from "@/imgs/Interior/saleh pizza 53/Corona Camera002 copy_result.webp";
-import in31_img3 from "@/imgs/Interior/saleh pizza 53/Corona Camera003 copy_result.webp";
-import in31_img4 from "@/imgs/Interior/saleh pizza 53/Corona Camera004 copy_result.webp";
-import in31_img5 from "@/imgs/Interior/saleh pizza 53/Corona Camera005 copy_result.webp";
-import in31_img6 from "@/imgs/Interior/saleh pizza 53/Corona Camera008 copy_result.webp";
-import in31_img7 from "@/imgs/Interior/saleh pizza 53/Corona Camera009 copy_result.webp";
-import in31_img8 from "@/imgs/Interior/saleh pizza 53/Corona Camera010 copy 2_result.webp";
-import in31_img9 from "@/imgs/Interior/saleh pizza 53/Corona Camera011 copy_result.webp";
-import in31_img10 from "@/imgs/Interior/saleh pizza 53/Corona Camera012 copy_result.webp";
-import in31_img11 from "@/imgs/Interior/saleh pizza 53/Corona Camera013 copy_result.webp";
-import in31_img12 from "@/imgs/Interior/saleh pizza 53/Corona Camera014 copy_result.webp";
-import in31_img13 from "@/imgs/Interior/saleh pizza 53/Corona Camera015 copy_result.webp";
-import in31_img14 from "@/imgs/Interior/saleh pizza 53/Corona Camera016 copy_result.webp";
-import in31_img15 from "@/imgs/Interior/saleh pizza 53/Corona Camera017 copy_result.webp";
-import in31_img16 from "@/imgs/Interior/saleh pizza 53/Corona Camera019 copy_result.webp";
-import in31_img17 from "@/imgs/Interior/saleh pizza 53/View07 copy_result.webp";
 import in32_img0 from "@/imgs/Interior/saqer 54/oday_result.webp";
-import in32_img1 from "@/imgs/Interior/saqer 54/Untitled-1_result.webp";
-import in32_img2 from "@/imgs/Interior/saqer 54/Untitled-2_result.webp";
-import in32_img3 from "@/imgs/Interior/saqer 54/Untitled-3_result.webp";
-import in32_img4 from "@/imgs/Interior/saqer 54/Untitled-5_result.webp";
-import in32_img5 from "@/imgs/Interior/saqer 54/Untitled-6_result.webp";
-import in32_img6 from "@/imgs/Interior/saqer 54/Untitled-7_result.webp";
-import in32_img7 from "@/imgs/Interior/saqer 54/Untitled-8_result.webp";
-import in32_img8 from "@/imgs/Interior/saqer 54/Untitled-9_result.webp";
-import in32_img9 from "@/imgs/Interior/saqer 54/Untitled-10_result.webp";
-import in32_img10 from "@/imgs/Interior/saqer 54/Untitled-11_result.webp";
-import in32_img11 from "@/imgs/Interior/saqer 54/Untitled-12_result.webp";
 import in33_img0 from "@/imgs/Interior/saqer 55/oday_result.webp";
-import in33_img1 from "@/imgs/Interior/saqer 55/Corona Camera001 copy_result.webp";
-import in33_img2 from "@/imgs/Interior/saqer 55/Corona Camera002 copy_result.webp";
-import in33_img3 from "@/imgs/Interior/saqer 55/Corona Camera003 copy_result.webp";
-import in33_img4 from "@/imgs/Interior/saqer 55/Corona Camera005 copy_result.webp";
-import in33_img5 from "@/imgs/Interior/saqer 55/Corona Camera006 copy_result.webp";
-import in33_img6 from "@/imgs/Interior/saqer 55/Corona Camera007 copy_result.webp";
-import in33_img7 from "@/imgs/Interior/saqer 55/Corona Camera008 copy_result.webp";
-import in33_img8 from "@/imgs/Interior/saqer 55/Corona Camera009 copy_result.webp";
 import in34_img0 from "@/imgs/Interior/tarifi 59/oday_result.webp";
-import in34_img1 from "@/imgs/Interior/tarifi 59/1 copy_result.webp";
-import in34_img2 from "@/imgs/Interior/tarifi 59/1_result.webp";
-import in34_img3 from "@/imgs/Interior/tarifi 59/2_result.webp";
-import in34_img4 from "@/imgs/Interior/tarifi 59/3 copy_result.webp";
-import in34_img5 from "@/imgs/Interior/tarifi 59/3_result.webp";
-import in34_img6 from "@/imgs/Interior/tarifi 59/4_result.webp";
-import in34_img7 from "@/imgs/Interior/tarifi 59/5 copy_result.webp";
-import in34_img8 from "@/imgs/Interior/tarifi 59/6 copy_result.webp";
-import in34_img9 from "@/imgs/Interior/tarifi 59/7 copy_result.webp";
-import in34_img10 from "@/imgs/Interior/tarifi 59/8 copy_result.webp";
-import in34_img11 from "@/imgs/Interior/tarifi 59/9 copy_result.webp";
-import in34_img12 from "@/imgs/Interior/tarifi 59/10 copy_result.webp";
-import in34_img13 from "@/imgs/Interior/tarifi 59/11 copy_result.webp";
-import in34_img14 from "@/imgs/Interior/tarifi 59/12 copy_result.webp";
-import in34_img15 from "@/imgs/Interior/tarifi 59/13 copy_result.webp";
-import in34_img16 from "@/imgs/Interior/tarifi 59/14 copy_result.webp";
-import in34_img17 from "@/imgs/Interior/tarifi 59/15 copy_result.webp";
-import in34_img18 from "@/imgs/Interior/tarifi 59/16 copy_result.webp";
-import in34_img19 from "@/imgs/Interior/tarifi 59/18 copy_result.webp";
-import in34_img20 from "@/imgs/Interior/tarifi 59/19 copy_result.webp";
 import in35_img0 from "@/imgs/Interior/tarifi apartment 61/oday_result.webp";
-import in35_img1 from "@/imgs/Interior/tarifi apartment 61/3 copy_result.webp";
-import in35_img2 from "@/imgs/Interior/tarifi apartment 61/4 copy_result.webp";
-import in35_img3 from "@/imgs/Interior/tarifi apartment 61/12 copy_result.webp";
-import in35_img4 from "@/imgs/Interior/tarifi apartment 61/C2 copy_result.webp";
-import in35_img5 from "@/imgs/Interior/tarifi apartment 61/C3 copy_result.webp";
-import in35_img6 from "@/imgs/Interior/tarifi apartment 61/C4 copy_result.webp";
-import in35_img7 from "@/imgs/Interior/tarifi apartment 61/C5 copy_result.webp";
-import in35_img8 from "@/imgs/Interior/tarifi apartment 61/C6 copy_result.webp";
-import in35_img9 from "@/imgs/Interior/tarifi apartment 61/C7 copy_result.webp";
-import in35_img10 from "@/imgs/Interior/tarifi apartment 61/C8 copy_result.webp";
-import in35_img11 from "@/imgs/Interior/tarifi apartment 61/C9 copy_result.webp";
-import in35_img12 from "@/imgs/Interior/tarifi apartment 61/c10 copy_result.webp";
-import in35_img13 from "@/imgs/Interior/tarifi apartment 61/c11 copy_result.webp";
 
 export const interiorProjects = [
   {
     id: "in-62",
     orderLabel: "01",
-    title: "01",
-    country: "Palestine",
+    title: "Give Palestine Association Offices",
+    country: "Ramallah, Palestine",
     tag: "Interior Design",
     category: "Residential" as const,
     serviceSlug: "interior" as const,
+    projectType: "Office Interior Design",
+    year: "2025",
+    area: "85 m²",
+    concept: "A bright and efficient office interior designed to support teamwork, focused work, and visitor reception within a compact footprint. Transparent glass partitions maintain visual connectivity between the work areas, while a welcoming lounge, integrated storage, and carefully placed greenery create a professional yet comfortable atmosphere.",
+    styleMaterials: "Contemporary minimalist style with white walls and furniture, light wood finishes, clear glass partitions, gray porcelain flooring, black linear lighting, yellow accent seating, acoustic ceiling panels, indoor plants, and soft neutral textiles.",
     image: in0_img0,
-    imageAlt: "Interior 01 — design visualization",
+    imageAlt: "Give Palestine Association Offices — interior visualization",
   },
   {
     id: "in-ala-absi-2",
     orderLabel: "02",
-    title: "02",
-    country: "Palestine",
+    title: "Living Room",
+    country: "Ramallah, Palestine",
     tag: "Interior Design",
     category: "Residential" as const,
     serviceSlug: "interior" as const,
+    projectType: "Neoclassical Interior Design",
+    year: "2017",
+    area: "110 m²",
+    concept: "A bright and elegant open-plan interior designed to unite the living room, dining area, and kitchen within one cohesive space. The design balances classical detailing with contemporary functionality, using a refined neutral palette, integrated storage, and carefully layered lighting to create a comfortable and sophisticated atmosphere.",
+    styleMaterials: "Neoclassical style with white panelled cabinetry, decorative wall mouldings, marble-effect surfaces, light stone or porcelain flooring, glass-front display cabinets, black metal accents, soft gray curtains, navy upholstery, sculptural lighting fixtures, and warm concealed LED lighting.",
     image: in1_img0,
-    imageAlt: "Interior 02 — design visualization",
+    imageAlt: "Living Room — interior visualization",
   },
   {
     id: "in-baha-ahmad-7",
     orderLabel: "03",
-    title: "03",
-    country: "Palestine",
+    title: "Living Room and Kitchen",
+    country: "Ramallah, Palestine",
     tag: "Interior Design",
     category: "Residential" as const,
     serviceSlug: "interior" as const,
+    projectType: "Modern Interior Design",
+    year: "2024",
+    area: "110 m²",
+    concept: "A contemporary open-plan interior that integrates the living room and kitchen into a cohesive and functional family space. The design uses furniture arrangement, custom built-in storage, and carefully framed sightlines to create clear zones while maintaining visual continuity, comfort, and a welcoming atmosphere.",
+    styleMaterials: "Modern minimalist style with a warm neutral palette, natural wood finishes, matte white cabinetry, marble-effect porcelain flooring, textured wall panels, black metal accents, soft upholstered furniture, decorative shelving, indoor greenery, and layered recessed and concealed LED lighting.",
     image: in2_img0,
-    imageAlt: "Interior 03 — design visualization",
+    imageAlt: "Living Room and Kitchen — interior visualization",
   },
   {
     id: "in-barber-shop-9",
     orderLabel: "04",
-    title: "04",
-    country: "Palestine",
+    title: "5 Stars Salon",
+    country: "Ramallah, Palestine",
     tag: "Interior Design",
     category: "Residential" as const,
     serviceSlug: "interior" as const,
+    projectType: "Modern Barber Shop",
+    year: "2020",
+    area: "45 m²",
+    concept: "A vibrant and highly branded barber shop designed to maximize functionality within a compact space. The layout organizes barber stations, hair-washing areas, product displays, reception, and a comfortable waiting zone around a clear central circulation path, creating an energetic and memorable customer experience.",
+    styleMaterials: "Contemporary urban style with deep green fluted wall panels, white surfaces, black marble-effect counters, gold and lime-green accents, illuminated arched niches, large mirrors, black-and-gold barber chairs, LED strip lighting, sculptural ring pendants, and bold branded graphics.",
     image: in3_img0,
-    imageAlt: "Interior 04 — design visualization",
+    imageAlt: "5 Stars Salon — interior visualization",
   },
   {
     id: "in-batool-10",
     orderLabel: "05",
-    title: "05",
-    country: "Palestine",
+    title: "BatOol Beauty Center",
+    country: "Jerusalem",
     tag: "Interior Design",
     category: "Residential" as const,
     serviceSlug: "interior" as const,
+    projectType: "Beauty Center Interior Design",
+    year: "2019",
+    area: "100 m²",
+    concept: "A playful and feminine beauty center designed to create a welcoming, memorable, and highly branded customer experience. The layout combines a reception desk, makeup stations, product display areas, comfortable waiting spaces, and a dedicated photo backdrop, using soft curves and pastel tones to create a cohesive and inviting atmosphere.",
+    styleMaterials: "Contemporary feminine style with pastel pink and white finishes, ribbed wall panels, curved architectural details, light wood-look flooring, white cabinetry, black metal display frames, upholstered seating in pink and mint tones, decorative floral installations, sculptural furniture, and bright integrated LED lighting.",
     image: in4_img0,
-    imageAlt: "Interior 05 — design visualization",
+    imageAlt: "BatOol Beauty Center — interior visualization",
   },
   {
     id: "in-coco-nails-11",
     orderLabel: "06",
-    title: "06",
-    country: "Palestine",
+    title: "COCO NAILS & BEAUTY",
+    country: "Ramallah, Palestine",
     tag: "Interior Design",
     category: "Residential" as const,
     serviceSlug: "interior" as const,
+    projectType: "Modern Nail and Beauty Salon",
+    year: "2025",
+    area: "55 m²",
+    concept: "A warm and elegant beauty salon designed to create a calm, welcoming, and luxurious experience within a compact space. The layout organizes manicure and pedicure stations around a softly curved platform, while a comfortable waiting area and carefully framed views enhance the sense of relaxation and privacy.",
+    styleMaterials: "Contemporary soft-minimalist style with a warm neutral palette, ivory textured walls, cream-colored upholstery, light wood paneling, curved furniture, matte black fixtures, large arched windows, soft sheer curtains, decorative vases, natural dried plants, and warm linear lighting",
     image: in5_img0,
-    imageAlt: "Interior 06 — design visualization",
+    imageAlt: "COCO NAILS & BEAUTY — interior visualization",
   },
   {
     id: "in-diaaab-11",
@@ -607,30 +144,41 @@ export const interiorProjects = [
     tag: "Interior Design",
     category: "Residential" as const,
     serviceSlug: "interior" as const,
+
     image: in6_img0,
-    imageAlt: "Interior 07 — design visualization",
+    imageAlt: "07 — interior visualization",
   },
   {
     id: "in-dr-abed-el9ader-12",
     orderLabel: "08",
-    title: "08",
-    country: "Palestine",
+    title: "Dr abded elkader Clinic",
+    country: "Ramallah, Palestine",
     tag: "Interior Design",
     category: "Residential" as const,
     serviceSlug: "interior" as const,
+    projectType: "Physiotherapy Clinic",
+    year: "2025",
+    area: "56 m²",
+    concept: "A compact and calming physiotherapy clinic designed to support both clinical treatment and patient comfort. The layout integrates a treatment area, consultation desk, exercise equipment, and organized storage within a clear and efficient plan, while natural light and soft visual details create a welcoming therapeutic environment.",
+    styleMaterials: "Contemporary soft-minimalist style with a warm neutral color palette, light wood cabinetry, white and beige wall finishes, marble-effect textured panels, built-in shelving, curved reception elements, large mirrors, soft upholstered furniture, concealed LED lighting, and colorful therapeutic equipment as visual accents.",
     image: in7_img0,
-    imageAlt: "Interior 08 — design visualization",
+    imageAlt: "Dr abded elkader Clinic — interior visualization",
   },
   {
     id: "in-dr-amal-duaibes-13",
     orderLabel: "09",
-    title: "09",
-    country: "Palestine",
+    title: "Dr. Amal Duaibes Dental Clinic",
+    country: "Ramallah, Palestine",
     tag: "Interior Design",
     category: "Residential" as const,
     serviceSlug: "interior" as const,
+    projectType: "Dental Clinic Interior Design",
+    year: "2026",
+    area: "100 m²",
+    concept: "A clean and calming dental clinic designed to combine efficient clinical functionality with a comfortable patient experience. The layout organizes treatment areas, storage, and reception spaces within a bright and visually connected interior, while soft curves, natural light, and warm details help create a reassuring atmosphere.",
+    styleMaterials: "Contemporary minimalist style with a white and warm neutral palette, seamless white cabinetry, marble-effect wall panels, light porcelain flooring, clear glass partitions, soft beige curtains, rounded ceiling details, black accents, integrated storage, and concealed LED lighting.",
     image: in8_img0,
-    imageAlt: "Interior 09 — design visualization",
+    imageAlt: "Dr. Amal Duaibes Dental Clinic — interior visualization",
   },
   {
     id: "in-dr-raed-medical-center-15",
@@ -640,19 +188,25 @@ export const interiorProjects = [
     tag: "Interior Design",
     category: "Residential" as const,
     serviceSlug: "interior" as const,
+
     image: in9_img0,
-    imageAlt: "Interior 10 — design visualization",
+    imageAlt: "10 — interior visualization",
   },
   {
     id: "in-dr-raya-16",
     orderLabel: "11",
-    title: "11",
-    country: "Palestine",
+    title: "RYA Clinic",
+    country: "Ramallah, Palestine",
     tag: "Interior Design",
     category: "Residential" as const,
     serviceSlug: "interior" as const,
+    projectType: "Physiotherapy Clinic",
+    year: "2026",
+    area: "62 m²",
+    concept: "A warm and welcoming physiotherapy clinic designed to combine functional treatment spaces with a comfortable patient experience. The layout integrates a reception area, treatment room, exercise equipment, and consultation spaces within a compact plan, while curved architectural details and natural light create a calm and reassuring atmosphere.",
+    styleMaterials: "Contemporary soft-minimalist style with warm beige and white finishes, curved wall niches, light wood accents, marble-effect porcelain flooring, white built-in storage, soft upholstered furniture, green branding details, sheer curtains, and warm concealed LED lighting.",
     image: in10_img0,
-    imageAlt: "Interior 11 — design visualization",
+    imageAlt: "RYA Clinic — interior visualization",
   },
   {
     id: "in-dr-salah-17",
@@ -662,8 +216,9 @@ export const interiorProjects = [
     tag: "Interior Design",
     category: "Residential" as const,
     serviceSlug: "interior" as const,
+
     image: in11_img0,
-    imageAlt: "Interior 12 — design visualization",
+    imageAlt: "12 — interior visualization",
   },
   {
     id: "in-dunats-19",
@@ -673,8 +228,9 @@ export const interiorProjects = [
     tag: "Interior Design",
     category: "Residential" as const,
     serviceSlug: "interior" as const,
+
     image: in12_img0,
-    imageAlt: "Interior 13 — design visualization",
+    imageAlt: "13 — interior visualization",
   },
   {
     id: "in-fared-malabes-20",
@@ -684,8 +240,9 @@ export const interiorProjects = [
     tag: "Interior Design",
     category: "Residential" as const,
     serviceSlug: "interior" as const,
+
     image: in13_img0,
-    imageAlt: "Interior 14 — design visualization",
+    imageAlt: "14 — interior visualization",
   },
   {
     id: "in-fareed-bridal-shop-21",
@@ -695,8 +252,9 @@ export const interiorProjects = [
     tag: "Interior Design",
     category: "Residential" as const,
     serviceSlug: "interior" as const,
+
     image: in14_img0,
-    imageAlt: "Interior 15 — design visualization",
+    imageAlt: "15 — interior visualization",
   },
   {
     id: "in-ghaleb-22",
@@ -706,30 +264,41 @@ export const interiorProjects = [
     tag: "Interior Design",
     category: "Residential" as const,
     serviceSlug: "interior" as const,
+
     image: in15_img0,
-    imageAlt: "Interior 16 — design visualization",
+    imageAlt: "16 — interior visualization",
   },
   {
     id: "in-ghaleb-23",
     orderLabel: "17",
-    title: "17",
-    country: "Palestine",
+    title: "LEEN Medical",
+    country: "Ramallah, Palestine",
     tag: "Interior Design",
     category: "Residential" as const,
     serviceSlug: "interior" as const,
+    projectType: "Office Interior Design",
+    year: "2023",
+    area: "140 m²",
+    concept: "A modern medical office designed to create a professional, efficient, and visually connected workplace. Transparent glass partitions with integrated blinds provide privacy while maintaining natural light and visual continuity, allowing the offices, meeting areas, and circulation spaces to function as one cohesive environment.",
+    styleMaterials: "Contemporary professional style with white walls, light wood doors and wall panels, black-framed glass partitions, integrated horizontal blinds, large porcelain floor tiles, dark gray accents, warm wood cabinetry, built-in shelving, black track lighting, and indoor greenery.",
     image: in16_img0,
-    imageAlt: "Interior 17 — design visualization",
+    imageAlt: "LEEN Medical — interior visualization",
   },
   {
     id: "in-howida-cottage-28",
     orderLabel: "18",
-    title: "18",
-    country: "Palestine",
+    title: "KOOKH",
+    country: "Ramallah, Palestine",
     tag: "Interior Design",
     category: "Residential" as const,
     serviceSlug: "interior" as const,
+    projectType: "Rural Cottage",
+    year: "2018",
+    area: "210 m²",
+    concept: "A warm rural cottage designed as a peaceful retreat that celebrates natural materials, generous volumes, and the comfort of traditional living. The interior is organized around a central stone fireplace, with an open living area, a cozy bedroom, and carefully framed views that enhance the connection with the surrounding landscape.",
+    styleMaterials: "Rustic contemporary style with natural stone walls, reclaimed wood wall and ceiling finishes, exposed structural beams, warm timber flooring, a traditional stone fireplace, wrought-iron lighting fixtures, woven textiles, soft neutral upholstery, and handcrafted decorative elements.",
     image: in17_img0,
-    imageAlt: "Interior 18 — design visualization",
+    imageAlt: "KOOKH — interior visualization",
   },
   {
     id: "in-howida-living-room-render-s-29",
@@ -739,8 +308,9 @@ export const interiorProjects = [
     tag: "Interior Design",
     category: "Residential" as const,
     serviceSlug: "interior" as const,
+
     image: in18_img0,
-    imageAlt: "Interior 19 — design visualization",
+    imageAlt: "19 — interior visualization",
   },
   {
     id: "in-howida-master-bed-room-render-s-31",
@@ -750,19 +320,25 @@ export const interiorProjects = [
     tag: "Interior Design",
     category: "Residential" as const,
     serviceSlug: "interior" as const,
+
     image: in19_img0,
-    imageAlt: "Interior 20 — design visualization",
+    imageAlt: "20 — interior visualization",
   },
   {
     id: "in-howida-3th-floor-option-32",
     orderLabel: "21",
-    title: "21",
-    country: "Palestine",
+    title: "Master Bedroom",
+    country: "Ramallah, Palestine",
     tag: "Interior Design",
     category: "Residential" as const,
     serviceSlug: "interior" as const,
+    projectType: "Modern Bohemian Interior Design",
+    year: "2018",
+    area: "210 m²",
+    concept: "A warm and atmospheric master bedroom designed as a private retreat that combines comfort, natural textures, and a relaxed bohemian character. The space integrates the sleeping area with a cozy lounge corner and dressing zone, while curved partitions, woven screens, and soft lighting create a sense of intimacy and visual harmony.",
+    styleMaterials: "Modern Bohemian style with earthy beige and brown tones, textured plaster walls, natural wood ceiling beams, woven cane panels, warm timber flooring, exposed stone walls, soft linen bedding, layered rugs, rattan pendant lights, sculptural wall sconces, and concealed indirect lighting.",
     image: in20_img0,
-    imageAlt: "Interior 21 — design visualization",
+    imageAlt: "Master Bedroom — interior visualization",
   },
   {
     id: "in-kitchen-omar-34",
@@ -772,8 +348,9 @@ export const interiorProjects = [
     tag: "Interior Design",
     category: "Residential" as const,
     serviceSlug: "interior" as const,
+
     image: in21_img0,
-    imageAlt: "Interior 22 — design visualization",
+    imageAlt: "22 — interior visualization",
   },
   {
     id: "in-market-38",
@@ -783,8 +360,9 @@ export const interiorProjects = [
     tag: "Interior Design",
     category: "Residential" as const,
     serviceSlug: "interior" as const,
+
     image: in22_img0,
-    imageAlt: "Interior 23 — design visualization",
+    imageAlt: "23 — interior visualization",
   },
   {
     id: "in-mohammad-nassrallah-39",
@@ -794,8 +372,9 @@ export const interiorProjects = [
     tag: "Interior Design",
     category: "Residential" as const,
     serviceSlug: "interior" as const,
+
     image: in23_img0,
-    imageAlt: "Interior 24 — design visualization",
+    imageAlt: "24 — interior visualization",
   },
   {
     id: "in-motaz-falah-41",
@@ -805,8 +384,9 @@ export const interiorProjects = [
     tag: "Interior Design",
     category: "Residential" as const,
     serviceSlug: "interior" as const,
+
     image: in24_img0,
-    imageAlt: "Interior 25 — design visualization",
+    imageAlt: "25 — interior visualization",
   },
   {
     id: "in-nevada-bath-45",
@@ -816,8 +396,9 @@ export const interiorProjects = [
     tag: "Interior Design",
     category: "Residential" as const,
     serviceSlug: "interior" as const,
+
     image: in25_img0,
-    imageAlt: "Interior 26 — design visualization",
+    imageAlt: "26 — interior visualization",
   },
   {
     id: "in-nizzar-laserroom-47",
@@ -827,8 +408,9 @@ export const interiorProjects = [
     tag: "Interior Design",
     category: "Residential" as const,
     serviceSlug: "interior" as const,
+
     image: in26_img0,
-    imageAlt: "Interior 27 — design visualization",
+    imageAlt: "27 — interior visualization",
   },
   {
     id: "in-nizzar-showroom-48",
@@ -838,8 +420,9 @@ export const interiorProjects = [
     tag: "Interior Design",
     category: "Residential" as const,
     serviceSlug: "interior" as const,
+
     image: in27_img0,
-    imageAlt: "Interior 28 — design visualization",
+    imageAlt: "28 — interior visualization",
   },
   {
     id: "in-rabee-decor-49",
@@ -849,8 +432,9 @@ export const interiorProjects = [
     tag: "Interior Design",
     category: "Residential" as const,
     serviceSlug: "interior" as const,
+
     image: in28_img0,
-    imageAlt: "Interior 29 — design visualization",
+    imageAlt: "29 — interior visualization",
   },
   {
     id: "in-rami-render-50",
@@ -860,8 +444,9 @@ export const interiorProjects = [
     tag: "Interior Design",
     category: "Residential" as const,
     serviceSlug: "interior" as const,
+
     image: in29_img0,
-    imageAlt: "Interior 30 — design visualization",
+    imageAlt: "30 — interior visualization",
   },
   {
     id: "in-saleh-bedroom-52",
@@ -871,8 +456,9 @@ export const interiorProjects = [
     tag: "Interior Design",
     category: "Residential" as const,
     serviceSlug: "interior" as const,
+
     image: in30_img0,
-    imageAlt: "Interior 31 — design visualization",
+    imageAlt: "31 — interior visualization",
   },
   {
     id: "in-saleh-pizza-53",
@@ -882,8 +468,9 @@ export const interiorProjects = [
     tag: "Interior Design",
     category: "Residential" as const,
     serviceSlug: "interior" as const,
+
     image: in31_img0,
-    imageAlt: "Interior 32 — design visualization",
+    imageAlt: "32 — interior visualization",
   },
   {
     id: "in-saqer-54",
@@ -893,8 +480,9 @@ export const interiorProjects = [
     tag: "Interior Design",
     category: "Residential" as const,
     serviceSlug: "interior" as const,
+
     image: in32_img0,
-    imageAlt: "Interior 33 — design visualization",
+    imageAlt: "33 — interior visualization",
   },
   {
     id: "in-saqer-55",
@@ -904,8 +492,9 @@ export const interiorProjects = [
     tag: "Interior Design",
     category: "Residential" as const,
     serviceSlug: "interior" as const,
+
     image: in33_img0,
-    imageAlt: "Interior 34 — design visualization",
+    imageAlt: "34 — interior visualization",
   },
   {
     id: "in-tarifi-59",
@@ -915,8 +504,9 @@ export const interiorProjects = [
     tag: "Interior Design",
     category: "Residential" as const,
     serviceSlug: "interior" as const,
+
     image: in34_img0,
-    imageAlt: "Interior 35 — design visualization",
+    imageAlt: "35 — interior visualization",
   },
   {
     id: "in-tarifi-apartment-61",
@@ -926,50 +516,8 @@ export const interiorProjects = [
     tag: "Interior Design",
     category: "Residential" as const,
     serviceSlug: "interior" as const,
+
     image: in35_img0,
-    imageAlt: "Interior 36 — design visualization",
+    imageAlt: "36 — interior visualization",
   },
 ];
-
-const interiorGalleryById: Record<string, StaticImageData[]> = {
-  ["in-62"]: [in0_img0, in0_img1, in0_img2, in0_img3, in0_img4, in0_img5, in0_img6, in0_img7, in0_img8, in0_img9, in0_img10, in0_img11, in0_img12, in0_img13, in0_img14, in0_img15, in0_img16, in0_img17, in0_img18, in0_img19, in0_img20, in0_img21],
-  ["in-ala-absi-2"]: [in1_img0, in1_img1, in1_img2, in1_img3, in1_img4, in1_img5, in1_img6, in1_img7, in1_img8, in1_img9, in1_img10, in1_img11, in1_img12],
-  ["in-baha-ahmad-7"]: [in2_img0, in2_img1, in2_img2, in2_img3, in2_img4, in2_img5, in2_img6, in2_img7, in2_img8, in2_img9, in2_img10, in2_img11, in2_img12],
-  ["in-barber-shop-9"]: [in3_img0, in3_img1, in3_img2, in3_img3, in3_img4, in3_img5, in3_img6, in3_img7],
-  ["in-batool-10"]: [in4_img0, in4_img1, in4_img2, in4_img3, in4_img4, in4_img5, in4_img6, in4_img7, in4_img8, in4_img9, in4_img10, in4_img11],
-  ["in-coco-nails-11"]: [in5_img0, in5_img1, in5_img2, in5_img3, in5_img4, in5_img5, in5_img6, in5_img7, in5_img8, in5_img9, in5_img10, in5_img11],
-  ["in-diaaab-11"]: [in6_img0, in6_img1, in6_img2, in6_img3, in6_img4, in6_img5, in6_img6, in6_img7, in6_img8, in6_img9, in6_img10],
-  ["in-dr-abed-el9ader-12"]: [in7_img0, in7_img1, in7_img2, in7_img3, in7_img4, in7_img5, in7_img6, in7_img7, in7_img8, in7_img9, in7_img10, in7_img11, in7_img12],
-  ["in-dr-amal-duaibes-13"]: [in8_img0, in8_img1, in8_img2, in8_img3, in8_img4, in8_img5, in8_img6, in8_img7, in8_img8, in8_img9, in8_img10, in8_img11, in8_img12, in8_img13, in8_img14, in8_img15, in8_img16, in8_img17, in8_img18, in8_img19, in8_img20],
-  ["in-dr-raed-medical-center-15"]: [in9_img0, in9_img1, in9_img2, in9_img3, in9_img4, in9_img5, in9_img6, in9_img7, in9_img8, in9_img9, in9_img10, in9_img11, in9_img12],
-  ["in-dr-raya-16"]: [in10_img0, in10_img1, in10_img2, in10_img3, in10_img4, in10_img5, in10_img6, in10_img7, in10_img8, in10_img9, in10_img10, in10_img11, in10_img12, in10_img13, in10_img14, in10_img15, in10_img16, in10_img17],
-  ["in-dr-salah-17"]: [in11_img0, in11_img1, in11_img2, in11_img3, in11_img4, in11_img5, in11_img6, in11_img7, in11_img8, in11_img9, in11_img10, in11_img11, in11_img12, in11_img13, in11_img14, in11_img15, in11_img16, in11_img17, in11_img18, in11_img19, in11_img20],
-  ["in-dunats-19"]: [in12_img0, in12_img1, in12_img2, in12_img3, in12_img4, in12_img5, in12_img6, in12_img7, in12_img8, in12_img9, in12_img10, in12_img11],
-  ["in-fared-malabes-20"]: [in13_img0, in13_img1, in13_img2, in13_img3, in13_img4, in13_img5, in13_img6, in13_img7, in13_img8],
-  ["in-fareed-bridal-shop-21"]: [in14_img0, in14_img1, in14_img2, in14_img3, in14_img4, in14_img5, in14_img6, in14_img7, in14_img8, in14_img9, in14_img10, in14_img11],
-  ["in-ghaleb-22"]: [in15_img0, in15_img1, in15_img2, in15_img3, in15_img4, in15_img5, in15_img6, in15_img7, in15_img8, in15_img9, in15_img10, in15_img11],
-  ["in-ghaleb-23"]: [in16_img0, in16_img1, in16_img2, in16_img3, in16_img4, in16_img5, in16_img6, in16_img7, in16_img8, in16_img9, in16_img10, in16_img11, in16_img12, in16_img13, in16_img14, in16_img15],
-  ["in-howida-cottage-28"]: [in17_img0, in17_img1, in17_img2, in17_img3, in17_img4, in17_img5, in17_img6, in17_img7, in17_img8, in17_img9, in17_img10, in17_img11, in17_img12, in17_img13, in17_img14, in17_img15],
-  ["in-howida-living-room-render-s-29"]: [in18_img0, in18_img1, in18_img2, in18_img3, in18_img4, in18_img5, in18_img6, in18_img7, in18_img8, in18_img9, in18_img10, in18_img11, in18_img12, in18_img13, in18_img14, in18_img15, in18_img16, in18_img17, in18_img18, in18_img19, in18_img20],
-  ["in-howida-master-bed-room-render-s-31"]: [in19_img0, in19_img1, in19_img2, in19_img3, in19_img4, in19_img5, in19_img6, in19_img7, in19_img8, in19_img9, in19_img10, in19_img11, in19_img12, in19_img13, in19_img14, in19_img15, in19_img16, in19_img17, in19_img18, in19_img19, in19_img20, in19_img21, in19_img22, in19_img23, in19_img24, in19_img25, in19_img26, in19_img27],
-  ["in-howida-3th-floor-option-32"]: [in20_img0, in20_img1, in20_img2, in20_img3, in20_img4, in20_img5, in20_img6, in20_img7, in20_img8, in20_img9, in20_img10, in20_img11, in20_img12, in20_img13],
-  ["in-kitchen-omar-34"]: [in21_img0, in21_img1, in21_img2, in21_img3, in21_img4, in21_img5, in21_img6, in21_img7, in21_img8],
-  ["in-market-38"]: [in22_img0, in22_img1, in22_img2, in22_img3, in22_img4, in22_img5, in22_img6, in22_img7, in22_img8, in22_img9, in22_img10, in22_img11, in22_img12, in22_img13, in22_img14, in22_img15, in22_img16],
-  ["in-mohammad-nassrallah-39"]: [in23_img0, in23_img1, in23_img2, in23_img3, in23_img4, in23_img5, in23_img6, in23_img7, in23_img8, in23_img9, in23_img10, in23_img11, in23_img12, in23_img13, in23_img14],
-  ["in-motaz-falah-41"]: [in24_img0, in24_img1, in24_img2, in24_img3, in24_img4, in24_img5, in24_img6, in24_img7, in24_img8, in24_img9, in24_img10, in24_img11, in24_img12, in24_img13],
-  ["in-nevada-bath-45"]: [in25_img0, in25_img1, in25_img2, in25_img3, in25_img4, in25_img5, in25_img6, in25_img7, in25_img8, in25_img9, in25_img10, in25_img11, in25_img12],
-  ["in-nizzar-laserroom-47"]: [in26_img0, in26_img1, in26_img2, in26_img3, in26_img4, in26_img5, in26_img6, in26_img7, in26_img8, in26_img9, in26_img10, in26_img11, in26_img12, in26_img13, in26_img14, in26_img15],
-  ["in-nizzar-showroom-48"]: [in27_img0, in27_img1, in27_img2, in27_img3, in27_img4, in27_img5, in27_img6, in27_img7, in27_img8, in27_img9, in27_img10, in27_img11, in27_img12, in27_img13],
-  ["in-rabee-decor-49"]: [in28_img0, in28_img1, in28_img2, in28_img3, in28_img4, in28_img5, in28_img6, in28_img7, in28_img8, in28_img9, in28_img10, in28_img11, in28_img12, in28_img13, in28_img14],
-  ["in-rami-render-50"]: [in29_img0, in29_img1, in29_img2, in29_img3, in29_img4, in29_img5, in29_img6, in29_img7, in29_img8, in29_img9, in29_img10, in29_img11, in29_img12, in29_img13, in29_img14],
-  ["in-saleh-bedroom-52"]: [in30_img0, in30_img1, in30_img2, in30_img3, in30_img4, in30_img5, in30_img6, in30_img7, in30_img8, in30_img9],
-  ["in-saleh-pizza-53"]: [in31_img0, in31_img1, in31_img2, in31_img3, in31_img4, in31_img5, in31_img6, in31_img7, in31_img8, in31_img9, in31_img10, in31_img11, in31_img12, in31_img13, in31_img14, in31_img15, in31_img16, in31_img17],
-  ["in-saqer-54"]: [in32_img0, in32_img1, in32_img2, in32_img3, in32_img4, in32_img5, in32_img6, in32_img7, in32_img8, in32_img9, in32_img10, in32_img11],
-  ["in-saqer-55"]: [in33_img0, in33_img1, in33_img2, in33_img3, in33_img4, in33_img5, in33_img6, in33_img7, in33_img8],
-  ["in-tarifi-59"]: [in34_img0, in34_img1, in34_img2, in34_img3, in34_img4, in34_img5, in34_img6, in34_img7, in34_img8, in34_img9, in34_img10, in34_img11, in34_img12, in34_img13, in34_img14, in34_img15, in34_img16, in34_img17, in34_img18, in34_img19, in34_img20],
-  ["in-tarifi-apartment-61"]: [in35_img0, in35_img1, in35_img2, in35_img3, in35_img4, in35_img5, in35_img6, in35_img7, in35_img8, in35_img9, in35_img10, in35_img11, in35_img12, in35_img13],
-};
-
-export function getInteriorProjectGalleryImages(projectId: string): StaticImageData[] | undefined {
-  return interiorGalleryById[projectId];
-}

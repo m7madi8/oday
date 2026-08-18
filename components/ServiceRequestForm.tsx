@@ -567,16 +567,16 @@ function SubmitFooter({
         <button
           type="submit"
           disabled={isSubmitting || submitted}
-          className="label-upper inline-flex shrink-0 items-center justify-center rounded-full border border-gold/50 bg-gold/15 px-8 py-3.5 text-ink-primary transition-[background-color,border-color,transform] hover:bg-gold/25 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
+          className="btn btn--primary shrink-0"
         >
           {isSubmitting ? "Sending…" : submitted ? "Email sent" : "Submit via email"}
         </button>
         <button
           type="button"
           onClick={onWhatsApp}
-          className="label-upper inline-flex shrink-0 items-center justify-center gap-2 rounded-full border border-emerald-400/45 bg-emerald-500/15 px-8 py-3.5 text-ink-primary transition-[background-color,border-color,transform] hover:bg-emerald-500/25 active:scale-[0.99]"
+          className="btn shrink-0 border-emerald-400/45 bg-emerald-500/15 text-ink-primary hover:border-emerald-400/60 hover:bg-emerald-500/25"
         >
-          <MessageCircle className="h-4 w-4" aria-hidden />
+          <MessageCircle className="btn__icon" aria-hidden />
           Send via WhatsApp
         </button>
       </div>

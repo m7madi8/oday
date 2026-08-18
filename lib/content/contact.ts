@@ -1,4 +1,4 @@
-import exteriorImage from "@/imgs/exterior.jpg";
+import contactBackgroundImage from "@/imgs/Exterior/Villa/dr salah villa V 18/ODAY_result.webp";
 
 export interface ContactChannel {
   label: string;
@@ -11,8 +11,8 @@ export const contact = {
   description:
     "Share your goals and timeline. We will return with a strategic direction, scope model, and execution path.",
   ctaLabel: "Book Discovery Call",
-  backgroundImage: exteriorImage,
-  backgroundAlt: "Contemporary exterior architecture in Ramallah",
+  backgroundImage: contactBackgroundImage,
+  backgroundAlt: "V Villa — contemporary exterior at dusk, Ramallah",
   items: [
     {
       label: "Location",

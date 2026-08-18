@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { fraunces } from "./fonts";
 import "./globals.css";
 import { DeferredClientShell } from "@/components/DeferredClientShell";
 import { Navigation } from "@/components/Navigation";
@@ -20,12 +21,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className={fraunces.variable} suppressHydrationWarning>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://api.fontshare.com" />
+        <link rel="preconnect" href="https://cdn.fontshare.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Philosopher:ital,wght@0,400;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@200;300;400&display=swap"
+          href="https://api.fontshare.com/v2/css?f[]=general-sans@200,300,400,500&display=swap"
           rel="stylesheet"
         />
       </head>
@@ -33,6 +34,9 @@ export default function RootLayout({
         className="min-h-screen bg-bg-primary font-sans font-light text-ink-primary"
         suppressHydrationWarning
       >
+        <a href="#main-content" className="skip-link">
+          Skip to content
+        </a>
         <DeferredClientShell />
         <div aria-hidden className="grain-layer pointer-events-none fixed inset-0 z-[1]" />
         <Navigation />

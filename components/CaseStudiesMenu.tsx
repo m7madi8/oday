@@ -1,6 +1,7 @@
 "use client";
 
 import { services } from "@/lib/content/services";
+import { exteriorProjectTypes, exteriorTypeLabel } from "@/lib/data";
 import type { ServiceSlug } from "@/lib/content/types";
 import { ArrowUpRight, ChevronLeft, X } from "lucide-react";
 import Link from "next/link";
@@ -16,12 +17,10 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 
-const EXTERIOR_SECTIONS = [
-  { type: "villas", label: "Villas" },
-  { type: "residential-buildings", label: "Residential Buildings" },
-  { type: "cottage", label: "Cottage" },
-  { type: "landscape", label: "Landscape" },
-] as const;
+const EXTERIOR_SECTIONS = exteriorProjectTypes.map((type) => ({
+  type,
+  label: exteriorTypeLabel(type),
+}));
 
 const MOBILE_BP = 640;
 const VIEWPORT_GUTTER = 20;
