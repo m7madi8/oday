@@ -12,6 +12,7 @@ import {
   exteriorTypeLabel,
   projectDetailPath,
   resolveProjectGalleryFormat,
+  serviceFilterLabel,
   type Project,
 } from "@/lib/data";
 import { ArrowUpRight } from "lucide-react";
@@ -190,6 +191,7 @@ function GridCard({
 }) {
   const reduceMotion = useReducedMotion();
   const shouldAnimate = batchAnimate && !reduceMotion;
+  const serviceLabel = serviceFilterLabel(project.serviceSlug);
 
   return (
     <motion.article
