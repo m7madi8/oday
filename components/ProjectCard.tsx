@@ -12,7 +12,6 @@ import {
   exteriorTypeLabel,
   projectDetailPath,
   resolveProjectGalleryFormat,
-  serviceFilterLabel,
   type Project,
 } from "@/lib/data";
 import { ArrowUpRight } from "lucide-react";
@@ -50,7 +49,6 @@ export function ProjectCard({
   project,
   variant,
   index = 0,
-  featuredTier = "cell",
   section = "exterior",
   ratio,
   batchAnimate = false,
@@ -192,7 +190,6 @@ function GridCard({
 }) {
   const reduceMotion = useReducedMotion();
   const shouldAnimate = batchAnimate && !reduceMotion;
-  const serviceLabel = serviceFilterLabel(project.serviceSlug);
 
   return (
     <motion.article
@@ -269,7 +266,6 @@ function GridCard({
 }
 
 function FeaturedCard({ project, index }: { project: Project; index: number }) {
-  const serviceLabel = serviceFilterLabel(project.serviceSlug);
   const categoryLabel =
     project.serviceSlug === "exterior" && project.exteriorType
       ? exteriorTypeLabel(project.exteriorType)

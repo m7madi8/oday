@@ -2,7 +2,6 @@ import type { StaticImageData } from "next/image";
 import aboutImage from "@/imgs/about.jpg";
 import exteriorImage from "@/imgs/exterior.jpg";
 import interiorImage from "@/imgs/interior.jpg";
-import landscapeImage from "@/imgs/landscape.jpg";
 import { cottageProjects } from "@/lib/exterior-cottage-projects";
 import { landscapeProjects } from "@/lib/exterior-landscape-projects";
 import { residentialBuildingProjects } from "@/lib/exterior-residential-projects";
