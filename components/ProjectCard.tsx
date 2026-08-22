@@ -54,7 +54,6 @@ export function ProjectCard({
   variant,
   index = 0,
   section = "exterior",
-  ratio,
   tone,
   span,
   batchAnimate = false,
