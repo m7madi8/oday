@@ -1,7 +1,12 @@
 import type { StaticImageData } from "next/image";
 import type { ServiceSlug } from "@/lib/content/types";
 import exteriorServiceImage from "@/imgs/Exterior/Villa/villa 12 bh/ODAY_result.webp";
+import exteriorSlide2 from "@/imgs/Exterior/Villa/villa 10 viv/ODAY_result.webp";
+import exteriorSlide3 from "@/imgs/Exterior/Villa/hASSAN SALAMEH 27/ODAY_result.webp";
 import interiorServiceImage from "@/imgs/Interior/batool 10/ODAY_result.webp";
+import interiorSlide2 from "@/imgs/Interior/Howida  Living Room Render's 29/ODAY_result.webp";
+import interiorSlide3 from "@/imgs/Interior/tarifi apartment 61/oday_result.webp";
+import interiorSlide4 from "@/imgs/Interior/saleh bedroom 52/oday_result.webp";
 import aiServiceImage from "@/imgs/Interior/dr amal duaibes 13/ODAY_result.webp";
 import droneServiceImage from "@/imgs/Exterior/landscape/mohammad ram 40/oday_result.webp";
 import villaGalleryImage from "@/imgs/Exterior/Villa/villa 10 viv/ODAY_result.webp";
@@ -12,6 +17,12 @@ import featuredGalleryImage from "@/imgs/Exterior/Villa/hASSAN SALAMEH 27/ODAY_r
 import { aiDesignVideos } from "@/lib/content/ai-design-videos";
 import { droneVideos } from "@/lib/content/drone-videos";
 
+export type ServiceVisualSlide = {
+  src: StaticImageData;
+  alt: string;
+  objectPosition: string;
+};
+
 export type ServiceVisualAsset = {
   src: StaticImageData;
   alt: string;
@@ -19,6 +30,7 @@ export type ServiceVisualAsset = {
   videoSrc?: string;
   videoStartAt?: number;
   videoDuration?: number;
+  slides?: readonly ServiceVisualSlide[];
 };
 
 const aiFeaturedVideo = aiDesignVideos.find((v) => v.featured)?.src ?? aiDesignVideos[0]?.src;
@@ -30,11 +42,55 @@ export const serviceVisualBySlug: Record<ServiceSlug, ServiceVisualAsset> = {
     src: exteriorServiceImage,
     alt: "B.H Villa — exterior design case study",
     objectPosition: "50% 42%",
+    slides: [
+      {
+        src: exteriorServiceImage,
+        alt: "B.H Villa — exterior design case study",
+        objectPosition: "52% 36%",
+      },
+      {
+        src: exteriorSlide2,
+        alt: "V I V villa — exterior design",
+        objectPosition: "44% 42%",
+      },
+      {
+        src: exteriorSlide3,
+        alt: "HOUSE OF SUN — exterior design",
+        objectPosition: "50% 40%",
+      },
+      {
+        src: residentialGalleryImage,
+        alt: "Residential building — exterior design",
+        objectPosition: "50% 38%",
+      },
+    ],
   },
   interior: {
     src: interiorServiceImage,
     alt: "Batool interior — premium material and lighting study",
     objectPosition: "50% 40%",
+    slides: [
+      {
+        src: interiorServiceImage,
+        alt: "Batool interior — premium material and lighting study",
+        objectPosition: "50% 40%",
+      },
+      {
+        src: interiorSlide2,
+        alt: "Living room interior — material and light",
+        objectPosition: "50% 42%",
+      },
+      {
+        src: interiorSlide3,
+        alt: "Apartment interior — residential living",
+        objectPosition: "48% 40%",
+      },
+      {
+        src: interiorSlide4,
+        alt: "Master bedroom interior",
+        objectPosition: "50% 38%",
+      },
+    ],
   },
   "architecture-ai": {
     src: aiServiceImage,

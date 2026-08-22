@@ -1,14 +1,14 @@
 "use client";
 
-import { PortfolioMasonryRowView } from "@/components/portfolio/PortfolioMasonryRow";
+import { ProjectCard } from "@/components/ProjectCard";
 import { GalleryGoldLine, GalleryReveal } from "@/components/animations/GalleryMotion";
-import { buildPortfolioMasonryRows } from "@/lib/portfolio-masonry-layout";
+import { buildGalleryBands } from "@/lib/portfolio-masonry-layout";
 import type { PortfolioSectionId } from "@/lib/project-card-ratio";
 import type { Project } from "@/lib/data";
 import { useEffect, useMemo, useRef, useState } from "react";
 
-const INITIAL_VISIBLE_ROWS = 4;
-const ROWS_PER_PAGE = 4;
+const INITIAL_VISIBLE_BANDS = 4;
+const BANDS_PER_PAGE = 4;
 
 const SECTION_COPY: Record<
   PortfolioSectionId,
@@ -34,33 +34,33 @@ export function PortfolioMasonrySection({
   className?: string;
 }) {
   const copy = SECTION_COPY[section];
-  const rows = useMemo(() => buildPortfolioMasonryRows(projects), [projects]);
-  const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_ROWS);
+  const bands = useMemo(() => buildGalleryBands(projects), [projects]);
+  const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_BANDS);
   const sentinelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setVisibleCount(INITIAL_VISIBLE_ROWS);
+    setVisibleCount(INITIAL_VISIBLE_BANDS);
   }, [projects]);
 
   useEffect(() => {
-    if (visibleCount >= rows.length) return;
+    if (visibleCount >= bands.length) return;
     const el = sentinelRef.current;
     if (!el) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setVisibleCount((count) => Math.min(count + ROWS_PER_PAGE, rows.length));
+          setVisibleCount((count) => Math.min(count + BANDS_PER_PAGE, bands.length));
         }
       },
       { rootMargin: "900px 0px" },
     );
     observer.observe(el);
     return () => observer.disconnect();
-  }, [visibleCount, rows.length]);
+  }, [visibleCount, bands.length]);
 
   if (projects.length === 0) return null;
 
-  const visibleRows = rows.slice(0, visibleCount);
+  const visibleBands = bands.slice(0, visibleCount);
 
   return (
     <section
@@ -80,11 +80,25 @@ export function PortfolioMasonrySection({
       </GalleryReveal>
 
       <div className="portfolio-masonry-rows">
-        {visibleRows.map((row, index) => (
-          <PortfolioMasonryRowView key={`${row.kind}-${index}`} row={row} section={section} />
+        {visibleBands.map((band, bandIndex) => (
+          <div
+            key={`${band.kind}-${bandIndex}`}
+            className={`portfolio-band portfolio-band--${band.kind}`}
+          >
+            {band.cells.map((cell) => (
+              <ProjectCard
+                key={cell.project.id}
+                project={cell.project}
+                variant="masonry"
+                section={section}
+                tone={cell.tone}
+                span={cell.span}
+              />
+            ))}
+          </div>
         ))}
       </div>
-      {visibleCount < rows.length ? (
+      {visibleCount < bands.length ? (
         <div ref={sentinelRef} className="h-px w-full" aria-hidden />
       ) : null}
     </section>

@@ -13,8 +13,8 @@ import { AnimatePresence, motion, useReducedMotion } from "@/components/ClientMo
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import aboutShowcaseImage from "@/imgs/about.jpg";
-import interiorShowcaseImage from "@/imgs/interior.jpg";
+import aboutShowcaseImage from "@/imgs/Exterior/Villa/hASSAN SALAMEH 27/ODAY_result.webp";
+import interiorShowcaseImage from "@/imgs/Interior/batool 10/ODAY_result.webp";
 
 const sectionShowcase = [
   {

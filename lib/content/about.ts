@@ -32,5 +32,5 @@ export const about = {
   directorRole: "Founder & Design Director",
   directorPortrait,
   directorPortraitAlt:
-    "Oday Abu Doha, founder and design director of OD Architects, in formal attire",
+    "Oday Abu Doha, founder and design director of OD Architects, reviewing drawings at the studio",
 };

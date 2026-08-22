@@ -1,4 +1,4 @@
-import contactBackgroundImage from "@/imgs/Exterior/Villa/dr salah villa V 18/ODAY_result.webp";
+import contactBackgroundImage from "@/imgs/Exterior/Villa/hASSAN SALAMEH 27/ODAY_result.webp";
 
 export interface ContactChannel {
   label: string;
@@ -12,7 +12,7 @@ export const contact = {
     "Share your goals and timeline. We will return with a strategic direction, scope model, and execution path.",
   ctaLabel: "Book Discovery Call",
   backgroundImage: contactBackgroundImage,
-  backgroundAlt: "V Villa — contemporary exterior at dusk, Ramallah",
+  backgroundAlt: "HOUSE OF SUN — villa courtyards and terraces at dusk, Ramallah",
   items: [
     {
       label: "Location",
@@ -37,13 +37,11 @@ export const footer = {
     "OD Architects transforms complex briefs into high-value assets through design intelligence and engineering rigor.",
   bottomBarLinks: [
     { href: "#top", label: "Home" },
-    { href: "#about", label: "About" },
     { href: "#services", label: "Services" },
     { href: "/projects", label: "Gallery" },
     { href: "#contact", label: "Contact" },
   ] as const,
   homepageLinks: [
-    { href: "#about", label: "About" },
     { href: "/projects", label: "Case Studies" },
     { href: "#services", label: "Solutions" },
     { href: "#contact", label: "Contact" },

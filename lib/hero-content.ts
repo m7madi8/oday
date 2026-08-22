@@ -6,7 +6,7 @@ import heroSlide3 from "@/imgs/Exterior/Villa/nasim shawahneh 42/oday_result.web
 /** Homepage hero copy — kept separate from data.ts to avoid heavy module init cycles. */
 export const hero = {
   headlineEyebrow: "Architecture · Engineering · Delivery",
-  headlineBeforeAccent: "We Design For ",
+  headlineBeforeAccent: "We Design For",
   headlineAccent: "A Better Life",
   headlineSubline:
     "Engineering discipline and design authority — built to elevate assets, environments, and the lives within them.",

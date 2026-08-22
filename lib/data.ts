@@ -1,7 +1,7 @@
 import type { StaticImageData } from "next/image";
-import aboutImage from "@/imgs/about.jpg";
-import exteriorImage from "@/imgs/exterior.jpg";
-import interiorImage from "@/imgs/interior.jpg";
+import aboutImage from "@/imgs/Exterior/Villa/hASSAN SALAMEH 27/ODAY_result.webp";
+import exteriorImage from "@/imgs/Exterior/Villa/villa 12 bh/ODAY_result.webp";
+import interiorImage from "@/imgs/Interior/batool 10/ODAY_result.webp";
 import { cottageProjects } from "@/lib/exterior-cottage-projects";
 import { landscapeProjects } from "@/lib/exterior-landscape-projects";
 import { residentialBuildingProjects } from "@/lib/exterior-residential-projects";
@@ -39,7 +39,6 @@ export const site = {
 };
 
 export const navLinks = [
-  { href: "#about", label: "About" },
   { href: "#services", label: "Solutions" },
   { href: "/projects", label: "Case Studies" },
   { href: "#contact", label: "Contact" },

@@ -7,7 +7,6 @@ function HomeSectionRule() {
   return <div className="home-section-rule" aria-hidden />;
 }
 
-const About = dynamic(() => import("@/components/About").then((m) => ({ default: m.About })));
 const Services = dynamic(() => import("@/components/Services").then((m) => ({ default: m.Services })));
 const FeaturedProjects = dynamic(() =>
   import("@/components/FeaturedProjects").then((m) => ({ default: m.FeaturedProjects })),
@@ -21,12 +20,8 @@ export default function Home() {
       <main id="main-content">
         <Hero />
         <HomeSectionRule />
-        <About />
-        <HomeSectionRule />
         <Services />
-        <HomeSectionRule />
         <FeaturedProjects />
-        <HomeSectionRule />
         <Contact />
       </main>
     </>

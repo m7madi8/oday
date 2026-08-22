@@ -192,21 +192,33 @@ export function Hero() {
           >
             <div className="hero-modern__stats">
               {hero.stats.map((stat, idx) => (
-                <div key={stat.label} className="hero-modern__stat">
+                <motion.div
+                  key={stat.label}
+                  className="hero-modern__stat"
+                  style={{ ["--stat-delay" as string]: `${idx * 0.2}s` }}
+                  initial={reduceMotion ? false : { opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    duration: 0.9,
+                    delay: reduceMotion ? 0 : 1.02 + idx * 0.2,
+                    ease: easeCinematic,
+                  }}
+                >
                   <span className="hero-modern__stat-value">
                     <CounterNumber
                       targetNumber={stat.value}
                       prefix={stat.prefix}
                       suffix={stat.suffix}
-                      delay={reduceMotion ? 0 : idx * 0.22}
-                      duration={reduceMotion ? 0 : 2.15}
+                      delay={reduceMotion ? 0 : idx * 0.2}
+                      duration={reduceMotion ? 0 : 2.4}
                       enabled={statsReady}
                       holdAtZero={!statsReady && !reduceMotion}
                       playOnMount
                     />
                   </span>
+                  <span className="hero-modern__stat-rule" aria-hidden />
                   <span className="hero-modern__stat-label">{stat.label}</span>
-                </div>
+                </motion.div>
               ))}
             </div>
 

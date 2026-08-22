@@ -2,14 +2,14 @@
 
 import { motion, useReducedMotion } from "@/components/ClientMotion";
 import {
-  getProjectCardDescription,
   getProjectCardPill,
+  resolveImageIntrinsic,
   resolveProjectCardRatio,
+  type GalleryCardTone,
   type PortfolioSectionId,
   type ProjectCardRatio,
 } from "@/lib/project-card-ratio";
 import {
-  exteriorTypeLabel,
   projectDetailPath,
   resolveProjectGalleryFormat,
   serviceFilterLabel,
@@ -18,7 +18,6 @@ import {
 import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useCallback, useState, type SyntheticEvent } from "react";
 
 const cardEase = [0.16, 1, 0.3, 1] as const;
 
@@ -38,6 +37,10 @@ type ProjectCardProps = {
   section?: PortfolioSectionId;
   /** Masonry only: when supplied by the row layout, avoids reflow after image load. */
   ratio?: ProjectCardRatio;
+  /** Masonry only: calculated composition tone. */
+  tone?: GalleryCardTone;
+  /** Masonry only: 12-column span. */
+  span?: 4 | 6 | 8 | 12;
   /** Grid only: animate this batch in on mount. */
   batchAnimate?: boolean;
 };
@@ -52,10 +55,12 @@ export function ProjectCard({
   index = 0,
   section = "exterior",
   ratio,
+  tone,
+  span,
   batchAnimate = false,
 }: ProjectCardProps) {
   if (variant === "masonry") {
-    return <MasonryCard project={project} section={section} ratio={ratio} />;
+    return <MasonryCard project={project} section={section} tone={tone} span={span} />;
   }
   if (variant === "featured") {
     return <FeaturedCard project={project} index={index} />;
@@ -79,102 +84,64 @@ function featuredHeadline(project: Project): string {
 function MasonryCard({
   project,
   section,
-  ratio: ratioProp,
+  tone = "frame",
+  span = 4,
 }: {
   project: Project;
   section: PortfolioSectionId;
-  ratio?: ProjectCardRatio;
+  tone?: GalleryCardTone;
+  span?: 4 | 6 | 8 | 12;
 }) {
   const format = resolveProjectGalleryFormat(project);
-  const [ratio, setRatio] = useState<ProjectCardRatio>(
-    ratioProp ?? resolveProjectCardRatio(project.image, format),
-  );
-  const displayRatio = ratioProp ?? ratio;
-
-  const onImageLoad = useCallback(
-    (e: SyntheticEvent<HTMLImageElement>) => {
-      if (ratioProp) return;
-      const img = e.currentTarget;
-      if (!img.naturalWidth || !img.naturalHeight) return;
-      setRatio(img.naturalWidth / img.naturalHeight <= 0.92 ? "portrait" : "landscape");
-    },
-    [ratioProp],
-  );
-
+  const intrinsic = resolveImageIntrinsic(project.image, format);
+  const ratio = resolveProjectCardRatio(project.image, format);
   const pill = getProjectCardPill(project, section);
-  const description = getProjectCardDescription(project);
   const href = projectDetailPath(project);
-  const isPortrait = displayRatio === "portrait";
-
-  const info = (
-    <div
-      className={`project-card__info ${
-        isPortrait ? "project-card__info--overlay" : "project-card__info--below"
-      }`}
-    >
-      <span className="project-card__pill">{pill}</span>
-      <h3 className="project-card__title">
-        <span className="project-card__num" aria-hidden>
-          {project.orderLabel}
-        </span>
-        {project.title}
-      </h3>
-      <p className="project-card__desc">{description}</p>
-    </div>
-  );
-
-  if (isPortrait) {
-    return (
-      <article className="project-card" data-ratio="portrait" data-section={section} id={project.id}>
-        <Link href={href} className="project-card__link project-card__link--portrait">
-          <div className="project-card__media project-card__media--portrait">
-            <Image
-              src={project.image}
-              alt={project.imageAlt}
-              fill
-              className="project-card__img"
-              sizes="(max-width: 640px) 85vw, 280px"
-              onLoad={onImageLoad}
-            />
-            <div className="project-card__shade" aria-hidden />
-            <div className="project-card__hover-veil" aria-hidden />
-            <span className="project-card__hover-cta">
-              View project
-              <ArrowUpRight className="h-3.5 w-3.5" aria-hidden />
-            </span>
-            {info}
-          </div>
-        </Link>
-      </article>
-    );
-  }
 
   return (
     <article
-      className="project-card"
-      data-ratio="landscape"
-      data-ratio-locked={ratioProp ? "true" : undefined}
+      className={`project-card project-card--${tone}`}
+      data-ratio={ratio}
+      data-tone={tone}
+      data-span={span}
       data-section={section}
       id={project.id}
+      style={{ ["--cover-aspect" as string]: intrinsic.aspectRatio }}
     >
-      <Link href={href} className="project-card__link project-card__link--landscape">
-        <div className="project-card__media project-card__media--landscape">
+      <Link href={href} className="project-card__link" aria-label={`View project ${project.title}`}>
+        <div className="project-card__media">
           <Image
             src={project.image}
             alt={project.imageAlt}
             fill
-            className="project-card__img project-card__img--zoom"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 40vw"
-            onLoad={onImageLoad}
+            className="project-card__img"
+            sizes={
+              span >= 8
+                ? "(max-width: 639px) 92vw, (max-width: 1099px) 92vw, 66vw"
+                : "(max-width: 639px) 92vw, (max-width: 1099px) 50vw, 34vw"
+            }
           />
+          {tone === "index" ? (
+            <span className="project-card__display-num" aria-hidden>
+              {project.orderLabel}
+            </span>
+          ) : null}
           <div className="project-card__hover-panel" aria-hidden>
-            <span className="project-card__hover-cta project-card__hover-cta--landscape">
+            <span className="project-card__hover-cta">
               View project
               <ArrowUpRight className="h-4 w-4" aria-hidden />
             </span>
           </div>
+          <div className="project-card__info project-card__info--overlay">
+            <span className="project-card__pill">{pill}</span>
+            <h3 className="project-card__title">
+              <span className="project-card__num" aria-hidden>
+                {project.orderLabel}
+              </span>
+              {project.title}
+            </h3>
+          </div>
         </div>
-        {info}
       </Link>
     </article>
   );
@@ -268,12 +235,7 @@ function GridCard({
 }
 
 function FeaturedCard({ project, index }: { project: Project; index: number }) {
-  const categoryLabel =
-    project.serviceSlug === "exterior" && project.exteriorType
-      ? exteriorTypeLabel(project.exteriorType)
-      : project.tag;
   const headline = featuredHeadline(project);
-  const metaParts = [project.country, project.year].filter(Boolean);
 
   return (
     <article className="feat-card" data-section={project.serviceSlug} id={project.id}>
@@ -286,23 +248,15 @@ function FeaturedCard({ project, index }: { project: Project; index: number }) {
           src={project.image}
           alt={project.imageAlt}
           fill
-          className="feat-card__img object-cover transition-transform duration-700 ease-out group-hover/feat:scale-[1.04]"
-          sizes="(max-width: 1024px) 50vw, 25vw"
-          loading={index < 4 ? "eager" : "lazy"}
+          quality={90}
+          className="feat-card__img object-cover"
+          sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 34vw"
+          style={{ objectPosition: "50% 42%" }}
+          loading={index < 3 ? "eager" : "lazy"}
         />
         <div className="feat-card__shade" aria-hidden />
         <div className="feat-card__overlay">
-          <span className="feat-card__num">{caseNumber(project, index)}</span>
-          <div className="feat-card__copy">
-            <p className="feat-card__tag">{categoryLabel}</p>
-            <h3 className="feat-card__title">{headline}</h3>
-            {metaParts.length > 0 ? (
-              <p className="feat-card__meta">{metaParts.join(" · ")}</p>
-            ) : null}
-          </div>
-          <span className="feat-card__arrow" aria-hidden>
-            <ArrowUpRight strokeWidth={1.5} />
-          </span>
+          <h3 className="feat-card__title">{headline}</h3>
         </div>
       </Link>
     </article>

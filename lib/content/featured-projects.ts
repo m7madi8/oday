@@ -1,10 +1,8 @@
 import { projects, type Project } from "@/lib/data";
 
-/** Homepage anchor — B.H Villa 12 leads the Selected Work editorial spread. */
-export const featuredAnchorProjectId = "vil-villa-12-bh" as const;
-
-/** Supporting case studies — strong exteriors with real project names for a clean editorial grid. */
+/** Homepage selected-work bento — B.H Villa 12 leads, then supporting exteriors. */
 export const featuredProjectIds = [
+  "vil-villa-12-bh",
   "vil-hassan-salameh-27",
   "vil-villa-10-viv",
   "vil-nasim-shawahneh-42",
@@ -22,10 +20,6 @@ export const featuredProjectsSection = {
   ctaLabel: "View full gallery",
   ctaHref: "/projects",
 } as const;
-
-export function getFeaturedAnchorProject(): Project | undefined {
-  return projects.find((project) => project.id === featuredAnchorProjectId);
-}
 
 export function getFeaturedProjects(): Project[] {
   return featuredProjectIds

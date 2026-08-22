@@ -130,7 +130,6 @@ export function DesktopNav({
         onClick={onToggleSearch}
       >
         <Search className="site-nav-search-bar__icon" strokeWidth={1.5} aria-hidden />
-        <span className="site-nav-search-bar__label">Search</span>
       </button>
     </nav>
   );

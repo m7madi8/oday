@@ -1,18 +1,18 @@
 "use client";
 
-import { useReducedMotion } from "@/components/ClientMotion";
+import { motion, useReducedMotion } from "@/components/ClientMotion";
 import {
   projectDetailPath,
   resolveProjectGalleryFormat,
   type Project,
   type ProjectGalleryImage,
 } from "@/lib/data";
-import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-const CROSSFADE_MS = 6000;
+const CROSSFADE_S = 1.65;
+const SLIDE_INTERVAL_MS = 4200;
 
 type FeaturedHeroProjectProps = {
   project: Project;
@@ -24,6 +24,7 @@ export function FeaturedHeroProject({ project }: FeaturedHeroProjectProps) {
     { src: project.image, alt: project.imageAlt, format: resolveProjectGalleryFormat(project) },
   ]);
   const [active, setActive] = useState(0);
+  const [progressKey, setProgressKey] = useState(0);
 
   useEffect(() => {
     let cancelled = false;
@@ -31,7 +32,7 @@ export function FeaturedHeroProject({ project }: FeaturedHeroProjectProps) {
       .then(({ getProjectGallery }) => getProjectGallery(project))
       .then((gallery) => {
         if (cancelled || gallery.length === 0) return;
-        setFrames(gallery.slice(0, 5));
+        setFrames(gallery.slice(0, 6));
       })
       .catch(() => undefined);
     return () => {
@@ -41,61 +42,92 @@ export function FeaturedHeroProject({ project }: FeaturedHeroProjectProps) {
 
   useEffect(() => {
     if (reduceMotion || frames.length < 2) return;
-    const timer = window.setInterval(() => {
+    const id = window.setTimeout(() => {
       setActive((prev) => (prev + 1) % frames.length);
-    }, CROSSFADE_MS);
-    return () => window.clearInterval(timer);
-  }, [frames.length, reduceMotion]);
+      setProgressKey((k) => k + 1);
+    }, SLIDE_INTERVAL_MS);
+    return () => window.clearTimeout(id);
+  }, [active, frames.length, reduceMotion]);
 
   const href = projectDetailPath(project);
+  const meta = [project.country, project.year, project.area].filter(Boolean).join(" · ");
+  const canSlideshow = frames.length > 1 && !reduceMotion;
 
   return (
     <article className="feat-hero" id={project.id} data-section={project.serviceSlug}>
       <Link href={href} className="feat-hero__link" aria-label={`View project ${project.title}`}>
         <div className="feat-hero__media">
-          {frames.map((frame, index) => (
-            <Image
-              key={`${project.id}-${index}`}
-              src={frame.src}
-              alt={frame.alt}
-              fill
-              priority={index === 0}
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              className={`feat-hero__img object-cover transition-opacity duration-[1400ms] ${
-                index === active ? "opacity-100" : "opacity-0"
-              }`}
-            />
-          ))}
+          {frames.map((frame, index) => {
+            const isActive = index === active;
+            return (
+              <motion.div
+                key={`${project.id}-${index}`}
+                className="feat-hero__slide"
+                initial={false}
+                animate={{ opacity: isActive ? 1 : 0 }}
+                transition={
+                  reduceMotion
+                    ? { duration: 0 }
+                    : { opacity: { duration: CROSSFADE_S, ease: [0.22, 1, 0.36, 1] } }
+                }
+                style={{ zIndex: isActive ? 2 : 1 }}
+                aria-hidden={!isActive}
+              >
+                <motion.div
+                  className="feat-hero__ken"
+                  initial={false}
+                  animate={{ scale: canSlideshow && isActive ? 1.07 : 1 }}
+                  transition={{
+                    duration: canSlideshow && isActive ? SLIDE_INTERVAL_MS / 1000 : 0.8,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                >
+                  <Image
+                    src={frame.src}
+                    alt=""
+                    fill
+                    priority={index === 0}
+                    quality={92}
+                    sizes="(max-width: 1023px) 100vw, 96vw"
+                    className="feat-hero__img object-cover"
+                    style={{ objectPosition: "52% 36%" }}
+                  />
+                </motion.div>
+              </motion.div>
+            );
+          })}
 
           <div className="feat-hero__shade" aria-hidden />
 
-          <div className="feat-hero__top">
-            <span className="feat-hero__badge">Featured</span>
-            <span className="feat-hero__index">{project.orderLabel}</span>
-          </div>
-
-          <div className="feat-hero__bottom">
-            <p className="feat-hero__tag">{project.tag}</p>
-            <h3 className="feat-hero__title">{project.title}</h3>
-            <p className="feat-hero__meta">
-              {[project.country, project.year, project.area].filter(Boolean).join(" · ")}
-            </p>
-            <span className="feat-hero__cta">
-              View case study
-              <ArrowUpRight className="feat-hero__cta-icon" strokeWidth={1.5} aria-hidden />
-            </span>
-          </div>
-
-          {frames.length > 1 ? (
-            <div className="feat-hero__dots" aria-hidden>
-              {frames.map((_, index) => (
-                <span
-                  key={index}
-                  className={`feat-hero__dot ${index === active ? "feat-hero__dot--on" : ""}`}
-                />
-              ))}
+          {canSlideshow ? (
+            <div className="feat-hero__ticks" aria-hidden>
+              {frames.map((_, index) => {
+                const isActive = index === active;
+                return (
+                  <span
+                    key={`${project.id}-tick-${index}`}
+                    className={`feat-hero__tick ${isActive ? "is-active" : ""}`}
+                  >
+                    {isActive ? (
+                      <motion.span
+                        key={progressKey}
+                        className="feat-hero__tick-fill"
+                        initial={{ scaleX: 0 }}
+                        animate={{ scaleX: 1 }}
+                        transition={{ duration: SLIDE_INTERVAL_MS / 1000, ease: "linear" }}
+                      />
+                    ) : null}
+                  </span>
+                );
+              })}
             </div>
           ) : null}
+
+          <div className="feat-hero__copy">
+            <p className="feat-hero__badge">Featured</p>
+            <h3 className="feat-hero__title">{project.title}</h3>
+            {meta ? <p className="feat-hero__meta">{meta}</p> : null}
+          </div>
         </div>
       </Link>
     </article>

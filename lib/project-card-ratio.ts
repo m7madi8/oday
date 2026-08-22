@@ -63,6 +63,19 @@ export function getProjectCardPill(project: Project, section: PortfolioSectionId
   return `Exterior · ${project.category}`;
 }
 
+export type GalleryCardTone = "frame" | "plate" | "wide" | "flush" | "index";
+
+/** Editorial variation so the archive reads as a composition, not a repeated template. */
+export function resolveGalleryCardTone(index: number, ratio: ProjectCardRatio): GalleryCardTone {
+  const step = index % 11;
+  if (step === 0 && ratio === "landscape") return "wide";
+  if (step === 0) return "plate";
+  if (step === 3) return "plate";
+  if (step === 6) return "flush";
+  if (step === 8) return "index";
+  return "frame";
+}
+
 export function getProjectCardDescription(project: Project): string {
   if (project.year && project.area) {
     return `${project.country} · ${project.year} · ${project.area}`;

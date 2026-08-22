@@ -1,8 +1,8 @@
 import type { StaticImageData } from "next/image";
-import aboutImage from "@/imgs/about.jpg";
-import exteriorImage from "@/imgs/exterior.jpg";
-import interiorImage from "@/imgs/interior.jpg";
-import landscapeImage from "@/imgs/landscape.jpg";
+import aboutImage from "@/imgs/Exterior/Villa/hASSAN SALAMEH 27/ODAY_result.webp";
+import exteriorImage from "@/imgs/Exterior/Villa/villa 12 bh/ODAY_result.webp";
+import interiorImage from "@/imgs/Interior/batool 10/ODAY_result.webp";
+import landscapeImage from "@/imgs/Exterior/landscape/nibal school 46/oday_result.webp";
 import { cottageGalleryLoaders } from "@/lib/exterior-cottage-gallery-loaders";
 import { landscapeGalleryLoaders } from "@/lib/exterior-landscape-gallery-loaders";
 import { residentialGalleryLoaders } from "@/lib/exterior-residential-gallery-loaders";

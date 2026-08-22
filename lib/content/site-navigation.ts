@@ -1,6 +1,4 @@
 import type { StaticImageData } from "next/image";
-import exteriorImage from "@/imgs/exterior.jpg";
-import directorPortrait from "@/imgs/oday.jpeg";
 import { about } from "@/lib/content/about";
 import { contact } from "@/lib/content/contact";
 import { services } from "@/lib/content/services";
@@ -30,6 +28,8 @@ export interface NavVisualItem {
   videoStartAt?: number;
   /** Preview window length in seconds (default 5). */
   videoDuration?: number;
+  objectFit?: "cover" | "contain";
+  objectPosition?: string;
 }
 
 export interface NavPortraitContent {
@@ -59,18 +59,6 @@ export interface SearchEntry {
   subtitle?: string;
   href: string;
   keywords: string[];
-}
-
-export function getAboutPortrait(): NavPortraitContent {
-  return {
-    name: about.directorName,
-    role: about.directorRole,
-    description:
-      "Architecture, interiors, and engineering under one accountable studio — built for serious developers.",
-    image: directorPortrait,
-    imageAlt: about.directorPortraitAlt,
-    ctaLabel: "Meet the studio",
-  };
 }
 
 export function getGalleryNavItems(): NavVisualItem[] {
@@ -175,51 +163,39 @@ export function getServicesNavItems(): NavVisualItem[] {
 }
 
 export function getContactNavItems(): NavVisualItem[] {
+  const phone = contact.items.find((i) => i.label === "Phone");
+  const email = contact.items.find((i) => i.label === "Email");
+  const location = contact.items.find((i) => i.label === "Location");
+
   return [
     {
-      id: "contact-studio",
-      label: "Studio Location",
-      href: "/#contact",
-      description: `${studioLocation.addressLine2} — visit or request directions.`,
-      image: contact.backgroundImage,
-      imageAlt: contact.backgroundAlt,
-      eyebrow: "Visit",
-    },
-    {
-      id: "contact-directions",
-      label: "Get Directions",
-      href: studioLocation.directionsUrl,
-      description: "Open Google Maps driving directions to the studio.",
-      image: contact.backgroundImage,
-      imageAlt: contact.backgroundAlt,
-      eyebrow: "Maps",
+      id: "contact-phone",
+      label: "Phone",
+      href: phone?.href ?? "tel:+972568123413",
+      description: phone?.value ?? "+972 56-812-3413",
+      image: about.directorPortrait,
+      imageAlt: about.directorPortraitAlt,
+      eyebrow: "Call",
+      objectFit: "contain",
+      objectPosition: "50% 50%",
     },
     {
       id: "contact-email",
       label: "Email",
-      href: contact.items.find((i) => i.label === "Email")?.href ?? "mailto:abodohaoday@gmail.com",
-      description: contact.items.find((i) => i.label === "Email")?.value ?? "",
+      href: email?.href ?? "mailto:abodohaoday@gmail.com",
+      description: email?.value ?? "abodohaoday@gmail.com",
       image: contact.backgroundImage,
       imageAlt: contact.backgroundAlt,
       eyebrow: "Write",
     },
     {
-      id: "contact-phone",
-      label: "Phone",
-      href: contact.items.find((i) => i.label === "Phone")?.href ?? "tel:+972568123413",
-      description: contact.items.find((i) => i.label === "Phone")?.value ?? "",
+      id: "contact-location",
+      label: "Location",
+      href: location?.href ?? studioLocation.directionsUrl,
+      description: location?.value ?? studioLocation.addressLine2,
       image: contact.backgroundImage,
       imageAlt: contact.backgroundAlt,
-      eyebrow: "Call",
-    },
-    {
-      id: "contact-book",
-      label: contact.ctaLabel,
-      href: contact.items.find((i) => i.label === "Email")?.href ?? "mailto:abodohaoday@gmail.com",
-      description: contact.description,
-      image: contact.backgroundImage,
-      imageAlt: contact.backgroundAlt,
-      eyebrow: "Start",
+      eyebrow: "Visit",
     },
   ];
 }
@@ -228,12 +204,11 @@ export function getPrimaryNavPanels(): NavPanelConfig[] {
   return [
     { id: "home", label: "Home", href: "/#top", variant: "none", items: [] },
     {
-      id: "about",
-      label: "About",
-      href: "/#about",
-      variant: "portrait",
-      items: [],
-      portrait: getAboutPortrait(),
+      id: "services",
+      label: "Services",
+      href: "/#services",
+      variant: "mega",
+      items: getServicesNavItems(),
     },
     {
       id: "gallery",
@@ -243,19 +218,12 @@ export function getPrimaryNavPanels(): NavPanelConfig[] {
       items: getGalleryNavItems(),
     },
     {
-      id: "services",
-      label: "Services",
-      href: "/#services",
-      variant: "mega",
-      items: getServicesNavItems(),
-    },
-    {
       id: "contact",
       label: "Contact",
       href: "/#contact",
       variant: "mega",
-      lockStageVisual: true,
       items: getContactNavItems(),
+      lockStageVisual: true,
     },
   ];
 }
@@ -263,21 +231,12 @@ export function getPrimaryNavPanels(): NavPanelConfig[] {
 export function getSiteSections(): NavVisualItem[] {
   return [
     {
-      id: "about",
-      label: "About",
-      href: "/#about",
-      description: "Studio strengths, delivery model, and design culture.",
-      image: about.directorPortrait,
-      imageAlt: about.directorPortraitAlt,
-      eyebrow: "Studio",
-    },
-    {
       id: "services",
       label: "Services",
       href: "/#services",
       description: "Exterior, interior, AI architecture, and drone intelligence.",
-      image: exteriorImage,
-      imageAlt: "Services overview",
+      image: serviceVisualBySlug.exterior.src,
+      imageAlt: serviceVisualBySlug.exterior.alt,
       eyebrow: "Studio",
     },
     {
@@ -287,6 +246,15 @@ export function getSiteSections(): NavVisualItem[] {
       description: "Featured case studies and curated project highlights.",
       image: galleryNavCovers.all.src,
       imageAlt: galleryNavCovers.all.alt,
+      eyebrow: "Studio",
+    },
+    {
+      id: "about",
+      label: "About",
+      href: "/#contact",
+      description: "Oday Abu Doha — founder, studio, and how to start a conversation.",
+      image: about.directorPortrait,
+      imageAlt: about.directorPortraitAlt,
       eyebrow: "Studio",
     },
     {
@@ -311,6 +279,6 @@ export const searchExploreTerms: ReadonlyArray<{ label: string; href: string }> 
   })),
   { label: "Ai architect", href: "/projects?service=architecture-ai" },
   { label: "Architect Dron", href: "/projects?service=architecture-drone" },
-  { label: "About", href: "/#about" },
+  { label: "About", href: "/#contact" },
   { label: "Contact", href: "/#contact" },
 ];

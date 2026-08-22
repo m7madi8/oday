@@ -79,13 +79,16 @@ function NavMegaClip({
   }, [useVideo, item.videoSrc, startAt, duration]);
 
   return (
-    <div className="nav-mega__media">
+    <div className={`nav-mega__media${item.objectFit === "contain" ? " nav-mega__media--contain" : ""}`}>
       <Image
         src={item.image}
         alt={item.imageAlt}
         fill
-        className={`object-cover nav-mega__media-img ${useVideo ? "nav-mega__media-img--under-video" : ""}`}
+        className={`nav-mega__media-img ${
+          item.objectFit === "contain" ? "object-contain nav-mega__media-img--contain" : "object-cover"
+        } ${useVideo ? "nav-mega__media-img--under-video" : ""}`}
         sizes="(max-width: 1024px) 100vw, 52vw"
+        style={item.objectPosition ? { objectPosition: item.objectPosition } : undefined}
         priority={false}
       />
       {useVideo && item.videoSrc ? (
@@ -305,7 +308,9 @@ export function NavMegaPanel({
           id={id}
           role="region"
           aria-label={`${panel.label} menu`}
-          className={`nav-mega ${panel.variant === "portrait" ? "nav-mega--portrait" : ""}`}
+          className={`nav-mega ${panel.variant === "portrait" ? "nav-mega--portrait" : ""}${
+            panel.id === "contact" ? " nav-mega--contact" : ""
+          }`}
           initial={reduceMotion ? false : { opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={reduceMotion ? undefined : { opacity: 0, y: -6 }}

@@ -1,32 +1,26 @@
 "use client";
 
-import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import { submitContactForm } from "@/lib/contact-form";
+import { about as studioAbout } from "@/lib/content/about";
 import { contact, footer } from "@/lib/content/contact";
-import { studioLocation } from "@/lib/content/location";
-import { revealInView, softInView } from "@/lib/motion-viewport";
-import { motion, useReducedMotion } from "@/components/ClientMotion";
-import { Facebook, Instagram, Navigation } from "lucide-react";
+import { Facebook, Instagram } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { SectionHeader, SectionInner, SectionShell } from "@/components/SectionShell";
-
-import brandLogo from "@/imgs/oday-logo.png";
 
 const socialIcons = {
   facebook: Facebook,
   instagram: Instagram,
 } as const;
 
-const glassPill = "btn btn--on-media";
-
-const glassPillGold = "btn btn--on-media-gold";
+const fieldLabel =
+  "font-ui text-xs font-medium uppercase tracking-widest text-gold/70";
+const fieldValue =
+  "mt-3 block font-display text-lg font-light leading-snug text-white md:text-xl";
+const focusRing =
+  "outline-none transition-colors duration-300 focus-visible:text-gold focus-visible:underline focus-visible:decoration-gold/70 focus-visible:underline-offset-4";
 
 export function Contact() {
-  const reduceMotion = useReducedMotion();
-  const email =
-    contact.items.find((i) => i.label === "Email")?.value ?? "abodohaoday@gmail.com";
   const [newsletter, setNewsletter] = useState("");
   const [newsletterHoneypot, setNewsletterHoneypot] = useState("");
   const [newsletterError, setNewsletterError] = useState<string | null>(null);
@@ -61,249 +55,166 @@ export function Contact() {
   }
 
   return (
-    <SectionShell
+    <section
       id="contact"
-      variant="media"
-      /* Locked to the viewport where the composition fits; below that it grows so
-         the CTA and the footer cannot collide inside a clipped panel. */
-      className="min-h-[100svh] lg:h-[100svh] lg:max-h-[100svh]"
+      className="relative overflow-visible border-t border-white/10 bg-[#0A0A0A] pb-8 pt-16 scroll-mt-20 md:pb-10 md:pt-24"
     >
-      <div className="absolute inset-0">
-        <Image
-          src={contact.backgroundImage}
-          alt={contact.backgroundAlt}
-          fill
-          className="object-cover object-[68%_center]"
-          sizes="100vw"
-          loading="lazy"
-        />
-        {/* Full-screen scrim — light mid, stronger only at very top/bottom for type */}
-        <div
-          className="absolute inset-0"
-          aria-hidden
-          style={{
-            background: `
-              linear-gradient(180deg,
-                rgba(12,12,12,0.78) 0%,
-                rgba(12,12,12,0.35) 18%,
-                rgba(12,12,12,0.2) 42%,
-                rgba(10,10,10,0.45) 62%,
-                rgba(8,8,8,0.82) 82%,
-                rgba(6,6,6,0.94) 100%
-              )
-            `,
-          }}
-        />
-      </div>
-
-      {/* True full-viewport stage: CTA grows, footer pinned to bottom edge */}
-      <SectionInner className="relative z-[1] grid h-full min-h-0 grid-rows-[minmax(0,1fr)_auto] pt-[var(--hero-nav-stack)]">
-        {/* ——— Upper stage: CTA fills the open photo ——— */}
-        <ScrollReveal
-          dramatic
-          className="flex h-full min-h-0 flex-col justify-center py-6 md:py-8 lg:py-10"
-        >
-          <div className="max-w-3xl">
-            <SectionHeader
-              align="start"
-              eyebrow="Start Here"
-              title={<span className="text-white">{contact.heading}</span>}
-              description={contact.description}
-              className="[&_.label-upper]:text-white/70 [&_.section-lead]:max-w-[42ch] [&_.section-lead]:text-white/80 [&_.section-title]:max-w-[22ch] [&_.section-title]:text-white"
-              titleClassName="section-title--lead"
+      <div className="mx-auto w-full max-w-7xl px-6 md:px-8 lg:px-10">
+        <header className="mb-12 grid grid-cols-1 items-end gap-8 md:mb-16 md:grid-cols-[minmax(14rem,18rem)_minmax(0,1fr)] md:gap-12 lg:gap-16">
+          <figure className="relative m-0 aspect-[3/4] w-full max-w-[18rem] overflow-hidden border border-white/10 md:max-w-none">
+            <Image
+              src={studioAbout.directorPortrait}
+              alt={studioAbout.directorPortraitAlt}
+              fill
+              sizes="288px"
+              className="object-cover object-[center_18%]"
             />
-            <motion.div
-              className="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:flex-wrap sm:items-center"
-              initial={{ opacity: reduceMotion ? 1 : 0, y: reduceMotion ? 0 : 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={revealInView}
-              transition={{
-                duration: reduceMotion ? 0 : 0.45,
-                delay: reduceMotion ? 0 : 0.1,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-            >
-              <Link href={`mailto:${email}`} className={glassPill} aria-label={contact.ctaLabel}>
-                {contact.ctaLabel}
-              </Link>
-              <a
-                href={studioLocation.directionsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={glassPillGold}
-                aria-label={`Get directions to OD Architects, ${studioLocation.addressLine2}`}
-              >
-                <Navigation className="btn__icon" strokeWidth={1.75} aria-hidden />
-                Get Directions
-              </a>
-            </motion.div>
+            <span
+              className="pointer-events-none absolute bottom-3 right-3 h-5 w-5 border-b border-r border-gold/70"
+              aria-hidden
+            />
+          </figure>
+
+          <div className="max-w-2xl">
+            <p className={fieldLabel}>The Studio</p>
+            <h2 className="mt-3 font-display text-3xl font-light tracking-tight text-white md:text-5xl">
+              {studioAbout.directorName}
+            </h2>
+            <p className="mt-3 font-ui text-xs font-medium uppercase tracking-widest text-white/50">
+              {studioAbout.directorRole}
+            </p>
+            <p className="mt-4 text-sm font-light leading-relaxed text-white/50 md:text-base">
+              {studioAbout.studioTagline}
+            </p>
           </div>
-        </ScrollReveal>
+        </header>
 
-        {/* ——— Lower stage: utility sits on the bottom of the screen ——— */}
-        <footer id="footer" className="relative shrink-0 pb-3 pt-4 md:pb-4 md:pt-5">
-          <motion.div
-            className="flex flex-col gap-4 md:gap-5"
-            initial={{ opacity: 1, y: reduceMotion ? 0 : 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={softInView}
-            transition={{ duration: reduceMotion ? 0 : 0.4 }}
-          >
-            <div className="grid grid-cols-1 gap-5 md:grid-cols-12 md:items-start md:gap-7">
-              {/* Contact channels */}
-              {/* Three columns need ~135px each to hold the email without spilling
-                  into the next channel, so they stack below that. */}
-              <div className="grid grid-cols-1 gap-4 min-[460px]:grid-cols-3 md:col-span-7 md:gap-6">
-                {contact.items.map((item) => (
-                  <div key={item.label} className="min-w-0">
-                    <p className="font-outfit text-[10px] font-medium uppercase tracking-[0.2em] text-white/50">
-                      {item.label}
-                    </p>
-                    {item.href ? (
-                      <a
-                        href={item.href}
-                        className="contact-channel__link mt-1.5 block text-[13px] leading-snug text-white/90 transition-colors hover:text-white md:text-sm"
-                        {...(item.label === "Location"
-                          ? { target: "_blank", rel: "noopener noreferrer" }
-                          : {})}
-                      >
-                        {item.value}
-                      </a>
-                    ) : (
-                      <p className="mt-1.5 text-[13px] leading-snug text-white/90 md:text-sm">
-                        {item.value}
-                      </p>
-                    )}
-                    {item.label === "Location" ? (
-                      <a
-                        href={studioLocation.directionsUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="contact-channel__directions mt-2 inline-flex items-center gap-1.5 font-outfit text-[10px] font-medium uppercase tracking-[0.16em] text-gold/90 transition-colors hover:text-gold"
-                      >
-                        <Navigation className="h-3 w-3" strokeWidth={2} aria-hidden />
-                        Directions
-                      </a>
-                    ) : null}
-                  </div>
-                ))}
-              </div>
-
-              {/* Newsletter */}
-              <div className="md:col-span-5">
-                <p className="font-outfit text-[10px] font-medium uppercase tracking-[0.2em] text-white/50">
-                  Newsletter
-                </p>
-                <form
-                  className="mt-2 flex flex-col gap-2.5 sm:flex-row sm:items-stretch"
-                  autoComplete="off"
-                  onSubmit={onNewsletterSubmit}
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-12 lg:grid-cols-4">
+          {contact.items.map((item) => (
+            <div key={item.label} className="min-w-0">
+              <p className={fieldLabel}>{item.label}</p>
+              {item.href ? (
+                <a
+                  href={item.href}
+                  className={`${fieldValue} ${focusRing} hover:text-gold`}
+                  {...(item.label === "Location"
+                    ? { target: "_blank", rel: "noopener noreferrer" }
+                    : {})}
                 >
-                  <input
-                    type="text"
-                    name="_gotcha"
-                    value={newsletterHoneypot}
-                    onChange={(e) => setNewsletterHoneypot(e.target.value)}
-                    tabIndex={-1}
-                    autoComplete="off"
-                    aria-hidden
-                    className="pointer-events-none absolute left-[-9999px] h-0 w-0 opacity-0"
-                  />
-                  <label htmlFor="footer-newsletter-email" className="sr-only">
-                    Your email
-                  </label>
-                  <input
-                    id="footer-newsletter-email"
-                    type="email"
-                    name="email"
-                    autoComplete="email"
-                    placeholder="Your email"
-                    value={newsletter}
-                    onChange={(e) => setNewsletter(e.target.value)}
-                    className="min-w-0 flex-1 rounded-none border border-white/35 bg-black/45 px-4 py-2.5 text-sm text-white outline-none backdrop-blur-[2px] placeholder:text-white/40 transition-[border-color,background-color] duration-300 focus:border-gold/55 focus:bg-black/55"
-                    disabled={newsletterSubmitting || newsletterSent}
-                    suppressHydrationWarning
-                  />
-                  <button
-                    type="submit"
-                    disabled={newsletterSubmitting || newsletterSent}
-                    className={`${glassPill} btn--sm shrink-0`}
+                  <span
+                    className={
+                      item.label === "Email"
+                        ? "break-all sm:break-normal lg:whitespace-nowrap"
+                        : undefined
+                    }
                   >
-                    {newsletterSubmitting ? "Sending…" : newsletterSent ? "Subscribed" : "Submit"}
-                  </button>
-                </form>
-                {newsletterError ? (
-                  <p className="mt-1.5 text-xs text-red-200/90">{newsletterError}</p>
-                ) : newsletterSent ? (
-                  <p className="mt-1.5 text-xs text-emerald-100/90">Thanks — you&apos;re on the list.</p>
-                ) : null}
-              </div>
+                    {item.value}
+                  </span>
+                </a>
+              ) : (
+                <p className={fieldValue}>{item.value}</p>
+              )}
             </div>
+          ))}
 
-            <div className="h-px w-full bg-gradient-to-r from-transparent via-white/20 to-transparent" aria-hidden />
+          <div className="min-w-0 lg:max-w-sm">
+            <p className={fieldLabel}>Newsletter</p>
+            <label htmlFor="footer-newsletter-email" className={fieldValue}>
+              Stay Updated
+            </label>
 
-            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between lg:gap-8">
-              <nav
-                aria-label="Footer"
-                className="flex flex-wrap items-center gap-x-5 gap-y-2 sm:gap-x-7"
-              >
-                {footer.bottomBarLinks.map((l) => (
-                  <Link
-                    key={l.href + l.label}
-                    href={l.href}
-                    className="footer-bar__link font-outfit text-[12px] font-normal uppercase tracking-[0.14em] text-white/75 transition-colors duration-300 hover:text-gold md:text-[13px]"
-                  >
-                    {l.label}
-                  </Link>
-                ))}
-              </nav>
-
-              <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
-                <p className="text-[12px] text-white/50 md:text-[13px]">{footer.copyright}</p>
-                <div className="flex gap-2.5">
-                  {footer.social.map((s) => {
-                    const Icon = socialIcons[s.icon];
-                    return (
-                      <a
-                        key={s.label}
-                        href={s.href}
-                        aria-label={s.label}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="footer-social__link flex h-9 w-9 items-center justify-center rounded-full border border-white/20 text-white/80 transition-[background-color,color,border-color] duration-300 hover:border-white/35 hover:bg-white/[0.08] hover:text-white"
-                      >
-                        <Icon className="h-4 w-4" strokeWidth={1.5} aria-hidden />
-                      </a>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-
-            <div className="flex flex-col items-center pt-0">
-              <div
+            <form
+              className="relative mt-4 flex flex-col gap-4"
+              autoComplete="off"
+              onSubmit={onNewsletterSubmit}
+            >
+              <input
+                type="text"
+                name="_gotcha"
+                value={newsletterHoneypot}
+                onChange={(e) => setNewsletterHoneypot(e.target.value)}
+                tabIndex={-1}
+                autoComplete="off"
                 aria-hidden
-                className="mb-2 h-px w-24 bg-gradient-to-r from-transparent via-gold/50 to-transparent md:mb-2.5 md:w-32"
+                className="pointer-events-none absolute left-[-9999px] h-0 w-0 opacity-0"
               />
-              <Link
-                href="#top"
-                className="contact-footer-logo contact-footer-logo--hero group inline-flex shrink-0 items-center justify-center"
-                aria-label="OD Architects home"
-              >
-                <Image
-                  src={brandLogo}
-                  alt="OD Architects"
-                  width={720}
-                  height={180}
-                  className="contact-footer-logo__img h-[4.75rem] w-auto sm:h-[5.5rem] md:h-[6.5rem] lg:h-28"
-                  sizes="(max-width: 768px) 280px, 360px"
-                  priority={false}
+
+              <div>
+                <input
+                  id="footer-newsletter-email"
+                  type="email"
+                  name="email"
+                  autoComplete="email"
+                  placeholder="name@studio.com"
+                  required
+                  value={newsletter}
+                  onChange={(e) => setNewsletter(e.target.value)}
+                  disabled={newsletterSubmitting || newsletterSent}
+                  suppressHydrationWarning
+                  className="h-9 w-full border-0 border-b border-white/20 bg-transparent px-0 text-sm font-light text-white placeholder:text-white/30 outline-none transition-colors duration-300 focus:border-gold focus-visible:border-gold disabled:opacity-50"
                 />
-              </Link>
+              </div>
+
+              <div>
+                <button
+                  type="submit"
+                  disabled={newsletterSubmitting || newsletterSent}
+                  className="btn btn--primary btn--sm"
+                >
+                  {newsletterSubmitting ? "Sending…" : newsletterSent ? "Subscribed" : "Submit"}
+                </button>
+              </div>
+
+              {newsletterError ? (
+                <p className="text-xs text-red-300/90" role="alert">
+                  {newsletterError}
+                </p>
+              ) : newsletterSent ? (
+                <p className="text-xs text-white/55" aria-live="polite">
+                  Thanks — you&apos;re on the list.
+                </p>
+              ) : null}
+            </form>
+          </div>
+        </div>
+
+        <footer id="footer" className="mt-16 border-t border-white/10 pt-8 md:mt-20">
+          <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+            <nav aria-label="Footer" className="flex flex-wrap items-center gap-x-8 gap-y-3">
+              {footer.bottomBarLinks.map((link) => (
+                <Link
+                  key={link.href + link.label}
+                  href={link.href}
+                  className={`font-ui text-xs font-normal uppercase tracking-widest text-white/55 hover:text-gold ${focusRing}`}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
+
+            <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-8">
+              <p className="text-xs font-light text-white/40">{footer.copyright}</p>
+              <div className="flex items-center gap-3">
+                {footer.social.map((social) => {
+                  const Icon = socialIcons[social.icon];
+                  return (
+                    <a
+                      key={social.label}
+                      href={social.href}
+                      aria-label={social.label}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-white/70 outline-none transition-colors duration-300 hover:border-gold hover:bg-gold/10 hover:text-gold focus-visible:border-gold focus-visible:bg-gold/10 focus-visible:text-gold"
+                    >
+                      <Icon className="h-4 w-4" strokeWidth={1.5} aria-hidden />
+                    </a>
+                  );
+                })}
+              </div>
             </div>
-          </motion.div>
+          </div>
         </footer>
-      </SectionInner>
-    </SectionShell>
+      </div>
+    </section>
   );
 }

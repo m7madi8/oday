@@ -116,25 +116,6 @@ export function Services() {
           </div>
         </div>
       </ScrollReveal>
-
-      <SectionInner className="services-section__foot">
-        <ScrollReveal
-          dramatic
-          delay={0.1}
-          className="section-card mt-6 shrink-0 border-gold/28 bg-gradient-to-r from-bg-card/95 via-bg-card/88 to-bg-card/95 p-3 shadow-[0_12px_36px_rgba(0,0,0,0.3)] md:flex md:items-center md:justify-between md:gap-5 md:px-5 md:py-3.5"
-        >
-          <p className="text-xs text-ink-secondary md:text-sm">
-            Need a custom mix? We can combine design, engineering, drone, and AI in one clean workflow.
-          </p>
-          <Link
-            href="#contact"
-            className="btn btn--primary btn--sm mt-3 md:mt-0"
-            aria-label="Build custom service scope"
-          >
-            Build My Scope
-          </Link>
-        </ScrollReveal>
-      </SectionInner>
     </SectionShell>
   );
 }
@@ -248,7 +229,7 @@ function ServiceStoryCard({
 
   return (
     <article
-      className={`services-story-card relative aspect-[9/16] h-[min(56svh,500px)] w-full max-w-[min(100%,20rem)] shrink-0 bg-transparent${
+      className={`services-story-card relative aspect-[9/16] h-[min(62svh,560px)] w-full max-w-[min(100%,20rem)] shrink-0 bg-transparent${
         isActive ? " services-story-card--active" : ""
       }`}
     >
