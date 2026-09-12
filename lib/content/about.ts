@@ -1,4 +1,4 @@
-import directorPortrait from "@/imgs/oday.jpeg";
+import directorPortrait from "@/imgs/1000243364.jpg";
 
 export interface Strength {
   title: string;
@@ -32,5 +32,5 @@ export const about = {
   directorRole: "Founder & Design Director",
   directorPortrait,
   directorPortraitAlt:
-    "Oday Abu Doha, founder and design director of OD Architects, reviewing drawings at the studio",
+    "Oday Abu Doha, founder and design director of OD Architects",
 };

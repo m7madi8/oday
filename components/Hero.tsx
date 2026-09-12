@@ -1,13 +1,11 @@
 "use client";
 
-import { CounterNumber } from "@/components/animations/CounterNumber";
+import { HeroCinematicMedia, type HeroCinematicMediaHandle } from "@/components/HeroCinematicMedia";
 import { hero } from "@/lib/hero-content";
 import { SectionShell } from "@/components/SectionShell";
 import { motion, useReducedMotion } from "@/components/ClientMotion";
-import Image from "next/image";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
-const CROSSFADE_S = 1.8;
 const easeCinematic = [0.16, 1, 0.3, 1] as const;
 
 function MaskLine({
@@ -80,77 +78,52 @@ function FadeCopy({
 export function Hero() {
   const reduceMotion = useReducedMotion();
   const slides = hero.images;
+  const mediaRef = useRef<HeroCinematicMediaHandle>(null);
   const [active, setActive] = useState(0);
   const [progressKey, setProgressKey] = useState(0);
-  const [statsReady, setStatsReady] = useState(!!reduceMotion);
+  const [navPaused, setNavPaused] = useState(false);
 
   useEffect(() => {
-    if (reduceMotion) {
-      setStatsReady(true);
-      return;
-    }
-    const id = window.setTimeout(() => setStatsReady(true), 880);
-    return () => window.clearTimeout(id);
-  }, [reduceMotion]);
+    if (reduceMotion || slides.length < 2 || navPaused) return;
 
-  useEffect(() => {
-    if (reduceMotion || slides.length < 2) return;
+    let timeoutId = 0;
+    const schedule = () => {
+      const current = slides[active];
+      const delay = current?.primary ? hero.primaryIntervalMs : hero.slideIntervalMs;
+      timeoutId = window.setTimeout(() => {
+        if (document.hidden) return;
+        mediaRef.current?.goToSlide((active + 1) % slides.length);
+      }, delay);
+    };
 
-    const current = slides[active];
-    const delay = current?.primary ? hero.primaryIntervalMs : hero.slideIntervalMs;
-    const id = window.setTimeout(() => {
-      setActive((i) => (i + 1) % slides.length);
-      setProgressKey((k) => k + 1);
-    }, delay);
+    const onVisibility = () => {
+      window.clearTimeout(timeoutId);
+      if (!document.hidden) schedule();
+    };
 
-    return () => window.clearTimeout(id);
-  }, [active, reduceMotion, slides]);
+    if (!document.hidden) schedule();
+    document.addEventListener("visibilitychange", onVisibility);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+  }, [active, navPaused, reduceMotion, slides]);
 
   const holdMs = slides[active]?.primary ? hero.primaryIntervalMs : hero.slideIntervalMs;
 
   return (
     <SectionShell id="top" variant="hero" className="hero--ready hero--modern">
       <div className="hero-modern">
-        <div className="hero-modern__media" aria-hidden>
-          {slides.map((slide, index) => {
-            const isActive = reduceMotion ? index === 0 : index === active;
-
-            return (
-              <motion.div
-                key={slide.alt}
-                className="hero-modern__slide"
-                initial={false}
-                animate={
-                  reduceMotion
-                    ? { opacity: index === 0 ? 1 : 0 }
-                    : { opacity: isActive ? 1 : 0 }
-                }
-                transition={
-                  reduceMotion
-                    ? { duration: 0 }
-                    : { opacity: { duration: CROSSFADE_S, ease: [0.22, 1, 0.36, 1] } }
-                }
-                style={{
-                  zIndex: isActive ? 2 : 1,
-                  ["--hero-pos" as string]: slide.objectPosition,
-                  ["--hero-pos-mobile" as string]: slide.objectPositionMobile,
-                }}
-              >
-                <Image
-                  src={slide.src}
-                  alt=""
-                  fill
-                  priority={index === 0}
-                  fetchPriority={index === 0 ? "high" : "auto"}
-                  quality={100}
-                  className="hero-modern__img object-cover"
-                  sizes="100vw"
-                />
-              </motion.div>
-            );
-          })}
-          <div className="hero-modern__scrim" />
-        </div>
+        <HeroCinematicMedia
+          ref={mediaRef}
+          slides={slides}
+          reduceMotion={!!reduceMotion}
+          onSettled={(index) => {
+            setActive(index);
+            setProgressKey((key) => key + 1);
+          }}
+        />
 
         <div className="hero-modern__frame-line" aria-hidden />
         <div className="hero-modern__tag" aria-hidden>
@@ -184,46 +157,24 @@ export function Hero() {
             />
           </div>
 
-          <motion.div
-            className="hero-modern__rail"
-            initial={reduceMotion ? false : { opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.88, ease: easeCinematic }}
-          >
-            <div className="hero-modern__stats">
-              {hero.stats.map((stat, idx) => (
-                <motion.div
-                  key={stat.label}
-                  className="hero-modern__stat"
-                  style={{ ["--stat-delay" as string]: `${idx * 0.2}s` }}
-                  initial={reduceMotion ? false : { opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{
-                    duration: 0.9,
-                    delay: reduceMotion ? 0 : 1.02 + idx * 0.2,
-                    ease: easeCinematic,
-                  }}
-                >
-                  <span className="hero-modern__stat-value">
-                    <CounterNumber
-                      targetNumber={stat.value}
-                      prefix={stat.prefix}
-                      suffix={stat.suffix}
-                      delay={reduceMotion ? 0 : idx * 0.2}
-                      duration={reduceMotion ? 0 : 2.4}
-                      enabled={statsReady}
-                      holdAtZero={!statsReady && !reduceMotion}
-                      playOnMount
-                    />
-                  </span>
-                  <span className="hero-modern__stat-rule" aria-hidden />
-                  <span className="hero-modern__stat-label">{stat.label}</span>
-                </motion.div>
-              ))}
-            </div>
-
-            {!reduceMotion && slides.length > 1 ? (
-              <div className="hero-modern__nav">
+          {!reduceMotion && slides.length > 1 ? (
+            <motion.div
+              className="hero-modern__rail"
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, delay: 0.88, ease: easeCinematic }}
+            >
+              <div
+                className="hero-modern__nav"
+                onMouseEnter={() => setNavPaused(true)}
+                onMouseLeave={() => setNavPaused(false)}
+                onFocusCapture={() => setNavPaused(true)}
+                onBlurCapture={(event) => {
+                  if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+                    setNavPaused(false);
+                  }
+                }}
+              >
                 <span className="hero-modern__counter" aria-live="polite">
                   {String(active + 1).padStart(2, "0")}
                   <span className="hero-modern__counter-sep">/</span>
@@ -242,8 +193,7 @@ export function Hero() {
                         aria-label={`Show slide ${index + 1} of ${slides.length}`}
                         aria-current={isActive ? "true" : undefined}
                         onClick={() => {
-                          setActive(index);
-                          setProgressKey((k) => k + 1);
+                          mediaRef.current?.goToSlide(index);
                         }}
                       >
                         <span className="hero-modern__dot-line" aria-hidden />
@@ -261,8 +211,8 @@ export function Hero() {
                   })}
                 </div>
               </div>
-            ) : null}
-          </motion.div>
+            </motion.div>
+          ) : null}
         </div>
       </div>
     </SectionShell>

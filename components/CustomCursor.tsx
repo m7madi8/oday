@@ -3,8 +3,6 @@
 import { isDesktopFinePointer } from "@/lib/animations";
 import { useEffect, useRef, useState } from "react";
 
-const FOLLOW = 0.28;
-
 const INTERACTIVE =
   "a, button, [role='button'], [type='button'], [type='submit'], label, summary, [data-cursor-hover]";
 
@@ -18,18 +16,13 @@ export function CustomCursor() {
   const [native, setNative] = useState(false);
 
   const cursorRef = useRef<HTMLDivElement>(null);
-  const targetRef = useRef({ x: -100, y: -100 });
-  const drawnRef = useRef({ x: -100, y: -100 });
-  const rafRef = useRef<number | null>(null);
   const hoveringRef = useRef(false);
   const visibleRef = useRef(false);
   const nativeRef = useRef(false);
 
   useEffect(() => {
     function updateEnabled() {
-      const on =
-        isDesktopFinePointer() &&
-        !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const on = isDesktopFinePointer();
       setEnabled(on);
       document.documentElement.classList.toggle("custom-cursor-active", on);
     }
@@ -45,27 +38,9 @@ export function CustomCursor() {
   useEffect(() => {
     if (!enabled) return;
 
-    function draw() {
-      const drawn = drawnRef.current;
-      const target = targetRef.current;
-      drawn.x += (target.x - drawn.x) * FOLLOW;
-      drawn.y += (target.y - drawn.y) * FOLLOW;
-
+    function place(x: number, y: number) {
       if (cursorRef.current) {
-        cursorRef.current.style.transform = `translate3d(${drawn.x}px, ${drawn.y}px, 0)`;
-      }
-
-      rafRef.current = requestAnimationFrame(draw);
-    }
-
-    function startLoop() {
-      if (rafRef.current === null) rafRef.current = requestAnimationFrame(draw);
-    }
-
-    function stopLoop() {
-      if (rafRef.current !== null) {
-        cancelAnimationFrame(rafRef.current);
-        rafRef.current = null;
+        cursorRef.current.style.transform = `translate3d(${x}px, ${y}px, 0)`;
       }
     }
 
@@ -87,13 +62,11 @@ export function CustomCursor() {
     }
 
     function move(e: MouseEvent) {
-      targetRef.current = { x: e.clientX, y: e.clientY };
+      place(e.clientX, e.clientY);
 
       if (!visibleRef.current) {
         visibleRef.current = true;
-        drawnRef.current = { x: e.clientX, y: e.clientY };
         setVisible(true);
-        startLoop();
       }
 
       readTarget(e.target);
@@ -106,34 +79,23 @@ export function CustomCursor() {
       setNative(false);
       hoveringRef.current = false;
       nativeRef.current = false;
-      stopLoop();
     }
 
     function onEnter(e: MouseEvent) {
       visibleRef.current = true;
-      drawnRef.current = { x: e.clientX, y: e.clientY };
-      targetRef.current = { x: e.clientX, y: e.clientY };
+      place(e.clientX, e.clientY);
       setVisible(true);
-      startLoop();
       readTarget(e.target);
-    }
-
-    function onVisibilityChange() {
-      if (document.hidden) stopLoop();
-      else if (visibleRef.current) startLoop();
     }
 
     window.addEventListener("mousemove", move, { passive: true });
     document.documentElement.addEventListener("mouseleave", onLeave);
     document.documentElement.addEventListener("mouseenter", onEnter);
-    document.addEventListener("visibilitychange", onVisibilityChange);
 
     return () => {
       window.removeEventListener("mousemove", move);
       document.documentElement.removeEventListener("mouseleave", onLeave);
       document.documentElement.removeEventListener("mouseenter", onEnter);
-      document.removeEventListener("visibilitychange", onVisibilityChange);
-      stopLoop();
     };
   }, [enabled]);
 
@@ -149,8 +111,12 @@ export function CustomCursor() {
         show ? "custom-cursor--on" : ""
       } ${hovering ? "custom-cursor--hover" : ""}`}
     >
-      <span className="custom-cursor__ring" />
-      <span className="custom-cursor__core" />
+      <svg className="custom-cursor__mark" viewBox="0 0 24 24" width="22" height="22">
+        <polygon
+          className="custom-cursor__diamond"
+          points="12,2.4 21.6,12 12,21.6 2.4,12"
+        />
+      </svg>
     </div>
   );
 }

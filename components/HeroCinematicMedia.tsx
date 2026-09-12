@@ -1,0 +1,360 @@
+"use client";
+
+import { useGSAP, type GsapLike } from "@/hooks/useGSAP";
+import { hero } from "@/lib/hero-content";
+import Image from "next/image";
+import { forwardRef, useCallback, useImperativeHandle, useRef } from "react";
+
+export type HeroCinematicMediaHandle = {
+  goToSlide: (index: number) => boolean;
+};
+
+type HeroSlide = (typeof hero.images)[number];
+
+type HeroCinematicMediaProps = {
+  slides: readonly HeroSlide[];
+  reduceMotion: boolean;
+  onSettled?: (index: number) => void;
+};
+
+type Killable = { kill?: () => void };
+
+type TimelineLike = {
+  to: (target: unknown, vars: Record<string, unknown>, position?: number | string) => TimelineLike;
+  set: (target: unknown, vars: Record<string, unknown>) => TimelineLike;
+  kill: () => void;
+};
+
+const CLIP_OPEN = "polygon(-8% -4%, 108% -4%, 108% 104%, -8% 104%)";
+const CLIP_INSET_OPEN = "inset(0% 0% 0% 0%)";
+
+const DESKTOP_MS = 1.55;
+const MOBILE_MS = 1.28;
+
+function isSimplifiedViewport() {
+  if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+    return true;
+  }
+
+  return (
+    window.matchMedia("(max-width: 1023px)").matches ||
+    window.matchMedia("(pointer: coarse)").matches
+  );
+}
+
+function incomingClip(forward: boolean, diagonal: boolean, simple: boolean) {
+  if (simple) {
+    return forward ? "inset(0% 0% 0% 100%)" : "inset(0% 100% 0% 0%)";
+  }
+
+  if (forward) {
+    return diagonal
+      ? "polygon(108% -4%, 108% -4%, 100% 104%, 100% 104%)"
+      : "polygon(100% -4%, 100% -4%, 100% 104%, 100% 104%)";
+  }
+
+  return diagonal
+    ? "polygon(-8% -4%, -8% -4%, 0% 104%, 0% 104%)"
+    : "polygon(0% -4%, 0% -4%, 0% 104%, 0% 104%)";
+}
+
+function openClip(simple: boolean) {
+  return simple ? CLIP_INSET_OPEN : CLIP_OPEN;
+}
+
+function killTween(target: unknown) {
+  if (target && typeof target === "object" && "kill" in target) {
+    (target as Killable).kill?.();
+  }
+}
+
+export const HeroCinematicMedia = forwardRef<HeroCinematicMediaHandle, HeroCinematicMediaProps>(
+  function HeroCinematicMedia({ slides, reduceMotion, onSettled }, ref) {
+    const rootRef = useRef<HTMLDivElement>(null);
+    const stageRef = useRef<HTMLDivElement>(null);
+    const layerRefs = useRef<Array<HTMLDivElement | null>>([]);
+    const innerRefs = useRef<Array<HTMLDivElement | null>>([]);
+    const gsapRef = useRef<GsapLike | null>(null);
+    const indexRef = useRef(0);
+    const busyRef = useRef(false);
+    const kenRef = useRef<Killable | null>(null);
+    const introRef = useRef<Killable | null>(null);
+    const timelineRef = useRef<TimelineLike | null>(null);
+    const settledRef = useRef(onSettled);
+    const slidesRef = useRef(slides);
+
+    settledRef.current = onSettled;
+    slidesRef.current = slides;
+
+    const startBreath = useCallback((index: number, gsap: GsapLike) => {
+      const inner = innerRefs.current[index];
+      if (!inner) return;
+
+      killTween(kenRef.current);
+      kenRef.current = null;
+
+      const slide = slidesRef.current[index];
+      const holdS = (slide?.primary ? hero.primaryIntervalMs : hero.slideIntervalMs) / 1000;
+      const simple = isSimplifiedViewport();
+      const zoomIn = index % 2 === 0;
+      const minScale = 1;
+      const maxScale = simple ? 1.08 : 1.14;
+      const fromScale = zoomIn ? minScale : maxScale;
+      const toScale = zoomIn ? maxScale : minScale;
+
+      gsap.set(inner, {
+        scale: fromScale,
+        xPercent: 0,
+        yPercent: 0,
+        rotation: 0,
+        transformOrigin: "50% 45%",
+        force3D: true,
+      });
+
+      kenRef.current = gsap.to(inner, {
+        scale: toScale,
+        duration: holdS,
+        ease: "none",
+        overwrite: "auto",
+        force3D: true,
+      }) as Killable;
+    }, []);
+
+    const goToSlide = useCallback(
+      (nextIndex: number) => {
+        const gsap = gsapRef.current;
+        const slidesNow = slidesRef.current;
+        const from = indexRef.current;
+
+        if (!gsap || busyRef.current || reduceMotion) return false;
+        if (nextIndex === from || nextIndex < 0 || nextIndex >= slidesNow.length) return false;
+
+        const currentLayer = layerRefs.current[from];
+        const nextLayer = layerRefs.current[nextIndex];
+        const currentInner = innerRefs.current[from];
+        const nextInner = innerRefs.current[nextIndex];
+        if (!currentLayer || !nextLayer || !currentInner || !nextInner) return false;
+
+        busyRef.current = true;
+        killTween(introRef.current);
+        introRef.current = null;
+        killTween(kenRef.current);
+        kenRef.current = null;
+        killTween(timelineRef.current);
+        timelineRef.current = null;
+
+        const len = slidesNow.length;
+        const stepsForward = (nextIndex - from + len) % len;
+        const forward = stepsForward <= len / 2;
+        const simple = isSimplifiedViewport();
+        const diagonal = !simple && (from + nextIndex) % 2 === 0;
+        const duration = simple ? MOBILE_MS : DESKTOP_MS;
+        const ease = simple ? "power3.inOut" : "expo.inOut";
+        const dir = forward ? 1 : -1;
+
+        nextLayer.style.willChange = "clip-path";
+        currentInner.style.willChange = "transform";
+        nextInner.style.willChange = "transform";
+
+        gsap.set(nextLayer, {
+          visibility: "visible",
+          zIndex: 3,
+          opacity: 1,
+          clipPath: incomingClip(forward, diagonal, simple),
+          force3D: true,
+        });
+        gsap.set(currentLayer, {
+          visibility: "visible",
+          zIndex: 2,
+          opacity: 1,
+          clipPath: openClip(simple),
+          force3D: true,
+        });
+        gsap.set(nextInner, {
+          scale: simple ? 1.045 : 1.075,
+          xPercent: dir * (simple ? 2.2 : 3.6),
+          yPercent: simple ? 0.4 : 1.1,
+          rotation: simple ? 0 : dir * 0.28,
+          transformOrigin: "50% 45%",
+          force3D: true,
+        });
+
+        const tl = gsap.timeline({
+          defaults: { ease, force3D: true },
+          onComplete: () => {
+            gsap.set(currentLayer, {
+              visibility: "hidden",
+              zIndex: 0,
+              opacity: 1,
+              clipPath: openClip(simple),
+            });
+            gsap.set(nextLayer, {
+              visibility: "visible",
+              zIndex: 2,
+              opacity: 1,
+              clipPath: openClip(simple),
+            });
+            gsap.set(nextInner, {
+              scale: 1,
+              xPercent: 0,
+              yPercent: 0,
+              rotation: 0,
+            });
+            gsap.set(currentInner, {
+              scale: 1,
+              xPercent: 0,
+              yPercent: 0,
+              rotation: 0,
+            });
+
+            nextLayer.style.willChange = "";
+            currentInner.style.willChange = "";
+            nextInner.style.willChange = "";
+
+            indexRef.current = nextIndex;
+            timelineRef.current = null;
+            busyRef.current = false;
+            startBreath(nextIndex, gsap);
+            settledRef.current?.(nextIndex);
+          },
+        }) as TimelineLike;
+
+        timelineRef.current = tl;
+
+        tl.to(
+          nextLayer,
+          {
+            clipPath: openClip(simple),
+            duration,
+          },
+          0,
+        );
+        tl.to(
+          nextInner,
+          {
+            scale: 1,
+            xPercent: 0,
+            yPercent: 0,
+            rotation: 0,
+            duration,
+          },
+          0,
+        );
+        tl.to(
+          currentInner,
+          {
+            scale: simple ? 1.045 : 1.065,
+            xPercent: -dir * (simple ? 1.6 : 2.4),
+            yPercent: simple ? 0 : -0.6,
+            duration,
+          },
+          0,
+        );
+
+        return true;
+      },
+      [reduceMotion, startBreath],
+    );
+
+    useImperativeHandle(ref, () => ({ goToSlide }), [goToSlide]);
+
+    useGSAP(
+      ({ gsap, addCleanup }) => {
+        gsapRef.current = gsap;
+        indexRef.current = 0;
+        busyRef.current = false;
+
+        layerRefs.current.forEach((layer, index) => {
+          if (!layer) return;
+          gsap.set(layer, {
+            visibility: index === 0 ? "visible" : "hidden",
+            zIndex: index === 0 ? 2 : 0,
+            opacity: 1,
+            clipPath: openClip(isSimplifiedViewport()),
+            force3D: true,
+          });
+        });
+
+        const firstInner = innerRefs.current[0];
+        if (firstInner) {
+          const simple = isSimplifiedViewport();
+          introRef.current = gsap.fromTo(
+            firstInner,
+            {
+              scale: simple ? 1.06 : 1.1,
+              xPercent: 0,
+              yPercent: 0,
+              transformOrigin: "50% 45%",
+            },
+            {
+              scale: 1,
+              duration: 2.4,
+              ease: "power2.out",
+              force3D: true,
+              onComplete: () => {
+                introRef.current = null;
+                if (gsapRef.current === gsap && indexRef.current === 0 && !busyRef.current) {
+                  startBreath(0, gsap);
+                }
+              },
+            },
+          ) as Killable;
+        }
+
+        addCleanup(() => {
+          killTween(introRef.current);
+          killTween(timelineRef.current);
+          killTween(kenRef.current);
+          introRef.current = null;
+          timelineRef.current = null;
+          kenRef.current = null;
+          gsapRef.current = null;
+          busyRef.current = false;
+        });
+      },
+      { scope: rootRef, enabled: !reduceMotion && slides.length > 0, deps: [slides.length, startBreath] },
+    );
+
+    const visibleSlides = reduceMotion ? slides.slice(0, 1) : slides;
+
+    return (
+      <div ref={rootRef} className="hero-modern__media" aria-hidden>
+        <div ref={stageRef} className="hero-modern__stage">
+          {visibleSlides.map((slide, index) => (
+            <div
+              key={slide.alt}
+              ref={(node) => {
+                layerRefs.current[index] = node;
+              }}
+              className={`hero-modern__layer${index === 0 ? " is-seed" : ""}`}
+              style={{
+                ["--hero-pos" as string]: slide.objectPosition,
+                ["--hero-pos-mobile" as string]: slide.objectPositionMobile,
+              }}
+            >
+              <div
+                ref={(node) => {
+                  innerRefs.current[index] = node;
+                }}
+                className="hero-modern__layer-inner"
+              >
+                <Image
+                  src={slide.src}
+                  alt=""
+                  fill
+                  priority={index === 0}
+                  fetchPriority={index === 0 ? "high" : "auto"}
+                  quality={100}
+                  draggable={false}
+                  className="hero-modern__img object-cover"
+                  sizes="100vw"
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="hero-modern__scrim" />
+      </div>
+    );
+  },
+);

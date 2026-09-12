@@ -99,7 +99,7 @@ function MasonryCard({
 
   return (
     <article
-      className={`project-card project-card--${tone}`}
+      className={`project-card project-card--${tone} scroll-mt-[calc(var(--hero-nav-stack)+1.25rem)]`}
       data-ratio={ratio}
       data-tone={tone}
       data-span={span}
@@ -162,7 +162,7 @@ function GridCard({
   return (
     <motion.article
       id={project.id}
-      className="group relative min-w-0 overflow-hidden bg-bg-card"
+      className="group relative min-w-0 scroll-mt-[calc(var(--hero-nav-stack)+1.25rem)] overflow-hidden bg-bg-card"
       initial={shouldAnimate ? { opacity: 0, y: 24 } : false}
       animate={{ opacity: 1, y: 0 }}
       exit={

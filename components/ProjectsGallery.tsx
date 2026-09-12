@@ -11,6 +11,7 @@ import { AiDesignGallery } from "@/components/AiDesignGallery";
 import { DroneGallery } from "@/components/DroneGallery";
 import { GalleryFilterCell, GalleryFilterGrid, GalleryFilterScope } from "@/components/GalleryFilterGrid";
 import { GalleryHashSync } from "@/components/GalleryHashSync";
+import { GalleryProjectFocus } from "@/components/GalleryProjectFocus";
 import { PortfolioDesignGallery } from "@/components/portfolio/PortfolioDesignGallery";
 import { ProjectCard } from "@/components/ProjectCard";
 import { ProjectsGallerySearchSync } from "@/components/ProjectsGallerySearchSync";
@@ -123,6 +124,7 @@ export function ProjectsGallery({
       className={`gallery-page relative bg-bg-primary pb-24 pt-[calc(var(--hero-nav-stack)+1.5rem)] md:pb-32 md:pt-[calc(var(--hero-nav-stack)+2rem)] gallery-page--portfolio overflow-x-clip`}
     >
       <GalleryHashSync onCategoryFromHash={onCategoryFromHash} />
+      <GalleryProjectFocus layoutKey={galleryKey} />
       <div aria-hidden className="gallery-page__glow pointer-events-none absolute inset-0" />
 
       <Suspense fallback={null}>

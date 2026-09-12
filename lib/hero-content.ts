@@ -53,6 +53,6 @@ export const hero = {
   imageAlt: "B.H Villa — primary hero exterior",
   stats: [
     { label: "Projects", value: 500, prefix: "+", suffix: "" },
-    { label: "Value", value: 50, prefix: "+", suffix: " million" },
+    { label: "Value", value: 50, prefix: "+", suffix: "M" },
   ],
 } as const;

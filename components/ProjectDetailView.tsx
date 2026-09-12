@@ -13,6 +13,7 @@ import {
   serviceFilterLabel,
   type ProjectSiblings,
 } from "@/lib/project-view";
+import { galleryReturnHref, rememberGalleryFocus } from "@/lib/gallery-return";
 import { galleryTransition } from "@/lib/gallery-motion";
 import { motion, useReducedMotion } from "@/components/ClientMotion";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -32,6 +33,10 @@ export function ProjectDetailView({
   const galleryFormat = resolveProjectGalleryFormat(project);
   const [gallery, setGallery] = useState<ProjectGalleryImage[]>(() => coverAsGallery(project));
   const titleIsCaseNumber = project.title.trim() === project.orderLabel.trim();
+
+  useEffect(() => {
+    rememberGalleryFocus(project.id);
+  }, [project.id]);
 
   useEffect(() => {
     let cancelled = false;
@@ -66,7 +71,7 @@ export function ProjectDetailView({
               Home
             </Link>
             <span aria-hidden>/</span>
-            <Link href="/projects" className="transition-colors hover:text-gold">
+            <Link href={galleryReturnHref(project)} scroll={false} className="transition-colors hover:text-gold">
               Gallery
             </Link>
             <span aria-hidden>/</span>
@@ -154,14 +159,7 @@ export function ProjectDetailView({
             </dl>
 
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link
-                href={
-                  project.serviceSlug === "exterior" && project.exteriorType
-                    ? `/projects?service=exterior&type=${encodeURIComponent(project.exteriorType)}`
-                    : `/projects?service=${encodeURIComponent(project.serviceSlug)}`
-                }
-                className="btn btn--primary"
-              >
+              <Link href={galleryReturnHref(project)} scroll={false} className="btn btn--primary">
                 More{" "}
                 {project.serviceSlug === "exterior" && project.exteriorType
                   ? exteriorTypeLabel(project.exteriorType)
@@ -205,11 +203,8 @@ export function ProjectDetailView({
 
         <GalleryReveal delay={0.2} className="mt-10 md:mt-12">
           <Link
-            href={
-              project.serviceSlug === "exterior" && project.exteriorType
-                ? `/projects?service=exterior&type=${encodeURIComponent(project.exteriorType)}`
-                : `/projects?service=${encodeURIComponent(project.serviceSlug)}`
-            }
+            href={galleryReturnHref(project)}
+            scroll={false}
             data-no-glow
             className="project-detail__back btn-plain"
           >

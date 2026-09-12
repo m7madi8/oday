@@ -3,6 +3,7 @@
 import { submitContactForm } from "@/lib/contact-form";
 import { about as studioAbout } from "@/lib/content/about";
 import { contact, footer } from "@/lib/content/contact";
+import { StudioStats } from "@/components/StudioStats";
 import { Facebook, Instagram } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -60,32 +61,47 @@ export function Contact() {
       className="relative overflow-visible border-t border-white/10 bg-[#0A0A0A] pb-8 pt-16 scroll-mt-20 md:pb-10 md:pt-24"
     >
       <div className="mx-auto w-full max-w-7xl px-6 md:px-8 lg:px-10">
-        <header className="mb-12 grid grid-cols-1 items-end gap-8 md:mb-16 md:grid-cols-[minmax(14rem,18rem)_minmax(0,1fr)] md:gap-12 lg:gap-16">
-          <figure className="relative m-0 aspect-[3/4] w-full max-w-[18rem] overflow-hidden border border-white/10 md:max-w-none">
+        <header className="mb-16 grid grid-cols-1 items-center gap-10 md:mb-20 md:grid-cols-[minmax(16rem,22rem)_auto_minmax(0,1fr)] md:gap-10 lg:gap-14">
+          <figure className="relative m-0 mx-auto w-full max-w-[20rem] border border-white/10 p-3 md:mx-0 md:max-w-none md:p-4">
+            <span
+              className="pointer-events-none absolute left-0 top-0 h-5 w-5 border-l border-t border-gold/70"
+              aria-hidden
+            />
+            <span
+              className="pointer-events-none absolute right-0 top-0 h-5 w-5 border-r border-t border-gold/70"
+              aria-hidden
+            />
+            <span
+              className="pointer-events-none absolute bottom-0 left-0 h-5 w-5 border-b border-l border-gold/70"
+              aria-hidden
+            />
+            <span
+              className="pointer-events-none absolute bottom-0 right-0 h-5 w-5 border-b border-r border-gold/70"
+              aria-hidden
+            />
             <Image
               src={studioAbout.directorPortrait}
               alt={studioAbout.directorPortraitAlt}
-              fill
-              sizes="288px"
-              className="object-cover object-[center_18%]"
-            />
-            <span
-              className="pointer-events-none absolute bottom-3 right-3 h-5 w-5 border-b border-r border-gold/70"
-              aria-hidden
+              sizes="(max-width: 768px) 20rem, 22rem"
+              className="h-auto w-full"
             />
           </figure>
 
-          <div className="max-w-2xl">
+          <span className="hidden h-36 w-px bg-gold/35 md:block" aria-hidden />
+
+          <div className="max-w-xl text-center md:text-left">
             <p className={fieldLabel}>The Studio</p>
-            <h2 className="mt-3 font-display text-3xl font-light tracking-tight text-white md:text-5xl">
+            <h2 className="mt-4 font-display text-3xl font-light italic tracking-tight text-white md:text-5xl">
               {studioAbout.directorName}
             </h2>
-            <p className="mt-3 font-ui text-xs font-medium uppercase tracking-widest text-white/50">
+            <span className="mx-auto mt-5 block h-px w-12 bg-gold/50 md:mx-0" aria-hidden />
+            <p className="mt-5 font-ui text-xs font-medium uppercase tracking-widest text-white/55">
               {studioAbout.directorRole}
             </p>
-            <p className="mt-4 text-sm font-light leading-relaxed text-white/50 md:text-base">
+            <p className="mt-4 text-sm font-light leading-relaxed text-white/45 md:text-base">
               {studioAbout.studioTagline}
             </p>
+            <StudioStats />
           </div>
         </header>
 
