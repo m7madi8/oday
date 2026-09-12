@@ -4,7 +4,7 @@ import { HeroCinematicMedia, type HeroCinematicMediaHandle } from "@/components/
 import { hero } from "@/lib/hero-content";
 import { SectionShell } from "@/components/SectionShell";
 import { motion, useReducedMotion } from "@/components/ClientMotion";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useRef, useState, type ReactNode } from "react";
 
 const easeCinematic = [0.16, 1, 0.3, 1] as const;
 
@@ -83,33 +83,6 @@ export function Hero() {
   const [progressKey, setProgressKey] = useState(0);
   const [navPaused, setNavPaused] = useState(false);
 
-  useEffect(() => {
-    if (reduceMotion || slides.length < 2 || navPaused) return;
-
-    let timeoutId = 0;
-    const schedule = () => {
-      const current = slides[active];
-      const delay = current?.primary ? hero.primaryIntervalMs : hero.slideIntervalMs;
-      timeoutId = window.setTimeout(() => {
-        if (document.hidden) return;
-        mediaRef.current?.goToSlide((active + 1) % slides.length);
-      }, delay);
-    };
-
-    const onVisibility = () => {
-      window.clearTimeout(timeoutId);
-      if (!document.hidden) schedule();
-    };
-
-    if (!document.hidden) schedule();
-    document.addEventListener("visibilitychange", onVisibility);
-
-    return () => {
-      window.clearTimeout(timeoutId);
-      document.removeEventListener("visibilitychange", onVisibility);
-    };
-  }, [active, navPaused, reduceMotion, slides]);
-
   const holdMs = slides[active]?.primary ? hero.primaryIntervalMs : hero.slideIntervalMs;
 
   return (
@@ -119,6 +92,7 @@ export function Hero() {
           ref={mediaRef}
           slides={slides}
           reduceMotion={!!reduceMotion}
+          paused={navPaused}
           onSettled={(index) => {
             setActive(index);
             setProgressKey((key) => key + 1);

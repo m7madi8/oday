@@ -3,7 +3,7 @@
 import { useGSAP, type GsapLike } from "@/hooks/useGSAP";
 import { hero } from "@/lib/hero-content";
 import Image from "next/image";
-import { forwardRef, useCallback, useImperativeHandle, useRef } from "react";
+import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef } from "react";
 
 export type HeroCinematicMediaHandle = {
   goToSlide: (index: number) => boolean;
@@ -14,6 +14,7 @@ type HeroSlide = (typeof hero.images)[number];
 type HeroCinematicMediaProps = {
   slides: readonly HeroSlide[];
   reduceMotion: boolean;
+  paused?: boolean;
   onSettled?: (index: number) => void;
 };
 
@@ -69,7 +70,7 @@ function killTween(target: unknown) {
 }
 
 export const HeroCinematicMedia = forwardRef<HeroCinematicMediaHandle, HeroCinematicMediaProps>(
-  function HeroCinematicMedia({ slides, reduceMotion, onSettled }, ref) {
+  function HeroCinematicMedia({ slides, reduceMotion, paused = false, onSettled }, ref) {
     const rootRef = useRef<HTMLDivElement>(null);
     const stageRef = useRef<HTMLDivElement>(null);
     const layerRefs = useRef<Array<HTMLDivElement | null>>([]);
@@ -80,45 +81,72 @@ export const HeroCinematicMedia = forwardRef<HeroCinematicMediaHandle, HeroCinem
     const kenRef = useRef<Killable | null>(null);
     const introRef = useRef<Killable | null>(null);
     const timelineRef = useRef<TimelineLike | null>(null);
+    const retryRef = useRef(0);
+    const zoomDoneRef = useRef(false);
+    const pausedRef = useRef(paused);
+    const goToSlideRef = useRef<(index: number) => boolean>(() => false);
     const settledRef = useRef(onSettled);
     const slidesRef = useRef(slides);
 
     settledRef.current = onSettled;
     slidesRef.current = slides;
+    pausedRef.current = paused;
 
-    const startBreath = useCallback((index: number, gsap: GsapLike) => {
-      const inner = innerRefs.current[index];
-      if (!inner) return;
+    const advanceSlide = useCallback(() => {
+      if (reduceMotion || pausedRef.current || slidesRef.current.length < 2) return;
 
-      killTween(kenRef.current);
-      kenRef.current = null;
+      const next = (indexRef.current + 1) % slidesRef.current.length;
+      const moved = goToSlideRef.current(next);
 
-      const slide = slidesRef.current[index];
-      const holdS = (slide?.primary ? hero.primaryIntervalMs : hero.slideIntervalMs) / 1000;
-      const simple = isSimplifiedViewport();
-      const zoomIn = index % 2 === 0;
-      const minScale = 1;
-      const maxScale = simple ? 1.08 : 1.14;
-      const fromScale = zoomIn ? minScale : maxScale;
-      const toScale = zoomIn ? maxScale : minScale;
+      if (!moved) {
+        retryRef.current = window.setTimeout(advanceSlide, 320);
+      }
+    }, [reduceMotion]);
 
-      gsap.set(inner, {
-        scale: fromScale,
-        xPercent: 0,
-        yPercent: 0,
-        rotation: 0,
-        transformOrigin: "50% 45%",
-        force3D: true,
-      });
+    const startBreath = useCallback(
+      (index: number, gsap: GsapLike) => {
+        const inner = innerRefs.current[index];
+        if (!inner) return;
 
-      kenRef.current = gsap.to(inner, {
-        scale: toScale,
-        duration: holdS,
-        ease: "none",
-        overwrite: "auto",
-        force3D: true,
-      }) as Killable;
-    }, []);
+        killTween(kenRef.current);
+        kenRef.current = null;
+        window.clearTimeout(retryRef.current);
+
+        const slide = slidesRef.current[index];
+        const holdS = (slide?.primary ? hero.primaryIntervalMs : hero.slideIntervalMs) / 1000;
+        const simple = isSimplifiedViewport();
+        const zoomIn = index % 2 === 0;
+        const minScale = 1;
+        const maxScale = simple ? 1.08 : 1.14;
+        const fromScale = zoomIn ? minScale : maxScale;
+        const toScale = zoomIn ? maxScale : minScale;
+
+        zoomDoneRef.current = false;
+
+        gsap.set(inner, {
+          scale: fromScale,
+          xPercent: 0,
+          yPercent: 0,
+          rotation: 0,
+          transformOrigin: "50% 45%",
+          force3D: true,
+        });
+
+        kenRef.current = gsap.to(inner, {
+          scale: toScale,
+          duration: holdS,
+          ease: "none",
+          overwrite: "auto",
+          force3D: true,
+          onComplete: () => {
+            if (gsapRef.current !== gsap || busyRef.current) return;
+            zoomDoneRef.current = true;
+            if (!pausedRef.current) advanceSlide();
+          },
+        }) as Killable;
+      },
+      [advanceSlide],
+    );
 
     const goToSlide = useCallback(
       (nextIndex: number) => {
@@ -256,6 +284,15 @@ export const HeroCinematicMedia = forwardRef<HeroCinematicMediaHandle, HeroCinem
       [reduceMotion, startBreath],
     );
 
+    goToSlideRef.current = goToSlide;
+
+    useEffect(() => {
+      pausedRef.current = paused;
+      if (paused || reduceMotion || busyRef.current || !zoomDoneRef.current) return;
+      retryRef.current = window.setTimeout(advanceSlide, 320);
+      return () => window.clearTimeout(retryRef.current);
+    }, [advanceSlide, paused, reduceMotion]);
+
     useImperativeHandle(ref, () => ({ goToSlide }), [goToSlide]);
 
     useGSAP(
@@ -294,6 +331,7 @@ export const HeroCinematicMedia = forwardRef<HeroCinematicMediaHandle, HeroCinem
               onComplete: () => {
                 introRef.current = null;
                 if (gsapRef.current === gsap && indexRef.current === 0 && !busyRef.current) {
+                  settledRef.current?.(0);
                   startBreath(0, gsap);
                 }
               },
@@ -302,6 +340,7 @@ export const HeroCinematicMedia = forwardRef<HeroCinematicMediaHandle, HeroCinem
         }
 
         addCleanup(() => {
+          window.clearTimeout(retryRef.current);
           killTween(introRef.current);
           killTween(timelineRef.current);
           killTween(kenRef.current);
