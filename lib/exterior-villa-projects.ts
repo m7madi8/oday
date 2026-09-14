@@ -13,6 +13,7 @@ import vil8_img0 from "@/imgs/Exterior/Villa/tareq fifil 58/oday_result.webp";
 import vil9_img0 from "@/imgs/Exterior/Villa/villa 10 viv/ODAY_result.webp";
 import vil10_img0 from "@/imgs/Exterior/Villa/villa 11 vi12/ODAY_result.webp";
 import vil11_img0 from "@/imgs/Exterior/Villa/villa 12 bh/ODAY_result.webp";
+import vil12_img0 from "@/imgs/Exterior/Villa/villa taim/oday.jpeg";
 
 export const villaProjects = [
   {
@@ -218,5 +219,22 @@ export const villaProjects = [
     styleMaterials: "Contemporary luxury style with light natural stone façades, dark textured cladding, large glass openings, geometric metal screens, glass railings, wood ceiling details, sculptural water features, landscaped terraces, and warm integrated lighting.",
     image: vil11_img0,
     imageAlt: "B.H Villa — exterior visualization",
+  },
+  {
+    id: "vil-villa-taim",
+    orderLabel: "13",
+    title: "Taim's Villa",
+    country: "Jaljoulia, Palestine",
+    tag: "Villa Exterior",
+    category: "Residential" as const,
+    serviceSlug: "exterior" as const,
+    exteriorType: "villas" as const,
+    projectType: "Residential Architectural Design",
+    year: "2026",
+    area: "520 m²",
+    concept: "A contemporary villa designed as a composition of interlocking volumes, generous balconies, and layered outdoor spaces. The design creates a strong connection between the residence and its landscaped surroundings through large glazed openings, private terraces, a rooftop pergola, and a tranquil water feature. Carefully framed views, shaded areas, and integrated greenery enhance privacy and outdoor living.",
+    styleMaterials: "Contemporary luxury style with light natural stone façades, charcoal-gray architectural volumes, warm wood cladding, large glass openings, black metal and glass railings, horizontal shading screens, timber pergolas, landscaped terraces, mosaic water features, and warm integrated architectural lighting.",
+    image: vil12_img0,
+    imageAlt: "Taim's Villa — exterior visualization",
   },
 ];

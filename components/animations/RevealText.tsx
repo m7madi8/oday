@@ -141,7 +141,7 @@ export function RevealText({
         {words.map((word, index) => (
           <span
             key={`${word}-${index}`}
-            style={{ overflow: "hidden", display: "inline-block", verticalAlign: "top" }}
+            style={{ overflow: "hidden", display: "inline-block", verticalAlign: "top", paddingBottom: "0.18em", paddingInlineEnd: "0.08em" }}
           >
             <motion.span style={{ display: "inline-block" }} variants={wordVariants}>
               {word}

@@ -111,7 +111,7 @@ export function Contact() {
 
               <RevealFade
                 as="p"
-                className="mt-4 text-sm font-light leading-relaxed text-white/45 md:text-base"
+                className="mt-4 text-base font-light leading-relaxed text-white/55"
                 delay={baseDelay + 0.46}
               >
                 {studioAbout.studioTagline}

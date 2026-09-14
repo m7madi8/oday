@@ -23,7 +23,7 @@ export function Process() {
 
       <RevealChildren className="mx-auto max-w-7xl px-5 md:px-10" stagger={0.08}>
         <ScrollReveal
-          className="relative mx-auto max-w-4xl overflow-hidden rounded-[1.75rem] border border-gold/22 bg-bg-card/45 px-6 py-10 text-center shadow-[0_24px_70px_rgba(0,0,0,0.42)] backdrop-blur-md md:rounded-[2rem] md:px-11 md:py-12"
+          className="relative mx-auto max-w-4xl overflow-visible rounded-[1.75rem] border border-gold/22 bg-bg-card/45 px-5 py-10 text-center shadow-[0_24px_70px_rgba(0,0,0,0.42)] backdrop-blur-md md:overflow-hidden md:rounded-[2rem] md:px-11 md:py-12"
         >
           <div
             aria-hidden
@@ -48,7 +48,7 @@ export function Process() {
 
             <AnimatedHeading
               as="h2"
-              className="section-title section-title--lead mx-auto mt-6 max-w-[18ch] not-italic md:max-w-[22ch]"
+              className="section-title section-title--lead mx-auto mt-6 max-w-full not-italic md:max-w-[22ch]"
               delay={0.1}
             >
               <>
@@ -61,7 +61,7 @@ export function Process() {
 
             <RevealFade
               as="p"
-              className="mx-auto mt-7 max-w-2xl text-pretty text-sm leading-[1.75] text-ink-secondary md:mt-8 md:text-[0.95rem]"
+            className="mx-auto mt-7 max-w-2xl text-pretty text-base leading-[1.75] text-ink-secondary md:mt-8"
               delay={0.34}
             >
               A premium, stage-gated framework that aligns project goals, design quality, and construction control from day one.
@@ -119,7 +119,7 @@ export function Process() {
                 />
                 <p className="label-upper text-gold">{step.step}</p>
                 <h3 className="mt-3 font-display text-2xl italic text-ink-primary">{step.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-ink-secondary">{step.description}</p>
+                <p className="mt-3 text-base leading-relaxed text-ink-secondary">{step.description}</p>
                 <span className="mt-5 block h-px bg-gradient-to-r from-gold/35 to-transparent" aria-hidden />
               </motion.article>
             ))}
@@ -146,7 +146,7 @@ export function Process() {
                 </div>
                 <div>
                   <h3 className="font-display text-xl italic text-ink-primary">{step.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-ink-secondary">{step.description}</p>
+                  <p className="mt-2 text-base leading-relaxed text-ink-secondary">{step.description}</p>
                 </div>
               </div>
             </motion.article>

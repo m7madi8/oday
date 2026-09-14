@@ -94,7 +94,7 @@ function FadeCopy({
 export function Hero() {
   const reduceMotion = useReducedMotion();
   const mobilePerf = useMobilePerfMode();
-  const cinematicReduce = !!reduceMotion || mobilePerf;
+  const cinematicReduce = !!reduceMotion;
   const slides = hero.images;
   const mediaRef = useRef<HeroCinematicMediaHandle>(null);
   const [active, setActive] = useState(0);

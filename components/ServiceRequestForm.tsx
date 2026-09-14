@@ -161,7 +161,7 @@ function ConfiguredServiceRequestForm({
             </ul>
           ) : null}
           {field.helperText ? (
-            <p className="mt-2 text-xs leading-relaxed text-ink-muted">{field.helperText}</p>
+            <p className="mt-2 text-sm leading-relaxed text-ink-muted">{field.helperText}</p>
           ) : null}
         </div>
       );
@@ -301,7 +301,7 @@ function ConfiguredServiceRequestForm({
               timing="enter"
             />
             {section.id === "photos" && requireOneOf?.length ? (
-              <p className="mb-5 text-xs leading-relaxed text-ink-muted">
+              <p className="mb-5 text-sm leading-relaxed text-ink-muted">
                 Attach final render images, real photos, or both. If you provide one type, the other becomes optional.
               </p>
             ) : null}
@@ -596,7 +596,7 @@ function SubmitFooter({
           Send via WhatsApp
         </button>
       </div>
-      <p className="max-w-xl text-xs leading-relaxed text-ink-muted">
+      <p className="max-w-xl text-sm leading-relaxed text-ink-muted">
         Send your request by email or WhatsApp. We respond within two business days.
       </p>
     </div>

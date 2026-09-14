@@ -15,12 +15,13 @@ import {
   serviceFilterLabel,
   type ProjectSiblings,
 } from "@/lib/project-view";
-import { galleryReturnHref, rememberGalleryFocus } from "@/lib/gallery-return";
+import { galleryReturnHref, readGalleryFocus, rememberGalleryFocus, resolveGalleryReturnHref } from "@/lib/gallery-return";
 import { galleryTransition } from "@/lib/gallery-motion";
 import { motion, useReducedMotion } from "@/components/ClientMotion";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState, type MouseEvent } from "react";
 
 export function ProjectDetailView({
   project,
@@ -29,6 +30,7 @@ export function ProjectDetailView({
   project: Project;
   siblings: ProjectSiblings;
 }) {
+  const router = useRouter();
   const reduce = useReducedMotion();
   const summary = getProjectSummary(project);
   const details = getProjectDetailRows(project);
@@ -36,8 +38,13 @@ export function ProjectDetailView({
   const [gallery, setGallery] = useState<ProjectGalleryImage[]>(() => coverAsGallery(project));
   const titleIsCaseNumber = project.title.trim() === project.orderLabel.trim();
 
+  const goToGallery = (event: MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    router.push(resolveGalleryReturnHref(project), { scroll: false });
+  };
+
   useEffect(() => {
-    rememberGalleryFocus(project.id);
+    if (readGalleryFocus()) rememberGalleryFocus(project.id);
   }, [project.id]);
 
   useEffect(() => {
@@ -73,7 +80,12 @@ export function ProjectDetailView({
               Home
             </Link>
             <span aria-hidden>/</span>
-            <Link href={galleryReturnHref(project)} scroll={false} className="transition-colors hover:text-gold">
+            <Link
+              href={galleryReturnHref(project)}
+              scroll={false}
+              className="transition-colors hover:text-gold"
+              onClick={goToGallery}
+            >
               Gallery
             </Link>
             <span aria-hidden>/</span>
@@ -135,8 +147,8 @@ export function ProjectDetailView({
         <div className="mt-10 grid gap-8 md:mt-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:gap-12">
           <GalleryReveal delay={0.12}>
             <p className="label-upper text-ink-muted">Overview</p>
-            <p className="mt-4 text-sm leading-[1.72] text-ink-secondary md:text-[0.9375rem]">{summary}</p>
-            <p className="mt-6 text-sm leading-[1.65] text-ink-muted">
+            <p className="mt-4 text-base leading-[1.72] text-ink-secondary">{summary}</p>
+            <p className="mt-6 text-base leading-[1.7] text-ink-muted">
               Swipe horizontally to browse frames, tap any image to open it fullscreen, or use arrow keys in the
               viewer.
             </p>
@@ -167,7 +179,7 @@ export function ProjectDetailView({
                   <dd
                     className={
                       wide
-                        ? "mt-2 text-sm leading-[1.7] text-ink-secondary"
+                        ? "mt-2 text-base leading-[1.72] text-ink-secondary"
                         : "text-right text-sm font-medium text-ink-primary"
                     }
                   >
@@ -226,6 +238,7 @@ export function ProjectDetailView({
             scroll={false}
             data-no-glow
             className="project-detail__back btn-plain"
+            onClick={goToGallery}
           >
             <ArrowLeft className="project-detail__back-icon" strokeWidth={1.5} aria-hidden />
             <span>Back to gallery</span>

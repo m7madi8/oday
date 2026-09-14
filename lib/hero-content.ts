@@ -1,8 +1,8 @@
 import type { StaticImageData } from "next/image";
 import heroPrimary from "@/imgs/hero/villa-hero.jpg";
-import heroSlide2 from "@/imgs/Exterior/Villa/villa 12 bh/ODAY_result.webp";
-import heroSlide3 from "@/imgs/Exterior/Villa/villa 10 viv/ODAY_result.webp";
-import heroSlide4 from "@/imgs/Exterior/Villa/nasim shawahneh 42/oday_result.webp";
+import heroSlide2 from "@/imgs/hero/villa-marble.jpg";
+import heroSlide3 from "@/imgs/hero/villa-facade.jpg";
+import heroSlide4 from "@/imgs/hero/villa-entrance.jpg";
 
 /** Homepage hero copy — kept separate from data.ts to avoid heavy module init cycles. */
 export const hero = {
@@ -26,29 +26,29 @@ export const hero = {
       src: heroPrimary,
       alt: "Contemporary villa exterior — hero",
       primary: true,
-      objectPosition: "50% 50%",
-      objectPositionMobile: "50% 50%",
+      objectPosition: "50% 18%",
+      objectPositionMobile: "50% 14%",
     },
     {
       src: heroSlide2,
-      alt: "B.H Villa — hero exterior",
+      alt: "Dark marble villa — hero exterior",
       primary: false,
-      objectPosition: "50% 50%",
-      objectPositionMobile: "50% 50%",
+      objectPosition: "50% 20%",
+      objectPositionMobile: "50% 16%",
     },
     {
       src: heroSlide3,
-      alt: "V I V villa — hero exterior",
+      alt: "Contemporary villa facade — hero exterior",
       primary: false,
-      objectPosition: "50% 50%",
-      objectPositionMobile: "50% 50%",
+      objectPosition: "50% 62%",
+      objectPositionMobile: "50% 58%",
     },
     {
       src: heroSlide4,
-      alt: "420 I Villa — hero exterior",
+      alt: "Villa entrance at dusk — hero exterior",
       primary: false,
-      objectPosition: "50% 50%",
-      objectPositionMobile: "50% 50%",
+      objectPosition: "50% 52%",
+      objectPositionMobile: "50% 48%",
     },
   ] satisfies ReadonlyArray<{
     src: StaticImageData;

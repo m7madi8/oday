@@ -68,7 +68,7 @@ export function DesktopNav({
 
   return (
     <nav
-      className="hidden min-w-0 items-center justify-center gap-4 lg:flex xl:gap-7"
+      className="hidden min-w-0 items-center justify-center gap-5 lg:flex xl:gap-8"
       aria-label="Primary"
     >
       {panels.map((panel) => {

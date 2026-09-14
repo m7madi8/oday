@@ -85,8 +85,8 @@ const folders = fs
   .map((d) => d.name)
   .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
 
-if (folders.length !== 37) {
-  console.warn(`Expected 37 interior folders, found ${folders.length}.`);
+if (folders.length !== 36) {
+  console.warn(`Expected 36 interior folders, found ${folders.length}.`);
 }
 
 const importLines = [];

@@ -30,7 +30,7 @@ export default function Error({
         timing="enter"
         delay={0.08}
       />
-      <p className="mt-4 text-sm leading-relaxed text-ink-secondary">
+      <p className="mt-4 text-base leading-relaxed text-ink-secondary">
         The page hit an unexpected error. You can try again.
       </p>
       <button

@@ -7,8 +7,8 @@ import interiorServiceImage from "@/imgs/Interior/batool 10/ODAY_result.webp";
 import interiorSlide2 from "@/imgs/Interior/Howida  Living Room Render's 29/ODAY_result.webp";
 import interiorSlide3 from "@/imgs/Interior/tarifi apartment 61/oday_result.webp";
 import interiorSlide4 from "@/imgs/Interior/saleh bedroom 52/oday_result.webp";
-import aiServiceImage from "@/imgs/Interior/dr amal duaibes 13/ODAY_result.webp";
-import droneServiceImage from "@/imgs/Exterior/landscape/mohammad ram 40/oday_result.webp";
+import aiServiceImage from "@/imgs/services/ai-architect-cover.webp";
+import droneServiceImage from "@/imgs/services/architect-drone-cover.webp";
 import villaGalleryImage from "@/imgs/Exterior/Villa/villa 10 viv/ODAY_result.webp";
 import residentialGalleryImage from "@/imgs/Exterior/residential building/zz hag 1213 08/ODAY_result.webp";
 import cottageGalleryImage from "@/imgs/Exterior/Cottage/COTATGE ADAM 12/ODAY_result.webp";
@@ -95,7 +95,7 @@ export const serviceVisualBySlug: Record<ServiceSlug, ServiceVisualAsset> = {
   "architecture-ai": {
     src: aiServiceImage,
     alt: "Ai architect cinematic preview",
-    objectPosition: "48% 35%",
+    objectPosition: "50% 42%",
     videoSrc: aiFeaturedVideo,
     videoStartAt: 1.2,
     videoDuration: 5,
@@ -103,9 +103,9 @@ export const serviceVisualBySlug: Record<ServiceSlug, ServiceVisualAsset> = {
   "architecture-drone": {
     src: droneServiceImage,
     alt: "Architect Dron aerial preview",
-    objectPosition: "55% 30%",
+    objectPosition: "50% 38%",
     videoSrc: droneFeaturedVideo,
-    videoStartAt: 2.0,
+    videoStartAt: 3.6,
     videoDuration: 5,
   },
 };
@@ -150,7 +150,7 @@ export const galleryNavCovers = {
     src: droneServiceImage,
     alt: "Architect Dron gallery preview",
     videoSrc: droneFeaturedVideo,
-    videoStartAt: 2.0,
+    videoStartAt: 3.6,
     videoDuration: 5,
   },
 } as const;

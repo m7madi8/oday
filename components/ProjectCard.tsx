@@ -18,6 +18,7 @@ import {
   serviceFilterLabel,
   type Project,
 } from "@/lib/data";
+import { captureGalleryNavigation } from "@/lib/gallery-return";
 import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -125,7 +126,10 @@ function MasonryCard({
       data-span={span}
       data-section={section}
       id={project.id}
-      style={{ ["--cover-aspect" as string]: intrinsic.aspectRatio }}
+      style={{
+        ["--cover-aspect" as string]: intrinsic.aspectRatio,
+        ["--cover-ratio" as string]: String(intrinsic.width / Math.max(intrinsic.height, 1)),
+      }}
       initial={reduceMotion ? false : cardInViewHidden}
       whileInView={reduceMotion ? undefined : cardInViewVisible}
       viewport={revealInView}
@@ -138,8 +142,8 @@ function MasonryCard({
       <Link
         href={href}
         className="project-card__link"
-        data-cursor-label="VIEW"
         aria-label={`View project ${project.orderLabel} ${headline}`}
+        onClick={() => captureGalleryNavigation(project.id)}
       >
         <div className="project-card__media">
           <Image
@@ -207,8 +211,8 @@ function GridCard({
       <Link
         href={projectDetailPath(project)}
         className="block active:scale-[0.98] motion-reduce:active:scale-100"
-        data-cursor-label="VIEW"
         aria-label={`View ${project.title} project`}
+        onClick={() => captureGalleryNavigation(project.id)}
       >
         <div className="relative aspect-[16/9] w-full overflow-hidden md:aspect-[4/3] xl:aspect-[3/2]">
           <div className="absolute inset-0 transition-transform duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
@@ -285,8 +289,8 @@ function FeaturedCard({ project, index }: { project: Project; index: number }) {
       <Link
         href={projectDetailPath(project)}
         className="feat-card__link group/feat"
-        data-cursor-label="VIEW"
         aria-label={`View project ${headline}`}
+        onClick={() => captureGalleryNavigation(project.id)}
       >
         <Image
           src={project.image}

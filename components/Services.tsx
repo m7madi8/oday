@@ -485,7 +485,7 @@ function ServicePanel({
             }`}
           >
             <div className="rounded-xl border border-white/10 bg-black/35 p-4 backdrop-blur-md sm:p-5">
-              <p className="text-[11px] leading-relaxed text-white/88 sm:text-xs md:text-sm md:leading-relaxed">
+              <p className="text-sm leading-relaxed text-white/90 md:text-base">
                 {profile.punchline}
               </p>
 

@@ -52,11 +52,11 @@
 
 .portfolio-section__subtitle {
   margin-top: var(--space-xs);
-  max-width: 36rem;
+  max-width: 42rem;
   font-family: var(--font-ui);
   font-size: var(--step-0);
   font-weight: 300;
-  line-height: 1.6;
+  line-height: 1.72;
   color: var(--text-secondary);
 }
 
@@ -667,9 +667,9 @@
 .project-card__desc {
   margin-top: 0.4rem;
   font-family: var(--font-ui);
-  font-size: var(--step--1);
+  font-size: var(--step-0);
   font-weight: 300;
-  line-height: 1.45;
+  line-height: 1.6;
   color: var(--text-secondary);
 }
 

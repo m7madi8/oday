@@ -113,7 +113,7 @@ function FaqRow({
             transition={{ duration: reduceMotion ? 0 : 0.38, ease: [0.22, 1, 0.36, 1] }}
             className="overflow-hidden"
           >
-            <p className="pb-6 text-sm leading-relaxed text-ink-secondary md:text-[15px]">{item.answer}</p>
+            <p className="pb-6 text-base leading-relaxed text-ink-secondary">{item.answer}</p>
           </motion.div>
         )}
       </AnimatePresence>

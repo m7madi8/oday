@@ -18,4 +18,5 @@ export const villaGalleryLoaders: Record<
   "vil-villa-10-viv": () => import("./generated-galleries/vil-villa-10-viv").then((m) => m.images),
   "vil-villa-11-vi12": () => import("./generated-galleries/vil-villa-11-vi12").then((m) => m.images),
   "vil-villa-12-bh": () => import("./generated-galleries/vil-villa-12-bh").then((m) => m.images),
+  "vil-villa-taim": () => import("./generated-galleries/vil-villa-taim").then((m) => m.images),
 };

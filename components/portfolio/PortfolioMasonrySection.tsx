@@ -4,10 +4,11 @@ import { ProjectCard } from "@/components/ProjectCard";
 import { AnimatedHeading } from "@/components/animations/AnimatedHeading";
 import { RevealFade } from "@/components/animations/RevealFade";
 import { GalleryGoldLine, GalleryReveal } from "@/components/animations/GalleryMotion";
-import { buildGalleryBands } from "@/lib/portfolio-masonry-layout";
+import { GALLERY_FOCUS_EVENT, readGalleryFocusId } from "@/lib/gallery-return";
+import { buildGalleryBands, leadGalleryProjects } from "@/lib/portfolio-masonry-layout";
 import type { PortfolioSectionId } from "@/lib/project-card-ratio";
 import type { Project } from "@/lib/data";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
 const INITIAL_VISIBLE_BANDS = 4;
 const BANDS_PER_PAGE = 4;
@@ -36,13 +37,27 @@ export function PortfolioMasonrySection({
   className?: string;
 }) {
   const copy = SECTION_COPY[section];
-  const bands = useMemo(() => buildGalleryBands(projects), [projects]);
+  const ordered = useMemo(
+    () => (section === "exterior" ? leadGalleryProjects(projects) : projects),
+    [projects, section],
+  );
+  const bands = useMemo(() => buildGalleryBands(ordered), [ordered]);
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_BANDS);
   const sentinelRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    if (readGalleryFocusId()) {
+      setVisibleCount(bands.length);
+      return;
+    }
     setVisibleCount(INITIAL_VISIBLE_BANDS);
-  }, [projects]);
+  }, [projects, bands.length]);
+
+  useEffect(() => {
+    const revealAll = () => setVisibleCount(bands.length);
+    window.addEventListener(GALLERY_FOCUS_EVENT, revealAll);
+    return () => window.removeEventListener(GALLERY_FOCUS_EVENT, revealAll);
+  }, [bands.length]);
 
   useEffect(() => {
     if (visibleCount >= bands.length) return;

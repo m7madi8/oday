@@ -69,7 +69,7 @@ function MaskBlock({
 
   return (
     <MotionTag ref={ref} id={id} className={className}>
-      <span style={{ display: "block", overflow: "hidden" }}>
+      <span style={{ display: "block", overflow: "hidden", paddingBottom: "0.22em", paddingInlineEnd: "0.18em" }}>
         <motion.span
           style={{ display: "block" }}
           initial={hidden}

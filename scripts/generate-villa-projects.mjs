@@ -95,8 +95,8 @@ const folders = fs
   .map((d) => d.name)
   .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
 
-if (folders.length !== 12) {
-  console.warn(`Expected 12 villa folders, found ${folders.length}.`);
+if (folders.length !== 13) {
+  console.warn(`Expected 13 villa folders, found ${folders.length}.`);
 }
 
 const importLines = [];
@@ -108,7 +108,7 @@ folders.forEach((folder, folderIndex) => {
   const dir = path.join(villaRoot, folder);
   const files = fs
     .readdirSync(dir)
-    .filter((f) => /\.webp$/i.test(f))
+    .filter((f) => /\.(webp|jpe?g|png)$/i.test(f))
     .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
 
   if (files.length === 0) {

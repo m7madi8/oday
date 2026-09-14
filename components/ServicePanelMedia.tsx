@@ -150,6 +150,7 @@ export function ServicePanelMedia({
           } ${isPlaying ? "service-panel-media__video--playing" : ""}`}
           style={{ objectPosition: visual.objectPosition }}
           src={visual.videoSrc}
+          poster={visual.src.src}
           muted
           playsInline
           loop

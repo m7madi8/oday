@@ -44,6 +44,7 @@ function NavMegaClip({
   const startAt = item.videoStartAt ?? 0;
   const duration = item.videoDuration ?? 5;
   const useVideo = Boolean(item.videoSrc) && !reduceMotion;
+  const fitContain = item.objectFit !== "cover";
 
   useEffect(() => {
     const video = videoRef.current;
@@ -85,13 +86,13 @@ function NavMegaClip({
   }, [useVideo, item.videoSrc, startAt, duration]);
 
   return (
-    <div className={`nav-mega__media${item.objectFit === "contain" ? " nav-mega__media--contain" : ""}`}>
+    <div className={`nav-mega__media${fitContain ? " nav-mega__media--contain" : ""}`}>
       <Image
         src={item.image}
         alt={item.imageAlt}
         fill
         className={`nav-mega__media-img ${
-          item.objectFit === "contain" ? "object-contain nav-mega__media-img--contain" : "object-cover"
+          fitContain ? "object-contain nav-mega__media-img--contain" : "object-cover"
         } ${useVideo ? "nav-mega__media-img--under-video" : ""}`}
         sizes="(max-width: 1024px) 100vw, 52vw"
         style={item.objectPosition ? { objectPosition: item.objectPosition } : undefined}
@@ -100,7 +101,7 @@ function NavMegaClip({
       {useVideo && item.videoSrc ? (
         <video
           ref={videoRef}
-          className="nav-mega__video"
+          className={`nav-mega__video${fitContain ? " object-contain" : ""}`}
           src={item.videoSrc}
           muted
           playsInline
@@ -121,6 +122,7 @@ function MegaRail({
   onClose,
   reduceMotion,
   lockStageVisual,
+  showCaption = true,
 }: {
   items: NavVisualItem[];
   label: string;
@@ -130,6 +132,7 @@ function MegaRail({
   onClose: () => void;
   reduceMotion: boolean | null;
   lockStageVisual?: boolean;
+  showCaption?: boolean;
 }) {
   const listRef = useRef<HTMLUListElement>(null);
   const active = items.find((item) => item.id === activeId) ?? items[0];
@@ -216,22 +219,24 @@ function MegaRail({
             item={lockStageVisual ? items[0] : active}
             reduceMotion={reduceMotion}
           />
-          <AnimatePresence mode="wait" initial={false}>
-            <motion.div
-              key={active.id}
-              className="nav-mega__caption"
-              initial={reduceMotion ? false : { opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={reduceMotion ? undefined : { opacity: 0, y: -6 }}
-              transition={{ duration: reduceMotion ? 0 : 0.32, ease }}
-            >
-              {active.eyebrow ? (
-                <p className="nav-mega__caption-eyebrow">{active.eyebrow}</p>
-              ) : null}
-              <p className="nav-mega__caption-title">{active.label}</p>
-              <p className="nav-mega__caption-copy">{active.description}</p>
-            </motion.div>
-          </AnimatePresence>
+          {showCaption ? (
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={active.id}
+                className="nav-mega__caption"
+                initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={reduceMotion ? undefined : { opacity: 0, y: -6 }}
+                transition={{ duration: reduceMotion ? 0 : 0.32, ease }}
+              >
+                {active.eyebrow ? (
+                  <p className="nav-mega__caption-eyebrow">{active.eyebrow}</p>
+                ) : null}
+                <p className="nav-mega__caption-title">{active.label}</p>
+                <p className="nav-mega__caption-copy">{active.description}</p>
+              </motion.div>
+            </AnimatePresence>
+          ) : null}
         </div>
       </div>
     </div>
@@ -357,6 +362,7 @@ export function NavMegaPanel({
                   onClose={onClose}
                   reduceMotion={reduceMotion}
                   lockStageVisual={panel.lockStageVisual}
+                  showCaption={panel.id === "contact"}
                 />
               )}
             </motion.div>

@@ -19,7 +19,7 @@ export default function NotFound() {
         delay={0.08}
         splitByWords={false}
       />
-      <p className="mt-4 text-sm leading-relaxed text-ink-secondary">
+      <p className="mt-4 text-base leading-relaxed text-ink-secondary">
         The page you requested does not exist or was moved.
       </p>
       <Link

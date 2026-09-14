@@ -13,6 +13,7 @@ import {
   type Project,
 } from "@/lib/data";
 import { galleryTransition } from "@/lib/gallery-motion";
+import { captureGalleryNavigation } from "@/lib/gallery-return";
 import { AnimatePresence, motion, useReducedMotion } from "@/components/ClientMotion";
 import { ArrowLeft, ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
@@ -233,7 +234,11 @@ function Stage({
             exit="exit"
             transition={galleryTransition(reduceMotion, 0.48)}
           >
-            <Link href={projectDetailPath(project)} className="xgl__stage-link group" data-cursor-label="VIEW">
+            <Link
+              href={projectDetailPath(project)}
+              className="xgl__stage-link group"
+              onClick={() => captureGalleryNavigation(project.id)}
+            >
               <Image
                 src={project.image}
                 alt={project.imageAlt}

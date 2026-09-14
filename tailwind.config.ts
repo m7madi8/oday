@@ -43,6 +43,12 @@ const config: Config = {
         "hero-accent": ["var(--font-display)", "Bodoni Moda", "Georgia", "serif"],
         "hero-display": ["var(--font-display)", "Bodoni Moda", "Georgia", "serif"],
       },
+      fontSize: {
+        xs: ["0.8125rem", { lineHeight: "1.5" }],
+        sm: ["var(--step-0)", { lineHeight: "1.72" }],
+        base: ["var(--step-1)", { lineHeight: "1.72" }],
+        lg: ["1.25rem", { lineHeight: "1.65" }],
+      },
       fontWeight: {
         hairline: "200",
       },

@@ -37,9 +37,9 @@
 
 .svc-gallery__lead {
   margin-top: 0.75rem;
-  max-width: 38ch;
-  font-size: 0.9rem;
-  line-height: 1.65;
+  max-width: 44ch;
+  font-size: var(--step-0);
+  line-height: 1.72;
   color: var(--ink-secondary);
 }
 
@@ -138,8 +138,8 @@
   }
 
   .svc-gallery__lead {
-    max-width: 30ch;
-    font-size: 0.875rem;
+    max-width: 42ch;
+    font-size: var(--step-0);
   }
 
   .svc-gallery__main {
@@ -402,10 +402,10 @@
 
 .svc-video-card__desc {
   margin-top: 0.45rem;
-  max-width: 42ch;
-  font-size: 0.78rem;
-  line-height: 1.55;
-  color: rgba(255, 255, 255, 0.62);
+  max-width: 44ch;
+  font-size: var(--step-0);
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.72);
 }
 
 /* Large screens — metadata below frame, cleaner cinema */
@@ -453,9 +453,9 @@
 
   .svc-video-card__meta .svc-video-card__desc {
     margin-top: 0.4rem;
-    max-width: 40ch;
-    font-size: 0.78rem;
-    line-height: 1.55;
+    max-width: 44ch;
+    font-size: var(--step-0);
+    line-height: 1.65;
     color: var(--ink-secondary);
   }
 

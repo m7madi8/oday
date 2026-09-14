@@ -148,7 +148,7 @@ export function ProjectsGallery({
               />
               <RevealFade
                 as="p"
-                className="mt-3 max-w-xl text-sm leading-relaxed text-ink-secondary md:mt-5 md:text-[0.9375rem]"
+                className="mt-3 max-w-xl text-base leading-relaxed text-ink-secondary md:mt-5"
                 delay={0.28}
                 timing="enter"
               >

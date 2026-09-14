@@ -125,7 +125,6 @@ export function MagneticButton({
       ref={rootRef}
       className={className}
       {...props}
-      data-cursor-magnetic=""
       onMouseMove={handleMove}
       onMouseLeave={handleLeave}
     >

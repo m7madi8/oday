@@ -61,18 +61,6 @@ export const magneticDefaults = {
   returnEase: "elastic.out(1, 0.4)",
 } as const;
 
-/** Cursor follow + morph — transform/opacity only. */
-export const cursorDefaults = {
-  followDamping: 0.165,
-  hoverScale: 1.55,
-  clickScale: 0.84,
-  hoverDuration: 0.42,
-  hoverEase: "power3.out",
-  clickDuration: 0.08,
-  clickReleaseDuration: 0.22,
-  cursorMagnetStrength: 0.18,
-} as const;
-
 export function magneticDelta(
   clientX: number,
   clientY: number,

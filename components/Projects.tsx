@@ -72,7 +72,7 @@ export function Projects() {
             />
             <RevealFade
               as="p"
-              className="mt-5 max-w-xl text-sm leading-relaxed text-ink-secondary md:text-base"
+              className="mt-5 max-w-xl text-base leading-relaxed text-ink-secondary"
               delay={0.3}
             >
               A focused selection of high-impact developments crafted to lift market value, user appeal, and long-term asset performance.
@@ -158,7 +158,7 @@ export function Projects() {
         </AnimatePresence>
 
         {display.length === 0 && (
-          <p className="mt-12 text-center text-sm text-ink-secondary">
+          <p className="mt-12 text-center text-base text-ink-secondary">
             No case studies in this category yet - switch to All for the full portfolio.
           </p>
         )}

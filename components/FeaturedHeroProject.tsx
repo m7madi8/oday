@@ -76,7 +76,7 @@ export function FeaturedHeroProject({ project }: FeaturedHeroProjectProps) {
         ease: animationEasing.smoothOut,
       }}
     >
-      <Link href={href} className="feat-hero__link" data-cursor-label="VIEW" aria-label={`View project ${project.title}`}>
+      <Link href={href} className="feat-hero__link" aria-label={`View project ${project.title}`}>
         <div className="feat-hero__media">
           {visibleFrames.map((frame, index) => {
             const isActive = index === active;

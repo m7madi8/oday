@@ -88,7 +88,7 @@ export default function ServiceRequestPage({ params }: Props) {
               </div>
             </div>
           </div>
-          <p className="mt-6 max-w-2xl text-sm leading-[1.7] text-ink-secondary md:text-[0.9375rem]">
+          <p className="mt-6 max-w-2xl text-base leading-[1.72] text-ink-secondary">
             {service.description}
           </p>
           <div className="mt-6 h-px w-full max-w-[5rem] bg-gradient-to-r from-gold/50 to-transparent" aria-hidden />

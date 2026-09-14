@@ -82,6 +82,8 @@ export function getGalleryNavItems(): NavVisualItem[] {
       image: cover.src,
       imageAlt: cover.alt,
       eyebrow,
+      objectFit: "contain",
+      objectPosition: "50% 50%",
       ...("videoSrc" in cover && cover.videoSrc
         ? {
             videoSrc: cover.videoSrc,
@@ -159,6 +161,8 @@ export function getServicesNavItems(): NavVisualItem[] {
       image: visual.src,
       imageAlt: visual.alt,
       eyebrow: service.orderLabel,
+      objectFit: "contain",
+      objectPosition: "50% 50%",
       videoSrc: visual.videoSrc,
       videoStartAt: visual.videoStartAt,
       videoDuration: visual.videoDuration,

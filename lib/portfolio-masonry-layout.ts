@@ -14,8 +14,17 @@ export type GalleryBand = {
   cells: GalleryBandCell[];
 };
 
+export const GALLERY_LEAD_PROJECT_ID = "vil-villa-12-bh";
+
+/** Keep a lead project first without dropping the rest of the archive. */
+export function leadGalleryProjects(projects: Project[], leadId = GALLERY_LEAD_PROJECT_ID): Project[] {
+  const lead = projects.find((project) => project.id === leadId);
+  if (!lead) return projects;
+  return [lead, ...projects.filter((project) => project.id !== leadId)];
+}
+
 /**
- * Packs projects into complete 12-unit rows.
+ * Editorial bento — mixed spans, not a uniform grid.
  * Pattern: 8+4 → 4+4+4 → 4+8, then leftover 6+6 or 12.
  */
 export function buildGalleryBands(projects: Project[]): GalleryBand[] {

@@ -58,7 +58,7 @@ export function Testimonials() {
           />
           <RevealFade
             as="p"
-            className="mt-6 text-sm leading-relaxed text-ink-secondary md:text-base"
+            className="mt-6 text-base leading-relaxed text-ink-secondary"
             delay={0.32}
           >
             Performance-led partnerships with developers, operators, and investors across high-value sectors.
@@ -96,7 +96,7 @@ export function Testimonials() {
                   <p className="label-upper mt-1 text-ink-muted">{t.role}</p>
                 </div>
               </div>
-              <p className="relative mt-6 text-sm leading-relaxed text-ink-secondary md:text-[15px]">
+              <p className="relative mt-6 text-base leading-relaxed text-ink-secondary">
                 &ldquo;{t.quote}&rdquo;
               </p>
               <div className="relative mt-6 flex gap-1 text-gold" aria-label="Five out of five stars">

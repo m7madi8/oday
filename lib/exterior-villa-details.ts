@@ -1,4 +1,4 @@
-/** Curated villa case-study copy keyed by gallery order (01–12). */
+/** Curated villa case-study copy keyed by gallery order (01–13). */
 export interface VillaProjectDetails {
   orderLabel: string;
   name: string;
@@ -154,5 +154,17 @@ export const villaProjectDetailsByOrder: Record<string, VillaProjectDetails> = {
       "A luxurious contemporary villa designed as a series of layered volumes that respond to the sloped site. The composition combines generous terraces, framed views, private outdoor spaces, and a carefully integrated water feature. Decorative screens and deep overhangs provide privacy and shade while enhancing the architectural identity of the residence.",
     styleMaterials:
       "Contemporary luxury style with light natural stone façades, dark textured cladding, large glass openings, geometric metal screens, glass railings, wood ceiling details, sculptural water features, landscaped terraces, and warm integrated lighting.",
+  },
+  "13": {
+    orderLabel: "13",
+    name: "Taim's Villa",
+    projectType: "Residential Architectural Design",
+    location: "Jaljoulia, Palestine",
+    year: "2026",
+    area: "520 m²",
+    concept:
+      "A contemporary villa designed as a composition of interlocking volumes, generous balconies, and layered outdoor spaces. The design creates a strong connection between the residence and its landscaped surroundings through large glazed openings, private terraces, a rooftop pergola, and a tranquil water feature. Carefully framed views, shaded areas, and integrated greenery enhance privacy and outdoor living.",
+    styleMaterials:
+      "Contemporary luxury style with light natural stone façades, charcoal-gray architectural volumes, warm wood cladding, large glass openings, black metal and glass railings, horizontal shading screens, timber pergolas, landscaped terraces, mosaic water features, and warm integrated architectural lighting.",
   },
 };
