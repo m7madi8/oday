@@ -1,7 +1,8 @@
 import type { StaticImageData } from "next/image";
-import heroPrimary from "@/imgs/Exterior/Villa/villa 12 bh/ODAY_result.webp";
-import heroSlide2 from "@/imgs/Exterior/Villa/villa 10 viv/ODAY_result.webp";
-import heroSlide3 from "@/imgs/Exterior/Villa/nasim shawahneh 42/oday_result.webp";
+import heroPrimary from "@/imgs/hero/villa-hero.jpg";
+import heroSlide2 from "@/imgs/Exterior/Villa/villa 12 bh/ODAY_result.webp";
+import heroSlide3 from "@/imgs/Exterior/Villa/villa 10 viv/ODAY_result.webp";
+import heroSlide4 from "@/imgs/Exterior/Villa/nasim shawahneh 42/oday_result.webp";
 
 /** Homepage hero copy — kept separate from data.ts to avoid heavy module init cycles. */
 export const hero = {
@@ -23,24 +24,31 @@ export const hero = {
   images: [
     {
       src: heroPrimary,
-      alt: "B.H Villa — primary hero exterior",
+      alt: "Contemporary villa exterior — hero",
       primary: true,
-      objectPosition: "52% 36%",
-      objectPositionMobile: "60% 40%",
+      objectPosition: "50% 50%",
+      objectPositionMobile: "50% 50%",
     },
     {
       src: heroSlide2,
-      alt: "V I V villa — hero exterior",
+      alt: "B.H Villa — hero exterior",
       primary: false,
-      objectPosition: "44% 42%",
-      objectPositionMobile: "38% 48%",
+      objectPosition: "50% 50%",
+      objectPositionMobile: "50% 50%",
     },
     {
       src: heroSlide3,
+      alt: "V I V villa — hero exterior",
+      primary: false,
+      objectPosition: "50% 50%",
+      objectPositionMobile: "50% 50%",
+    },
+    {
+      src: heroSlide4,
       alt: "420 I Villa — hero exterior",
       primary: false,
-      objectPosition: "54% 36%",
-      objectPositionMobile: "58% 38%",
+      objectPosition: "50% 50%",
+      objectPositionMobile: "50% 50%",
     },
   ] satisfies ReadonlyArray<{
     src: StaticImageData;
@@ -50,7 +58,7 @@ export const hero = {
     objectPositionMobile: string;
   }>,
   image: heroPrimary,
-  imageAlt: "B.H Villa — primary hero exterior",
+  imageAlt: "Contemporary villa exterior — hero",
   stats: [
     { label: "Projects", value: 500, prefix: "+", suffix: "" },
     { label: "Value", value: 50, prefix: "+", suffix: "M" },

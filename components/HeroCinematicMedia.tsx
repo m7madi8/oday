@@ -114,30 +114,24 @@ export const HeroCinematicMedia = forwardRef<HeroCinematicMediaHandle, HeroCinem
 
         const slide = slidesRef.current[index];
         const holdS = (slide?.primary ? hero.primaryIntervalMs : hero.slideIntervalMs) / 1000;
-        const simple = isSimplifiedViewport();
-        const zoomIn = index % 2 === 0;
-        const minScale = 1;
-        const maxScale = simple ? 1.08 : 1.14;
-        const fromScale = zoomIn ? minScale : maxScale;
-        const toScale = zoomIn ? maxScale : minScale;
 
         zoomDoneRef.current = false;
 
         gsap.set(inner, {
-          scale: fromScale,
+          scale: 1,
           xPercent: 0,
           yPercent: 0,
           rotation: 0,
-          transformOrigin: "50% 45%",
+          transformOrigin: "50% 50%",
           force3D: true,
         });
 
-        kenRef.current = gsap.to(inner, {
-          scale: toScale,
+        const hold = { t: 0 };
+        kenRef.current = gsap.to(hold, {
+          t: 1,
           duration: holdS,
           ease: "none",
           overwrite: "auto",
-          force3D: true,
           onComplete: () => {
             if (gsapRef.current !== gsap || busyRef.current) return;
             zoomDoneRef.current = true;
@@ -178,11 +172,8 @@ export const HeroCinematicMedia = forwardRef<HeroCinematicMediaHandle, HeroCinem
         const diagonal = !simple && (from + nextIndex) % 2 === 0;
         const duration = simple ? MOBILE_MS : DESKTOP_MS;
         const ease = simple ? "power3.inOut" : "expo.inOut";
-        const dir = forward ? 1 : -1;
 
         nextLayer.style.willChange = "clip-path";
-        currentInner.style.willChange = "transform";
-        nextInner.style.willChange = "transform";
 
         gsap.set(nextLayer, {
           visibility: "visible",
@@ -198,12 +189,12 @@ export const HeroCinematicMedia = forwardRef<HeroCinematicMediaHandle, HeroCinem
           clipPath: openClip(simple),
           force3D: true,
         });
-        gsap.set(nextInner, {
-          scale: simple ? 1.045 : 1.075,
-          xPercent: dir * (simple ? 2.2 : 3.6),
-          yPercent: simple ? 0.4 : 1.1,
-          rotation: simple ? 0 : dir * 0.28,
-          transformOrigin: "50% 45%",
+        gsap.set([currentInner, nextInner], {
+          scale: 1,
+          xPercent: 0,
+          yPercent: 0,
+          rotation: 0,
+          transformOrigin: "50% 50%",
           force3D: true,
         });
 
@@ -222,13 +213,7 @@ export const HeroCinematicMedia = forwardRef<HeroCinematicMediaHandle, HeroCinem
               opacity: 1,
               clipPath: openClip(simple),
             });
-            gsap.set(nextInner, {
-              scale: 1,
-              xPercent: 0,
-              yPercent: 0,
-              rotation: 0,
-            });
-            gsap.set(currentInner, {
+            gsap.set([currentInner, nextInner], {
               scale: 1,
               xPercent: 0,
               yPercent: 0,
@@ -236,8 +221,6 @@ export const HeroCinematicMedia = forwardRef<HeroCinematicMediaHandle, HeroCinem
             });
 
             nextLayer.style.willChange = "";
-            currentInner.style.willChange = "";
-            nextInner.style.willChange = "";
 
             indexRef.current = nextIndex;
             timelineRef.current = null;
@@ -253,27 +236,6 @@ export const HeroCinematicMedia = forwardRef<HeroCinematicMediaHandle, HeroCinem
           nextLayer,
           {
             clipPath: openClip(simple),
-            duration,
-          },
-          0,
-        );
-        tl.to(
-          nextInner,
-          {
-            scale: 1,
-            xPercent: 0,
-            yPercent: 0,
-            rotation: 0,
-            duration,
-          },
-          0,
-        );
-        tl.to(
-          currentInner,
-          {
-            scale: simple ? 1.045 : 1.065,
-            xPercent: -dir * (simple ? 1.6 : 2.4),
-            yPercent: simple ? 0 : -0.6,
             duration,
           },
           0,
@@ -314,18 +276,19 @@ export const HeroCinematicMedia = forwardRef<HeroCinematicMediaHandle, HeroCinem
 
         const firstInner = innerRefs.current[0];
         if (firstInner) {
-          const simple = isSimplifiedViewport();
           introRef.current = gsap.fromTo(
             firstInner,
             {
-              scale: simple ? 1.06 : 1.1,
+              opacity: 0,
+              scale: 1,
               xPercent: 0,
               yPercent: 0,
-              transformOrigin: "50% 45%",
+              transformOrigin: "50% 50%",
             },
             {
+              opacity: 1,
               scale: 1,
-              duration: 2.4,
+              duration: 1.35,
               ease: "power2.out",
               force3D: true,
               onComplete: () => {
@@ -366,10 +329,6 @@ export const HeroCinematicMedia = forwardRef<HeroCinematicMediaHandle, HeroCinem
                 layerRefs.current[index] = node;
               }}
               className={`hero-modern__layer${index === 0 ? " is-seed" : ""}`}
-              style={{
-                ["--hero-pos" as string]: slide.objectPosition,
-                ["--hero-pos-mobile" as string]: slide.objectPositionMobile,
-              }}
             >
               <div
                 ref={(node) => {
