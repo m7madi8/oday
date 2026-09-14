@@ -95,15 +95,15 @@
 .hero-modern__layer-inner {
   position: absolute;
   inset: 0;
-  transform: scale(1);
+  transform: none;
   transform-origin: 50% 50%;
-  will-change: transform;
   backface-visibility: hidden;
 }
 
 .hero-modern__img {
   object-fit: cover;
   object-position: 50% 50%;
+  image-rendering: auto;
   pointer-events: none;
   user-select: none;
 }

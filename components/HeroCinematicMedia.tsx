@@ -342,7 +342,8 @@ export const HeroCinematicMedia = forwardRef<HeroCinematicMediaHandle, HeroCinem
                   fill
                   priority={index === 0}
                   fetchPriority={index === 0 ? "high" : "auto"}
-                  quality={isSimplifiedViewport() ? 78 : 100}
+                  quality={100}
+                  unoptimized={slide.primary}
                   draggable={false}
                   className="hero-modern__img object-cover"
                   sizes="100vw"
