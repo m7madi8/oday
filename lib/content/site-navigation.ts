@@ -14,6 +14,8 @@ export type NavPanelId = "home" | "about" | "gallery" | "services" | "contact";
 /** none = plain link; portrait = director card; mega = image hover menu */
 export type NavPanelVariant = "none" | "portrait" | "mega";
 
+export type NavRailIcon = "phone" | "mail" | "map-pin";
+
 export interface NavVisualItem {
   id: string;
   label: string;
@@ -21,6 +23,8 @@ export interface NavVisualItem {
   description: string;
   image: string | StaticImageData;
   imageAlt: string;
+  /** Rail thumbnail icon — used instead of the image in mega menus (e.g. Contact). */
+  railIcon?: NavRailIcon;
   eyebrow?: string;
   /** Optional muted preview clip for mega stage (AI / drone). */
   videoSrc?: string;
@@ -175,6 +179,7 @@ export function getContactNavItems(): NavVisualItem[] {
       description: phone?.value ?? "+972 56-812-3413",
       image: about.directorPortrait,
       imageAlt: about.directorPortraitAlt,
+      railIcon: "phone",
       eyebrow: "Call",
       objectFit: "contain",
       objectPosition: "50% 50%",
@@ -186,6 +191,7 @@ export function getContactNavItems(): NavVisualItem[] {
       description: email?.value ?? "abodohaoday@gmail.com",
       image: contact.backgroundImage,
       imageAlt: contact.backgroundAlt,
+      railIcon: "mail",
       eyebrow: "Write",
     },
     {
@@ -195,6 +201,7 @@ export function getContactNavItems(): NavVisualItem[] {
       description: location?.value ?? studioLocation.addressLine2,
       image: contact.backgroundImage,
       imageAlt: contact.backgroundAlt,
+      railIcon: "map-pin",
       eyebrow: "Visit",
     },
   ];

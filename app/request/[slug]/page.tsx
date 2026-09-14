@@ -1,3 +1,5 @@
+import { AnimatedHeading } from "@/components/animations/AnimatedHeading";
+import { RevealFade } from "@/components/animations/RevealFade";
 import { ServiceRequestForm } from "@/components/ServiceRequestForm";
 import { getServiceBySlug, isValidServiceSlug } from "@/lib/data";
 import type { Metadata } from "next";
@@ -47,7 +49,7 @@ export default function ServiceRequestPage({ params }: Props) {
       />
 
       <div className="relative mx-auto max-w-3xl px-5 md:px-10">
-        <nav className="flex flex-wrap items-center gap-x-2 gap-y-1 font-outfit text-[11px] font-medium uppercase tracking-[0.16em] text-ink-muted">
+        <nav className="flex flex-wrap items-center gap-x-2 gap-y-1 font-ui text-[11px] font-medium uppercase tracking-[0.16em] text-ink-muted">
           <Link href="/#top" className="transition-colors hover:text-gold">
             Home
           </Link>
@@ -73,10 +75,16 @@ export default function ServiceRequestPage({ params }: Props) {
                 <Icon className="h-5 w-5" aria-hidden />
               </div>
               <div className="min-w-0">
-                <p className="label-upper text-gold/85">Service request</p>
-                <h1 className="mt-2 font-display text-[clamp(1.85rem,4.5vw,2.75rem)] italic leading-[1.05] text-ink-primary">
-                  {service.title}
-                </h1>
+                <RevealFade as="p" className="label-upper text-gold/85" timing="enter">
+                  Service request
+                </RevealFade>
+                <AnimatedHeading
+                  as="h1"
+                  text={service.title}
+                  className="mt-2 font-display text-[clamp(1.85rem,4.5vw,2.75rem)] italic leading-[1.05] text-ink-primary"
+                  timing="enter"
+                  delay={0.08}
+                />
               </div>
             </div>
           </div>

@@ -1,5 +1,7 @@
 "use client";
 
+import { AnimatedHeading } from "@/components/animations/AnimatedHeading";
+import { RevealFade } from "@/components/animations/RevealFade";
 import { RevealChildren } from "@/components/animations/RevealChildren";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import { processSteps } from "@/lib/data";
@@ -37,21 +39,33 @@ export function Process() {
           />
 
           <div className="relative z-10">
-            <p className="label-upper text-gold tracking-[0.26em]">Execution Model</p>
+            <RevealFade as="p" className="label-upper text-gold tracking-[0.26em]">
+              Execution Model
+            </RevealFade>
             <div className="mx-auto mt-5 flex justify-center">
               <div className="h-px w-[4.5rem] bg-gradient-to-r from-transparent via-gold/60 to-transparent md:w-24" />
             </div>
 
-            <h2 className="section-title section-title--lead mx-auto mt-6 max-w-[18ch] not-italic md:max-w-[22ch]">
-              <span className="block italic text-ink-primary">From Brief to</span>
-              <span className="mt-1.5 block bg-gradient-to-r from-[#fff9d6] via-[#f5c518] to-[#fff9d6] bg-clip-text italic text-transparent md:mt-2">
-                Market Impact
-              </span>
-            </h2>
+            <AnimatedHeading
+              as="h2"
+              className="section-title section-title--lead mx-auto mt-6 max-w-[18ch] not-italic md:max-w-[22ch]"
+              delay={0.1}
+            >
+              <>
+                <span className="block italic text-ink-primary">From Brief to</span>
+                <span className="mt-1.5 block bg-gradient-to-r from-[#fff9d6] via-[#f5c518] to-[#fff9d6] bg-clip-text italic text-transparent md:mt-2">
+                  Market Impact
+                </span>
+              </>
+            </AnimatedHeading>
 
-            <p className="mx-auto mt-7 max-w-2xl text-pretty text-sm leading-[1.75] text-ink-secondary md:mt-8 md:text-[0.95rem]">
+            <RevealFade
+              as="p"
+              className="mx-auto mt-7 max-w-2xl text-pretty text-sm leading-[1.75] text-ink-secondary md:mt-8 md:text-[0.95rem]"
+              delay={0.34}
+            >
               A premium, stage-gated framework that aligns project goals, design quality, and construction control from day one.
-            </p>
+            </RevealFade>
 
             <div className="mt-9 flex flex-wrap items-center justify-center gap-2.5 md:mt-10 md:gap-3">
               {executionPillars.map((item, i) => (

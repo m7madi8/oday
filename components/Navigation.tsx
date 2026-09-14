@@ -6,11 +6,14 @@ import { NavMegaPanel } from "@/components/navigation/NavMegaPanel";
 import { SiteBackButton } from "@/components/SiteBackButton";
 import dynamic from "next/dynamic";
 import { useActiveSection } from "@/hooks/useActiveSection";
+import { useMobilePerfMode } from "@/hooks/useMobilePerfMode";
 import { useHoverIntent } from "@/hooks/useHoverIntent";
 import { getPrimaryNavPanels, type NavPanelId } from "@/lib/content/site-navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { motion, useReducedMotion } from "@/components/ClientMotion";
+import { navBarTransition, navBarVariants, navClusterVariants, navItemVariants } from "@/lib/nav-motion";
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 
 import brandLogo from "@/imgs/oday-logo.png";
@@ -49,6 +52,8 @@ function isNavLinkActive(pathname: string, href: string, activeSection: string):
 }
 
 export function Navigation() {
+  const reduceMotion = useReducedMotion();
+  const playNavIntro = useRef(true);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchReady, setSearchReady] = useState(false);
@@ -60,7 +65,8 @@ export function Navigation() {
   const isHome = pathname === "/";
   const isGallery = pathname.startsWith("/projects");
   const isRequest = pathname.startsWith("/request");
-  const activeSection = useActiveSection(isHome);
+  const mobilePerf = useMobilePerfMode();
+  const activeSection = useActiveSection(isHome && !mobilePerf);
 
   const panels = useMemo(() => getPrimaryNavPanels(), []);
 
@@ -199,20 +205,37 @@ export function Navigation() {
         ? "site-nav--scrolled"
         : "site-nav--at-hero";
 
+  const navIntro = !reduceMotion && !mobilePerf && playNavIntro.current;
+
   return (
     <>
-      <header
+      <motion.header
         suppressHydrationWarning
         className={`site-nav fixed inset-x-0 top-0 overflow-visible pt-[var(--hero-gutter)] ${
           mobileOpen || searchOpen || activePanel ? "z-[560]" : "z-[500]"
         } ${navTone}`}
+        variants={reduceMotion ? undefined : navBarVariants}
+        initial={navIntro ? "hidden" : false}
+        animate={reduceMotion ? undefined : "show"}
+        transition={navBarTransition(!!reduceMotion)}
+        onAnimationComplete={() => {
+          playNavIntro.current = false;
+        }}
       >
-        <div
+        <motion.div
           className={`mx-auto grid h-[var(--site-nav-height)] max-w-7xl items-center gap-3 overflow-visible px-4 sm:gap-4 sm:px-[var(--hero-gutter)] md:gap-6 md:px-8 lg:px-10 ${
             isHome ? "grid-cols-[auto_1fr_auto]" : "grid-cols-[auto_auto_1fr_auto]"
           }`}
+          variants={reduceMotion ? undefined : navClusterVariants}
+          initial={navIntro ? "hidden" : false}
+          animate={reduceMotion ? undefined : "show"}
         >
-          {!isHome ? <SiteBackButton /> : null}
+          {!isHome ? (
+            <motion.div variants={reduceMotion ? undefined : navItemVariants}>
+              <SiteBackButton />
+            </motion.div>
+          ) : null}
+          <motion.div variants={reduceMotion ? undefined : navItemVariants}>
           <Link
             href="/#top"
             className="site-nav-logo flex shrink-0 items-center overflow-visible transition-opacity duration-300 hover:opacity-90"
@@ -234,7 +257,9 @@ export function Navigation() {
               sizes="(max-width: 1024px) 200px, 280px"
             />
           </Link>
+          </motion.div>
 
+          <motion.div variants={reduceMotion ? undefined : navItemVariants} className="min-w-0">
           <DesktopNav
             panels={panels}
             activePanel={activePanel}
@@ -249,8 +274,12 @@ export function Navigation() {
             onNavigate={handleMenuNavigate}
             onToggleSearch={() => (searchOpen ? closeSearch() : openSearch())}
           />
+          </motion.div>
 
-          <div className="flex shrink-0 items-center justify-end">
+          <motion.div
+            variants={reduceMotion ? undefined : navItemVariants}
+            className="flex shrink-0 items-center justify-end"
+          >
             <button
               ref={menuButtonRef}
               type="button"
@@ -269,8 +298,8 @@ export function Navigation() {
               <MenuToggleIcon />
               <span className="site-nav-menu-btn__label">{mobileOpen ? "Close" : "Menu"}</span>
             </button>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         <div
           className="pointer-events-none absolute inset-x-0 top-full hidden lg:block"
@@ -294,7 +323,7 @@ export function Navigation() {
             ) : null}
           </div>
         </div>
-      </header>
+      </motion.header>
 
       {searchReady ? <SearchOverlay open={searchOpen} onClose={closeSearch} /> : null}
 

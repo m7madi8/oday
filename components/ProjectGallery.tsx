@@ -268,7 +268,7 @@ export function ProjectGallery({
       <div className="project-gallery__header">
         <div>
           <p className="label-upper text-gold/90">Project frames</p>
-          <p className="mt-1 font-outfit text-[11px] text-ink-muted">
+          <p className="mt-1 font-ui text-[11px] text-ink-muted">
             <span className="md:hidden">Swipe to browse · tap active frame for fullscreen</span>
             <span className="hidden md:inline">
               Use side arrows or keyboard · tap active frame for fullscreen
@@ -280,7 +280,7 @@ export function ProjectGallery({
           initial={reduce ? false : { opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
           transition={galleryTransition(!!reduce, 0.35)}
-          className="project-gallery__counter font-outfit tabular-nums"
+          className="project-gallery__counter font-ui tabular-nums"
           aria-live="polite"
         >
           {String(activeIndex + 1).padStart(2, "0")}

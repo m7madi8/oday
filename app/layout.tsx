@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { fraunces } from "./fonts";
+import { bodoniModa, ibmPlexMono, plusJakartaSans } from "./fonts";
 import "./globals.css";
+import "./typography.css";
 import { DeferredClientShell } from "@/components/DeferredClientShell";
 import { Navigation } from "@/components/Navigation";
 
@@ -21,17 +22,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={fraunces.variable} suppressHydrationWarning>
-      <head>
-        <link rel="preconnect" href="https://api.fontshare.com" />
-        <link rel="preconnect" href="https://cdn.fontshare.com" crossOrigin="anonymous" />
-        <link
-          href="https://api.fontshare.com/v2/css?f[]=general-sans@200,300,400,500&display=swap"
-          rel="stylesheet"
-        />
-      </head>
+    <html
+      lang="en"
+      className={`${bodoniModa.variable} ${plusJakartaSans.variable} ${ibmPlexMono.variable}`}
+      suppressHydrationWarning
+    >
       <body
-        className="min-h-screen bg-bg-primary font-sans font-light text-ink-primary"
+        className="min-h-screen bg-bg-primary font-sans text-ink-primary"
         suppressHydrationWarning
       >
         <a href="#main-content" className="skip-link">

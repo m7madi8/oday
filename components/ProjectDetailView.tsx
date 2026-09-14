@@ -1,6 +1,8 @@
 "use client";
 
 import { ProjectGallery } from "@/components/ProjectGallery";
+import { AnimatedHeading } from "@/components/animations/AnimatedHeading";
+import { RevealFade } from "@/components/animations/RevealFade";
 import { GalleryGoldLine, GalleryReveal } from "@/components/animations/GalleryMotion";
 import { exteriorTypeLabel } from "@/lib/content/types";
 import type { Project, ProjectGalleryImage } from "@/lib/data";
@@ -65,7 +67,7 @@ export function ProjectDetailView({
         <GalleryReveal dramatic>
           <nav
             aria-label="Breadcrumb"
-            className="project-detail__crumbs flex flex-wrap items-center gap-x-2 gap-y-1 font-outfit text-[11px] font-medium uppercase tracking-[0.16em] text-ink-muted"
+            className="project-detail__crumbs flex flex-wrap items-center gap-x-2 gap-y-1 font-ui text-[11px] font-medium uppercase tracking-[0.16em] text-ink-muted"
           >
             <Link href="/" className="transition-colors hover:text-gold">
               Home
@@ -82,15 +84,32 @@ export function ProjectDetailView({
             {/* Case number leads. Where the project is titled by its number, the
                 numeral is the heading itself rather than being printed twice. */}
             {titleIsCaseNumber ? (
-              <h1 className="project-detail__case project-detail__case--title">{project.title}</h1>
+              <AnimatedHeading
+                as="h1"
+                text={project.title}
+                className="project-detail__case project-detail__case--title"
+                timing="enter"
+                delay={0.06}
+                splitByWords={false}
+              />
             ) : (
               <p className="project-detail__case" aria-hidden>
                 {project.orderLabel}
               </p>
             )}
             <div className="min-w-0">
-              <p className="label-upper text-gold">{serviceFilterLabel(project.serviceSlug)}</p>
-              {titleIsCaseNumber ? null : <h1 className="page-title mt-3">{project.title}</h1>}
+              <RevealFade as="p" className="label-upper text-gold" timing="enter">
+                {serviceFilterLabel(project.serviceSlug)}
+              </RevealFade>
+              {titleIsCaseNumber ? null : (
+                <AnimatedHeading
+                  as="h1"
+                  text={project.title}
+                  className="page-title mt-3"
+                  timing="enter"
+                  delay={0.1}
+                />
+              )}
               <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2">
                 <p className="text-sm text-ink-secondary md:text-base">{project.country}</p>
                 <span aria-hidden className="h-3 w-px bg-white/20" />
@@ -142,7 +161,7 @@ export function ProjectDetailView({
                       : "flex items-baseline justify-between gap-4 px-4 py-3.5 sm:px-5"
                   }
                 >
-                  <dt className="shrink-0 font-outfit text-[11px] font-medium uppercase tracking-[0.14em] text-ink-muted">
+                  <dt className="shrink-0 font-ui text-[11px] font-medium uppercase tracking-[0.14em] text-ink-muted">
                     {label}
                   </dt>
                   <dd

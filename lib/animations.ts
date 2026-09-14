@@ -61,6 +61,30 @@ export const magneticDefaults = {
   returnEase: "elastic.out(1, 0.4)",
 } as const;
 
+/** Cursor follow + morph — transform/opacity only. */
+export const cursorDefaults = {
+  followDamping: 0.165,
+  hoverScale: 1.55,
+  clickScale: 0.84,
+  hoverDuration: 0.42,
+  hoverEase: "power3.out",
+  clickDuration: 0.08,
+  clickReleaseDuration: 0.22,
+  cursorMagnetStrength: 0.18,
+} as const;
+
+export function magneticDelta(
+  clientX: number,
+  clientY: number,
+  rect: Pick<DOMRect, "left" | "top" | "width" | "height">,
+  strength: number = magneticDefaults.strength,
+) {
+  return {
+    x: (clientX - rect.left - rect.width / 2) * strength,
+    y: (clientY - rect.top - rect.height / 2) * strength,
+  };
+}
+
 export const cardTiltDefaults = {
   maxRotate: 12,
   perspective: 800,
@@ -107,6 +131,25 @@ export function createMaskRevealTransition(
   };
 }
 
+export function isCoarsePointer(): boolean {
+  if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+    return false;
+  }
+
+  return window.matchMedia("(pointer: coarse)").matches;
+}
+
+export function isMobilePerfMode(): boolean {
+  if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+    return false;
+  }
+
+  return (
+    isCoarsePointer() ||
+    window.matchMedia("(max-width: 767px)").matches
+  );
+}
+
 export function isDesktopFinePointer(): boolean {
   if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
     return false;
@@ -116,6 +159,14 @@ export function isDesktopFinePointer(): boolean {
     window.matchMedia("(min-width: 768px)").matches &&
     window.matchMedia("(pointer: fine)").matches
   );
+}
+
+export function prefersReducedMotion(): boolean {
+  if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+    return false;
+  }
+
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
 export function clamp01(value: number): number {

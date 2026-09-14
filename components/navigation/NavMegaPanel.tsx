@@ -1,14 +1,20 @@
 "use client";
 
-import type { NavPanelConfig, NavVisualItem } from "@/lib/content/site-navigation";
+import type { NavPanelConfig, NavRailIcon, NavVisualItem } from "@/lib/content/site-navigation";
 import { AnimatePresence, motion, useReducedMotion } from "@/components/ClientMotion";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Mail, MapPin, Phone } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from "react";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 const soft = [0.33, 1, 0.68, 1] as const;
+
+const railIcons = {
+  phone: Phone,
+  mail: Mail,
+  "map-pin": MapPin,
+} satisfies Record<NavRailIcon, typeof Phone>;
 
 type NavMegaPanelProps = {
   /** Owned by the header so triggers can point `aria-controls` at this panel. */
@@ -155,6 +161,7 @@ function MegaRail({
         <ul className="nav-mega__list" role="list" ref={listRef} onKeyDown={onRailKeyDown}>
           {items.map((item, index) => {
             const isActive = item.id === active.id;
+            const RailIcon = item.railIcon ? railIcons[item.railIcon] : null;
             return (
               <motion.li
                 key={item.id}
@@ -177,8 +184,15 @@ function MegaRail({
                   }}
                   {...externalProps(item.href)}
                 >
-                  <span className="nav-mega__thumb" aria-hidden>
-                    <Image src={item.image} alt="" fill className="object-cover" sizes="56px" />
+                  <span
+                    className={`nav-mega__thumb${item.railIcon ? " nav-mega__thumb--icon" : ""}`}
+                    aria-hidden
+                  >
+                    {RailIcon ? (
+                      <RailIcon className="nav-mega__thumb-icon" strokeWidth={1.35} />
+                    ) : (
+                      <Image src={item.image} alt="" fill className="object-cover" sizes="56px" />
+                    )}
                   </span>
                   <span className="nav-mega__index">
                     {String(index + 1).padStart(2, "0")}

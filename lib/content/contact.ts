@@ -53,7 +53,11 @@ export const footer = {
     { href: "/projects?service=architecture-drone", label: "Architect Dron" },
   ],
   social: [
-    { label: "Facebook", href: "https://facebook.com", icon: "facebook" as const },
+    {
+      label: "Facebook",
+      href: "https://www.facebook.com/OdayAbuDohaArchitects",
+      icon: "facebook" as const,
+    },
     { label: "Instagram", href: "https://instagram.com", icon: "instagram" as const },
   ],
   copyright: "© 2026 OD Architects. All rights reserved.",

@@ -1,7 +1,10 @@
 "use client";
 
 import "@/app/service-video-gallery.css";
+import { AnimatedHeading } from "@/components/animations/AnimatedHeading";
+import { RevealFade } from "@/components/animations/RevealFade";
 import { GalleryGoldLine, GalleryReveal } from "@/components/animations/GalleryMotion";
+import { MagneticButton } from "@/components/animations/MagneticButton";
 import { ServiceVideoCard } from "@/components/ServiceVideoCard";
 import type { ServiceGalleryCopy, ServiceGalleryVideo } from "@/lib/content/service-gallery";
 import { ArrowUpRight } from "lucide-react";
@@ -33,12 +36,24 @@ export function ServiceVideoGallery({
             ) : null}
 
             <header className="svc-gallery__header">
-              <p className="label-upper text-gold/90">{copy.eyebrow}</p>
-              <h2 id={copy.headingId} className="svc-gallery__title">
-                {copy.title}
-                <span className="svc-gallery__title-accent">{copy.titleAccent}</span>
-              </h2>
-              <p className="svc-gallery__lead">{copy.description}</p>
+              <RevealFade as="p" className="label-upper text-gold/90" timing="enter">
+                {copy.eyebrow}
+              </RevealFade>
+              <AnimatedHeading
+                as="h2"
+                id={copy.headingId}
+                className="svc-gallery__title"
+                timing="enter"
+                delay={0.08}
+              >
+                <>
+                  {copy.title}
+                  <span className="svc-gallery__title-accent">{copy.titleAccent}</span>
+                </>
+              </AnimatedHeading>
+              <RevealFade as="p" className="svc-gallery__lead" delay={0.3} timing="enter">
+                {copy.description}
+              </RevealFade>
 
               {copy.highlights && copy.highlights.length > 0 ? (
                 <ul className="svc-gallery__highlights">
@@ -57,13 +72,15 @@ export function ServiceVideoGallery({
               </p>
             ) : null}
 
-            <Link
-              href={copy.ctaHref}
-              className="btn btn--primary svc-gallery__cta"
-            >
-              {copy.ctaLabel}
-              <ArrowUpRight className="btn__icon btn__icon--nudge" aria-hidden />
-            </Link>
+            <MagneticButton className="inline-flex self-start">
+              <Link
+                href={copy.ctaHref}
+                className="btn btn--primary svc-gallery__cta"
+              >
+                {copy.ctaLabel}
+                <ArrowUpRight className="btn__icon btn__icon--nudge" aria-hidden />
+              </Link>
+            </MagneticButton>
           </aside>
         </GalleryReveal>
 

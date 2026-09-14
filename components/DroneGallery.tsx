@@ -1,7 +1,10 @@
 "use client";
 
 import "@/app/drone-gallery.css";
+import { AnimatedHeading } from "@/components/animations/AnimatedHeading";
+import { RevealFade } from "@/components/animations/RevealFade";
 import { GalleryGoldLine, GalleryReveal } from "@/components/animations/GalleryMotion";
+import { MagneticButton } from "@/components/animations/MagneticButton";
 import { DroneVideoFilm } from "@/components/DroneVideoFilm";
 import { droneGalleryContent, droneVideos } from "@/lib/content/drone-videos";
 import { ArrowUpRight } from "lucide-react";
@@ -24,12 +27,24 @@ export function DroneGallery() {
             </span>
 
             <header className="drone-gallery__header">
-              <p className="drone-gallery__eyebrow">{copy.eyebrow}</p>
-              <h2 id={copy.headingId} className="drone-gallery__title">
-                {copy.title}
-                <span className="drone-gallery__title-accent">{copy.titleAccent}</span>
-              </h2>
-              <p className="drone-gallery__lead">{copy.description}</p>
+              <RevealFade as="p" className="drone-gallery__eyebrow" timing="enter">
+                {copy.eyebrow}
+              </RevealFade>
+              <AnimatedHeading
+                as="h2"
+                id={copy.headingId}
+                className="drone-gallery__title"
+                timing="enter"
+                delay={0.08}
+              >
+                <>
+                  {copy.title}
+                  <span className="drone-gallery__title-accent">{copy.titleAccent}</span>
+                </>
+              </AnimatedHeading>
+              <RevealFade as="p" className="drone-gallery__lead" delay={0.3} timing="enter">
+                {copy.description}
+              </RevealFade>
 
               <ul className="drone-gallery__highlights">
                 {copy.highlights.map((item) => (
@@ -53,13 +68,15 @@ export function DroneGallery() {
               {String(filmCount).padStart(2, "0")} {filmCount === 1 ? "Film" : "Films"}
             </p>
 
-            <Link
-              href={copy.ctaHref}
-              className="btn btn--primary drone-gallery__cta"
-            >
-              {copy.ctaLabel}
-              <ArrowUpRight className="btn__icon btn__icon--nudge" aria-hidden />
-            </Link>
+            <MagneticButton className="inline-flex self-start">
+              <Link
+                href={copy.ctaHref}
+                className="btn btn--primary drone-gallery__cta"
+              >
+                {copy.ctaLabel}
+                <ArrowUpRight className="btn__icon btn__icon--nudge" aria-hidden />
+              </Link>
+            </MagneticButton>
           </aside>
         </GalleryReveal>
 

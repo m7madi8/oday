@@ -79,7 +79,7 @@
 }
 
 .svc-gallery__highlights li {
-  font-family: var(--font-outfit), system-ui, sans-serif;
+  font-family: var(--font-ui), system-ui, sans-serif;
   font-size: 0.55rem;
   font-weight: 500;
   letter-spacing: 0.14em;
@@ -321,7 +321,7 @@
 }
 
 .svc-video-card__badge {
-  font-family: var(--font-outfit), system-ui, sans-serif;
+  font-family: var(--font-ui), system-ui, sans-serif;
   font-size: 0.52rem;
   font-weight: 500;
   letter-spacing: 0.2em;
@@ -382,7 +382,7 @@
 }
 
 .svc-video-card__client {
-  font-family: var(--font-outfit), system-ui, sans-serif;
+  font-family: var(--font-ui), system-ui, sans-serif;
   font-size: 0.55rem;
   font-weight: 500;
   letter-spacing: 0.2em;

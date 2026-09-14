@@ -1,21 +1,23 @@
 "use client";
 
-import { revealInView } from "@/lib/motion-viewport";
-import { motion, useReducedMotion, type HTMLMotionProps } from "@/components/ClientMotion";
-import { Children, isValidElement, type ReactNode } from "react";
+import { softInView } from "@/lib/motion-viewport";
+import { useSectionReveal } from "@/lib/section-reveal-context";
+import { useMobilePerfMode } from "@/hooks/useMobilePerfMode";
+import { motion, useInView, useReducedMotion, type HTMLMotionProps } from "@/components/ClientMotion";
+import { Children, isValidElement, useRef, type ReactNode } from "react";
 
 const childVariants = {
-  hidden: { opacity: 0, y: 14 },
+  hidden: { opacity: 0, y: 10 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.44, ease: [0.22, 1, 0.36, 1] as const },
+    transition: { duration: 0.52, ease: [0.22, 1, 0.36, 1] as const },
   },
 };
 
 type RevealChildrenProps = Omit<
   HTMLMotionProps<"div">,
-  "children" | "initial" | "whileInView" | "variants"
+  "children" | "initial" | "whileInView" | "variants" | "animate"
 > & {
   children: ReactNode;
   /** Delay between each direct child (seconds). */
@@ -34,6 +36,12 @@ export function RevealChildren({
   ...rest
 }: RevealChildrenProps) {
   const reduce = useReducedMotion();
+  const mobilePerf = useMobilePerfMode();
+  const sectionReveal = useSectionReveal();
+  const ref = useRef(null);
+  const inView = useInView(ref, softInView);
+  const shouldShow = sectionReveal ? sectionReveal.revealed : inView;
+  const lightMotion = sectionReveal?.lightMotion ?? mobilePerf;
 
   const items = Children.toArray(children).filter((c) => c != null);
 
@@ -41,8 +49,23 @@ export function RevealChildren({
     return <div className={className}>{children}</div>;
   }
 
+  if (mobilePerf && !sectionReveal) {
+    return <div className={className}>{children}</div>;
+  }
+
+  const itemVariants = lightMotion
+    ? {
+        hidden: { opacity: 0 },
+        visible: {
+          opacity: 1,
+          transition: { duration: 0.48, ease: [0.22, 1, 0.36, 1] as const },
+        },
+      }
+    : childVariants;
+
   return (
     <motion.div
+      ref={ref}
       className={className}
       variants={{
         hidden: {},
@@ -51,15 +74,14 @@ export function RevealChildren({
         },
       }}
       initial="hidden"
-      whileInView="visible"
-      viewport={revealInView}
+      animate={shouldShow ? "visible" : "hidden"}
       {...rest}
     >
       {items.map((child, index) => {
         const key =
           isValidElement(child) && child.key != null ? String(child.key) : `reveal-child-${index}`;
         return (
-          <motion.div key={key} variants={childVariants} className={childClassName}>
+          <motion.div key={key} variants={itemVariants} className={childClassName}>
             {child}
           </motion.div>
         );

@@ -383,7 +383,7 @@ export const HeroCinematicMedia = forwardRef<HeroCinematicMediaHandle, HeroCinem
                   fill
                   priority={index === 0}
                   fetchPriority={index === 0 ? "high" : "auto"}
-                  quality={100}
+                  quality={isSimplifiedViewport() ? 78 : 100}
                   draggable={false}
                   className="hero-modern__img object-cover"
                   sizes="100vw"

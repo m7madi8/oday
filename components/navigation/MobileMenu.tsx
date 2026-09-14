@@ -13,7 +13,11 @@ const softOut = [0.33, 1, 0.68, 1] as const;
 
 const socialLinks = [
   { href: "https://instagram.com", label: "Instagram", Icon: Instagram },
-  { href: "https://facebook.com", label: "Facebook", Icon: Facebook },
+  {
+    href: "https://www.facebook.com/OdayAbuDohaArchitects",
+    label: "Facebook",
+    Icon: Facebook,
+  },
 ] as const;
 
 const menuListContainer = {

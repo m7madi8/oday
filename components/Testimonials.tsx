@@ -1,5 +1,7 @@
 "use client";
 
+import { AnimatedHeading } from "@/components/animations/AnimatedHeading";
+import { RevealFade } from "@/components/animations/RevealFade";
 import { testimonials } from "@/lib/data";
 import { motion, useReducedMotion } from "@/components/ClientMotion";
 import Image from "next/image";
@@ -44,21 +46,24 @@ export function Testimonials() {
   return (
     <section className="relative bg-bg-primary py-24 md:py-32">
       <div className="mx-auto max-w-7xl px-5 md:px-10">
-        <motion.div
-          className="mx-auto max-w-3xl text-center"
-          initial={{ opacity: reduceMotion ? 1 : 0, y: reduceMotion ? 0 : 22 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={viewport}
-          transition={{ duration: reduceMotion ? 0 : 0.55 }}
-        >
-          <p className="label-upper text-gold">Proof</p>
-          <h2 className="section-title section-title--lead mt-4 text-gold">
-            What Clients Achieve
-          </h2>
-          <p className="mt-6 text-sm leading-relaxed text-ink-secondary md:text-base">
+        <div className="mx-auto max-w-3xl text-center">
+          <RevealFade as="p" className="label-upper text-gold">
+            Proof
+          </RevealFade>
+          <AnimatedHeading
+            as="h2"
+            text="What Clients Achieve"
+            className="section-title section-title--lead section-title--editorial mt-4 text-gold"
+            delay={0.08}
+          />
+          <RevealFade
+            as="p"
+            className="mt-6 text-sm leading-relaxed text-ink-secondary md:text-base"
+            delay={0.32}
+          >
             Performance-led partnerships with developers, operators, and investors across high-value sectors.
-          </p>
-        </motion.div>
+          </RevealFade>
+        </div>
 
         <div
           ref={scrollerRef}

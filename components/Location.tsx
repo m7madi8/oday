@@ -11,17 +11,15 @@ export function Location() {
     <SectionShell id="location">
       <SectionInner>
         <RevealChildren stagger={0.08}>
-          <ScrollReveal dramatic>
-            <SectionHeader
-              eyebrow={studioLocation.eyebrow}
-              title={
-                <>
-                  {studioLocation.heading}{" "}
-                  <span className="text-gold/90">{studioLocation.headingAccent}</span>
-                </>
-              }
-            />
-          </ScrollReveal>
+          <SectionHeader
+            eyebrow={studioLocation.eyebrow}
+            title={
+              <>
+                {studioLocation.heading}{" "}
+                <span className="text-gold/90">{studioLocation.headingAccent}</span>
+              </>
+            }
+          />
 
           <ScrollReveal dramatic delay={0.06} className="relative mt-8 md:mt-10">
             <div className="section-card relative min-h-[320px] overflow-hidden sm:min-h-[380px] md:min-h-[420px]">
@@ -51,7 +49,7 @@ export function Location() {
               <div className="absolute bottom-5 left-5 right-5 z-20 flex flex-col gap-4 sm:bottom-6 sm:left-6 sm:right-6 sm:flex-row sm:items-end sm:justify-between">
                 <div className="section-card rounded-xl border-white/15 bg-bg-primary/85 px-4 py-3 backdrop-blur-md">
                   <p className="label-upper text-gold/90">OD Architects</p>
-                  <p className="mt-1 font-outfit text-sm font-medium text-ink-primary">
+                  <p className="mt-1 font-ui text-sm font-medium text-ink-primary">
                     {studioLocation.addressLine2}
                   </p>
                   <p className="mt-0.5 text-xs text-ink-muted">

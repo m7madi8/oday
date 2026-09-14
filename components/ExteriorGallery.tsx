@@ -233,7 +233,7 @@ function Stage({
             exit="exit"
             transition={galleryTransition(reduceMotion, 0.48)}
           >
-            <Link href={projectDetailPath(project)} className="xgl__stage-link group">
+            <Link href={projectDetailPath(project)} className="xgl__stage-link group" data-cursor-label="VIEW">
               <Image
                 src={project.image}
                 alt={project.imageAlt}

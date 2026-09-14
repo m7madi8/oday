@@ -1,7 +1,12 @@
 "use client";
 
 import { useGSAP, type GsapLike } from "@/hooks/useGSAP";
-import { isDesktopFinePointer, magneticDefaults } from "@/lib/animations";
+import {
+  isDesktopFinePointer,
+  magneticDefaults,
+  magneticDelta,
+  prefersReducedMotion,
+} from "@/lib/animations";
 import {
   useEffect,
   useRef,
@@ -30,45 +35,52 @@ export function MagneticButton({
   enableTilt = false,
   maxTilt = 12,
   perspective = 800,
+  onMouseMove,
+  onMouseLeave,
   ...props
 }: MagneticButtonProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const gsapRef = useRef<GsapLike | null>(null);
   const [enabled, setEnabled] = useState(false);
 
+  useEffect(() => {
+    const update = () => {
+      const fine = !disabledOnTouch || isDesktopFinePointer();
+      setEnabled(fine && !prefersReducedMotion());
+    };
+
+    update();
+    window.addEventListener("resize", update);
+    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    motionQuery.addEventListener("change", update);
+    return () => {
+      window.removeEventListener("resize", update);
+      motionQuery.removeEventListener("change", update);
+    };
+  }, [disabledOnTouch]);
+
   useGSAP(
     ({ gsap }) => {
       gsapRef.current = gsap;
     },
-    { once: true },
+    { once: true, enabled },
   );
 
-  useEffect(() => {
-    if (!disabledOnTouch) {
-      setEnabled(true);
-      return;
-    }
-
-    const update = () => setEnabled(isDesktopFinePointer());
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
-  }, [disabledOnTouch]);
-
   const handleMove = (event: MouseEvent<HTMLDivElement>) => {
+    onMouseMove?.(event);
     if (!enabled || !rootRef.current || !gsapRef.current) {
       return;
     }
 
     const rect = rootRef.current.getBoundingClientRect();
-    const x = event.clientX - rect.left - rect.width / 2;
-    const y = event.clientY - rect.top - rect.height / 2;
+    const { x, y } = magneticDelta(event.clientX, event.clientY, rect, strength);
 
     const vars: Record<string, unknown> = {
-      x: x * strength,
-      y: y * strength,
+      x,
+      y,
       duration: magneticDefaults.moveDuration,
       ease: "power2.out",
+      overwrite: "auto",
     };
 
     if (enableTilt) {
@@ -80,7 +92,8 @@ export function MagneticButton({
     gsapRef.current.to(rootRef.current, vars);
   };
 
-  const handleLeave = () => {
+  const handleLeave = (event: MouseEvent<HTMLDivElement>) => {
+    onMouseLeave?.(event);
     if (!rootRef.current || !gsapRef.current) {
       return;
     }
@@ -90,6 +103,7 @@ export function MagneticButton({
       y: 0,
       duration: magneticDefaults.returnDuration,
       ease: returnEase,
+      overwrite: "auto",
     };
 
     if (enableTilt) {
@@ -101,13 +115,19 @@ export function MagneticButton({
     gsapRef.current.to(rootRef.current, vars);
   };
 
+  useEffect(() => {
+    if (enabled || !rootRef.current || !gsapRef.current) return;
+    gsapRef.current.set(rootRef.current, { x: 0, y: 0, rotateX: 0, rotateY: 0 });
+  }, [enabled]);
+
   return (
     <div
       ref={rootRef}
       className={className}
+      {...props}
+      data-cursor-magnetic=""
       onMouseMove={handleMove}
       onMouseLeave={handleLeave}
-      {...props}
     >
       {children}
     </div>

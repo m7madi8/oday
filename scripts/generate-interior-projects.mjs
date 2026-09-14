@@ -95,6 +95,13 @@ const projectBlocks = [];
 const galleryEntries = [];
 
 folders.forEach((folder, folderIndex) => {
+  const orderLabel = String(folderIndex + 1).padStart(2, "0");
+  const details = detailsByOrder[orderLabel];
+  if (!details) {
+    console.log(`Skipping unpublished interior folder ${orderLabel}: ${folder}`);
+    return;
+  }
+
   const dir = path.join(interiorRoot, folder);
   const files = fs
     .readdirSync(dir)
@@ -127,10 +134,8 @@ folders.forEach((folder, folderIndex) => {
   }
 
   const slug = folderToSlug(folder);
-  const orderLabel = String(folderIndex + 1).padStart(2, "0");
-  const details = detailsByOrder[orderLabel];
-  const title = details?.name || orderLabel;
-  const location = details?.location || "Palestine";
+  const title = details.name || orderLabel;
+  const location = details.location || "Palestine";
   const coverVar = vars[0];
 
   const optionalFields = [];
@@ -192,5 +197,5 @@ writeGeneratedProjectModules({
 });
 console.log(`Wrote ${outFile} + ${loadersFile} (${folders.length} projects, ${coverImportLines.length} covers, ${importLines.length} images).`);
 console.log(
-  `Details matched: ${folders.filter((_, i) => detailsByOrder[String(i + 1).padStart(2, "0")]).length}/${folders.length}`,
+  `Published with details: ${projectBlocks.length}/${folders.length} (unpublished skipped).`,
 );

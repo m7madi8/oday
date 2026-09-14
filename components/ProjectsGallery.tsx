@@ -1,6 +1,8 @@
 "use client";
 
 import "@/app/portfolio-gallery.css";
+import { AnimatedHeading } from "@/components/animations/AnimatedHeading";
+import { RevealFade } from "@/components/animations/RevealFade";
 import {
   GalleryGoldLine,
   GalleryReveal,
@@ -132,20 +134,30 @@ export function ProjectsGallery({
       </Suspense>
 
       <div className="gallery-page__shell relative mx-auto flex w-full flex-col">
-        <GalleryReveal>
-          <header className="gallery-page__header flex flex-col gap-2 md:gap-8">
+        <header className="gallery-page__header flex flex-col gap-2 md:gap-8">
             <div className="min-w-0">
-              <p className="label-upper text-gold">Case studies</p>
-              <h1 className="page-title mt-2">
-                {galleryTitle}
-              </h1>
-              <p className="mt-3 max-w-xl text-sm leading-relaxed text-ink-secondary md:mt-5 md:text-[0.9375rem]">
+              <RevealFade as="p" className="label-upper text-gold" timing="enter">
+                Case studies
+              </RevealFade>
+              <AnimatedHeading
+                as="h1"
+                text={galleryTitle}
+                className="page-title mt-2"
+                timing="enter"
+                delay={0.08}
+              />
+              <RevealFade
+                as="p"
+                className="mt-3 max-w-xl text-sm leading-relaxed text-ink-secondary md:mt-5 md:text-[0.9375rem]"
+                delay={0.28}
+                timing="enter"
+              >
                 {isAiMode
                   ? "Cinematic AI concept films — motion studies built for fast alignment and premium client presentation."
                   : isDroneMode
                     ? "Aerial site films and drone capture — full-frame delivery for context reads and progress reporting."
                     : "Editorial grids for interior and exterior work — each card adapts to its cover aspect ratio."}
-              </p>
+              </RevealFade>
             </div>
             <div className="gallery-page__filter-dock">
               <GalleryFilterGrid
@@ -192,6 +204,7 @@ export function ProjectsGallery({
               ) : null}
             </div>
           </header>
+        <GalleryReveal>
           <GalleryGoldLine className="mt-8 max-w-md" />
         </GalleryReveal>
 
@@ -219,8 +232,15 @@ export function ProjectsGallery({
               {filter === "All" && ancillaryProjects.length > 0 ? (
                 <div className="mt-16 md:mt-24">
                   <header className="mb-8 border-b border-white/[0.07] pb-6">
-                    <p className="label-upper text-ink-muted">More services</p>
-                    <h2 className="section-title mt-2">Ai architect &amp; Drone</h2>
+                    <RevealFade as="p" className="label-upper text-ink-muted">
+                      More services
+                    </RevealFade>
+                    <AnimatedHeading
+                      as="h2"
+                      text="Ai architect & Drone"
+                      className="section-title section-title--sans mt-2"
+                      delay={0.08}
+                    />
                   </header>
                   <GalleryStagger
                     className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
@@ -229,7 +249,13 @@ export function ProjectsGallery({
                     delayChildren={0.08}
                   >
                     {ancillaryProjects.map((project, i) => (
-                      <ProjectCard key={project.id} project={project} variant="grid" index={i} />
+                      <ProjectCard
+                        key={project.id}
+                        project={project}
+                        variant="grid"
+                        index={i}
+                        batchAnimate
+                      />
                     ))}
                   </GalleryStagger>
                 </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useReducedMotion } from "@/components/ClientMotion";
+import { useMobilePerfMode } from "@/hooks/useMobilePerfMode";
 import { smoothScrollToId } from "@/lib/smooth-scroll";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect } from "react";
@@ -11,6 +12,8 @@ function readHash(): string {
 
 export function SmoothHashScroll() {
   const reduceMotion = useReducedMotion();
+  const mobilePerf = useMobilePerfMode();
+  const instantScroll = reduceMotion || mobilePerf;
   const pathname = usePathname();
 
   const scrollToCurrentHash = useCallback(
@@ -21,7 +24,7 @@ export function SmoothHashScroll() {
       const run = () => {
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
-            smoothScrollToId(hash, { reduceMotion: !!reduceMotion });
+            smoothScrollToId(hash, { reduceMotion: instantScroll });
           });
         });
       };
@@ -32,7 +35,7 @@ export function SmoothHashScroll() {
         run();
       }
     },
-    [reduceMotion],
+    [instantScroll],
   );
 
   useEffect(() => {
@@ -74,7 +77,7 @@ export function SmoothHashScroll() {
       const inMenu = Boolean(anchor.closest("#site-menu-overlay"));
       const delay = inMenu ? 300 : 0;
 
-      smoothScrollToId(hash, { reduceMotion: !!reduceMotion, delay });
+      smoothScrollToId(hash, { reduceMotion: instantScroll, delay });
       window.history.pushState(null, "", `${path}#${hash}`);
     }
 

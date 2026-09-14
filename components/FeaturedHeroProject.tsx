@@ -1,6 +1,9 @@
 "use client";
 
-import { motion, useReducedMotion } from "@/components/ClientMotion";
+import { animationEasing } from "@/lib/animations";
+import { cardInViewHidden, cardInViewVisible, softInView } from "@/lib/motion-viewport";
+import { useMobilePerfMode } from "@/hooks/useMobilePerfMode";
+import { motion, useInView, useReducedMotion } from "@/components/ClientMotion";
 import {
   projectDetailPath,
   resolveProjectGalleryFormat,
@@ -9,7 +12,7 @@ import {
 } from "@/lib/data";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const CROSSFADE_S = 1.65;
 const SLIDE_INTERVAL_MS = 4200;
@@ -20,6 +23,9 @@ type FeaturedHeroProjectProps = {
 
 export function FeaturedHeroProject({ project }: FeaturedHeroProjectProps) {
   const reduceMotion = useReducedMotion();
+  const mobilePerf = useMobilePerfMode();
+  const articleRef = useRef(null);
+  const inView = useInView(articleRef, softInView);
   const [frames, setFrames] = useState<ProjectGalleryImage[]>([
     { src: project.image, alt: project.imageAlt, format: resolveProjectGalleryFormat(project) },
   ]);
@@ -27,6 +33,8 @@ export function FeaturedHeroProject({ project }: FeaturedHeroProjectProps) {
   const [progressKey, setProgressKey] = useState(0);
 
   useEffect(() => {
+    if (mobilePerf) return;
+
     let cancelled = false;
     import("@/lib/project-gallery")
       .then(({ getProjectGallery }) => getProjectGallery(project))
@@ -38,26 +46,39 @@ export function FeaturedHeroProject({ project }: FeaturedHeroProjectProps) {
     return () => {
       cancelled = true;
     };
-  }, [project]);
+  }, [mobilePerf, project]);
 
   useEffect(() => {
-    if (reduceMotion || frames.length < 2) return;
+    if (reduceMotion || mobilePerf || frames.length < 2) return;
     const id = window.setTimeout(() => {
       setActive((prev) => (prev + 1) % frames.length);
       setProgressKey((k) => k + 1);
     }, SLIDE_INTERVAL_MS);
     return () => window.clearTimeout(id);
-  }, [active, frames.length, reduceMotion]);
+  }, [active, frames.length, mobilePerf, reduceMotion]);
 
   const href = projectDetailPath(project);
   const meta = [project.country, project.year, project.area].filter(Boolean).join(" · ");
-  const canSlideshow = frames.length > 1 && !reduceMotion;
+  const canSlideshow = frames.length > 1 && !reduceMotion && !mobilePerf;
+  const lightMotion = reduceMotion || mobilePerf;
+  const visibleFrames = mobilePerf ? frames.slice(0, 1) : frames;
 
   return (
-    <article className="feat-hero" id={project.id} data-section={project.serviceSlug}>
-      <Link href={href} className="feat-hero__link" aria-label={`View project ${project.title}`}>
+    <motion.article
+      ref={articleRef}
+      className="feat-hero"
+      id={project.id}
+      data-section={project.serviceSlug}
+      initial={lightMotion ? false : cardInViewHidden}
+      animate={lightMotion ? undefined : inView ? cardInViewVisible : cardInViewHidden}
+      transition={{
+        duration: lightMotion ? 0 : 0.62,
+        ease: animationEasing.smoothOut,
+      }}
+    >
+      <Link href={href} className="feat-hero__link" data-cursor-label="VIEW" aria-label={`View project ${project.title}`}>
         <div className="feat-hero__media">
-          {frames.map((frame, index) => {
+          {visibleFrames.map((frame, index) => {
             const isActive = index === active;
             return (
               <motion.div
@@ -87,7 +108,7 @@ export function FeaturedHeroProject({ project }: FeaturedHeroProjectProps) {
                     alt=""
                     fill
                     priority={index === 0}
-                    quality={92}
+                    quality={mobilePerf ? 76 : 92}
                     sizes="(max-width: 1023px) 100vw, 96vw"
                     className="feat-hero__img object-cover"
                     style={{ objectPosition: "52% 36%" }}
@@ -130,6 +151,6 @@ export function FeaturedHeroProject({ project }: FeaturedHeroProjectProps) {
           </div>
         </div>
       </Link>
-    </article>
+    </motion.article>
   );
 }

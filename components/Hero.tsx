@@ -1,6 +1,7 @@
 "use client";
 
 import { HeroCinematicMedia, type HeroCinematicMediaHandle } from "@/components/HeroCinematicMedia";
+import { useMobilePerfMode } from "@/hooks/useMobilePerfMode";
 import { hero } from "@/lib/hero-content";
 import { SectionShell } from "@/components/SectionShell";
 import { motion, useReducedMotion } from "@/components/ClientMotion";
@@ -38,14 +39,29 @@ function FadeCopy({
   className,
   delay,
   reduce,
+  lightMotion,
 }: {
   text: string;
   className: string;
   delay: number;
   reduce: boolean;
+  lightMotion?: boolean;
 }) {
   if (reduce) {
     return <p className={className}>{text}</p>;
+  }
+
+  if (lightMotion) {
+    return (
+      <motion.p
+        className={className}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.65, delay, ease: easeCinematic }}
+      >
+        {text}
+      </motion.p>
+    );
   }
 
   const parts = text.split(/(\s+)/);
@@ -77,6 +93,8 @@ function FadeCopy({
 
 export function Hero() {
   const reduceMotion = useReducedMotion();
+  const mobilePerf = useMobilePerfMode();
+  const cinematicReduce = !!reduceMotion || mobilePerf;
   const slides = hero.images;
   const mediaRef = useRef<HeroCinematicMediaHandle>(null);
   const [active, setActive] = useState(0);
@@ -91,7 +109,7 @@ export function Hero() {
         <HeroCinematicMedia
           ref={mediaRef}
           slides={slides}
-          reduceMotion={!!reduceMotion}
+          reduceMotion={cinematicReduce}
           paused={navPaused}
           onSettled={(index) => {
             setActive(index);
@@ -112,6 +130,7 @@ export function Hero() {
               text={hero.headlineEyebrow}
               delay={0.12}
               reduce={!!reduceMotion}
+              lightMotion={mobilePerf}
             />
 
             <h1 className="hero-modern__headline">
@@ -128,10 +147,11 @@ export function Hero() {
               text={hero.headlineSubline}
               delay={0.72}
               reduce={!!reduceMotion}
+              lightMotion={mobilePerf}
             />
           </div>
 
-          {!reduceMotion && slides.length > 1 ? (
+          {!cinematicReduce && slides.length > 1 ? (
             <motion.div
               className="hero-modern__rail"
               initial={{ opacity: 0, y: 18 }}

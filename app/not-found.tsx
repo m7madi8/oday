@@ -1,3 +1,5 @@
+import { AnimatedHeading } from "@/components/animations/AnimatedHeading";
+import { RevealFade } from "@/components/animations/RevealFade";
 import Link from "next/link";
 
 export default function NotFound() {
@@ -6,8 +8,17 @@ export default function NotFound() {
       id="main-content"
       className="mx-auto flex min-h-[60svh] max-w-lg flex-col items-center justify-center px-6 py-16 text-center"
     >
-      <p className="text-xs uppercase tracking-[0.2em] text-gold">404</p>
-      <h1 className="mt-3 font-outfit text-2xl font-medium text-ink-primary">Page not found</h1>
+      <RevealFade as="p" className="text-xs uppercase tracking-[0.2em] text-gold" timing="enter">
+        404
+      </RevealFade>
+      <AnimatedHeading
+        as="h1"
+        text="Page not found"
+        className="mt-3 font-ui text-2xl font-medium text-ink-primary"
+        timing="enter"
+        delay={0.08}
+        splitByWords={false}
+      />
       <p className="mt-4 text-sm leading-relaxed text-ink-secondary">
         The page you requested does not exist or was moved.
       </p>

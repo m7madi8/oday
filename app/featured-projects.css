@@ -41,9 +41,10 @@
 .featured-projects__section-header .section-title {
   margin-top: 0.35rem;
   font-size: clamp(1.65rem, 3.6vw, 2.65rem);
-  font-weight: 300;
-  line-height: 1.02;
-  letter-spacing: -0.01em;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1.04;
+  letter-spacing: var(--tracking-display);
   color: #fff;
 }
 
@@ -52,6 +53,7 @@
   margin-top: clamp(0.12rem, 0.4vh, 0.22rem);
   font-size: clamp(1.35rem, 2.8vw, 2.05rem);
   font-style: italic;
+  font-weight: 400;
   line-height: 1.06;
   background: linear-gradient(
     105deg,
@@ -67,8 +69,9 @@
 .featured-projects__section-header .section-lead {
   margin-top: clamp(0.35rem, 0.9vh, 0.5rem);
   max-width: 38rem;
-  font-size: clamp(0.72rem, 1.15vw, 0.84rem);
-  line-height: 1.5;
+  font-size: clamp(0.8125rem, 1.15vw, 0.9375rem);
+  font-weight: 400;
+  line-height: 1.68;
   color: rgba(255, 255, 255, 0.52);
 }
 
@@ -221,10 +224,10 @@
 
 .feat-hero__badge {
   margin: 0 0 0.35rem;
-  font-family: var(--font-ui);
+  font-family: var(--font-mono);
   font-size: 0.5625rem;
-  font-weight: 500;
-  letter-spacing: 0.22em;
+  font-weight: 400;
+  letter-spacing: var(--tracking-mono);
   text-transform: uppercase;
   color: rgba(var(--accent-gold-rgb), 0.95);
 }
@@ -233,19 +236,19 @@
   margin: 0;
   font-family: var(--font-display);
   font-size: clamp(1.65rem, 3.4vw, 2.75rem);
-  font-weight: 300;
-  font-style: italic;
-  line-height: 1.02;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1.06;
   color: #fff;
   text-shadow: 0 2px 18px rgba(0, 0, 0, 0.35);
 }
 
 .feat-hero__meta {
   margin: 0.35rem 0 0;
-  font-family: var(--font-ui);
-  font-size: 0.6875rem;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
   font-weight: 400;
-  letter-spacing: 0.12em;
+  letter-spacing: var(--tracking-mono);
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.62);
 }
@@ -293,11 +296,11 @@
 .feat-card__title {
   margin: 0;
   max-width: 90%;
-  font-family: var(--font-ui);
-  font-size: clamp(0.8125rem, 1.15vw, 0.95rem);
+  font-family: var(--font-display);
+  font-size: clamp(0.875rem, 1.2vw, 1.05rem);
   font-weight: 400;
-  letter-spacing: 0.01em;
-  line-height: 1.25;
+  letter-spacing: var(--tracking-display);
+  line-height: 1.2;
   color: #fff;
   text-shadow: 0 1px 12px rgba(0, 0, 0, 0.35);
 }

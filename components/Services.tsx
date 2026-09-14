@@ -1,15 +1,18 @@
 "use client";
 
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
+import { MagneticButton } from "@/components/animations/MagneticButton";
 import { ServicePanelMedia } from "@/components/ServicePanelMedia";
 import { SectionHeader, SectionInner, SectionShell } from "@/components/SectionShell";
 import { services } from "@/lib/content/services";
 import { serviceVisualBySlug } from "@/lib/content/service-visuals";
+import { animationEasing } from "@/lib/animations";
+import { cardInViewHidden, cardInViewVisible, revealInView } from "@/lib/motion-viewport";
 import Link from "next/link";
 import { SafeButton } from "@/components/SafeButton";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { useCallback, useRef, useState } from "react";
-import { useReducedMotion } from "@/components/ClientMotion";
+import { motion, useReducedMotion } from "@/components/ClientMotion";
 
 type ServiceProfile = {
   tagline: string;
@@ -71,32 +74,38 @@ export function Services() {
   return (
     <SectionShell id="services" snap={false} containOverflow={false} className="services-section">
       <SectionInner className="services-section__head">
-        <ScrollReveal dramatic>
-          <div className="section-editorial-head">
-            <span className="section-editorial-head__index" aria-hidden>
-              02
-            </span>
-            <SectionHeader
-              eyebrow="Solutions"
-              title={
-                <>
-                  Four disciplines.
-                  <span className="mt-1 block bg-gradient-to-r from-gold via-[#fff3b0] to-gold/70 bg-clip-text text-transparent">
-                    One cinematic frame.
-                  </span>
-                </>
-              }
-              description="Architecture, interiors, drone intelligence, and AI workflows — integrated under OD Architects."
-            />
-          </div>
-        </ScrollReveal>
+        <div className="section-editorial-head">
+          <span className="section-editorial-head__index" aria-hidden>
+            02
+          </span>
+          <SectionHeader
+            eyebrow="Solutions"
+            titleClassName="section-title--editorial"
+            title={
+              <>
+                Four disciplines.
+                <span className="mt-1 block bg-gradient-to-r from-gold via-[#fff3b0] to-gold/70 bg-clip-text text-transparent">
+                  One cinematic frame.
+                </span>
+              </>
+            }
+            description={
+              <span className="services-section__lead">
+                Architecture, interiors, drone intelligence, and AI workflows — integrated
+                <span className="mt-1 block">under OD Architects.</span>
+              </span>
+            }
+          />
+        </div>
       </SectionInner>
 
       {/* Mobile / tablet carousel */}
-      <ServicesMobileCarousel />
+      <ScrollReveal dramatic delay={0.04} className="mt-6 lg:hidden">
+        <ServicesMobileCarousel />
+      </ScrollReveal>
 
       {/* Desktop — full-width stage */}
-      <ScrollReveal dramatic delay={0.06} className="services-stage mt-3 hidden lg:block">
+      <div className="services-stage mt-3 hidden lg:block">
         <div className={`${stripBezel} services-stage__frame`}>
           <div
             className="services-panel-scroll"
@@ -115,7 +124,7 @@ export function Services() {
             </div>
           </div>
         </div>
-      </ScrollReveal>
+      </div>
     </SectionShell>
   );
 }
@@ -159,35 +168,63 @@ function ServicesMobileCarousel() {
   );
 
   return (
-    <div className="services-carousel mt-6 lg:hidden">
-      <div
-        className="services-carousel__viewport"
-        onTouchStart={onTouchStart}
-        onTouchEnd={onTouchEnd}
-        aria-roledescription="carousel"
-        aria-label="Services"
-      >
-        <div
-          className="services-carousel__track"
-          style={{
-            transform: `translate3d(-${activeIndex * 100}%, 0, 0)`,
-            transition: reduceMotion ? "none" : undefined,
-          }}
+    <div className="services-carousel">
+      <div className="services-carousel__stage">
+        <SafeButton
+          data-no-glow
+          type="button"
+          className="services-carousel__nav services-carousel__nav--prev"
+          aria-label="Previous discipline"
+          disabled={activeIndex === 0}
+          onClick={() => goTo(activeIndex - 1)}
         >
-          {services.map((service, index) => (
-            <div
-              key={service.id}
-              className="services-carousel__slide"
-              aria-hidden={activeIndex !== index}
-            >
-              <ServiceStoryCard
-                service={service}
-                isActive={activeIndex === index}
-                activeIndex={activeIndex}
-              />
-            </div>
-          ))}
+          <ChevronLeft className="h-5 w-5" strokeWidth={1.6} aria-hidden />
+        </SafeButton>
+
+        <div
+          className="services-carousel__viewport"
+          onTouchStart={onTouchStart}
+          onTouchEnd={onTouchEnd}
+          aria-roledescription="carousel"
+          aria-label="Services"
+        >
+          <div
+            className="services-carousel__track"
+            style={{
+              transform: `translate3d(calc(var(--svc-side) - ${activeIndex} * (var(--svc-slide) + var(--svc-gap))), 0, 0)`,
+              transition: reduceMotion ? "none" : undefined,
+            }}
+          >
+            {services.map((service, index) => (
+              <div
+                key={service.id}
+                className={`services-carousel__slide${activeIndex === index ? " is-active" : ""}`}
+                aria-hidden={activeIndex !== index}
+                onClick={() => {
+                  if (activeIndex !== index) goTo(index);
+                }}
+              >
+                <ServiceStoryCard
+                  service={service}
+                  index={index}
+                  isActive={activeIndex === index}
+                  activeIndex={activeIndex}
+                />
+              </div>
+            ))}
+          </div>
         </div>
+
+        <SafeButton
+          data-no-glow
+          type="button"
+          className="services-carousel__nav services-carousel__nav--next"
+          aria-label="Next discipline"
+          disabled={activeIndex === services.length - 1}
+          onClick={() => goTo(activeIndex + 1)}
+        >
+          <ChevronRight className="h-5 w-5" strokeWidth={1.6} aria-hidden />
+        </SafeButton>
       </div>
 
       <div className="services-dots mt-3 flex items-center justify-center" role="tablist" aria-label="Service slides">
@@ -216,20 +253,21 @@ function ServicesMobileCarousel() {
 /** Mobile story card — used inside transform carousel (not scroll container) */
 function ServiceStoryCard({
   service,
+  index,
   isActive,
   activeIndex,
 }: {
   service: (typeof services)[number];
+  index: number;
   isActive: boolean;
   activeIndex: number;
 }) {
-  const profile = serviceProfiles[service.title] ?? fallbackProfile;
   const visual = getServiceVisual(service.slug);
   const Icon = service.icon;
 
   return (
     <article
-      className={`services-story-card relative aspect-[9/16] h-[min(62svh,560px)] w-full max-w-[min(100%,20rem)] shrink-0 bg-transparent${
+      className={`services-story-card relative aspect-[9/16] h-[min(62svh,560px)] w-full shrink-0 bg-transparent${
         isActive ? " services-story-card--active" : ""
       }`}
     >
@@ -238,6 +276,7 @@ function ServiceStoryCard({
           <ServicePanelMedia
             visual={visual}
             isPlaying={isActive}
+            prefetch={!isActive && Math.abs(activeIndex - index) === 1 && Boolean(visual.videoSrc)}
             sizes={IMAGE_SIZES_STORY}
             imageClassName="services-panel-image object-cover brightness-[1.03] contrast-[1.02] saturate-[1.06]"
           />
@@ -280,26 +319,25 @@ function ServiceStoryCard({
               <Icon className="h-4 w-4" aria-hidden />
             </span>
             <div>
-              <p className="font-outfit text-[10px] font-semibold uppercase tracking-[0.2em] text-gold">
+              <p className="font-ui text-[10px] font-semibold uppercase tracking-[0.2em] text-gold">
                 {service.orderLabel}
               </p>
-              <p className="font-display text-lg italic leading-tight text-white">{service.title}</p>
+              <p className="font-display text-lg leading-tight text-white">{service.title}</p>
             </div>
           </div>
 
-          <div className="mt-auto space-y-4 pb-1">
-            <p className="label-upper text-[10px] text-gold/80">{profile.tagline}</p>
-            <p className="text-sm leading-relaxed text-white/88">{profile.punchline}</p>
-
-            <div className="flex flex-col gap-2.5 pt-1">
-              <Link
-                href={`/request/${service.slug}`}
-                className="btn btn--primary btn--sm w-full"
-                aria-label={`Request ${service.title}`}
-              >
-                Request
-                <ArrowUpRight className="btn__icon btn__icon--nudge" aria-hidden />
-              </Link>
+          <div className="mt-auto space-y-3 pb-1">
+            <div className="flex flex-col gap-2.5">
+              <MagneticButton className="w-full">
+                <Link
+                  href={`/request/${service.slug}`}
+                  className="btn btn--primary btn--sm w-full"
+                  aria-label={`Request ${service.title}`}
+                >
+                  Request
+                  <ArrowUpRight className="btn__icon btn__icon--nudge" aria-hidden />
+                </Link>
+              </MagneticButton>
               <Link
                 href={
                   service.slug === "exterior"
@@ -333,9 +371,10 @@ function ServicePanel({
   const profile = serviceProfiles[service.title] ?? fallbackProfile;
   const visual = getServiceVisual(service.slug);
   const Icon = service.icon;
+  const reduceMotion = useReducedMotion();
 
   return (
-    <article
+    <motion.article
       className={`services-panel-card group/panel relative flex min-w-[min(100%,14rem)] shrink-0 cursor-pointer overflow-hidden sm:min-w-[min(100%,16rem)] lg:min-w-0 ${
         isActive
           ? "services-panel-card--active z-20 flex-[3] xl:flex-[3.5] 2xl:flex-[4] shadow-[inset_0_0_0_1px_rgba(245,197,24,0.45),0_0_40px_rgba(245,197,24,0.1)]"
@@ -345,11 +384,20 @@ function ServicePanel({
       onFocus={onActivate}
       onClick={onActivate}
       tabIndex={0}
+      initial={reduceMotion ? false : cardInViewHidden}
+      whileInView={reduceMotion ? undefined : cardInViewVisible}
+      viewport={revealInView}
+      transition={{
+        duration: reduceMotion ? 0 : 0.6,
+        delay: reduceMotion ? 0 : index * 0.07,
+        ease: animationEasing.cinematic,
+      }}
     >
       <div className="absolute inset-0 overflow-hidden">
         <ServicePanelMedia
           visual={visual}
           isPlaying={isActive}
+          prefetch={!isActive && Boolean(visual.videoSrc)}
           sizes={IMAGE_SIZES_DESKTOP}
           priority={index === 0}
         />
@@ -396,7 +444,7 @@ function ServicePanel({
       <div className="relative z-10 flex h-full w-full flex-col p-4 sm:p-5 md:p-6 lg:p-7">
         <div className="flex items-start justify-between gap-3">
           <p
-            className={`max-w-[90%] font-outfit text-[9px] font-semibold uppercase leading-snug tracking-[0.22em] transition-colors duration-300 sm:text-[10px] md:text-[11px] ${
+            className={`max-w-[90%] font-ui text-[9px] font-semibold uppercase leading-snug tracking-[0.22em] transition-colors duration-300 sm:text-[10px] md:text-[11px] ${
               isActive ? "text-white" : "text-white/65 group-hover/panel:text-white/85"
             }`}
           >
@@ -420,7 +468,7 @@ function ServicePanel({
 
         <div className="mt-auto flex min-h-0 flex-1 items-end gap-4 pt-8">
           <h3
-            className={`shrink-0 font-display text-[clamp(1.25rem,2.8vw,2.1rem)] italic leading-none tracking-[0.06em] [writing-mode:vertical-rl] rotate-180 transition-colors duration-300 ${
+            className={`shrink-0 font-display text-[clamp(1.25rem,2.8vw,2.1rem)] leading-none tracking-[0.04em] [writing-mode:vertical-rl] rotate-180 transition-colors duration-300 ${
               isActive
                 ? "text-gold drop-shadow-[0_0_28px_rgba(245, 197, 24,0.45)]"
                 : "text-white/75 group-hover/panel:text-white"
@@ -442,15 +490,17 @@ function ServicePanel({
               </p>
 
               <div className="mt-5 flex flex-wrap items-center gap-4 border-t border-white/10 pt-4">
-                <Link
-                  href={`/request/${service.slug}`}
-                  className="btn btn--primary"
-                  onClick={(e) => e.stopPropagation()}
-                  aria-label={`Request ${service.title}`}
-                >
-                  Request
-                  <ArrowUpRight className="btn__icon btn__icon--nudge" aria-hidden />
-                </Link>
+                <MagneticButton className="inline-flex">
+                  <Link
+                    href={`/request/${service.slug}`}
+                    className="btn btn--primary"
+                    onClick={(e) => e.stopPropagation()}
+                    aria-label={`Request ${service.title}`}
+                  >
+                    Request
+                    <ArrowUpRight className="btn__icon btn__icon--nudge" aria-hidden />
+                  </Link>
+                </MagneticButton>
                 <Link
                   href={
                   service.slug === "exterior"
@@ -474,6 +524,6 @@ function ServicePanel({
           className="pointer-events-none absolute inset-x-0 bottom-0 h-[2px] bg-gradient-to-r from-transparent via-gold to-transparent shadow-[0_0_16px_rgba(245, 197, 24,0.8)]"
         />
       )}
-    </article>
+    </motion.article>
   );
 }

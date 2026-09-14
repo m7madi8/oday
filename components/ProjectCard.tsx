@@ -1,6 +1,9 @@
 "use client";
 
 import { motion, useReducedMotion } from "@/components/ClientMotion";
+import { useMobilePerfMode } from "@/hooks/useMobilePerfMode";
+import { animationEasing } from "@/lib/animations";
+import { cardInViewHidden, cardInViewVisible, revealInView } from "@/lib/motion-viewport";
 import {
   getProjectCardPill,
   resolveImageIntrinsic,
@@ -41,6 +44,8 @@ type ProjectCardProps = {
   tone?: GalleryCardTone;
   /** Masonry only: 12-column span. */
   span?: 4 | 6 | 8 | 12;
+  /** Masonry / featured: stagger delay within a visible band or grid. */
+  revealIndex?: number;
   /** Grid only: animate this batch in on mount. */
   batchAnimate?: boolean;
 };
@@ -56,10 +61,19 @@ export function ProjectCard({
   section = "exterior",
   tone,
   span,
+  revealIndex,
   batchAnimate = false,
 }: ProjectCardProps) {
   if (variant === "masonry") {
-    return <MasonryCard project={project} section={section} tone={tone} span={span} />;
+    return (
+      <MasonryCard
+        project={project}
+        section={section}
+        tone={tone}
+        span={span}
+        revealIndex={revealIndex ?? 0}
+      />
+    );
   }
   if (variant === "featured") {
     return <FeaturedCard project={project} index={index} />;
@@ -72,9 +86,11 @@ function caseNumber(project: Project, index: number): string {
   return project.orderLabel ?? String(index + 1).padStart(2, "0");
 }
 
-/** When title duplicates the case index (interior editorial IDs), surface real metadata instead. */
-function featuredHeadline(project: Project): string {
-  if (project.title && project.title !== project.orderLabel) {
+/** When title duplicates the case index, surface real metadata instead. */
+function cardHeadline(project: Project): string {
+  const title = project.title.trim();
+  const order = project.orderLabel.trim();
+  if (title && title !== order) {
     return project.title;
   }
   return project.country || project.tag;
@@ -85,20 +101,24 @@ function MasonryCard({
   section,
   tone = "frame",
   span = 4,
+  revealIndex = 0,
 }: {
   project: Project;
   section: PortfolioSectionId;
   tone?: GalleryCardTone;
   span?: 4 | 6 | 8 | 12;
+  revealIndex?: number;
 }) {
+  const reduceMotion = useReducedMotion();
   const format = resolveProjectGalleryFormat(project);
   const intrinsic = resolveImageIntrinsic(project.image, format);
   const ratio = resolveProjectCardRatio(project.image, format);
   const pill = getProjectCardPill(project, section);
   const href = projectDetailPath(project);
+  const headline = cardHeadline(project);
 
   return (
-    <article
+    <motion.article
       className={`project-card project-card--${tone} scroll-mt-[calc(var(--hero-nav-stack)+1.25rem)]`}
       data-ratio={ratio}
       data-tone={tone}
@@ -106,8 +126,21 @@ function MasonryCard({
       data-section={section}
       id={project.id}
       style={{ ["--cover-aspect" as string]: intrinsic.aspectRatio }}
+      initial={reduceMotion ? false : cardInViewHidden}
+      whileInView={reduceMotion ? undefined : cardInViewVisible}
+      viewport={revealInView}
+      transition={{
+        duration: reduceMotion ? 0 : 0.62,
+        delay: reduceMotion ? 0 : revealIndex * 0.07,
+        ease: animationEasing.cinematic,
+      }}
     >
-      <Link href={href} className="project-card__link" aria-label={`View project ${project.title}`}>
+      <Link
+        href={href}
+        className="project-card__link"
+        data-cursor-label="VIEW"
+        aria-label={`View project ${project.orderLabel} ${headline}`}
+      >
         <div className="project-card__media">
           <Image
             src={project.image}
@@ -120,11 +153,6 @@ function MasonryCard({
                 : "(max-width: 639px) 92vw, (max-width: 1099px) 50vw, 34vw"
             }
           />
-          {tone === "index" ? (
-            <span className="project-card__display-num" aria-hidden>
-              {project.orderLabel}
-            </span>
-          ) : null}
           <div className="project-card__hover-panel" aria-hidden>
             <span className="project-card__hover-cta">
               View project
@@ -137,12 +165,12 @@ function MasonryCard({
               <span className="project-card__num" aria-hidden>
                 {project.orderLabel}
               </span>
-              {project.title}
+              <span className="project-card__name">{headline}</span>
             </h3>
           </div>
         </div>
       </Link>
-    </article>
+    </motion.article>
   );
 }
 
@@ -179,6 +207,7 @@ function GridCard({
       <Link
         href={projectDetailPath(project)}
         className="block active:scale-[0.98] motion-reduce:active:scale-100"
+        data-cursor-label="VIEW"
         aria-label={`View ${project.title} project`}
       >
         <div className="relative aspect-[16/9] w-full overflow-hidden md:aspect-[4/3] xl:aspect-[3/2]">
@@ -202,25 +231,25 @@ function GridCard({
           />
 
           <div className="absolute inset-x-0 bottom-0 z-[1] p-3.5 sm:p-4 md:p-5">
-            <p className="truncate font-ui text-[8px] uppercase tracking-[0.2em] text-gold sm:tracking-[0.24em]">
+            <p className="truncate font-mono text-[8px] uppercase tracking-[0.1em] text-gold">
               {project.tag}
             </p>
-            <h2 className="mt-1.5 flex items-baseline gap-2 font-display text-[18px] font-light leading-snug text-[#f5f0e8] opacity-80 transition-all duration-[350ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-1.5 group-hover:opacity-100 md:text-[20px]">
-              <span className="shrink-0 font-ui text-[10px] tracking-[0.2em] text-gold/70" aria-hidden>
+            <h2 className="mt-1.5 flex items-baseline gap-2 font-display text-[18px] font-normal leading-snug text-[#f5f0e8] opacity-80 transition-all duration-[350ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-1.5 group-hover:opacity-100 md:text-[20px]">
+              <span className="shrink-0 font-mono text-[10px] tracking-[0.08em] text-gold/65" aria-hidden>
                 {caseNumber(project, index)}
               </span>
-              <span className="line-clamp-2">{project.title}</span>
+              <span className="line-clamp-2">{cardHeadline(project)}</span>
             </h2>
             <span
               aria-hidden
               className="project-card-gold-line mt-2 block h-px w-10 origin-left scale-x-0 bg-gold opacity-0 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-x-100 group-hover:opacity-100"
             />
             <div className="mt-2 flex min-w-0 flex-wrap items-center gap-x-2 gap-y-0.5 sm:gap-x-3">
-              <p className="shrink-0 font-ui text-[9px] uppercase tracking-[0.14em] text-ink-secondary/80 sm:tracking-[0.18em]">
+              <p className="shrink-0 font-ui text-[9px] uppercase tracking-[0.12em] text-ink-secondary/80">
                 {serviceLabel}
               </p>
               {project.country && (
-                <p className="min-w-0 truncate font-ui text-[9px] tracking-wide text-ink-muted">
+                <p className="min-w-0 truncate font-mono text-[9px] tracking-[0.04em] text-ink-muted">
                   {project.country}
                   {project.year ? ` · ${project.year}` : ""}
                 </p>
@@ -234,20 +263,36 @@ function GridCard({
 }
 
 function FeaturedCard({ project, index }: { project: Project; index: number }) {
-  const headline = featuredHeadline(project);
+  const reduceMotion = useReducedMotion();
+  const mobilePerf = useMobilePerfMode();
+  const lightMotion = reduceMotion || mobilePerf;
+  const headline = cardHeadline(project);
 
   return (
-    <article className="feat-card" data-section={project.serviceSlug} id={project.id}>
+    <motion.article
+      className="feat-card"
+      data-section={project.serviceSlug}
+      id={project.id}
+      initial={lightMotion ? false : cardInViewHidden}
+      whileInView={lightMotion ? undefined : cardInViewVisible}
+      viewport={revealInView}
+      transition={{
+        duration: lightMotion ? 0 : 0.52,
+        delay: lightMotion ? 0 : 0.08 + index * 0.05,
+        ease: animationEasing.smoothOut,
+      }}
+    >
       <Link
         href={projectDetailPath(project)}
         className="feat-card__link group/feat"
+        data-cursor-label="VIEW"
         aria-label={`View project ${headline}`}
       >
         <Image
           src={project.image}
           alt={project.imageAlt}
           fill
-          quality={90}
+          quality={mobilePerf ? 76 : 90}
           className="feat-card__img object-cover"
           sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 34vw"
           style={{ objectPosition: "50% 42%" }}
@@ -258,6 +303,6 @@ function FeaturedCard({ project, index }: { project: Project; index: number }) {
           <h3 className="feat-card__title">{headline}</h3>
         </div>
       </Link>
-    </article>
+    </motion.article>
   );
 }

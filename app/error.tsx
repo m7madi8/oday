@@ -1,5 +1,7 @@
 "use client";
 
+import { AnimatedHeading } from "@/components/animations/AnimatedHeading";
+import { RevealFade } from "@/components/animations/RevealFade";
 import { useEffect } from "react";
 
 export default function Error({
@@ -18,10 +20,16 @@ export default function Error({
       id="main-content"
       className="mx-auto flex min-h-[60svh] max-w-lg flex-col items-center justify-center px-6 py-16 text-center"
     >
-      <p className="text-xs uppercase tracking-[0.2em] text-gold">Error</p>
-      <h1 className="mt-3 font-outfit text-2xl font-medium text-ink-primary">
-        Something went wrong
-      </h1>
+      <RevealFade as="p" className="text-xs uppercase tracking-[0.2em] text-gold" timing="enter">
+        Error
+      </RevealFade>
+      <AnimatedHeading
+        as="h1"
+        text="Something went wrong"
+        className="mt-3 font-ui text-2xl font-medium text-ink-primary"
+        timing="enter"
+        delay={0.08}
+      />
       <p className="mt-4 text-sm leading-relaxed text-ink-secondary">
         The page hit an unexpected error. You can try again.
       </p>

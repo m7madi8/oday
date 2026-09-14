@@ -1,5 +1,6 @@
 "use client";
 
+import { MagneticButton } from "@/components/animations/MagneticButton";
 import type { NavPanelConfig, NavPanelId } from "@/lib/content/site-navigation";
 import { ChevronDown, Search } from "lucide-react";
 import Link from "next/link";
@@ -76,9 +77,9 @@ export function DesktopNav({
         const isActive = isOpen || isLinkActive(panel.href) || (panel.id === "gallery" && isGalleryRoute);
 
         return (
-          <div
+          <MagneticButton
             key={panel.id}
-            className="relative"
+            className="relative inline-flex"
             onMouseEnter={() => (hasPanel ? onHoverPanel(panel.id) : onLeavePanel())}
             onMouseLeave={() => {
               if (hasPanel) onLeavePanel();
@@ -115,7 +116,7 @@ export function DesktopNav({
                 />
               ) : null}
             </Link>
-          </div>
+          </MagneticButton>
         );
       })}
 

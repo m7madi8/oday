@@ -2,6 +2,7 @@
 
 import { RevealChildren } from "@/components/animations/RevealChildren";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
+import { MagneticButton } from "@/components/animations/MagneticButton";
 import { faqItems } from "@/lib/content/faq";
 import { AnimatePresence, motion, useReducedMotion } from "@/components/ClientMotion";
 import { useId, useState } from "react";
@@ -18,23 +19,26 @@ export function FAQ() {
         className="grid w-full gap-8 md:grid-cols-2 md:gap-10 lg:gap-14"
         stagger={0.1}
       >
-        <ScrollReveal dramatic className="min-w-0">
+        <div className="min-w-0">
           <SectionHeader
             align="start"
             eyebrow="Client Desk"
+            titleClassName="section-title--sans"
             title="Before We Start"
             description="Clear answers on scope, timeline, and delivery so you can move forward with confidence."
           />
-          <motion.a
-            href="#contact"
-            className="btn btn--primary mt-6"
-            whileHover={reduceMotion ? {} : { scale: 1.02 }}
-            whileTap={reduceMotion ? {} : { scale: 0.98 }}
-            aria-label="Talk to strategy team via contact section"
-          >
-            Talk to Strategy Team
-          </motion.a>
-        </ScrollReveal>
+          <MagneticButton className="mt-6 inline-flex">
+            <motion.a
+              href="#contact"
+              className="btn btn--primary"
+              whileHover={reduceMotion ? {} : { scale: 1.02 }}
+              whileTap={reduceMotion ? {} : { scale: 0.98 }}
+              aria-label="Talk to strategy team via contact section"
+            >
+              Talk to Strategy Team
+            </motion.a>
+          </MagneticButton>
+        </div>
 
         <ScrollReveal
           dramatic

@@ -34,7 +34,7 @@
 }
 
 .drone-gallery__eyebrow {
-  font-family: var(--font-outfit), system-ui, sans-serif;
+  font-family: var(--font-ui), system-ui, sans-serif;
   font-size: 0.58rem;
   font-weight: 500;
   letter-spacing: 0.22em;
@@ -74,7 +74,7 @@
 }
 
 .drone-gallery__highlights li {
-  font-family: var(--font-outfit), system-ui, sans-serif;
+  font-family: var(--font-ui), system-ui, sans-serif;
   font-size: 0.55rem;
   font-weight: 500;
   letter-spacing: 0.14em;
@@ -110,7 +110,7 @@
 }
 
 .drone-gallery__spec-label {
-  font-family: var(--font-outfit), system-ui, sans-serif;
+  font-family: var(--font-ui), system-ui, sans-serif;
   font-size: 0.55rem;
   font-weight: 500;
   letter-spacing: 0.16em;
@@ -158,7 +158,7 @@
 }
 
 .drone-gallery__caption-client {
-  font-family: var(--font-outfit), system-ui, sans-serif;
+  font-family: var(--font-ui), system-ui, sans-serif;
   font-size: 0.55rem;
   font-weight: 500;
   letter-spacing: 0.2em;
@@ -270,7 +270,7 @@
 }
 
 .drone-film__badge {
-  font-family: var(--font-outfit), system-ui, sans-serif;
+  font-family: var(--font-ui), system-ui, sans-serif;
   font-size: 0.52rem;
   font-weight: 500;
   letter-spacing: 0.2em;

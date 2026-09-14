@@ -8,6 +8,7 @@ export {
   AnimatePresence,
   LayoutGroup,
   motion,
+  useInView,
   useMotionValue,
   useMotionValueEvent,
   useReducedMotion,

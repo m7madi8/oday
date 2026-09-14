@@ -1,5 +1,7 @@
 "use client";
 
+import { AnimatedHeading } from "@/components/animations/AnimatedHeading";
+import { RevealFade } from "@/components/animations/RevealFade";
 import { RevealChildren } from "@/components/animations/RevealChildren";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import {
@@ -59,16 +61,25 @@ export function Projects() {
           className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between"
         >
           <div>
-            <p className="label-upper text-gold">Case Studies</p>
-            <h2 className="section-title section-title--lead mt-3">
-              Projects That Perform
-            </h2>
-            <p className="mt-5 max-w-xl text-sm leading-relaxed text-ink-secondary md:text-base">
+            <RevealFade as="p" className="label-upper text-gold">
+              Case Studies
+            </RevealFade>
+            <AnimatedHeading
+              as="h2"
+              text="Projects That Perform"
+              className="section-title section-title--lead section-title--editorial mt-3"
+              delay={0.08}
+            />
+            <RevealFade
+              as="p"
+              className="mt-5 max-w-xl text-sm leading-relaxed text-ink-secondary md:text-base"
+              delay={0.3}
+            >
               A focused selection of high-impact developments crafted to lift market value, user appeal, and long-term asset performance.
-            </p>
+            </RevealFade>
             <Link
               href="/projects"
-              className="mt-6 inline-flex items-center gap-2 font-outfit text-xs font-medium uppercase tracking-[0.18em] text-gold transition-opacity hover:opacity-85"
+              className="mt-6 inline-flex items-center gap-2 font-ui text-xs font-medium uppercase tracking-[0.18em] text-gold transition-opacity hover:opacity-85"
             >
               View full gallery <span aria-hidden>→</span>
             </Link>

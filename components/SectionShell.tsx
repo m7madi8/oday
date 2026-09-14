@@ -1,5 +1,8 @@
 import type { ReactNode } from "react";
 
+export { SectionHeader } from "@/components/AnimatedSectionHeader";
+export type { SectionHeaderProps } from "@/components/AnimatedSectionHeader";
+
 type SectionShellProps = {
   id: string;
   children: ReactNode;
@@ -43,31 +46,3 @@ export function SectionInner({ children, className = "" }: SectionInnerProps) {
   return <div className={`section-inner ${className}`.trim()}>{children}</div>;
 }
 
-type SectionHeaderProps = {
-  eyebrow: string;
-  title: ReactNode;
-  description?: ReactNode;
-  align?: "center" | "start";
-  className?: string;
-  /** Add a scale modifier such as `section-title--lead` for full-viewport media sections. */
-  titleClassName?: string;
-};
-
-export function SectionHeader({
-  eyebrow,
-  title,
-  description,
-  align = "center",
-  className = "",
-  titleClassName = "",
-}: SectionHeaderProps) {
-  const alignClass = align === "center" ? "section-header--center" : "section-header--start";
-
-  return (
-    <header className={`section-header ${alignClass} ${className}`.trim()}>
-      <p className="label-upper text-gold/90">{eyebrow}</p>
-      <h2 className={`section-title mt-2 ${titleClassName}`.trim()}>{title}</h2>
-      {description ? <p className="section-lead mt-2">{description}</p> : null}
-    </header>
-  );
-}

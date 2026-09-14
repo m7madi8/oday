@@ -8,7 +8,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 const IMAGE_QUALITY = 82;
 const CROSSFADE_S = 1.65;
 const SLIDE_INTERVAL_MS = 3800;
-
 /**
  * Service panel cover — static portfolio frame, a muted project video on
  * hover, or a cinematic stills sequence (interior / exterior) like the hero.
@@ -16,20 +15,24 @@ const SLIDE_INTERVAL_MS = 3800;
 export function ServicePanelMedia({
   visual,
   isPlaying,
+  prefetch = false,
   sizes,
   priority = false,
   imageClassName = "services-panel-image object-cover",
 }: {
   visual: ServiceVisualAsset;
   isPlaying: boolean;
+  /** Warm the video buffer for adjacent carousel slides (AI / Drone). */
+  prefetch?: boolean;
   sizes: string;
   priority?: boolean;
   imageClassName?: string;
 }) {
   const reduceMotion = useReducedMotion();
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [videoReady, setVideoReady] = useState(false);
+  const [videoVisible, setVideoVisible] = useState(false);
   const hasVideo = Boolean(visual.videoSrc) && !reduceMotion;
+  const shouldLoadVideo = hasVideo && (isPlaying || prefetch);
   const slides = useMemo<readonly ServiceVisualSlide[]>(
     () =>
       visual.slides?.length
@@ -74,45 +77,85 @@ export function ServicePanelMedia({
 
   useEffect(() => {
     const el = videoRef.current;
-    if (!el || !hasVideo) return;
-
-    if (isPlaying) {
-      void el.play().catch(() => {
-        /* autoplay policy — poster frame stays visible */
-      });
+    if (!el || !shouldLoadVideo) {
+      setVideoVisible(false);
       return;
     }
 
-    el.pause();
-    seekToPoster();
-  }, [isPlaying, hasVideo, seekToPoster]);
+    let cancelled = false;
+
+    const waitForCanPlay = () =>
+      new Promise<void>((resolve) => {
+        if (el.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) {
+          resolve();
+          return;
+        }
+
+        const onReady = () => {
+          el.removeEventListener("canplay", onReady);
+          resolve();
+        };
+
+        el.addEventListener("canplay", onReady);
+        el.load();
+      });
+
+    const run = async () => {
+      seekToPoster();
+
+      if (!isPlaying) {
+        setVideoVisible(false);
+        el.pause();
+        return;
+      }
+
+      try {
+        await waitForCanPlay();
+        if (cancelled) return;
+
+        seekToPoster();
+        await el.play();
+        if (cancelled) return;
+
+        setVideoVisible(true);
+      } catch {
+        if (!cancelled) setVideoVisible(false);
+      }
+    };
+
+    void run();
+
+    return () => {
+      cancelled = true;
+      el.pause();
+      setVideoVisible(false);
+    };
+  }, [isPlaying, shouldLoadVideo, seekToPoster, visual.videoSrc]);
 
   const visibleSlides = canSlideshow && armed ? slides : slides.slice(0, 1);
   const showTicks = canSlideshow && isPlaying && visibleSlides.length > 1;
+  const showPoster = !videoVisible;
 
   return (
     <div
       className={`service-panel-media absolute inset-0 overflow-hidden${
         canSlideshow ? " service-panel-media--slideshow" : ""
-      }`}
+      }${hasVideo ? " service-panel-media--video" : ""}`}
     >
-      {hasVideo ? (
+      {shouldLoadVideo ? (
         <video
           ref={videoRef}
-          className={`service-panel-media__video absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${
-            videoReady ? "opacity-100" : "opacity-0"
+          className={`service-panel-media__video absolute inset-0 h-full w-full object-cover ${
+            videoVisible ? "service-panel-media__video--visible" : ""
           } ${isPlaying ? "service-panel-media__video--playing" : ""}`}
           style={{ objectPosition: visual.objectPosition }}
           src={visual.videoSrc}
           muted
           playsInline
           loop
-          preload="metadata"
+          preload={isPlaying ? "auto" : "metadata"}
           aria-hidden
-          onLoadedData={() => {
-            seekToPoster();
-            setVideoReady(true);
-          }}
+          onLoadedData={seekToPoster}
         />
       ) : null}
 
@@ -159,8 +202,8 @@ export function ServicePanelMedia({
                 quality={IMAGE_QUALITY}
                 sizes={sizes}
                 priority={priority && index === 0}
-                className={`${imageClassName} ${
-                  hasVideo && videoReady ? "opacity-0" : "opacity-100"
+                className={`${imageClassName} service-panel-media__poster ${
+                  showPoster ? "service-panel-media__poster--visible" : ""
                 }`}
                 style={{ objectPosition: slide.objectPosition }}
               />

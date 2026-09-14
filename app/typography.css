@@ -1,0 +1,118 @@
+/* ==========================================================================
+   OD Architects — Typography system
+   Bodoni Moda (display) · Plus Jakarta Sans (UI/body) · IBM Plex Mono (meta)
+   ========================================================================== */
+
+/* ── Role utilities ─────────────────────────────────────────────────────── */
+
+.font-mono,
+.type-meta {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: var(--tracking-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.type-label {
+  font-family: var(--font-ui);
+  font-size: var(--step--2);
+  font-weight: 500;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.type-body {
+  font-family: var(--font-ui);
+  font-size: var(--step-0);
+  font-weight: 400;
+  line-height: 1.68;
+  color: var(--text-secondary);
+}
+
+.type-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.06;
+  letter-spacing: var(--tracking-display);
+  color: var(--text-primary);
+}
+
+.type-heading-sans {
+  font-family: var(--font-ui);
+  font-weight: 500;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+/* ── Section title variants ───────────────────────────────────────────── */
+
+.section-title--editorial {
+  font-style: italic;
+  font-weight: 400;
+}
+
+.section-title--sans {
+  font-family: var(--font-ui);
+  font-style: normal;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.section-title--lead.section-title--editorial {
+  font-weight: 400;
+}
+
+/* ── Prose comfort ────────────────────────────────────────────────────── */
+
+.prose-studio {
+  font-family: var(--font-ui);
+  font-size: var(--step-0);
+  font-weight: 400;
+  line-height: 1.68;
+  color: var(--text-secondary);
+  max-width: 42rem;
+}
+
+.prose-studio p + p {
+  margin-top: 1em;
+}
+
+/* ── Project editorial stack ──────────────────────────────────────────── */
+
+.project-meta-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.project-meta-stack__index,
+.project-meta-stack__place,
+.project-meta-stack__year {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 400;
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: rgba(var(--accent-gold-rgb), 0.72);
+}
+
+.project-meta-stack__title {
+  margin-top: 0.35rem;
+  font-family: var(--font-display);
+  font-size: var(--step-3);
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1.08;
+  color: var(--text-primary);
+}
+
+.project-meta-stack__discipline {
+  margin-top: 0.25rem;
+  font-family: var(--font-ui);
+  font-size: var(--step--1);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  color: var(--text-muted);
+}

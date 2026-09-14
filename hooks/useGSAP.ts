@@ -19,6 +19,12 @@ export type GsapLike = {
   fromTo: (...args: unknown[]) => unknown;
   timeline: (vars?: Record<string, unknown>) => unknown;
   context?: (callback: () => void, scope?: Element | string) => GsapContext;
+  quickTo?: (
+    target: unknown,
+    property: string,
+    vars?: Record<string, unknown>,
+  ) => (value: number) => unknown;
+  killTweensOf?: (...args: unknown[]) => unknown;
 };
 
 export type ScrollTriggerLike = {

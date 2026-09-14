@@ -29,8 +29,9 @@ export const about = {
     },
   ] satisfies Strength[],
   directorName: "Oday Abu Doha",
-  directorRole: "Founder & Design Director",
+  contactEyebrow: "Architect & Founder",
+  directorRole: "Founder & Principal Architect",
   directorPortrait,
   directorPortraitAlt:
-    "Oday Abu Doha, founder and design director of OD Architects",
+    "Oday Abu Doha, architect and founder of OD Architects",
 };

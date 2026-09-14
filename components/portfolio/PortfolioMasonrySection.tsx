@@ -1,6 +1,8 @@
 "use client";
 
 import { ProjectCard } from "@/components/ProjectCard";
+import { AnimatedHeading } from "@/components/animations/AnimatedHeading";
+import { RevealFade } from "@/components/animations/RevealFade";
 import { GalleryGoldLine, GalleryReveal } from "@/components/animations/GalleryMotion";
 import { buildGalleryBands } from "@/lib/portfolio-masonry-layout";
 import type { PortfolioSectionId } from "@/lib/project-card-ratio";
@@ -68,16 +70,30 @@ export function PortfolioMasonrySection({
       data-section={section}
       aria-labelledby={`portfolio-heading-${section}`}
     >
-      <GalleryReveal>
-        <header className="portfolio-section__header">
-          <p className="portfolio-section__eyebrow label-upper">Portfolio</p>
-          <h2 id={`portfolio-heading-${section}`} className="portfolio-section__title">
-            {copy.title}
-          </h2>
-          <p className="portfolio-section__subtitle">{copy.subtitle}</p>
+      <header className="portfolio-section__header">
+        <RevealFade as="p" className="portfolio-section__eyebrow label-upper" timing="enter">
+          Portfolio
+        </RevealFade>
+        <AnimatedHeading
+          as="h2"
+          id={`portfolio-heading-${section}`}
+          text={copy.title}
+          className="portfolio-section__title"
+          timing="enter"
+          delay={0.08}
+        />
+        <RevealFade
+          as="p"
+          className="portfolio-section__subtitle"
+          delay={0.24}
+          timing="enter"
+        >
+          {copy.subtitle}
+        </RevealFade>
+        <GalleryReveal>
           <GalleryGoldLine className="portfolio-section__rule mt-6 max-w-xs" />
-        </header>
-      </GalleryReveal>
+        </GalleryReveal>
+      </header>
 
       <div className="portfolio-masonry-rows">
         {visibleBands.map((band, bandIndex) => (
@@ -85,7 +101,7 @@ export function PortfolioMasonrySection({
             key={`${band.kind}-${bandIndex}`}
             className={`portfolio-band portfolio-band--${band.kind}`}
           >
-            {band.cells.map((cell) => (
+            {band.cells.map((cell, cellIndex) => (
               <ProjectCard
                 key={cell.project.id}
                 project={cell.project}
@@ -93,6 +109,7 @@ export function PortfolioMasonrySection({
                 section={section}
                 tone={cell.tone}
                 span={cell.span}
+                revealIndex={cellIndex}
               />
             ))}
           </div>

@@ -1,14 +1,26 @@
-import { Fraunces } from "next/font/google";
+import { Bodoni_Moda, IBM_Plex_Mono, Plus_Jakarta_Sans } from "next/font/google";
 
-/**
- * Display serif — Fraunces (Undercase Type).
- * Optical sizing is built in; SOFT/WONK stay disciplined for architecture.
- */
-export const fraunces = Fraunces({
+/** Editorial display — hero statements, section headlines, project titles */
+export const bodoniModa = Bodoni_Moda({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-fraunces",
-  weight: "variable",
+  variable: "--font-bodoni-moda",
+  weight: ["400", "500", "600"],
   style: ["normal", "italic"],
-  axes: ["SOFT", "WONK", "opsz"],
+});
+
+/** Primary sans — body, navigation, buttons, UI */
+export const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-plus-jakarta",
+  weight: ["400", "500", "600"],
+});
+
+/** Technical accent — project numbers, years, locations (use sparingly) */
+export const ibmPlexMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-ibm-plex-mono",
+  weight: ["300", "400", "500"],
 });
