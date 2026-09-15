@@ -1,8 +1,7 @@
 import type { StaticImageData } from "next/image";
-import heroPrimary from "@/imgs/hero/villa-hero.jpg";
-import heroSlide2 from "@/imgs/hero/villa-marble.jpg";
-import heroSlide3 from "@/imgs/hero/villa-facade.jpg";
-import heroSlide4 from "@/imgs/hero/villa-entrance.jpg";
+import heroPrimary from "@/imgs/hero/villa-marble-frontal.jpg";
+import heroSlide2 from "@/imgs/hero/villa-black-marble.jpg";
+import heroSlide3 from "@/imgs/hero/villa-stone-facade.jpg";
 
 /** Homepage hero copy — kept separate from data.ts to avoid heavy module init cycles. */
 export const hero = {
@@ -24,31 +23,24 @@ export const hero = {
   images: [
     {
       src: heroPrimary,
-      alt: "Contemporary villa exterior — hero",
+      alt: "Symmetrical marble villa facade at dusk — hero exterior",
       primary: true,
-      objectPosition: "50% 18%",
-      objectPositionMobile: "50% 14%",
+      objectPosition: "50% 50%",
+      objectPositionMobile: "50% 50%",
     },
     {
       src: heroSlide2,
-      alt: "Dark marble villa — hero exterior",
+      alt: "Dark marble villa, three-quarter view at dusk — hero exterior",
       primary: false,
-      objectPosition: "50% 20%",
-      objectPositionMobile: "50% 16%",
+      objectPosition: "50% 50%",
+      objectPositionMobile: "50% 50%",
     },
     {
       src: heroSlide3,
-      alt: "Contemporary villa facade — hero exterior",
+      alt: "Contemporary stone villa facade with landscaped entrance — hero exterior",
       primary: false,
-      objectPosition: "50% 62%",
-      objectPositionMobile: "50% 58%",
-    },
-    {
-      src: heroSlide4,
-      alt: "Villa entrance at dusk — hero exterior",
-      primary: false,
-      objectPosition: "50% 52%",
-      objectPositionMobile: "50% 48%",
+      objectPosition: "50% 50%",
+      objectPositionMobile: "50% 50%",
     },
   ] satisfies ReadonlyArray<{
     src: StaticImageData;
@@ -58,7 +50,7 @@ export const hero = {
     objectPositionMobile: string;
   }>,
   image: heroPrimary,
-  imageAlt: "Contemporary villa exterior — hero",
+  imageAlt: "Symmetrical marble villa facade at dusk — hero exterior",
   stats: [
     { label: "Projects", value: 500, prefix: "+", suffix: "" },
     { label: "Value", value: 50, prefix: "+", suffix: "M" },
