@@ -1,6 +1,6 @@
 "use client";
 
-import { animationEasing } from "@/lib/animations";
+import { animationEasing, skipEntranceMotion } from "@/lib/animations";
 import { softInView } from "@/lib/motion-viewport";
 import { useSectionReveal } from "@/lib/section-reveal-context";
 import { useMobilePerfMode } from "@/hooks/useMobilePerfMode";
@@ -48,12 +48,7 @@ export function RevealFade({
     timing === "enter" || (sectionReveal ? sectionReveal.revealed : inView);
   const lightMotion = sectionReveal?.lightMotion ?? mobilePerf;
 
-  if (reduce) {
-    const Tag = as;
-    return <Tag className={className}>{children}</Tag>;
-  }
-
-  if (mobilePerf && !sectionReveal) {
+  if (skipEntranceMotion(reduce, mobilePerf)) {
     const Tag = as;
     return <Tag className={className}>{children}</Tag>;
   }

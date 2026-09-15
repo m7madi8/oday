@@ -23,12 +23,13 @@ export function SectionShell({
   containOverflow = true,
 }: SectionShellProps) {
   const overflowClass = containOverflow ? "overflow-hidden" : "overflow-visible";
+  const justifyClass = snap ? "justify-center" : "justify-start";
   const base =
     variant === "hero"
       ? "section-hero relative flex w-full flex-col bg-bg-primary"
       : variant === "media"
         ? "section-media relative isolate overflow-hidden bg-bg-primary"
-        : `section-page relative flex flex-col justify-center ${overflowClass} bg-bg-primary`;
+        : `section-page relative flex flex-col ${justifyClass} ${overflowClass} bg-bg-primary`;
 
   return (
     <section id={id} className={`${base}${snap ? " section-snap" : ""} ${className}`.trim()}>

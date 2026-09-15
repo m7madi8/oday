@@ -43,10 +43,17 @@
 @media (max-width: 767px) {
   .section-editorial-head {
     grid-template-columns: 1fr;
+    gap: 0.4rem;
   }
 
   .section-editorial-head__index {
     font-size: clamp(2.5rem, 12vw, 3.5rem);
+    line-height: 1;
+  }
+
+  .services-section .section-title {
+    font-size: clamp(1.7rem, 7.6vw, 2.25rem);
+    line-height: 1.18;
   }
 }
 
@@ -496,8 +503,15 @@
 
   .hero-modern__headline {
     margin-top: 0.55rem;
+    flex-wrap: wrap;
+    white-space: normal;
     font-size: clamp(1.12rem, 6.4vw, 1.55rem);
-    gap: 0.22em;
+    gap: 0.12em 0.22em;
+    row-gap: 0.08em;
+  }
+
+  .hero-modern__mask {
+    overflow: visible;
   }
 
   .hero-modern__headline-main {

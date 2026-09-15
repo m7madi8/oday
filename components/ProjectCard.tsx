@@ -278,6 +278,7 @@ function FeaturedCard({ project, index }: { project: Project; index: number }) {
       data-section={project.serviceSlug}
       id={project.id}
       initial={lightMotion ? false : cardInViewHidden}
+      animate={lightMotion ? cardInViewVisible : undefined}
       whileInView={lightMotion ? undefined : cardInViewVisible}
       viewport={revealInView}
       transition={{

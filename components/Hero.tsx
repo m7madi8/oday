@@ -20,11 +20,19 @@ function MaskLine({
   delay: number;
   reduce: boolean;
 }) {
+  if (reduce) {
+    return (
+      <span className={`hero-modern__mask ${className ?? ""}`.trim()}>
+        <span className="hero-modern__mask-inner">{children}</span>
+      </span>
+    );
+  }
+
   return (
     <span className={`hero-modern__mask ${className ?? ""}`.trim()}>
       <motion.span
         className="hero-modern__mask-inner"
-        initial={reduce ? false : { y: "112%" }}
+        initial={{ y: "112%" }}
         animate={{ y: "0%" }}
         transition={{ duration: 1.15, delay, ease: easeCinematic }}
       >
@@ -129,15 +137,15 @@ export function Hero() {
               className="hero-modern__eyebrow"
               text={hero.headlineEyebrow}
               delay={0.12}
-              reduce={!!reduceMotion}
+              reduce={!!reduceMotion || mobilePerf}
               lightMotion={mobilePerf}
             />
 
             <h1 className="hero-modern__headline">
-              <MaskLine className="hero-modern__headline-main" delay={0.28} reduce={!!reduceMotion}>
+              <MaskLine className="hero-modern__headline-main" delay={0.28} reduce={!!reduceMotion || mobilePerf}>
                 {hero.headlineBeforeAccent}
               </MaskLine>
-              <MaskLine className="hero-modern__headline-accent" delay={0.46} reduce={!!reduceMotion}>
+              <MaskLine className="hero-modern__headline-accent" delay={0.46} reduce={!!reduceMotion || mobilePerf}>
                 {hero.headlineAccent}
               </MaskLine>
             </h1>
@@ -146,7 +154,7 @@ export function Hero() {
               className="hero-modern__subline"
               text={hero.headlineSubline}
               delay={0.72}
-              reduce={!!reduceMotion}
+              reduce={!!reduceMotion || mobilePerf}
               lightMotion={mobilePerf}
             />
           </div>

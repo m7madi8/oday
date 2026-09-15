@@ -3,6 +3,7 @@
 import {
   animationEasing,
   createMaskRevealTransition,
+  skipEntranceMotion,
 } from "@/lib/animations";
 import { softInView } from "@/lib/motion-viewport";
 import { useSectionReveal } from "@/lib/section-reveal-context";
@@ -65,12 +66,7 @@ export function RevealText({
     timing === "enter" || (sectionReveal ? sectionReveal.revealed : inView);
   const lightMotion = sectionReveal?.lightMotion ?? mobilePerf;
 
-  if (reduceMotion) {
-    const Tag = as;
-    return <Tag id={id} className={className}>{children}</Tag>;
-  }
-
-  if (mobilePerf && !sectionReveal) {
+  if (skipEntranceMotion(reduceMotion, mobilePerf)) {
     const Tag = as;
     return <Tag id={id} className={className}>{children}</Tag>;
   }

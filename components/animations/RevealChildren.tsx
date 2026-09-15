@@ -1,5 +1,6 @@
 "use client";
 
+import { skipEntranceMotion } from "@/lib/animations";
 import { softInView } from "@/lib/motion-viewport";
 import { useSectionReveal } from "@/lib/section-reveal-context";
 import { useMobilePerfMode } from "@/hooks/useMobilePerfMode";
@@ -45,11 +46,7 @@ export function RevealChildren({
 
   const items = Children.toArray(children).filter((c) => c != null);
 
-  if (reduce) {
-    return <div className={className}>{children}</div>;
-  }
-
-  if (mobilePerf && !sectionReveal) {
+  if (skipEntranceMotion(reduce, mobilePerf)) {
     return <div className={className}>{children}</div>;
   }
 

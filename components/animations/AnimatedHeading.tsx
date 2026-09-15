@@ -1,7 +1,7 @@
 "use client";
 
 import { RevealText } from "@/components/animations/RevealText";
-import { animationEasing, createMaskRevealTransition } from "@/lib/animations";
+import { animationEasing, createMaskRevealTransition, skipEntranceMotion } from "@/lib/animations";
 import { softInView } from "@/lib/motion-viewport";
 import { useSectionReveal } from "@/lib/section-reveal-context";
 import { useMobilePerfMode } from "@/hooks/useMobilePerfMode";
@@ -54,12 +54,7 @@ function MaskBlock({
     timing === "enter" || (sectionReveal ? sectionReveal.revealed : inView);
   const lightMotion = sectionReveal?.lightMotion ?? mobilePerf;
 
-  if (reduce) {
-    const Tag = as ?? "h2";
-    return <Tag id={id} className={className}>{children}</Tag>;
-  }
-
-  if (mobilePerf && !sectionReveal) {
+  if (skipEntranceMotion(reduce, mobilePerf)) {
     const Tag = as ?? "h2";
     return <Tag id={id} className={className}>{children}</Tag>;
   }

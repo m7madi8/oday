@@ -100,7 +100,7 @@ export function Services() {
       </SectionInner>
 
       {/* Mobile / tablet carousel */}
-      <ScrollReveal dramatic delay={0.04} className="mt-6 lg:hidden">
+      <ScrollReveal dramatic delay={0.04} className="services-carousel-wrap mt-6 lg:hidden">
         <ServicesMobileCarousel />
       </ScrollReveal>
 

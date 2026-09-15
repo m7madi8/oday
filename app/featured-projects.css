@@ -388,6 +388,21 @@
     font-size: clamp(1.5rem, 6.8vw, 1.95rem);
     line-height: 1.2;
   }
+
+  .featured-work__grid {
+    overflow: visible;
+  }
+
+  .feat-hero,
+  .feat-card {
+    opacity: 1 !important;
+    transform: none !important;
+    min-height: 13.5rem;
+  }
+
+  .feat-hero {
+    aspect-ratio: 4 / 3;
+  }
 }
 
 @media (max-width: 639px) {

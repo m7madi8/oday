@@ -62,6 +62,7 @@ export function FeaturedHeroProject({ project }: FeaturedHeroProjectProps) {
   const canSlideshow = frames.length > 1 && !reduceMotion && !mobilePerf;
   const lightMotion = reduceMotion || mobilePerf;
   const visibleFrames = mobilePerf ? frames.slice(0, 1) : frames;
+  const shown = lightMotion || inView;
 
   return (
     <motion.article
@@ -70,7 +71,7 @@ export function FeaturedHeroProject({ project }: FeaturedHeroProjectProps) {
       id={project.id}
       data-section={project.serviceSlug}
       initial={lightMotion ? false : cardInViewHidden}
-      animate={lightMotion ? undefined : inView ? cardInViewVisible : cardInViewHidden}
+      animate={shown ? cardInViewVisible : cardInViewHidden}
       transition={{
         duration: lightMotion ? 0 : 0.62,
         ease: animationEasing.smoothOut,

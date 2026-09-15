@@ -3,6 +3,7 @@
 import { AnimatedHeading } from "@/components/animations/AnimatedHeading";
 import { RevealFade } from "@/components/animations/RevealFade";
 import { useMobilePerfMode } from "@/hooks/useMobilePerfMode";
+import { skipEntranceMotion } from "@/lib/animations";
 import { sectionInView } from "@/lib/motion-viewport";
 import { SectionRevealContext } from "@/lib/section-reveal-context";
 import { useInView, useReducedMotion } from "@/components/ClientMotion";
@@ -38,6 +39,17 @@ export function SectionHeader({
   const descriptionDelay = titleIsString
     ? titleDelay + title.trim().split(/\s+/).filter(Boolean).length * 0.05 + 0.08
     : titleDelay + 0.34;
+  const titleClass = `section-title mt-2 ${titleClassName}`.trim();
+
+  if (skipEntranceMotion(reduce, mobilePerf)) {
+    return (
+      <header ref={headerRef} className={`section-header ${alignClass} ${className}`.trim()}>
+        <p className="label-upper text-gold/90">{eyebrow}</p>
+        <h2 className={titleClass}>{title}</h2>
+        {description ? <p className="section-lead mt-2">{description}</p> : null}
+      </header>
+    );
+  }
 
   return (
     <SectionRevealContext.Provider
@@ -55,14 +67,14 @@ export function SectionHeader({
           <AnimatedHeading
             as="h2"
             text={title}
-            className={`section-title mt-2 ${titleClassName}`.trim()}
+            className={titleClass}
             timing={timing}
             delay={titleDelay}
           />
         ) : (
           <AnimatedHeading
             as="h2"
-            className={`section-title mt-2 ${titleClassName}`.trim()}
+            className={titleClass}
             timing={timing}
             delay={titleDelay}
           >

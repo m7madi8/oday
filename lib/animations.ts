@@ -138,6 +138,14 @@ export function isMobilePerfMode(): boolean {
   );
 }
 
+/** Skip entrance motion on phones — titles and cards stay visible. */
+export function skipEntranceMotion(
+  reduceMotion?: boolean | null,
+  mobilePerf?: boolean,
+) {
+  return Boolean(reduceMotion) || Boolean(mobilePerf);
+}
+
 export function isDesktopFinePointer(): boolean {
   if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
     return false;

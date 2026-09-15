@@ -6424,4 +6424,49 @@ body::-webkit-scrollbar {
   .service-panel-media__video--playing {
     transform: none;
   }
+
+  #services,
+  #gallery,
+  #contact,
+  #about.section-page,
+  #location.section-page,
+  #faq.section-page,
+  #contact.section-page {
+    content-visibility: visible;
+    contain-intrinsic-size: unset;
+  }
+
+  .section-page {
+    justify-content: flex-start;
+  }
+
+  .section-title,
+  .section-title span,
+  .page-title,
+  .page-title span,
+  #main-content h1,
+  #main-content h2,
+  #main-content h1 span,
+  #main-content h2 span,
+  .hero-modern__headline,
+  .hero-modern__headline span,
+  .hero-modern__mask,
+  .hero-modern__mask-inner,
+  .feat-hero,
+  .feat-card,
+  .services-carousel-wrap,
+  .services-carousel {
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
+
+  .section-title,
+  .section-title span,
+  .page-title span,
+  #main-content h1 span,
+  #main-content h2 span,
+  .hero-modern__mask {
+    overflow: visible !important;
+  }
 }

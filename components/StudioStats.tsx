@@ -29,7 +29,7 @@ export function StudioStats() {
             role="listitem"
             className="contact-proof__stat"
             initial={lightMotion ? false : { opacity: 0, y: 8 }}
-            animate={lightMotion ? undefined : inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
+            animate={lightMotion || inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
             transition={{
               duration: lightMotion ? 0 : 0.62,
               delay: lightMotion ? 0 : 0.34 + idx * 0.1,
