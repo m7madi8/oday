@@ -19,7 +19,8 @@
     "generate:cottage": "node scripts/generate-cottage-projects.mjs",
     "generate:landscape": "node scripts/generate-landscape-projects.mjs",
     "generate:exterior": "npm run generate:villas && npm run generate:residential && npm run generate:cottage && npm run generate:landscape",
-    "generate:projects": "npm run generate:interior && npm run generate:exterior"
+    "generate:projects": "npm run generate:interior && npm run generate:exterior",
+    "hero:expand": "node scripts/expand-hero-images.mjs"
   },
   "dependencies": {
     "framer-motion": "^11.18.2",
@@ -27,7 +28,8 @@
     "lucide-react": "^0.460.0",
     "next": "14.2.35",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "sharp": "^0.33.5"
   },
   "devDependencies": {
     "@types/node": "^20",
