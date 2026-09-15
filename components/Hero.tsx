@@ -126,10 +126,6 @@ export function Hero() {
         />
 
         <div className="hero-modern__frame-line" aria-hidden />
-        <div className="hero-modern__tag" aria-hidden>
-          <span className="hero-modern__tag-mark" />
-          <span className="hero-modern__tag-label">Dwg · 01</span>
-        </div>
 
         <div className="hero-modern__content">
           <div className="hero-modern__copy">
