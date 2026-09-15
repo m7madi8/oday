@@ -63,7 +63,11 @@ export const HeroCinematicMedia = forwardRef<HeroCinematicMediaHandle, HeroCinem
               key={slide.alt}
               className={`hero-modern__layer${index === active ? " is-active" : ""}`}
             >
-              <div className="hero-modern__layer-inner">
+              <div
+                className={`hero-modern__layer-inner${
+                  slide.primary ? " hero-modern__layer-inner--primary-zoom" : ""
+                }`}
+              >
                 <Image
                   src={slide.src}
                   alt=""

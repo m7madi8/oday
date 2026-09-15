@@ -125,8 +125,6 @@ export function Hero() {
           }}
         />
 
-        <div className="hero-modern__frame-line" aria-hidden />
-
         <div className="hero-modern__content">
           <div className="hero-modern__copy">
             <FadeCopy
