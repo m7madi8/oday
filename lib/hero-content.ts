@@ -1,7 +1,8 @@
 import type { StaticImageData } from "next/image";
 import heroPrimary from "@/imgs/hero/villa-marble-frontal.jpg";
 import heroSlide2 from "@/imgs/hero/villa-black-marble.jpg";
-import heroSlide3 from "@/imgs/hero/villa-stone-facade.jpg";
+import heroSlide3 from "@/imgs/hero/villa-entrance-evening.jpg";
+import heroSlide4 from "@/imgs/hero/villa-stone-facade.jpg";
 
 /** Homepage hero copy — kept separate from data.ts to avoid heavy module init cycles. */
 export const hero = {
@@ -37,6 +38,13 @@ export const hero = {
     },
     {
       src: heroSlide3,
+      alt: "Luxury villa entrance at dusk with landscaped driveway — hero exterior",
+      primary: false,
+      objectPosition: "50% 50%",
+      objectPositionMobile: "50% 50%",
+    },
+    {
+      src: heroSlide4,
       alt: "Contemporary stone villa facade with landscaped entrance — hero exterior",
       primary: false,
       objectPosition: "50% 50%",

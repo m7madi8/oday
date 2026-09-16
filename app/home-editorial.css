@@ -260,16 +260,30 @@
   margin-top: 0;
   font-style: italic;
   font-weight: 500;
-  letter-spacing: -0.025em;
-  padding-inline-end: 0.06em;
+  letter-spacing: -0.012em;
+}
+
+.hero-modern__mask.hero-modern__headline-accent {
+  padding-inline-end: 0.28em;
+  padding-bottom: 0.12em;
 }
 
 .hero-modern__headline-accent .hero-modern__mask-inner {
-  background: linear-gradient(118deg, #fffef4 0%, #f3e2b4 28%, var(--accent-gold) 72%, #ffe08a 100%);
+  display: inline-block;
+  padding-inline-end: 0.06em;
+  background: linear-gradient(
+    92deg,
+    #fffef4 0%,
+    #f3e2b4 32%,
+    var(--accent-gold) 68%,
+    #f5c518 92%,
+    #f5c518 100%
+  );
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 8px 28px rgba(var(--accent-gold-rgb), 0.35));
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }
 
 .hero-modern__subline {
