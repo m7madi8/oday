@@ -81,7 +81,7 @@ export default function ServiceRequestPage({ params }: Props) {
                 <AnimatedHeading
                   as="h1"
                   text={service.title}
-                  className="mt-2 font-display text-[clamp(1.85rem,4.5vw,2.75rem)] italic leading-[1.05] text-ink-primary"
+                  className="mt-2 font-display text-[clamp(1.6rem,3.9vw,2.4rem)] italic leading-[1.05] text-ink-primary"
                   timing="enter"
                   delay={0.08}
                 />

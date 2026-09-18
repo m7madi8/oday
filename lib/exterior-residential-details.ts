@@ -28,7 +28,7 @@ export const residentialBuildingDetailsByOrder: Record<string, ResidentialBuildi
       "Modern minimalist style with light plastered façades, dark textured cladding, warm wood soffits, glass balcony railings, large windows, black metal details, landscaped balconies, and integrated architectural lighting.",
   },
   "02": {
-    orderLabel: "02",
+    orderLabel: "01",
     name: "R. LINE",
     projectType: "Residential Building",
     location: "Birzeit, Palestine",
@@ -53,7 +53,7 @@ export const residentialBuildingDetailsByOrder: Record<string, ResidentialBuildi
   },
   "04": {
     orderLabel: "04",
-    name: "Aranki -1-",
+    name: "Aranki -2-",
     projectType: "Residential Building",
     location: "Birzeit, Ramallah, Palestine",
     year: "2025",
@@ -64,7 +64,7 @@ export const residentialBuildingDetailsByOrder: Record<string, ResidentialBuildi
       "Contemporary style with light stone or plastered façades, dark gray horizontal cladding, geometric and curved balconies, glass railings, black metal details, warm wood soffits, large glazed openings, landscaped areas, and integrated architectural lighting.",
   },
   "05": {
-    orderLabel: "05",
+    orderLabel: "02",
     name: "L. J",
     projectType: "Classical Residential Building",
     location: "Birzeit, Ramallah, Palestine",

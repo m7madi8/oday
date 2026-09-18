@@ -7,10 +7,11 @@ import { SectionHeader, SectionInner, SectionShell } from "@/components/SectionS
 import { services } from "@/lib/content/services";
 import { serviceVisualBySlug } from "@/lib/content/service-visuals";
 import { animationEasing } from "@/lib/animations";
-import { cardInViewHidden, cardInViewVisible, revealInView } from "@/lib/motion-viewport";
+import { revealInView } from "@/lib/motion-viewport";
 import Link from "next/link";
 import { SafeButton } from "@/components/SafeButton";
 import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useCallback, useRef, useState } from "react";
 import { motion, useReducedMotion } from "@/components/ClientMotion";
 
@@ -20,8 +21,13 @@ type ServiceProfile = {
   verticalLabel: string;
 };
 
-const IMAGE_SIZES_DESKTOP = "(max-width: 1280px) 28vw, (max-width: 1536px) 24vw, 22vw";
-const IMAGE_SIZES_STORY = "(max-width: 768px) 85vw, 320px";
+const IMAGE_SIZES_DESKTOP =
+  "(max-width: 1023px) 85vw, (max-width: 1280px) 58vw, (max-width: 1536px) 54vw, 52vw";
+const IMAGE_SIZES_STORY = "(max-width: 768px) 92vw, 420px";
+
+function serviceGalleryHref(slug: (typeof services)[number]["slug"]) {
+  return `/projects?service=${encodeURIComponent(slug)}`;
+}
 
 const fallbackProfile: ServiceProfile = {
   tagline: "Oday scope",
@@ -264,12 +270,18 @@ function ServiceStoryCard({
 }) {
   const visual = getServiceVisual(service.slug);
   const Icon = service.icon;
+  const router = useRouter();
 
   return (
     <article
-      className={`services-story-card relative aspect-[9/16] h-[min(62svh,560px)] w-full shrink-0 bg-transparent${
+      className={`services-story-card relative aspect-[9/16] h-[min(72svh,640px)] w-full shrink-0 cursor-pointer bg-transparent${
         isActive ? " services-story-card--active" : ""
       }`}
+      onClick={(event) => {
+        if (!isActive) return;
+        if ((event.target as HTMLElement).closest("a,button")) return;
+        router.push(serviceGalleryHref(service.slug));
+      }}
     >
       <div className="relative h-full w-full overflow-hidden rounded-[1.12rem] shadow-[0_16px_40px_rgba(0,0,0,0.35)] ring-1 ring-white/[0.08]">
         <div className="absolute inset-0">
@@ -322,7 +334,7 @@ function ServiceStoryCard({
               <p className="font-ui text-[10px] font-semibold uppercase tracking-[0.2em] text-gold">
                 {service.orderLabel}
               </p>
-              <p className="font-display text-lg leading-tight text-white">{service.title}</p>
+              <p className="font-display text-[12px] leading-tight text-white">{service.title}</p>
             </div>
           </div>
 
@@ -332,6 +344,7 @@ function ServiceStoryCard({
                 <Link
                   href={`/request/${service.slug}`}
                   className="btn btn--primary btn--sm w-full"
+                  onClick={(event) => event.stopPropagation()}
                   aria-label={`Request ${service.title}`}
                 >
                   Request
@@ -339,12 +352,9 @@ function ServiceStoryCard({
                 </Link>
               </MagneticButton>
               <Link
-                href={
-                  service.slug === "exterior"
-                    ? "/projects?service=exterior"
-                    : `/projects?service=${encodeURIComponent(service.slug)}`
-                }
+                href={serviceGalleryHref(service.slug)}
                 className="btn btn--ghost btn--sm w-full"
+                onClick={(event) => event.stopPropagation()}
               >
                 View gallery
               </Link>
@@ -372,6 +382,8 @@ function ServicePanel({
   const visual = getServiceVisual(service.slug);
   const Icon = service.icon;
   const reduceMotion = useReducedMotion();
+  const router = useRouter();
+  const galleryHref = serviceGalleryHref(service.slug);
 
   return (
     <motion.article
@@ -382,10 +394,19 @@ function ServicePanel({
       }`}
       onMouseEnter={onActivate}
       onFocus={onActivate}
-      onClick={onActivate}
+      onClick={(event) => {
+        if ((event.target as HTMLElement).closest("a,button")) return;
+        router.push(galleryHref);
+      }}
+      onKeyDown={(event) => {
+        if (event.key !== "Enter" && event.key !== " ") return;
+        event.preventDefault();
+        router.push(galleryHref);
+      }}
       tabIndex={0}
-      initial={reduceMotion ? false : cardInViewHidden}
-      whileInView={reduceMotion ? undefined : cardInViewVisible}
+      aria-label={`View ${service.title} projects`}
+      initial={reduceMotion ? false : { y: 24 }}
+      whileInView={reduceMotion ? undefined : { y: 0 }}
       viewport={revealInView}
       transition={{
         duration: reduceMotion ? 0 : 0.6,
@@ -432,7 +453,7 @@ function ServicePanel({
 
       <span
         aria-hidden
-        className={`pointer-events-none absolute -right-2 top-1/2 -translate-y-1/2 select-none font-display text-[clamp(5rem,14vw,9rem)] italic leading-none transition-opacity duration-300 ${
+        className={`pointer-events-none absolute -right-2 top-1/2 -translate-y-1/2 select-none font-display text-[clamp(4.2rem,12vw,7.5rem)] italic leading-none transition-opacity duration-300 ${
           isActive
             ? "text-white/[0.07]"
             : "text-white/[0.04] group-hover/panel:text-white/[0.06]"
@@ -444,7 +465,7 @@ function ServicePanel({
       <div className="relative z-10 flex h-full w-full flex-col p-4 sm:p-5 md:p-6 lg:p-7">
         <div className="flex items-start justify-between gap-3">
           <p
-            className={`max-w-[90%] font-ui text-[9px] font-semibold uppercase leading-snug tracking-[0.22em] transition-colors duration-300 sm:text-[10px] md:text-[11px] ${
+            className={`max-w-[90%] font-ui text-[7.5px] font-semibold uppercase leading-snug tracking-[0.14em] transition-colors duration-300 sm:text-[8px] md:text-[8.5px] ${
               isActive ? "text-white" : "text-white/65 group-hover/panel:text-white/85"
             }`}
           >
@@ -468,7 +489,7 @@ function ServicePanel({
 
         <div className="mt-auto flex min-h-0 flex-1 items-end gap-4 pt-8">
           <h3
-            className={`shrink-0 font-display text-[clamp(1.25rem,2.8vw,2.1rem)] leading-none tracking-[0.04em] [writing-mode:vertical-rl] rotate-180 transition-colors duration-300 ${
+            className={`shrink-0 font-display text-[clamp(0.72rem,1.25vw,0.98rem)] leading-none tracking-[0.04em] [writing-mode:vertical-rl] rotate-180 transition-colors duration-300 ${
               isActive
                 ? "text-gold drop-shadow-[0_0_28px_rgba(245, 197, 24,0.45)]"
                 : "text-white/75 group-hover/panel:text-white"
@@ -477,43 +498,35 @@ function ServicePanel({
             {profile.verticalLabel}
           </h3>
 
-          <div
-            className={`min-w-0 flex-1 transition-[opacity,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-              isActive
-                ? "translate-y-0 opacity-100"
-                : "pointer-events-none translate-y-4 opacity-0"
-            }`}
-          >
-            <div className="rounded-xl border border-white/10 bg-black/35 p-4 backdrop-blur-md sm:p-5">
-              <p className="text-sm leading-relaxed text-white/90 md:text-base">
-                {profile.punchline}
-              </p>
+          <div className={`min-w-0 flex-1 ${isActive ? "" : "pointer-events-none"}`}>
+            {isActive ? (
+              <div className="services-panel-copy rounded-xl border border-white/10 bg-black/40 p-3 backdrop-blur-md sm:p-3.5">
+                <p className="text-[0.72rem] leading-relaxed text-white/90 md:text-[0.8rem]">
+                  {profile.punchline}
+                </p>
 
-              <div className="mt-5 flex flex-wrap items-center gap-4 border-t border-white/10 pt-4">
-                <MagneticButton className="inline-flex">
+                <div className="mt-4 flex flex-wrap items-center gap-3 border-t border-white/10 pt-3.5">
+                  <MagneticButton className="inline-flex">
+                    <Link
+                      href={`/request/${service.slug}`}
+                      className="btn btn--primary btn--sm"
+                      onClick={(e) => e.stopPropagation()}
+                      aria-label={`Request ${service.title}`}
+                    >
+                      Request
+                      <ArrowUpRight className="btn__icon btn__icon--nudge" aria-hidden />
+                    </Link>
+                  </MagneticButton>
                   <Link
-                    href={`/request/${service.slug}`}
-                    className="btn btn--primary"
+                    href={galleryHref}
+                    className="btn btn--ghost btn--sm"
                     onClick={(e) => e.stopPropagation()}
-                    aria-label={`Request ${service.title}`}
                   >
-                    Request
-                    <ArrowUpRight className="btn__icon btn__icon--nudge" aria-hidden />
+                    Gallery
                   </Link>
-                </MagneticButton>
-                <Link
-                  href={
-                  service.slug === "exterior"
-                    ? "/projects?service=exterior"
-                    : `/projects?service=${encodeURIComponent(service.slug)}`
-                }
-                  className="btn btn--ghost btn--sm"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  Gallery
-                </Link>
+                </div>
               </div>
-            </div>
+            ) : null}
           </div>
         </div>
       </div>

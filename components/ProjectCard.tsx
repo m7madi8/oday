@@ -238,7 +238,7 @@ function GridCard({
             <p className="truncate font-mono text-[8px] uppercase tracking-[0.1em] text-gold">
               {project.tag}
             </p>
-            <h2 className="mt-1.5 flex items-baseline gap-2 font-display text-[18px] font-normal leading-snug text-[#f5f0e8] opacity-80 transition-all duration-[350ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-1.5 group-hover:opacity-100 md:text-[20px]">
+            <h2 className="mt-1.5 flex items-baseline gap-2 font-display text-[16px] font-normal leading-snug text-[#f5f0e8] opacity-80 transition-all duration-[350ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-1.5 group-hover:opacity-100 md:text-[18px]">
               <span className="shrink-0 font-mono text-[10px] tracking-[0.08em] text-gold/65" aria-hidden>
                 {caseNumber(project, index)}
               </span>

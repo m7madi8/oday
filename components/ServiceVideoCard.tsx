@@ -1,7 +1,11 @@
 "use client";
 
+import {
+  CinematicFilmOverlay,
+  FilmPlayMark,
+  FilmTransport,
+} from "@/components/CinematicFilmOverlay";
 import type { ServiceGalleryVideo } from "@/lib/content/service-gallery";
-import { Pause, Play, Volume2, VolumeX } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 export function ServiceVideoCard({
@@ -15,9 +19,15 @@ export function ServiceVideoCard({
 }) {
   const rootRef = useRef<HTMLElement | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const cinemaOpenRef = useRef(false);
   const [playing, setPlaying] = useState(false);
   const [muted, setMuted] = useState(true);
   const [ready, setReady] = useState(false);
+  const [cinema, setCinema] = useState(false);
+
+  useEffect(() => {
+    cinemaOpenRef.current = cinema;
+  }, [cinema]);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -26,6 +36,7 @@ export function ServiceVideoCard({
 
     const observer = new IntersectionObserver(
       ([entry]) => {
+        if (cinemaOpenRef.current) return;
         if (entry?.isIntersecting) {
           void el.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
         } else {
@@ -58,6 +69,15 @@ export function ServiceVideoCard({
     setMuted(el.muted);
   };
 
+  const openCinema = () => {
+    const el = videoRef.current;
+    if (el && !el.paused) {
+      el.pause();
+      setPlaying(false);
+    }
+    setCinema(true);
+  };
+
   return (
     <article
       ref={rootRef}
@@ -65,7 +85,10 @@ export function ServiceVideoCard({
       data-ready={ready ? "true" : "false"}
     >
       <div className="svc-video-card__frame">
-        <div className="svc-video-card__stage">
+        <div
+          className="svc-video-card__stage"
+          data-playing={playing ? "true" : "false"}
+        >
           <video
             ref={videoRef}
             className="svc-video-card__media"
@@ -90,32 +113,27 @@ export function ServiceVideoCard({
             <span className="svc-video-card__badge">{badge}</span>
           </div>
 
-          <div className="svc-video-card__controls">
-            <button
-              type="button"
-              data-no-glow
-              className="svc-video-card__btn"
-              onClick={togglePlay}
-              aria-label={playing ? "Pause video" : "Play video"}
-            >
-              {playing ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
-            </button>
-            <button
-              type="button"
-              data-no-glow
-              className="svc-video-card__btn"
-              onClick={toggleMute}
-              aria-label={muted ? "Unmute video" : "Mute video"}
-            >
-              {muted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
-            </button>
-          </div>
+          <button
+            type="button"
+            className="film-hit"
+            onClick={togglePlay}
+            aria-label={playing ? "Pause video" : "Play video"}
+          />
+          <FilmPlayMark />
 
           <div className="svc-video-card__copy svc-video-card__copy--overlay">
             <p className="svc-video-card__client">{video.client}</p>
             <h3 className="svc-video-card__title">{video.title}</h3>
             <p className="svc-video-card__desc">{video.description}</p>
           </div>
+
+          <FilmTransport
+            playing={playing}
+            muted={muted}
+            onTogglePlay={togglePlay}
+            onToggleMute={toggleMute}
+            onExpand={openCinema}
+          />
         </div>
       </div>
 
@@ -127,6 +145,29 @@ export function ServiceVideoCard({
         <h3 className="svc-video-card__title">{video.title}</h3>
         <p className="svc-video-card__desc">{video.description}</p>
       </div>
+
+      <CinematicFilmOverlay
+        open={cinema}
+        src={video.src}
+        title={video.title}
+        client={video.client}
+        startTime={videoRef.current?.currentTime ?? 0}
+        muted={muted}
+        onClose={() => setCinema(false)}
+        onSync={({ currentTime, playing: nextPlaying, muted: nextMuted }) => {
+          const el = videoRef.current;
+          if (!el) return;
+          el.currentTime = currentTime;
+          el.muted = nextMuted;
+          setMuted(nextMuted);
+          if (nextPlaying) {
+            void el.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
+          } else {
+            el.pause();
+            setPlaying(false);
+          }
+        }}
+      />
     </article>
   );
 }

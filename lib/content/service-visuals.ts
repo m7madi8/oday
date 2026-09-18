@@ -3,10 +3,9 @@ import type { ServiceSlug } from "@/lib/content/types";
 import exteriorServiceImage from "@/imgs/Exterior/Villa/villa 12 bh/ODAY_result.webp";
 import exteriorSlide2 from "@/imgs/Exterior/Villa/villa 10 viv/ODAY_result.webp";
 import exteriorSlide3 from "@/imgs/Exterior/Villa/hASSAN SALAMEH 27/ODAY_result.webp";
-import interiorServiceImage from "@/imgs/Interior/batool 10/ODAY_result.webp";
-import interiorSlide2 from "@/imgs/Interior/Howida  Living Room Render's 29/ODAY_result.webp";
-import interiorSlide3 from "@/imgs/Interior/tarifi apartment 61/oday_result.webp";
-import interiorSlide4 from "@/imgs/Interior/saleh bedroom 52/oday_result.webp";
+import interiorProject09 from "@/imgs/Interior/dr amal duaibes 13/ODAY_result.webp";
+import interiorProject14 from "@/imgs/Interior/FARED MALABES 20/ODAY_result.webp";
+import interiorProject32 from "@/imgs/Interior/saleh pizza 53/oday_result.webp";
 import aiServiceImage from "@/imgs/services/ai-architect-cover.webp";
 import droneServiceImage from "@/imgs/services/architect-drone-cover.webp";
 import villaGalleryImage from "@/imgs/Exterior/Villa/villa 10 viv/ODAY_result.webp";
@@ -66,28 +65,23 @@ export const serviceVisualBySlug: Record<ServiceSlug, ServiceVisualAsset> = {
     ],
   },
   interior: {
-    src: interiorServiceImage,
-    alt: "Batool interior — premium material and lighting study",
-    objectPosition: "50% 40%",
+    src: interiorProject09,
+    alt: "Dr. Amal Duaibes Dental Clinic — interior design",
+    objectPosition: "50% 42%",
     slides: [
       {
-        src: interiorServiceImage,
-        alt: "Batool interior — premium material and lighting study",
-        objectPosition: "50% 40%",
-      },
-      {
-        src: interiorSlide2,
-        alt: "Living room interior — material and light",
+        src: interiorProject09,
+        alt: "Dr. Amal Duaibes Dental Clinic — interior design",
         objectPosition: "50% 42%",
       },
       {
-        src: interiorSlide3,
-        alt: "Apartment interior — residential living",
+        src: interiorProject14,
+        alt: "Vanilla Lingerie — commercial interior design",
         objectPosition: "48% 40%",
       },
       {
-        src: interiorSlide4,
-        alt: "Master bedroom interior",
+        src: interiorProject32,
+        alt: "Pizzeria Marzano — restaurant interior design",
         objectPosition: "50% 38%",
       },
     ],
@@ -116,7 +110,7 @@ export const galleryNavCovers = {
     alt: "HOUSE OF SUN — featured exterior case study",
   },
   interior: {
-    src: interiorServiceImage,
+    src: interiorProject09,
     alt: "Interior design gallery preview",
   },
   exterior: {

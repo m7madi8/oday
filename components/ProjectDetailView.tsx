@@ -70,7 +70,7 @@ export function ProjectDetailView({
         className="project-detail__glow pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-8%,rgba(245, 197, 24,0.12),transparent_55%)]"
       />
 
-      <div className="relative mx-auto max-w-6xl px-5 md:px-10">
+      <div className="relative mx-auto max-w-7xl px-5 md:px-10">
         <GalleryReveal dramatic>
           <nav
             aria-label="Breadcrumb"
@@ -123,7 +123,7 @@ export function ProjectDetailView({
                 />
               )}
               <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2">
-                <p className="text-sm text-ink-secondary md:text-base">{project.country}</p>
+                <p className="text-sm text-ink-secondary">{project.country}</p>
                 <span aria-hidden className="h-3 w-px bg-white/20" />
                 <span className="label-upper text-gold/90">{project.tag}</span>
                 {siblings ? (
@@ -147,8 +147,8 @@ export function ProjectDetailView({
         <div className="mt-10 grid gap-8 md:mt-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:gap-12">
           <GalleryReveal delay={0.12}>
             <p className="label-upper text-ink-muted">Overview</p>
-            <p className="mt-4 text-base leading-[1.72] text-ink-secondary">{summary}</p>
-            <p className="mt-6 text-base leading-[1.7] text-ink-muted">
+            <p className="project-detail__copy mt-4 leading-[1.72] text-ink-secondary">{summary}</p>
+            <p className="project-detail__copy mt-6 leading-[1.7] text-ink-muted">
               Swipe horizontally to browse frames, tap any image to open it fullscreen, or use arrow keys in the
               viewer.
             </p>
@@ -179,7 +179,7 @@ export function ProjectDetailView({
                   <dd
                     className={
                       wide
-                        ? "mt-2 text-base leading-[1.72] text-ink-secondary"
+                        ? "project-detail__copy mt-2 leading-[1.72] text-ink-secondary"
                         : "text-right text-sm font-medium text-ink-primary"
                     }
                   >

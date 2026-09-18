@@ -47,7 +47,7 @@ export const residentialBuildingProjects = [
   },
   {
     id: "res-hamada-25",
-    orderLabel: "02",
+    orderLabel: "01",
     title: "R. LINE",
     country: "Birzeit, Palestine",
     tag: "Residential Building",
@@ -65,7 +65,7 @@ export const residentialBuildingProjects = [
   {
     id: "res-hamada-26",
     orderLabel: "04",
-    title: "Aranki -1-",
+    title: "Aranki -2-",
     country: "Birzeit, Ramallah, Palestine",
     tag: "Residential Building",
     category: "Residential" as const,
@@ -77,11 +77,11 @@ export const residentialBuildingProjects = [
     concept: "A contemporary mixed-use residential building designed to combine comfortable apartments with active commercial spaces at street level. The building creates a strong urban presence through a clear vertical composition, generous balconies, landscaped terraces, and inviting ground-floor uses that connect the project to the surrounding community.",
     styleMaterials: "Contemporary style with light stone or plastered façades, dark gray horizontal cladding, geometric and curved balconies, glass railings, black metal details, warm wood soffits, large glazed openings, landscaped areas, and integrated architectural lighting.",
     image: rb3_img0,
-    imageAlt: "Aranki -1- — exterior visualization",
+    imageAlt: "Aranki -2- — exterior visualization",
   },
   {
     id: "res-luay-jeris-35",
-    orderLabel: "05",
+    orderLabel: "02",
     title: "L. J",
     country: "Birzeit, Ramallah, Palestine",
     tag: "Residential Building",

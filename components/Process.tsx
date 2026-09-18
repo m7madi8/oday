@@ -118,7 +118,7 @@ export function Process() {
                   className="absolute -top-[30px] left-5 h-3.5 w-3.5 rounded-full border border-gold/80 bg-bg-card"
                 />
                 <p className="label-upper text-gold">{step.step}</p>
-                <h3 className="mt-3 font-display text-2xl italic text-ink-primary">{step.title}</h3>
+                <h3 className="mt-3 font-display text-xl italic text-ink-primary">{step.title}</h3>
                 <p className="mt-3 text-base leading-relaxed text-ink-secondary">{step.description}</p>
                 <span className="mt-5 block h-px bg-gradient-to-r from-gold/35 to-transparent" aria-hidden />
               </motion.article>
@@ -145,7 +145,7 @@ export function Process() {
                   <span className="font-display text-base italic text-gold">{step.step}</span>
                 </div>
                 <div>
-                  <h3 className="font-display text-xl italic text-ink-primary">{step.title}</h3>
+                  <h3 className="font-display text-lg italic text-ink-primary">{step.title}</h3>
                   <p className="mt-2 text-base leading-relaxed text-ink-secondary">{step.description}</p>
                 </div>
               </div>

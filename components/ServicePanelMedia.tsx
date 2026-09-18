@@ -5,7 +5,7 @@ import type { ServiceVisualAsset, ServiceVisualSlide } from "@/lib/content/servi
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-const IMAGE_QUALITY = 82;
+const IMAGE_QUALITY = 92;
 const CROSSFADE_S = 1.65;
 const SLIDE_INTERVAL_MS = 3800;
 /**
@@ -185,7 +185,7 @@ export function ServicePanelMedia({
                   reduceMotion || !canSlideshow
                     ? 1
                     : isPlaying && isActive
-                      ? 1.08
+                      ? 1.04
                       : 1,
               }}
               transition={{

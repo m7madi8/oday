@@ -92,7 +92,7 @@ export function Testimonials() {
                   <Image src={t.image} alt={t.imageAlt} fill className="object-cover" sizes="64px" />
                 </div>
                 <div>
-                  <h3 className="font-display text-xl italic text-ink-primary">{t.name}</h3>
+                  <h3 className="font-display text-lg italic text-ink-primary">{t.name}</h3>
                   <p className="label-upper mt-1 text-ink-muted">{t.role}</p>
                 </div>
               </div>

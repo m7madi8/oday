@@ -1,6 +1,7 @@
 import dynamic from "next/dynamic";
 import "@/app/home-editorial.css";
 import { Hero } from "@/components/Hero";
+import { HeroLcpPreload } from "@/components/HeroLcpPreload";
 import { CaseStudiesCta } from "@/components/CaseStudiesCta";
 
 function HomeSectionRule() {
@@ -16,6 +17,7 @@ const Contact = dynamic(() => import("@/components/Contact").then((m) => ({ defa
 export default function Home() {
   return (
     <>
+      <HeroLcpPreload />
       <CaseStudiesCta />
       <main id="main-content">
         <Hero />

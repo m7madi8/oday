@@ -40,7 +40,7 @@
 
 .featured-projects__section-header .section-title {
   margin-top: 0.35rem;
-  font-size: clamp(1.65rem, 3.6vw, 2.65rem);
+  font-size: clamp(1.45rem, 3.2vw, 2.3rem);
   font-weight: 400;
   font-style: normal;
   line-height: 1.12;
@@ -54,7 +54,7 @@
 .featured-projects__title-accent {
   display: block;
   margin-top: clamp(0.12rem, 0.4vh, 0.22rem);
-  font-size: clamp(1.35rem, 2.8vw, 2.05rem);
+  font-size: clamp(1.18rem, 2.5vw, 1.8rem);
   font-style: italic;
   font-weight: 400;
   line-height: 1.18;
@@ -240,7 +240,7 @@
 .feat-hero__title {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(1.65rem, 3.4vw, 2.75rem);
+  font-size: clamp(1.45rem, 3vw, 2.4rem);
   font-weight: 400;
   font-style: normal;
   line-height: 1.06;
@@ -380,12 +380,12 @@
   }
 
   .featured-projects__section-header .section-title {
-    font-size: clamp(1.85rem, 8.2vw, 2.4rem);
+    font-size: clamp(1.6rem, 7.2vw, 2.1rem);
     line-height: 1.14;
   }
 
   .featured-projects__title-accent {
-    font-size: clamp(1.5rem, 6.8vw, 1.95rem);
+    font-size: clamp(1.32rem, 6vw, 1.7rem);
     line-height: 1.2;
   }
 
@@ -426,7 +426,7 @@
 
 @media (min-width: 768px) and (max-width: 1180px) {
   .featured-projects__section-header .section-title {
-    font-size: clamp(1.5rem, 3.2vw, 2.35rem);
+    font-size: clamp(1.32rem, 2.85vw, 2.05rem);
   }
 
   .featured-projects__section-header .section-lead {
@@ -436,7 +436,7 @@
 
 @media (min-width: 1920px) {
   .featured-projects__section-header .section-title {
-    font-size: clamp(1.9rem, 3.95vw, 3.1rem);
+    font-size: clamp(1.65rem, 3.45vw, 2.7rem);
   }
 
   .featured-projects__section-header .section-lead {
@@ -446,6 +446,6 @@
 
 @media (min-width: 2560px) {
   .featured-projects__section-header .section-title {
-    font-size: clamp(2.05rem, 4.1vw, 3.35rem);
+    font-size: clamp(1.8rem, 3.6vw, 2.9rem);
   }
 }

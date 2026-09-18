@@ -18,7 +18,7 @@
 
 .drone-gallery__index {
   font-family: var(--font-display), serif;
-  font-size: clamp(2.75rem, 7vw, 3.75rem);
+  font-size: clamp(2.35rem, 6vw, 3.2rem);
   font-weight: 300;
   font-style: italic;
   line-height: 1;
@@ -44,7 +44,7 @@
 
 .drone-gallery__title {
   font-family: var(--font-display), serif;
-  font-size: clamp(1.9rem, 4.5vw, 2.65rem);
+  font-size: clamp(1.65rem, 3.9vw, 2.3rem);
   font-weight: 300;
   font-style: italic;
   line-height: 1.08;
@@ -169,7 +169,7 @@
 .drone-gallery__caption-title {
   margin-top: 0.35rem;
   font-family: var(--font-display), serif;
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   font-weight: 300;
   font-style: italic;
   line-height: 1.1;
@@ -258,6 +258,7 @@
   justify-content: space-between;
   gap: 0.75rem;
   padding: 0.75rem 0.85rem;
+  pointer-events: none;
 }
 
 .drone-film__order {
@@ -331,12 +332,12 @@
   }
 
   .drone-gallery__index {
-    font-size: 3rem;
+    font-size: 2.6rem;
     color: rgba(255, 255, 255, 0.14);
   }
 
   .drone-gallery__title {
-    font-size: clamp(2rem, 2.4vw, 2.5rem);
+    font-size: clamp(1.75rem, 2.1vw, 2.2rem);
   }
 
   .drone-gallery__lead {

@@ -14,7 +14,7 @@ export default function NotFound() {
       <AnimatedHeading
         as="h1"
         text="Page not found"
-        className="mt-3 font-ui text-2xl font-medium text-ink-primary"
+        className="mt-3 font-ui text-xl font-medium text-ink-primary"
         timing="enter"
         delay={0.08}
         splitByWords={false}

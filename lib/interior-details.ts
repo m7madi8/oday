@@ -49,7 +49,7 @@ export const interiorProjectDetailsByOrder: Record<string, InteriorProjectDetail
   },
   "04": {
     orderLabel: "04",
-    name: "5 Stars Salon",
+    name: "Pizzeria Marzano – Italian Pizzeria & Restaurant",
     projectType: "Modern Barber Shop",
     location: "Ramallah, Palestine",
     year: "2020",
@@ -61,7 +61,7 @@ export const interiorProjectDetailsByOrder: Record<string, InteriorProjectDetail
   },
   "05": {
     orderLabel: "05",
-    name: "BatOol Beauty Center",
+    name: "Vanilla Lingerie – Women’s Lingerie and Fashion Store",
     projectType: "Beauty Center Interior Design",
     location: "Jerusalem",
     year: "2019",
@@ -157,7 +157,7 @@ export const interiorProjectDetailsByOrder: Record<string, InteriorProjectDetail
   },
   "14": {
     orderLabel: "14",
-    name: "Vanilla Lingerie – Women’s Lingerie and Fashion Store",
+    name: "BatOol Beauty Center",
     projectType: "Commercial Retail Project / Interior Design",
     location: "City Mall, Ramallah, Palestine",
     year: "2023",
@@ -337,7 +337,7 @@ export const interiorProjectDetailsByOrder: Record<string, InteriorProjectDetail
   },
   "32": {
     orderLabel: "32",
-    name: "Pizzeria Marzano – Italian Pizzeria & Restaurant",
+    name: "5 Stars Salon",
     projectType: "Modern Italian Pizzeria",
     location: "Ramallah, Palestine",
     year: "2026",

@@ -26,7 +26,7 @@ export default function Error({
       <AnimatedHeading
         as="h1"
         text="Something went wrong"
-        className="mt-3 font-ui text-2xl font-medium text-ink-primary"
+        className="mt-3 font-ui text-xl font-medium text-ink-primary"
         timing="enter"
         delay={0.08}
       />

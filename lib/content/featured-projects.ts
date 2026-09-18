@@ -1,14 +1,14 @@
 import { projects, type Project } from "@/lib/data";
 
-/** Homepage selected-work bento — B.H Villa 12 leads, then supporting exteriors. */
+/** Homepage selected-work bento — B.H Villa 12 leads, then villas + interior highlights. */
 export const featuredProjectIds = [
   "vil-villa-12-bh",
   "vil-hassan-salameh-27",
-  "vil-villa-10-viv",
-  "vil-nasim-shawahneh-42",
   "vil-dr-baha-14",
-  "vil-baha-hamdallah-8",
-  "vil-tareq-fifil-58",
+  "vil-nasim-shawahneh-42",
+  "in-diaaab-11",
+  "in-howida-living-room-render-s-29",
+  "in-saleh-bedroom-52",
 ] as const;
 
 export const featuredProjectsSection = {

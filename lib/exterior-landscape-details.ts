@@ -36,7 +36,7 @@ export const landscapeProjectDetailsByOrder: Record<string, LandscapeProjectDeta
       "Contemporary style with a dark metal pergola, warm wood slats, large concrete stepping slabs, white rendered boundary walls, timber and metal fencing, ornamental planting, lawn areas, and integrated outdoor lighting.",
   },
   "03": {
-    orderLabel: "03",
+    orderLabel: "07",
     name: "AL-BAZZAR",
     projectType: "Booth's",
     location: "Ramallah, Palestine",

@@ -22,7 +22,7 @@
 .svc-gallery__title {
   margin-top: 0.5rem;
   font-family: var(--font-display), serif;
-  font-size: clamp(1.85rem, 4vw, 2.75rem);
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
   font-weight: 300;
   font-style: italic;
   line-height: 1.08;
@@ -61,7 +61,7 @@
 
 .svc-gallery__order {
   font-family: var(--font-display), serif;
-  font-size: clamp(2.5rem, 6vw, 3.5rem);
+  font-size: clamp(2.15rem, 5.2vw, 3rem);
   font-weight: 300;
   font-style: italic;
   line-height: 1;
@@ -134,7 +134,7 @@
   }
 
   .svc-gallery__title {
-    font-size: clamp(1.75rem, 2.1vw, 2.25rem);
+    font-size: clamp(1.55rem, 1.85vw, 2rem);
   }
 
   .svc-gallery__lead {
@@ -309,6 +309,7 @@
   justify-content: space-between;
   gap: 0.75rem;
   padding: 0.85rem 1rem;
+  pointer-events: none;
 }
 
 .svc-video-card__order {
@@ -372,6 +373,7 @@
   z-index: 2;
   padding: 1rem 1.1rem 1.15rem;
   line-height: normal;
+  pointer-events: none;
 }
 
 .svc-video-card__meta {
@@ -393,7 +395,7 @@
 .svc-video-card__title {
   margin-top: 0.3rem;
   font-family: var(--font-display), serif;
-  font-size: clamp(1.15rem, 2.5vw, 1.55rem);
+  font-size: clamp(1.02rem, 2.2vw, 1.38rem);
   font-weight: 300;
   font-style: italic;
   line-height: 1.1;
@@ -448,7 +450,7 @@
   .svc-video-card__meta .svc-video-card__title {
     margin-top: 0.35rem;
     color: var(--ink-primary);
-    font-size: clamp(1.05rem, 1.2vw, 1.35rem);
+    font-size: clamp(0.95rem, 1.05vw, 1.2rem);
   }
 
   .svc-video-card__meta .svc-video-card__desc {

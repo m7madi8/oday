@@ -52,17 +52,17 @@
   --hero-cta-top: calc(var(--site-nav-height) + 1.75rem);
   --menu-surface: #121212;
 
-  /* Fluid type scale — body/paragraphs sit at readable 17–19px */
+  /* Fluid type scale — body/paragraphs sit at comfortable 16–18.5px */
   --step--2: 0.75rem;
   --step--1: 0.9375rem;
-  --step-0: clamp(1.0625rem, 1.02rem + 0.32vw, 1.1875rem);
-  --step-1: clamp(1.1875rem, 1.12rem + 0.38vw, 1.375rem);
-  --step-2: clamp(1.32rem, 1.18rem + 0.55vw, 1.62rem);
-  --step-3: clamp(1.45rem, 1.28rem + 0.85vw, 2rem);
-  --step-4: clamp(1.75rem, 1.42rem + 1.6vw, 2.75rem);
-  --step-5: clamp(2.1rem, 1.5rem + 2.9vw, 3.75rem);
-  --step-6: clamp(2.6rem, 1.4rem + 5.6vw, 5.75rem);
-  --step-7: clamp(4rem, 1.5rem + 10vw, 8rem);
+  --step-0: clamp(1rem, 0.975rem + 0.22vw, 1.125rem);
+  --step-1: clamp(1.0625rem, 1.03rem + 0.26vw, 1.21875rem);
+  --step-2: clamp(1.18rem, 1.08rem + 0.48vw, 1.48rem);
+  --step-3: clamp(1.32rem, 1.18rem + 0.72vw, 1.82rem);
+  --step-4: clamp(1.55rem, 1.28rem + 1.35vw, 2.4rem);
+  --step-5: clamp(1.85rem, 1.38rem + 2.4vw, 3.2rem);
+  --step-6: clamp(2.3rem, 1.28rem + 4.8vw, 4.85rem);
+  --step-7: clamp(3.45rem, 1.38rem + 8.5vw, 6.75rem);
 
   /* Editorial tracking — display tightens, labels breathe, mono stays crisp */
   --tracking-display: -0.015em;
@@ -1549,14 +1549,14 @@
     --section-max-width: 74rem;
     --step--2: 0.7rem;
     --step--1: 0.875rem;
-    --step-0: clamp(1rem, 0.97rem + 0.28vw, 1.1rem);
-    --step-1: clamp(1.1rem, 1.04rem + 0.32vw, 1.25rem);
-    --step-2: clamp(1.22rem, 1.1rem + 0.48vw, 1.48rem);
-    --step-3: clamp(1.34rem, 1.18rem + 0.72vw, 1.82rem);
-    --step-4: clamp(1.62rem, 1.32rem + 1.35vw, 2.48rem);
-    --step-5: clamp(1.95rem, 1.38rem + 2.45vw, 3.38rem);
-    --step-6: clamp(2.4rem, 1.28rem + 4.8vw, 5.15rem);
-    --step-7: clamp(3.65rem, 1.38rem + 8.5vw, 7.15rem);
+    --step-0: clamp(1rem, 0.98rem + 0.14vw, 1.0625rem);
+    --step-1: clamp(1.05rem, 1.02rem + 0.18vw, 1.125rem);
+    --step-2: clamp(1.12rem, 1.02rem + 0.4vw, 1.35rem);
+    --step-3: clamp(1.22rem, 1.1rem + 0.62vw, 1.65rem);
+    --step-4: clamp(1.45rem, 1.2rem + 1.15vw, 2.15rem);
+    --step-5: clamp(1.72rem, 1.25rem + 2.05vw, 2.9rem);
+    --step-6: clamp(2.1rem, 1.18rem + 4.1vw, 4.4rem);
+    --step-7: clamp(3.15rem, 1.25rem + 7.2vw, 6.1rem);
     --space-lg: clamp(1.75rem, 3.6vw, 2.65rem);
     --space-xl: clamp(2.65rem, 5.4vw, 4rem);
     --space-2xl: clamp(3.5rem, 7.2vw, 6.25rem);
@@ -1584,14 +1584,14 @@
     --section-max-width: 90rem;
     --step--2: 0.8125rem;
     --step--1: 1rem;
-    --step-0: clamp(1.16rem, 1.08rem + 0.38vw, 1.32rem);
-    --step-1: clamp(1.3rem, 1.22rem + 0.45vw, 1.52rem);
-    --step-2: clamp(1.45rem, 1.28rem + 0.65vw, 1.78rem);
-    --step-3: clamp(1.6rem, 1.38rem + 1vw, 2.22rem);
-    --step-4: clamp(1.95rem, 1.55rem + 1.85vw, 3.05rem);
-    --step-5: clamp(2.35rem, 1.65rem + 3.25vw, 4.15rem);
-    --step-6: clamp(2.9rem, 1.55rem + 6.3vw, 6.45rem);
-    --step-7: clamp(4.5rem, 1.65rem + 11.5vw, 9rem);
+    --step-0: clamp(1.0625rem, 1.02rem + 0.24vw, 1.1875rem);
+    --step-1: clamp(1.125rem, 1.08rem + 0.28vw, 1.28125rem);
+    --step-2: clamp(1.28rem, 1.15rem + 0.55vw, 1.58rem);
+    --step-3: clamp(1.42rem, 1.25rem + 0.85vw, 1.95rem);
+    --step-4: clamp(1.7rem, 1.38rem + 1.55vw, 2.65rem);
+    --step-5: clamp(2.05rem, 1.48rem + 2.7vw, 3.55rem);
+    --step-6: clamp(2.5rem, 1.38rem + 5.3vw, 5.5rem);
+    --step-7: clamp(3.85rem, 1.48rem + 9.6vw, 7.65rem);
     --space-lg: clamp(2.25rem, 4.5vw, 3.35rem);
     --space-xl: clamp(3.35rem, 6.75vw, 5rem);
     --space-2xl: clamp(4.5rem, 9vw, 7.75rem);
@@ -1630,14 +1630,14 @@
   :root {
     --site-nav-height: 5.75rem;
     --section-max-width: 96rem;
-    --step-0: clamp(1.22rem, 1.12rem + 0.42vw, 1.4rem);
-    --step-1: clamp(1.38rem, 1.28rem + 0.5vw, 1.62rem);
-    --step-2: clamp(1.55rem, 1.35rem + 0.72vw, 1.9rem);
-    --step-3: clamp(1.72rem, 1.48rem + 1.1vw, 2.38rem);
-    --step-4: clamp(2.1rem, 1.65rem + 2vw, 3.3rem);
-    --step-5: clamp(2.55rem, 1.75rem + 3.55vw, 4.5rem);
-    --step-6: clamp(3.15rem, 1.65rem + 6.9vw, 7rem);
-    --step-7: clamp(4.85rem, 1.75rem + 12.5vw, 9.75rem);
+    --step-0: clamp(1.1rem, 1.05rem + 0.26vw, 1.21875rem);
+    --step-1: clamp(1.175rem, 1.12rem + 0.3vw, 1.3125rem);
+    --step-2: clamp(1.38rem, 1.22rem + 0.6vw, 1.68rem);
+    --step-3: clamp(1.52rem, 1.32rem + 0.95vw, 2.08rem);
+    --step-4: clamp(1.85rem, 1.48rem + 1.7vw, 2.85rem);
+    --step-5: clamp(2.2rem, 1.55rem + 3vw, 3.85rem);
+    --step-6: clamp(2.72rem, 1.48rem + 5.8vw, 5.95rem);
+    --step-7: clamp(4.15rem, 1.55rem + 10.5vw, 8.25rem);
   }
 
   .site-nav-link {
@@ -1682,7 +1682,8 @@
   #main-content :where(p, li) {
     font-family: var(--font-ui);
     font-weight: 400;
-    line-height: 1.72;
+    font-size: var(--step-0);
+    line-height: 1.75;
   }
 
   body {
@@ -1692,7 +1693,7 @@
     font-family: var(--font-ui);
     font-weight: 400;
     font-size: var(--step-0);
-    line-height: 1.72;
+    line-height: 1.75;
     letter-spacing: 0.01em;
     overflow-x: hidden;
   }
@@ -3272,7 +3273,7 @@ body::-webkit-scrollbar {
     font-family: var(--font-ui);
     font-size: var(--step-0);
     font-weight: 400;
-    line-height: 1.72;
+    line-height: 1.75;
     color: var(--text-secondary);
     max-width: 42rem;
   }
@@ -3493,7 +3494,7 @@ body::-webkit-scrollbar {
   .about-snapshot__headline {
     margin-top: 0;
     font-family: var(--font-display);
-    font-size: clamp(1.35rem, 2.8vw, 2rem);
+    font-size: clamp(1.2rem, 2.45vw, 1.75rem);
     font-weight: 400;
     font-style: italic;
     line-height: 1.08;
@@ -3689,7 +3690,7 @@ body::-webkit-scrollbar {
   .about-portrait__name {
     margin-top: 0.45rem;
     font-family: var(--font-display), Georgia, serif;
-    font-size: clamp(1.35rem, 2.8vw, 1.72rem);
+    font-size: clamp(1.2rem, 2.45vw, 1.52rem);
     font-weight: 500;
     font-style: italic;
     letter-spacing: 0.03em;
@@ -4156,6 +4157,24 @@ body::-webkit-scrollbar {
   }
 }
 
+.project-detail .page-title {
+  font-size: clamp(1.68rem, 1.26rem + 2.1vw, 2.92rem);
+}
+
+.project-detail .project-detail__case {
+  font-size: clamp(1.68rem, 1.26rem + 2.1vw, 2.92rem);
+}
+
+@media (min-width: 640px) {
+  .project-detail .project-detail__case {
+    font-size: clamp(2.08rem, 1.18rem + 4.2vw, 4.4rem);
+  }
+}
+
+.project-detail__copy {
+  font-size: clamp(0.95rem, 0.93rem + 0.14vw, 1.04rem);
+}
+
 /* Prev/next — wayfinding inside one collection */
 .project-detail__pager {
   display: grid;
@@ -4207,7 +4226,7 @@ body::-webkit-scrollbar {
 
 .project-detail__pager-title {
   font-family: var(--font-display);
-  font-size: var(--step-2);
+  font-size: calc(var(--step-2) * 0.92);
   font-style: italic;
   line-height: 1.15;
   color: var(--ink-primary);
@@ -4517,7 +4536,7 @@ body::-webkit-scrollbar {
   margin: 0.35rem 0 0;
   max-width: 14ch;
   font-family: var(--font-display), serif;
-  font-size: clamp(1.5rem, 5.5vw, 2.5rem);
+  font-size: clamp(1.32rem, 4.8vw, 2.2rem);
   font-weight: 300;
   font-style: italic;
   line-height: 1.05;
@@ -4776,7 +4795,7 @@ body::-webkit-scrollbar {
 
   .xgl__stage-title {
     max-width: 20ch;
-    font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+    font-size: clamp(1.52rem, 3.05vw, 2.4rem);
   }
 
   .xgl__stage-nav {
@@ -5540,6 +5559,16 @@ body::-webkit-scrollbar {
   pointer-events: none;
 }
 
+.services-section .section-title {
+  font-size: clamp(1.18rem, 1rem + 0.85vw, 1.72rem);
+}
+
+.services-section .section-lead,
+.services-section__lead {
+  font-size: clamp(0.88rem, 0.84rem + 0.16vw, 0.98rem);
+  line-height: 1.65;
+}
+
 .services-section .section-lead {
   display: none;
 }
@@ -5594,6 +5623,11 @@ body::-webkit-scrollbar {
   opacity: 0.55;
 }
 
+.services-panel-copy {
+  backdrop-filter: blur(16px) saturate(1.15);
+  -webkit-backdrop-filter: blur(16px) saturate(1.15);
+}
+
 .services-panel-card {
   transition: flex-grow 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -5619,8 +5653,8 @@ body::-webkit-scrollbar {
 }
 
 .services-panel-scroll {
-  height: min(58svh, 640px);
-  min-height: 280px;
+  height: min(70svh, 780px);
+  min-height: 340px;
   overflow: visible;
 }
 
@@ -5719,8 +5753,8 @@ body::-webkit-scrollbar {
   }
 
   .services-panel-scroll {
-    height: min(64svh, 720px);
-    min-height: 360px;
+    height: min(76svh, 860px);
+    min-height: 420px;
   }
 }
 
@@ -5734,8 +5768,8 @@ body::-webkit-scrollbar {
   }
 
   .services-panel-scroll {
-    height: min(68svh, 780px);
-    min-height: 420px;
+    height: min(80svh, 940px);
+    min-height: 480px;
   }
 }
 
@@ -5799,7 +5833,7 @@ body::-webkit-scrollbar {
 
 .svc-drawer__title {
   font-family: var(--font-display);
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 300;
   color: var(--text-primary);
 }

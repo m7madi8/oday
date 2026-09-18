@@ -15,6 +15,11 @@ const OrbitScrollProgress = dynamic(
   { ssr: false },
 );
 
+const HomeScrollRestore = dynamic(
+  () => import("@/components/HomeScrollRestore").then((m) => ({ default: m.HomeScrollRestore })),
+  { ssr: false },
+);
+
 export function DeferredClientShell() {
   const [loadDesktopFx, setLoadDesktopFx] = useState(false);
 
@@ -25,6 +30,7 @@ export function DeferredClientShell() {
   return (
     <>
       <SmoothHashScroll />
+      <HomeScrollRestore />
       {loadDesktopFx ? <OrbitScrollProgress /> : null}
     </>
   );

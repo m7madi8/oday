@@ -1,7 +1,14 @@
 "use client";
 
-import { hero } from "@/lib/hero-content";
-import Image from "next/image";
+import {
+  HERO_DESKTOP_SIZES,
+  HERO_MOBILE_MEDIA,
+  HERO_MOBILE_SIZES,
+  HERO_TABLET_MEDIA,
+  HERO_TABLET_SIZES,
+  hero,
+} from "@/lib/hero-content";
+import { getImageProps } from "next/image";
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from "react";
 
 export type HeroCinematicMediaHandle = {
@@ -16,6 +23,49 @@ type HeroCinematicMediaProps = {
   paused?: boolean;
   onSettled?: (index: number) => void;
 };
+
+const HERO_QUALITY = 96;
+
+function HeroSlidePicture({ slide, priority }: { slide: HeroSlide; priority: boolean }) {
+  const shared = {
+    alt: "",
+    fill: true,
+    quality: HERO_QUALITY,
+    className: "hero-modern__img object-cover",
+    priority,
+    fetchPriority: (priority ? "high" : "auto") as "high" | "auto",
+  };
+
+  const {
+    props: { srcSet: mobileSrcSet },
+  } = getImageProps({ ...shared, src: slide.srcMobile, sizes: HERO_MOBILE_SIZES });
+
+  const {
+    props: { srcSet: tabletSrcSet },
+  } = getImageProps({ ...shared, src: slide.srcTablet, sizes: HERO_TABLET_SIZES });
+
+  const { props: imgProps } = getImageProps({
+    ...shared,
+    src: slide.src,
+    sizes: HERO_DESKTOP_SIZES,
+  });
+
+  return (
+    <picture className="hero-modern__picture">
+      <source media={HERO_MOBILE_MEDIA} srcSet={mobileSrcSet} sizes={HERO_MOBILE_SIZES} />
+      <source media={HERO_TABLET_MEDIA} srcSet={tabletSrcSet} sizes={HERO_TABLET_SIZES} />
+      <img
+        {...imgProps}
+        alt=""
+        draggable={false}
+        style={{
+          ...imgProps.style,
+          objectPosition: slide.objectPosition,
+        }}
+      />
+    </picture>
+  );
+}
 
 export const HeroCinematicMedia = forwardRef<HeroCinematicMediaHandle, HeroCinematicMediaProps>(
   function HeroCinematicMedia({ slides, reduceMotion, paused = false, onSettled }, ref) {
@@ -63,24 +113,8 @@ export const HeroCinematicMedia = forwardRef<HeroCinematicMediaHandle, HeroCinem
               key={slide.alt}
               className={`hero-modern__layer${index === active ? " is-active" : ""}`}
             >
-              <div
-                className={`hero-modern__layer-inner${
-                  slide.primary ? " hero-modern__layer-inner--primary-zoom" : ""
-                }`}
-              >
-                <Image
-                  src={slide.src}
-                  alt=""
-                  fill
-                  priority={index === 0}
-                  fetchPriority={index === 0 ? "high" : "auto"}
-                  quality={100}
-                  unoptimized
-                  draggable={false}
-                  className="hero-modern__img object-cover"
-                  sizes="100vw"
-                  style={{ objectPosition: slide.objectPosition }}
-                />
+              <div className="hero-modern__layer-inner">
+                <HeroSlidePicture slide={slide} priority={index === 0} />
               </div>
             </div>
           ))}

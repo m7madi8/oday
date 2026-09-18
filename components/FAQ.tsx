@@ -84,7 +84,7 @@ function FaqRow({
         className="btn-plain flex w-full items-center justify-between gap-4 border-0 py-4 text-left shadow-none md:py-5"
         onClick={() => setOpen((v) => !v)}
       >
-        <span className="font-display text-lg italic text-ink-primary md:text-xl">{item.question}</span>
+        <span className="font-display text-base italic text-ink-primary md:text-lg">{item.question}</span>
         <motion.span
           aria-hidden
           className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-gold/35 text-gold"

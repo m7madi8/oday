@@ -30,8 +30,8 @@ export function getGalleryCardSize(
   dims: GalleryImageDimensions,
   opts?: { maxHeight?: number; maxWidth?: number },
 ): { width: number; height: number } {
-  const maxH = opts?.maxHeight ?? 480;
-  const maxW = opts?.maxWidth ?? 720;
+  const maxH = opts?.maxHeight ?? 580;
+  const maxW = opts?.maxWidth ?? 880;
 
   let height = maxH;
   let width = Math.round(height * dims.aspect);

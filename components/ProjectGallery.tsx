@@ -13,10 +13,10 @@ import { ChevronLeft, ChevronRight, Maximize2 } from "lucide-react";
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-const MAX_CARD_H = 480;
-const MAX_CARD_W = 720;
-const MAX_CARD_H_MOBILE = 360;
-const MAX_CARD_W_MOBILE = 320;
+const MAX_CARD_H = 580;
+const MAX_CARD_W = 880;
+const MAX_CARD_H_MOBILE = 400;
+const MAX_CARD_W_MOBILE = 360;
 
 const VISIBLE_WINDOW = 2;
 

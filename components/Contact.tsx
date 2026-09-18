@@ -9,7 +9,7 @@ import { useMobilePerfMode } from "@/hooks/useMobilePerfMode";
 import { sectionInView } from "@/lib/motion-viewport";
 import { SectionRevealContext } from "@/lib/section-reveal-context";
 import { useInView, useReducedMotion } from "@/components/ClientMotion";
-import { Facebook, Instagram } from "lucide-react";
+import { Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
@@ -21,10 +21,74 @@ const socialIcons = {
 
 const fieldLabel =
   "font-ui text-xs font-medium uppercase tracking-widest text-gold/70";
-const fieldValue =
-  "mt-3 block font-display text-lg font-normal leading-snug text-white md:text-xl";
 const focusRing =
   "outline-none transition-colors duration-300 focus-visible:text-gold focus-visible:underline focus-visible:decoration-gold/70 focus-visible:underline-offset-4";
+
+const contactIcons = {
+  Location: MapPin,
+  Email: Mail,
+  Phone: Phone,
+} as const;
+
+type ContactItem = (typeof contact.items)[number];
+
+function ContactChannelButton({
+  item,
+  delay,
+  variant = "default",
+}: {
+  item: ContactItem;
+  delay: number;
+  variant?: "default" | "location";
+}) {
+  const Icon = contactIcons[item.label as keyof typeof contactIcons];
+
+  if (!item.href) {
+    return (
+      <RevealFade as="div" delay={delay} className="min-w-0">
+        <div
+          className={`contact-channel${variant === "location" ? " contact-channel--location" : ""}`}
+        >
+          <span className="contact-channel__icon" aria-hidden>
+            <Icon className="h-[18px] w-[18px]" strokeWidth={1.5} />
+          </span>
+          <span className="contact-channel__body">
+            <span className={fieldLabel}>{item.label}</span>
+            <span className="contact-channel__value">{item.value}</span>
+          </span>
+        </div>
+      </RevealFade>
+    );
+  }
+
+  return (
+    <RevealFade as="div" delay={delay} className="min-w-0">
+      <a
+        href={item.href}
+        className={`contact-channel ${focusRing}${
+          variant === "location" ? " contact-channel--location" : ""
+        }`}
+        {...(item.label === "Location"
+          ? { target: "_blank", rel: "noopener noreferrer" }
+          : {})}
+      >
+        <span className="contact-channel__icon" aria-hidden>
+          <Icon className="h-[18px] w-[18px]" strokeWidth={1.5} />
+        </span>
+        <span className="contact-channel__body">
+          <span className={fieldLabel}>{item.label}</span>
+          <span
+            className={`contact-channel__value${
+              item.label === "Email" ? " contact-channel__value--email" : ""
+            }`}
+          >
+            {item.value}
+          </span>
+        </span>
+      </a>
+    </RevealFade>
+  );
+}
 
 export function Contact() {
   const sectionRef = useRef<HTMLElement | null>(null);
@@ -87,19 +151,24 @@ export function Contact() {
                 {studioAbout.contactEyebrow}
               </RevealFade>
 
-              <AnimatedHeading
-                as="h2"
-                text={studioAbout.directorName}
-                className="mt-4 font-display text-3xl font-light italic tracking-tight text-white md:text-5xl"
-                delay={baseDelay + 0.18}
-                duration={0.88}
-                splitByWords
-                wordStagger={0.05}
-              />
+              <div className="contact-director__identity">
+                <AnimatedHeading
+                  as="h2"
+                  text={studioAbout.directorName}
+                  className="mt-4 font-display text-2xl font-light italic tracking-tight text-white md:text-4xl"
+                  delay={baseDelay + 0.18}
+                  duration={0.88}
+                  splitByWords
+                  wordStagger={0.05}
+                />
 
-              <RevealFade as="div" delay={baseDelay + 0.32} className="mt-5">
-                <span className="mx-auto block h-px w-12 bg-gold/50 md:mx-0" aria-hidden />
-              </RevealFade>
+                <RevealFade
+                  as="div"
+                  delay={baseDelay + 0.3}
+                  className="contact-director__underline"
+                  aria-hidden
+                />
+              </div>
 
               <RevealFade
                 as="p"
@@ -122,43 +191,30 @@ export function Contact() {
           </header>
 
           <div className="contact-section__close">
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-12">
-              {contact.items.map((item, index) => {
-                const itemDelay = baseDelay + 0.58 + index * 0.12;
+            <div className="contact-channels">
+              <div className="contact-channels__primary">
+                {contact.items
+                  .filter((item) => item.label !== "Location")
+                  .map((item, index) => (
+                    <ContactChannelButton
+                      key={item.label}
+                      item={item}
+                      delay={baseDelay + 0.58 + index * 0.12}
+                    />
+                  ))}
+              </div>
 
-                return (
-                  <div key={item.label} className="min-w-0">
-                    <RevealFade as="p" className={fieldLabel} delay={itemDelay}>
-                      {item.label}
-                    </RevealFade>
-                    {item.href ? (
-                      <RevealFade as="div" delay={itemDelay + 0.06}>
-                        <a
-                          href={item.href}
-                          className={`${fieldValue} ${focusRing} hover:text-gold`}
-                          {...(item.label === "Location"
-                            ? { target: "_blank", rel: "noopener noreferrer" }
-                            : {})}
-                        >
-                          <span
-                            className={
-                              item.label === "Email"
-                                ? "break-all sm:break-normal lg:whitespace-nowrap"
-                                : undefined
-                            }
-                          >
-                            {item.value}
-                          </span>
-                        </a>
-                      </RevealFade>
-                    ) : (
-                      <RevealFade as="p" className={fieldValue} delay={itemDelay + 0.06}>
-                        {item.value}
-                      </RevealFade>
-                    )}
+              {contact.items
+                .filter((item) => item.label === "Location")
+                .map((item) => (
+                  <div key={item.label} className="contact-channels__aside">
+                    <ContactChannelButton
+                      item={item}
+                      delay={baseDelay + 0.82}
+                      variant="location"
+                    />
                   </div>
-                );
-              })}
+                ))}
             </div>
 
             <footer id="footer" className="contact-section__footer">

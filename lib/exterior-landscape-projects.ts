@@ -46,7 +46,7 @@ export const landscapeProjects = [
   },
   {
     id: "lsc-ghazi-el-bazzar-24",
-    orderLabel: "03",
+    orderLabel: "07",
     title: "AL-BAZZAR",
     country: "Ramallah, Palestine",
     tag: "Booth's",

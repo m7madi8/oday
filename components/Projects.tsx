@@ -236,7 +236,7 @@ function ProjectCard({
       <div className="pointer-events-none absolute bottom-0 left-0 right-0 z-[2] p-8">
         <RevealChildren stagger={0.05}>
           <p className="label-upper text-ink-secondary">{project.tag}</p>
-          <h3 className="mt-3 font-display text-3xl italic text-ink-primary md:text-[2rem]">
+          <h3 className="mt-3 font-display text-2xl italic text-ink-primary md:text-[1.75rem]">
             {project.title}
           </h3>
           <p className="mt-2 text-sm text-ink-secondary">{project.country}</p>
