@@ -169,22 +169,6 @@ export function clamp01(value: number): number {
   return Math.min(1, Math.max(0, value));
 }
 
-export const animationLayerGuide = {
-  hero: [
-    "Wrap hero titles with SplitText or RevealText.",
-    "Wrap hero image with ParallaxImage for cinematic drift.",
-    "Use CounterNumber for hero metrics.",
-  ],
-  projects: [
-    "Wrap card actions with MagneticButton.",
-    "Wrap project images with ParallaxImage.",
-  ],
-  process: [
-    "Use DrawLine for dashed connector animation.",
-    "Mark circles with '.process-circle' for stagger reveals.",
-  ],
-} as const;
-
 type GSAPTarget = string | Element | Element[] | NodeListOf<Element>;
 
 export type HeroCinematicSelectors = {

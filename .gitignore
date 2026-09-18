@@ -20,6 +20,15 @@
 # misc
 .DS_Store
 *.pem
+Thumbs.db
+
+# editor / local tooling
+.cursor/
+.vscode/
+
+# QA exports and local mockups
+.qa-shots/
+new-drop-mockup.png
 
 # debug
 npm-debug.log*
