@@ -167,7 +167,9 @@ export function Contact() {
                   delay={baseDelay + 0.3}
                   className="contact-director__underline"
                   aria-hidden
-                />
+                >
+                  {null}
+                </RevealFade>
               </div>
 
               <RevealFade
