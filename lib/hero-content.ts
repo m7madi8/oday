@@ -5,9 +5,7 @@ import heroPrimaryTablet from "@/imgs/hero/villa-marble-frontal-tablet.jpg";
 import heroSlide2 from "@/imgs/hero/villa-black-marble-4k.jpg";
 import heroSlide2Mobile from "@/imgs/hero/villa-black-marble-mobile.jpg";
 import heroSlide2Tablet from "@/imgs/hero/villa-black-marble-tablet.jpg";
-import heroSlide3 from "@/imgs/hero/villa-entrance-evening-4k.jpg";
-import heroSlide3Mobile from "@/imgs/hero/villa-entrance-evening-mobile.jpg";
-import heroSlide3Tablet from "@/imgs/hero/villa-entrance-evening-tablet.jpg";
+import heroSlide3 from "@/imgs/hero/villa-entrance-evening.jpg";
 import heroSlide4 from "@/imgs/hero/villa-stone-facade-4k.jpg";
 import heroSlide4Mobile from "@/imgs/hero/villa-stone-facade-mobile.jpg";
 import heroSlide4Tablet from "@/imgs/hero/villa-stone-facade-tablet.jpg";
@@ -64,8 +62,8 @@ export const hero = {
     },
     {
       src: heroSlide3,
-      srcMobile: heroSlide3Mobile,
-      srcTablet: heroSlide3Tablet,
+      srcMobile: heroSlide3,
+      srcTablet: heroSlide3,
       alt: "Luxury villa entrance at dusk with landscaped driveway — hero exterior",
       primary: false,
       objectPosition: "50% 50%",

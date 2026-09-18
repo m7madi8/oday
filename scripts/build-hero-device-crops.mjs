@@ -30,7 +30,6 @@ const MASTERS = [
     focusXMobile: 0.34,
   },
   { src: "villa-black-marble-4k.jpg", stem: "villa-black-marble", focusX: 0.46 },
-  { src: "villa-entrance-evening-4k.jpg", stem: "villa-entrance-evening", focusX: 0.6 },
   { src: "villa-stone-facade-4k.jpg", stem: "villa-stone-facade", focusX: 0.5 },
 ];
 

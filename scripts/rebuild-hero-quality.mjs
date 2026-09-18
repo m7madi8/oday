@@ -145,11 +145,3 @@ await rebuildWideFromMaster({
   stripHi: true,
   targetHeight: 2304,
 });
-
-await writeJpeg(
-  sharp(path.join(HERO_DIR, "villa-entrance-dusk.jpg"))
-    .removeAlpha()
-    .resize(3840, 2160, { fit: "fill", kernel: "lanczos3" })
-    .sharpen({ sigma: 0.7, m1: 0.6, m2: 2.2 }),
-  "villa-entrance-evening-4k.jpg",
-);
