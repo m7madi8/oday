@@ -8,7 +8,7 @@ import {
 } from "@/lib/hero-content";
 import { getImageProps } from "next/image";
 
-const QUALITY = 96;
+const QUALITY = 100;
 
 /**
  * Preload the first hero still for each device class so art-directed

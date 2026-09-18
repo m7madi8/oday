@@ -24,7 +24,7 @@ type HeroCinematicMediaProps = {
   onSettled?: (index: number) => void;
 };
 
-const HERO_QUALITY = 96;
+const HERO_QUALITY = 100;
 
 function HeroSlidePicture({ slide, priority }: { slide: HeroSlide; priority: boolean }) {
   const shared = {
