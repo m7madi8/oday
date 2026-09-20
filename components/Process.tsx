@@ -71,7 +71,7 @@ export function Process() {
               {executionPillars.map((item, i) => (
                 <motion.span
                   key={item}
-                  className="label-upper rounded-full border border-gold/32 bg-[rgba(22,22,22,0.65)] px-4 py-2 text-[0.62rem] text-ink-secondary shadow-[0_6px_24px_rgba(0,0,0,0.28)] backdrop-blur-sm transition-[border-color,color,transform,box-shadow] duration-300 hover:border-gold/50 hover:text-ink-primary md:px-5 md:py-2.5 md:text-[0.65rem]"
+                  className="label-upper rounded-full border border-gold/32 bg-[rgba(22,22,22,0.65)] px-4 py-2 text-ink-secondary shadow-[0_6px_24px_rgba(0,0,0,0.28)] backdrop-blur-sm transition-[border-color,color,transform,box-shadow] duration-300 hover:border-gold/50 hover:text-ink-primary md:px-5 md:py-2.5"
                   initial={{ opacity: reduceMotion ? 1 : 0, y: reduceMotion ? 0 : 10 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={revealInView}

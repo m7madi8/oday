@@ -235,11 +235,11 @@ function GridCard({
           />
 
           <div className="absolute inset-x-0 bottom-0 z-[1] p-3.5 sm:p-4 md:p-5">
-            <p className="truncate font-mono text-[8px] uppercase tracking-[0.1em] text-gold">
+            <p className="truncate font-mono text-xs uppercase tracking-[0.1em] text-gold">
               {project.tag}
             </p>
-            <h2 className="mt-1.5 flex items-baseline gap-2 font-display text-[16px] font-normal leading-snug text-[#f5f0e8] opacity-80 transition-all duration-[350ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-1.5 group-hover:opacity-100 md:text-[18px]">
-              <span className="shrink-0 font-mono text-[10px] tracking-[0.08em] text-gold/65" aria-hidden>
+            <h2 className="mt-1.5 flex items-baseline gap-2 font-display text-[1.125rem] font-normal leading-snug text-[#f5f0e8] opacity-80 transition-all duration-[350ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-1.5 group-hover:opacity-100 md:text-[1.375rem]">
+              <span className="shrink-0 font-mono text-xs tracking-[0.08em] text-gold/65" aria-hidden>
                 {caseNumber(project, index)}
               </span>
               <span className="line-clamp-2">{cardHeadline(project)}</span>
@@ -249,11 +249,11 @@ function GridCard({
               className="project-card-gold-line mt-2 block h-px w-10 origin-left scale-x-0 bg-gold opacity-0 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-x-100 group-hover:opacity-100"
             />
             <div className="mt-2 flex min-w-0 flex-wrap items-center gap-x-2 gap-y-0.5 sm:gap-x-3">
-              <p className="shrink-0 font-ui text-[9px] uppercase tracking-[0.12em] text-ink-secondary/80">
+              <p className="shrink-0 font-ui text-xs uppercase tracking-[0.12em] text-ink-secondary/80">
                 {serviceLabel}
               </p>
               {project.country && (
-                <p className="min-w-0 truncate font-mono text-[9px] tracking-[0.04em] text-ink-muted">
+                <p className="min-w-0 truncate font-mono text-xs tracking-[0.04em] text-ink-muted">
                   {project.country}
                   {project.year ? ` · ${project.year}` : ""}
                 </p>

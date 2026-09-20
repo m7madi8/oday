@@ -488,7 +488,7 @@
 
 .nav-mega__eyebrow {
   font-family: var(--font-sub);
-  font-size: 0.625rem;
+  font-size: var(--step--2);
   letter-spacing: 0.28em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.4);
@@ -571,7 +571,7 @@
 
 .nav-mega__index {
   font-family: var(--font-mono);
-  font-size: 0.625rem;
+  font-size: var(--step--2);
   letter-spacing: var(--tracking-mono);
   color: rgba(255, 255, 255, 0.28);
   transition: color 0.3s ease;
@@ -722,7 +722,7 @@
 
 .nav-mega__caption-eyebrow {
   font-family: var(--font-ui);
-  font-size: 0.625rem;
+  font-size: var(--step--2);
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: rgba(var(--accent-gold-rgb), 0.8);
@@ -861,7 +861,7 @@
 .site-menu-portrait__role {
   margin-top: 0.25rem;
   font-family: var(--font-ui);
-  font-size: 0.625rem;
+  font-size: var(--step--2);
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: rgba(var(--accent-gold-rgb), 0.85);
@@ -982,7 +982,7 @@
 
 .nav-search__section-label {
   font-family: var(--font-ui);
-  font-size: 0.625rem;
+  font-size: var(--step--2);
   letter-spacing: 0.24em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.38);
@@ -1183,7 +1183,7 @@
 
 .site-menu-panel__eyebrow {
   font-family: var(--font-sub);
-  font-size: 0.625rem;
+  font-size: var(--step--2);
   font-weight: 400;
   letter-spacing: 0.32em;
   text-transform: uppercase;
@@ -1257,7 +1257,7 @@
   flex-shrink: 0;
   width: 1.75rem;
   font-family: var(--font-mono);
-  font-size: 0.625rem;
+  font-size: var(--step--2);
   font-weight: 400;
   letter-spacing: var(--tracking-mono);
   color: rgba(var(--accent-gold-rgb), 0.55);
@@ -1334,7 +1334,7 @@
 
 .site-menu-footer__copy {
   font-family: var(--font-ui);
-  font-size: 0.625rem;
+  font-size: var(--step--2);
   font-weight: 200;
   letter-spacing: 0.14em;
   color: rgba(255, 255, 255, 0.28);
@@ -1446,12 +1446,12 @@
 }
 
 .hero-cta-luxe--nav .hero-cta-luxe__eyebrow {
-  font-size: 0.5625rem;
+  font-size: 0.6875rem;
   letter-spacing: 0.28em;
 }
 
 .hero-cta-luxe--nav .hero-cta-luxe__label {
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
 }
 
 .site-nav-contact-btn {
@@ -1619,10 +1619,6 @@
 
   .nav-mega__link {
     font-size: 1.0625rem;
-  }
-
-  .nav-mega__eyebrow {
-    font-size: 0.6875rem;
   }
 }
 
@@ -1824,7 +1820,7 @@ body::-webkit-scrollbar {
 
 .orbit-readout {
   font-family: var(--font-mono);
-  font-size: 0.5625rem;
+  font-size: var(--step--2);
   font-weight: 400;
   letter-spacing: var(--tracking-mono);
   line-height: 1;
@@ -2189,7 +2185,7 @@ body::-webkit-scrollbar {
 
 .hero-cta-luxe__eyebrow {
   font-family: var(--font-ui);
-  font-size: 0.625rem;
+  font-size: 0.6875rem;
   font-weight: 500;
   letter-spacing: 0.18em;
 }
@@ -2706,7 +2702,7 @@ body::-webkit-scrollbar {
 
     .case-studies-menu__index {
       width: 1.25rem;
-      font-size: 0.625rem;
+      font-size: var(--step--2);
     }
 
     .case-studies-menu__footer {
@@ -2889,7 +2885,7 @@ body::-webkit-scrollbar {
 
   .case-studies-popover--mobile.is-exterior-open .case-studies-menu__sub {
     padding: 0.65rem 0.5rem;
-    font-size: 0.625rem;
+    font-size: var(--step--2);
     line-height: 1.35;
   }
 
@@ -2943,7 +2939,7 @@ body::-webkit-scrollbar {
 
   .case-studies-menu__eyebrow {
     font-family: var(--font-sub);
-    font-size: 0.5625rem;
+    font-size: var(--step--2);
     font-weight: 400;
     letter-spacing: 0.3em;
     text-transform: uppercase;
@@ -3097,7 +3093,7 @@ body::-webkit-scrollbar {
 
   .case-studies-menu__index {
     font-family: var(--font-mono);
-    font-size: 0.5625rem;
+    font-size: var(--step--2);
     font-weight: 400;
     letter-spacing: var(--tracking-mono);
     color: rgba(var(--accent-gold-rgb), 0.62);
@@ -3180,7 +3176,7 @@ body::-webkit-scrollbar {
 
   .case-studies-menu__sub--lead {
     color: rgba(var(--accent-gold-rgb), 0.82);
-    font-size: 0.625rem;
+    font-size: var(--step--2);
     letter-spacing: 0.14em;
     text-transform: uppercase;
   }
@@ -3201,7 +3197,7 @@ body::-webkit-scrollbar {
     justify-content: space-between;
     gap: 0.75rem;
     font-family: var(--font-ui);
-    font-size: 0.625rem;
+    font-size: var(--step--2);
     font-weight: 300;
     letter-spacing: 0.2em;
     text-transform: uppercase;
@@ -3409,7 +3405,7 @@ body::-webkit-scrollbar {
 
   .about-snapshot__index {
     flex-shrink: 0;
-    font-size: 0.5625rem;
+    font-size: var(--step--2);
     letter-spacing: 0.28em;
     color: rgba(var(--accent-gold-rgb), 0.45);
   }
@@ -3450,7 +3446,7 @@ body::-webkit-scrollbar {
   .about-snapshot__stat-index {
     display: block;
     font-family: var(--font-ui);
-    font-size: 0.5625rem;
+    font-size: var(--step--2);
     letter-spacing: 0.22em;
     color: rgba(var(--accent-gold-rgb), 0.5);
   }
@@ -3546,7 +3542,7 @@ body::-webkit-scrollbar {
 
   .about-snapshot__strength-index {
     font-family: var(--font-ui);
-    font-size: 0.5625rem;
+    font-size: var(--step--2);
     letter-spacing: 0.24em;
     color: rgba(var(--accent-gold-rgb), 0.58);
   }
@@ -3649,7 +3645,7 @@ body::-webkit-scrollbar {
     z-index: 3;
     right: 1rem;
     top: 1rem;
-    font-size: 0.5625rem;
+    font-size: var(--step--2);
     letter-spacing: 0.28em;
     color: rgba(var(--accent-gold-rgb), 0.42);
   }
@@ -3701,7 +3697,7 @@ body::-webkit-scrollbar {
   .about-portrait__role {
     margin-top: 0.35rem;
     font-family: var(--font-ui);
-    font-size: 0.625rem;
+    font-size: var(--step--2);
     font-weight: 300;
     letter-spacing: 0.16em;
     text-transform: uppercase;
@@ -4249,7 +4245,7 @@ body::-webkit-scrollbar {
   background: rgba(255, 255, 255, 0.03);
   color: rgba(255, 255, 255, 0.72);
   font-family: var(--font-ui);
-  font-size: 0.625rem;
+  font-size: var(--step--2);
   font-weight: 300;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -4340,7 +4336,7 @@ body::-webkit-scrollbar {
   border: 0;
   background: transparent;
   font-family: var(--font-ui), system-ui, sans-serif;
-  font-size: 0.625rem;
+  font-size: var(--step--2);
   font-weight: 500;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -4367,7 +4363,7 @@ body::-webkit-scrollbar {
 .xgl__collection-order {
   margin-right: 0.35rem;
   font-family: var(--font-sub), serif;
-  font-size: 0.5625rem;
+  font-size: var(--step--2);
   font-style: normal;
   font-weight: 400;
   letter-spacing: 0.18em;
@@ -4509,7 +4505,7 @@ body::-webkit-scrollbar {
 .xgl__stage-tagline {
   margin: 0;
   font-family: var(--font-ui), system-ui, sans-serif;
-  font-size: 0.5625rem;
+  font-size: var(--step--2);
   font-weight: 500;
   letter-spacing: 0.24em;
   text-transform: uppercase;
@@ -4519,7 +4515,7 @@ body::-webkit-scrollbar {
 .xgl__stage-index {
   margin: 0.55rem 0 0;
   font-family: var(--font-ui), system-ui, sans-serif;
-  font-size: 0.625rem;
+  font-size: 0.75rem;
   font-weight: 500;
   letter-spacing: 0.2em;
 }
@@ -4552,7 +4548,7 @@ body::-webkit-scrollbar {
   margin-top: 0.85rem;
   padding: 0.45rem 0;
   font-family: var(--font-sub), serif;
-  font-size: 0.625rem;
+  font-size: var(--step--2);
   font-weight: 400;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -4670,7 +4666,7 @@ body::-webkit-scrollbar {
   max-width: 100%;
   overflow: hidden;
   font-family: var(--font-ui), system-ui, sans-serif;
-  font-size: 0.5rem;
+  font-size: var(--step--2);
   font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -4813,7 +4809,7 @@ body::-webkit-scrollbar {
   }
 
   .xgl__film-caption {
-    font-size: 0.5625rem;
+    font-size: var(--step--2);
   }
 }
 
@@ -4919,7 +4915,7 @@ body::-webkit-scrollbar {
   }
 
   .gallery-page--exterior .xgl__stage-tagline {
-    font-size: 0.5rem;
+    font-size: var(--step--2);
     letter-spacing: 0.18em;
   }
 
@@ -4931,7 +4927,7 @@ body::-webkit-scrollbar {
 
   .gallery-page--exterior .xgl__stage-cta {
     margin-top: 0.5rem;
-    font-size: 0.5625rem;
+    font-size: var(--step--2);
   }
 
   .gallery-page--exterior .xgl__stage-nav {
@@ -5244,7 +5240,7 @@ body::-webkit-scrollbar {
     left: 0.55rem;
     min-width: 1.75rem;
     height: 1.75rem;
-    font-size: 0.625rem;
+    font-size: var(--step--2);
   }
 }
 
@@ -5560,13 +5556,13 @@ body::-webkit-scrollbar {
 }
 
 .services-section .section-title {
-  font-size: clamp(1.18rem, 1rem + 0.85vw, 1.72rem);
+  font-size: var(--step-4);
 }
 
 .services-section .section-lead,
 .services-section__lead {
-  font-size: clamp(0.88rem, 0.84rem + 0.16vw, 0.98rem);
-  line-height: 1.65;
+  font-size: var(--step-0);
+  line-height: 1.72;
 }
 
 .services-section .section-lead {
@@ -6064,7 +6060,7 @@ body::-webkit-scrollbar {
 .gallery-filter-scope__label {
   margin: 0 0 0.5rem;
   font-family: var(--font-ui);
-  font-size: 0.5rem;
+  font-size: var(--step--2);
   font-weight: 300;
   letter-spacing: 0.28em;
   text-transform: uppercase;
@@ -6148,7 +6144,7 @@ body::-webkit-scrollbar {
   align-self: flex-start;
   padding-top: 0.15rem;
   font-family: var(--font-ui);
-  font-size: 0.625rem;
+  font-size: var(--step--2);
   font-weight: 400;
   letter-spacing: 0.14em;
   font-variant-numeric: tabular-nums;
@@ -6383,7 +6379,7 @@ body::-webkit-scrollbar {
 
 .gallery-filter-cell--secondary .gallery-filter-cell__label {
   font-family: var(--font-ui);
-  font-size: clamp(0.625rem, 2.2vw, 0.6875rem);
+  font-size: clamp(0.6875rem, 2.2vw, 0.75rem);
   font-weight: 300;
   line-height: 1.3;
   letter-spacing: 0.12em;
@@ -6405,7 +6401,7 @@ body::-webkit-scrollbar {
 }
 
 .gallery-filter-cell--secondary .gallery-filter-cell__sep {
-  font-size: 0.5rem;
+  font-size: 0.6875rem;
   line-height: 1;
   color: rgba(255, 255, 255, 0.18);
   user-select: none;
@@ -6417,7 +6413,7 @@ body::-webkit-scrollbar {
 
 .gallery-filter-cell--secondary .gallery-filter-cell__count {
   font-family: var(--font-ui);
-  font-size: 0.5625rem;
+  font-size: var(--step--2);
   font-weight: 300;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.04em;

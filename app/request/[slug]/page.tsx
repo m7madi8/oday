@@ -49,7 +49,7 @@ export default function ServiceRequestPage({ params }: Props) {
       />
 
       <div className="relative mx-auto max-w-3xl px-5 md:px-10">
-        <nav className="flex flex-wrap items-center gap-x-2 gap-y-1 font-ui text-[11px] font-medium uppercase tracking-[0.16em] text-ink-muted">
+        <nav className="flex flex-wrap items-center gap-x-2 gap-y-1 font-ui text-xs font-medium uppercase tracking-[0.16em] text-ink-muted">
           <Link href="/#top" className="transition-colors hover:text-gold">
             Home
           </Link>

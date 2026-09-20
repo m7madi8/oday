@@ -52,8 +52,8 @@
   }
 
   .services-section .section-title {
-    font-size: clamp(1.18rem, 5.2vw, 1.55rem);
-    line-height: 1.18;
+    font-size: clamp(1.65rem, 6.4vw, 2.15rem);
+    line-height: 1.16;
   }
 }
 
@@ -168,7 +168,7 @@
 
 .hero-modern__tag-label {
   font-family: var(--font-mono);
-  font-size: 0.5625rem;
+  font-size: var(--step--2);
   font-weight: 400;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -204,7 +204,7 @@
 .hero-modern__eyebrow {
   margin: 0;
   font-family: var(--font-ui);
-  font-size: 0.625rem;
+  font-size: 0.6875rem;
   font-weight: 500;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -222,7 +222,7 @@
   max-width: 100%;
   font-family: var(--font-display);
   font-weight: 300;
-  font-size: clamp(1.15rem, 4.65vw, 4.15rem);
+  font-size: clamp(1.85rem, 4.65vw, 4.15rem);
   line-height: 1.05;
   letter-spacing: -0.02em;
   white-space: nowrap;
@@ -365,7 +365,7 @@
 
 .hero-modern__stat-label {
   font-family: var(--font-ui);
-  font-size: 0.625rem;
+  font-size: var(--step--2);
   font-weight: 500;
   letter-spacing: 0.24em;
   text-transform: uppercase;
@@ -496,6 +496,11 @@
     padding-inline: clamp(1.75rem, 4.6vw, 3.25rem);
     padding-bottom: clamp(1.25rem, 3.2vh, 1.85rem);
   }
+
+  .hero-modern__headline {
+    flex-wrap: wrap;
+    white-space: normal;
+  }
 }
 
 @media (max-width: 639px) {
@@ -509,7 +514,7 @@
     margin-top: 0.55rem;
     flex-wrap: wrap;
     white-space: normal;
-    font-size: clamp(1rem, 5.75vw, 1.4rem);
+    font-size: clamp(1.85rem, 8.2vw, 2.45rem);
     gap: 0.12em 0.22em;
     row-gap: 0.08em;
   }
@@ -904,9 +909,9 @@
   writing-mode: vertical-rl;
   transform: rotate(180deg);
   font-family: var(--font-ui);
-  font-size: 0.5rem;
+  font-size: 0.6875rem;
   font-weight: 500;
-  letter-spacing: 0.34em;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
   color: rgba(var(--accent-gold-rgb), 0.82);
 }
@@ -976,7 +981,7 @@
 .studio-close__role {
   margin: 0.6rem 0 0;
   font-family: var(--font-ui);
-  font-size: 0.6875rem;
+  font-size: var(--step--2);
   font-weight: 500;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -1093,15 +1098,17 @@
   }
 
   .hero-modern__headline {
-    font-size: clamp(1.06rem, 4.05vw, 3.45rem);
+    flex-wrap: wrap;
+    white-space: normal;
+    font-size: clamp(1.75rem, 4.6vw, 2.85rem);
   }
 
   .hero-modern__subline {
-    font-size: clamp(0.98rem, 1.45vw, 1.08rem);
+    font-size: var(--step-0);
   }
 
   .hero-modern__eyebrow {
-    font-size: 0.575rem;
+    font-size: 0.6875rem;
   }
 
   .hero-modern__stat-value {
@@ -1128,7 +1135,7 @@
   }
 
   .hero-modern__eyebrow {
-    font-size: 0.6875rem;
+    font-size: 0.75rem;
   }
 
   .hero-modern__stat-value {

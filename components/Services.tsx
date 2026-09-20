@@ -331,10 +331,10 @@ function ServiceStoryCard({
               <Icon className="h-4 w-4" aria-hidden />
             </span>
             <div>
-              <p className="font-ui text-[10px] font-semibold uppercase tracking-[0.2em] text-gold">
+              <p className="font-ui text-xs font-semibold uppercase tracking-[0.2em] text-gold">
                 {service.orderLabel}
               </p>
-              <p className="font-display text-[12px] leading-tight text-white">{service.title}</p>
+              <p className="font-display text-sm leading-tight text-white">{service.title}</p>
             </div>
           </div>
 
@@ -465,7 +465,7 @@ function ServicePanel({
       <div className="relative z-10 flex h-full w-full flex-col p-4 sm:p-5 md:p-6 lg:p-7">
         <div className="flex items-start justify-between gap-3">
           <p
-            className={`max-w-[90%] font-ui text-[7.5px] font-semibold uppercase leading-snug tracking-[0.14em] transition-colors duration-300 sm:text-[8px] md:text-[8.5px] ${
+            className={`max-w-[90%] font-ui text-xs font-semibold uppercase leading-snug tracking-[0.14em] transition-colors duration-300 ${
               isActive ? "text-white" : "text-white/65 group-hover/panel:text-white/85"
             }`}
           >
@@ -489,7 +489,7 @@ function ServicePanel({
 
         <div className="mt-auto flex min-h-0 flex-1 items-end gap-4 pt-8">
           <h3
-            className={`shrink-0 font-display text-[clamp(0.72rem,1.25vw,0.98rem)] leading-none tracking-[0.04em] [writing-mode:vertical-rl] rotate-180 transition-colors duration-300 ${
+            className={`shrink-0 font-display text-[clamp(0.85rem,1.4vw,1.15rem)] leading-none tracking-[0.04em] [writing-mode:vertical-rl] rotate-180 transition-colors duration-300 ${
               isActive
                 ? "text-gold drop-shadow-[0_0_28px_rgba(245, 197, 24,0.45)]"
                 : "text-white/75 group-hover/panel:text-white"
@@ -501,7 +501,7 @@ function ServicePanel({
           <div className={`min-w-0 flex-1 ${isActive ? "" : "pointer-events-none"}`}>
             {isActive ? (
               <div className="services-panel-copy rounded-xl border border-white/10 bg-black/40 p-3 backdrop-blur-md sm:p-3.5">
-                <p className="text-[0.72rem] leading-relaxed text-white/90 md:text-[0.8rem]">
+                <p className="text-base leading-relaxed text-white/90">
                   {profile.punchline}
                 </p>
 

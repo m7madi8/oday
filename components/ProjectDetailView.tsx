@@ -74,7 +74,7 @@ export function ProjectDetailView({
         <GalleryReveal dramatic>
           <nav
             aria-label="Breadcrumb"
-            className="project-detail__crumbs flex flex-wrap items-center gap-x-2 gap-y-1 font-ui text-[11px] font-medium uppercase tracking-[0.16em] text-ink-muted"
+            className="project-detail__crumbs flex flex-wrap items-center gap-x-2 gap-y-1 font-ui text-xs font-medium uppercase tracking-[0.16em] text-ink-muted"
           >
             <Link href="/" className="transition-colors hover:text-gold">
               Home
@@ -129,7 +129,7 @@ export function ProjectDetailView({
                 {siblings ? (
                   <>
                     <span aria-hidden className="h-3 w-px bg-white/20" />
-                    <span className="caption-meta text-[11px] uppercase text-ink-muted">
+                    <span className="caption-meta text-xs uppercase text-ink-muted">
                       {String(siblings.position).padStart(2, "0")} / {String(siblings.total).padStart(2, "0")}
                     </span>
                   </>
@@ -173,7 +173,7 @@ export function ProjectDetailView({
                       : "flex items-baseline justify-between gap-4 px-4 py-3.5 sm:px-5"
                   }
                 >
-                  <dt className="shrink-0 font-ui text-[11px] font-medium uppercase tracking-[0.14em] text-ink-muted">
+                  <dt className="shrink-0 font-ui text-xs font-medium uppercase tracking-[0.14em] text-ink-muted">
                     {label}
                   </dt>
                   <dd

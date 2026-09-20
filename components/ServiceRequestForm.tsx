@@ -19,13 +19,13 @@ const fieldClass =
 
 const selectClass = `${fieldClass} cursor-pointer appearance-none bg-[length:0.65rem] bg-[right_1rem_center] bg-no-repeat pr-11 [background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20fill%3D%27none%27%20viewBox%3D%270%200%2020%2012%27%3E%3Cpath%20stroke%3D%27%23f5c518%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%20stroke-width%3D%272%27%20d%3D%27M2%203l8%206%208-6%27/%3E%3C/svg%3E")]`;
 
-const labelClass = "mb-1.5 block font-ui text-[11px] font-medium uppercase tracking-[0.14em] text-ink-muted";
+const labelClass = "mb-1.5 block font-ui text-xs font-medium uppercase tracking-[0.14em] text-ink-muted";
 
 const sectionTitleClass =
-  "mb-5 border-b border-white/[0.08] pb-3 font-ui text-[10px] font-semibold uppercase tracking-[0.2em] text-gold/85";
+  "mb-5 border-b border-white/[0.08] pb-3 font-ui text-xs font-semibold uppercase tracking-[0.2em] text-gold/85";
 
 const fileFieldClass =
-  "w-full rounded-xl border border-dashed border-gold/25 bg-bg-primary/60 px-4 py-3 text-sm text-ink-secondary file:mr-4 file:rounded-lg file:border-0 file:bg-gold/15 file:px-3 file:py-2 file:text-[11px] file:font-medium file:uppercase file:tracking-wider file:text-ink-primary hover:file:bg-gold/22";
+  "w-full rounded-xl border border-dashed border-gold/25 bg-bg-primary/60 px-4 py-3 text-sm text-ink-secondary file:mr-4 file:rounded-lg file:border-0 file:bg-gold/15 file:px-3 file:py-2 file:text-xs file:font-medium file:uppercase file:tracking-wider file:text-ink-primary hover:file:bg-gold/22";
 
 const budgets = [
   "",

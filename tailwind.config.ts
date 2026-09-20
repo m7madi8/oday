@@ -45,8 +45,8 @@ const config: Config = {
       },
       fontSize: {
         xs: ["0.8125rem", { lineHeight: "1.5" }],
-        sm: ["var(--step-0)", { lineHeight: "1.75" }],
-        base: ["var(--step-1)", { lineHeight: "1.75" }],
+        sm: ["var(--step--1)", { lineHeight: "1.6" }],
+        base: ["var(--step-0)", { lineHeight: "1.75" }],
         lg: ["1.25rem", { lineHeight: "1.65" }],
       },
       fontWeight: {
