@@ -16,7 +16,7 @@ export const contact = {
   items: [
     {
       label: "Location",
-      value: "Al-Bireh, Ramallah",
+      value: "Ramallah, Palestine",
       href: "https://www.google.com/maps/search/?api=1&query=31.9230623,35.2090546",
     },
     {

@@ -164,11 +164,25 @@ export function Contact() {
 
                 <RevealFade
                   as="div"
-                  delay={baseDelay + 0.3}
-                  className="contact-director__underline"
+                  delay={baseDelay + 0.28}
+                  className="contact-director__mark"
                   aria-hidden
                 >
                   {null}
+                </RevealFade>
+
+                <RevealFade
+                  as="div"
+                  delay={baseDelay + 0.34}
+                  className="contact-director__signature-wrap"
+                >
+                  <Image
+                    src={studioAbout.directorSignature}
+                    alt=""
+                    aria-hidden
+                    sizes="(max-width: 768px) 10rem, 12rem"
+                    className="contact-director__signature"
+                  />
                 </RevealFade>
               </div>
 

@@ -1,8 +1,8 @@
 export const studioLocation = {
   eyebrow: "Office Location",
   heading: "Where We Build",
-  headingAccent: "From Al-Bireh",
-  addressLine2: "Al-Bireh, Ramallah",
+  headingAccent: "From Ramallah",
+  addressLine2: "Ramallah, Palestine",
   coordinates: { lat: 31.9230623, lng: 35.2090546 },
   mapEmbedUrl:
     "https://www.openstreetmap.org/export/embed.html?bbox=35.189%2C31.908%2C35.229%2C31.938&layer=mapnik&marker=31.9230623%2C35.2090546",

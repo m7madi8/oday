@@ -700,7 +700,7 @@
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Principal identity — underline matches name width */
+/* Principal identity — ruq'ah gold mark, then smaller handwritten signature */
 .contact-director__identity {
   display: inline-flex;
   flex-direction: column;
@@ -709,16 +709,37 @@
   max-width: 100%;
 }
 
-.contact-director__underline {
+.contact-director__mark {
   width: 100%;
   height: 1px;
-  margin-top: 0.55rem;
-  background: linear-gradient(
-    90deg,
-    rgba(var(--accent-gold-rgb), 0.2) 0%,
-    rgba(var(--accent-gold-rgb), 0.72) 50%,
-    rgba(var(--accent-gold-rgb), 0.2) 100%
-  );
+  margin-top: 0.35rem;
+  background: var(--accent-gold);
+  opacity: 0.88;
+}
+
+.contact-director__signature-wrap {
+  width: min(100%, 11.75rem);
+  margin-top: 0.35rem;
+}
+
+.contact-director__signature {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+  opacity: 0.94;
+}
+
+@media (max-width: 767px) {
+  .contact-director__identity {
+    margin-inline: auto;
+  }
+
+  .contact-director__signature-wrap {
+    margin-inline: auto;
+    width: min(100%, 10.25rem);
+  }
 }
 
 .contact-channels {
