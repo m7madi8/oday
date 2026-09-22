@@ -82,11 +82,6 @@ export function ProjectCard({
   return <GridCard project={project} index={index} batchAnimate={batchAnimate} />;
 }
 
-/** Editorial case number — the primary identifier for projects titled only by number. */
-function caseNumber(project: Project, index: number): string {
-  return project.orderLabel ?? String(index + 1).padStart(2, "0");
-}
-
 /** When title duplicates the case index, surface real metadata instead. */
 function cardHeadline(project: Project): string {
   const title = project.title.trim();
@@ -142,7 +137,7 @@ function MasonryCard({
       <Link
         href={href}
         className="project-card__link"
-        aria-label={`View project ${project.orderLabel} ${headline}`}
+        aria-label={`View project ${headline}`}
         onClick={() => captureGalleryNavigation(project.id)}
       >
         <div className="project-card__media">
@@ -166,9 +161,6 @@ function MasonryCard({
           <div className="project-card__info project-card__info--overlay">
             <span className="project-card__pill">{pill}</span>
             <h3 className="project-card__title">
-              <span className="project-card__num" aria-hidden>
-                {project.orderLabel}
-              </span>
               <span className="project-card__name">{headline}</span>
             </h3>
           </div>
@@ -238,10 +230,7 @@ function GridCard({
             <p className="truncate font-mono text-xs uppercase tracking-[0.1em] text-gold">
               {project.tag}
             </p>
-            <h2 className="mt-1.5 flex items-baseline gap-2 font-display text-[1.125rem] font-normal leading-snug text-[#f5f0e8] opacity-80 transition-all duration-[350ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-1.5 group-hover:opacity-100 md:text-[1.375rem]">
-              <span className="shrink-0 font-mono text-xs tracking-[0.08em] text-gold/65" aria-hidden>
-                {caseNumber(project, index)}
-              </span>
+            <h2 className="mt-1.5 font-display text-[1.125rem] font-normal leading-snug text-[#f5f0e8] opacity-80 transition-all duration-[350ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-1.5 group-hover:opacity-100 md:text-[1.375rem]">
               <span className="line-clamp-2">{cardHeadline(project)}</span>
             </h2>
             <span
