@@ -1,20 +1,15 @@
 /**
- * Rebuild homepage hero stills from the high-resolution 16:9 masters.
- *
- * The live slides were previously 672px tall ultrawides, which pixelate on
- * any retina full-viewport hero. This script writes 4K (`*-4k.jpg`) files
- * that `lib/hero-content.ts` imports.
- *
- * After regenerating the 4K masters, run `npm run hero:crops` so phone and
- * iPad portrait stills stay aligned with the new frames.
+ * Legacy 16:9 rebuild. Homepage hero stills now come from imgs/heroo
+ * via `npm run hero:heroo` (21:9, full sky-to-ground framing).
  */
+
 import { readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import sharp from "sharp";
 
 const HERO_DIR = path.join(process.cwd(), "imgs", "hero");
 const JPEG = {
-  quality: 95,
+  quality: 100,
   mozjpeg: true,
   chromaSubsampling: "4:4:4",
   trellisQuantisation: true,
@@ -90,7 +85,7 @@ async function stripAndWrite(srcFile, outFile, rect, dx) {
   );
 }
 
-async function rebuildWideFromMaster({ wideFile, hiFile, outFile, stripHi, targetHeight }) {
+async function rebuildWideFromMaster({ wideFile, hiFile, outFile, stripHi, targetHeight, focusX = 0.5 }) {
   const wideBuffer = readFileSync(path.join(HERO_DIR, wideFile));
   const hiPath = path.join(HERO_DIR, hiFile);
   const wideMeta = await sharp(wideBuffer).metadata();
@@ -112,8 +107,9 @@ async function rebuildWideFromMaster({ wideFile, hiFile, outFile, stripHi, targe
   const nativeScale = hiMeta.height / wideMeta.height;
   const nativeW = Math.round(wideMeta.width * nativeScale);
   const nativeH = hiMeta.height;
-  const origWAtWide = wideMeta.height * (hiMeta.width / hiMeta.height);
-  const leftNative = Math.round(((wideMeta.width - origWAtWide) / 2) * nativeScale);
+  const leftNative = Math.round(
+    Math.min(nativeW - hiMeta.width, Math.max(0, focusX * nativeW - hiMeta.width / 2)),
+  );
 
   let composed = sharp(
     await sharp(wideBuffer).resize(nativeW, nativeH, { fit: "fill", kernel: "lanczos3" }).toBuffer(),
@@ -131,12 +127,28 @@ async function rebuildWideFromMaster({ wideFile, hiFile, outFile, stripHi, targe
 
 await copyMaster("villa-hero.jpg", "villa-marble-frontal-4k.jpg");
 
+await rebuildWideFromMaster({
+  wideFile: "villa-marble-frontal.jpg",
+  hiFile: "villa-hero.jpg",
+  outFile: "villa-marble-frontal-ultrawide-4k.jpg",
+  stripHi: false,
+  focusX: 0.52,
+});
+
 await stripAndWrite(
   "villa-marble.jpg",
   "villa-black-marble-4k.jpg",
   { x0: 0, y0: 0.868, x1: 0.145, y1: 1 },
   0.16,
 );
+
+await rebuildWideFromMaster({
+  wideFile: "villa-black-marble555555.jpg",
+  hiFile: "villa-black-marble-4k.jpg",
+  outFile: "villa-black-marble-ultrawide-4k.jpg",
+  stripHi: false,
+  focusX: 0.52,
+});
 
 await rebuildWideFromMaster({
   wideFile: "villa-stone-facade.jpg",

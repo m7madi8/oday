@@ -21,6 +21,7 @@
     "generate:exterior": "npm run generate:villas && npm run generate:residential && npm run generate:cottage && npm run generate:landscape",
     "generate:projects": "npm run generate:interior && npm run generate:exterior",
     "hero:expand": "node scripts/expand-hero-images.mjs",
+    "hero:heroo": "node scripts/build-heroo-hero.mjs",
     "hero:crops": "node scripts/build-hero-device-crops.mjs"
   },
   "dependencies": {

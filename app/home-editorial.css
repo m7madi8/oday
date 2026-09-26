@@ -40,6 +40,80 @@
   user-select: none;
 }
 
+/* Section 02 — one screen: header + panels, no overflow scroll */
+#services.services-section.section-page {
+  height: 100svh;
+  height: 100dvh;
+  max-height: 100svh;
+  max-height: 100dvh;
+  min-height: 100svh;
+  min-height: 100dvh;
+  overflow: hidden;
+  padding-bottom: 0.75rem;
+  box-sizing: border-box;
+}
+
+.services-section .section-editorial-head {
+  align-items: center;
+}
+
+.services-section__head {
+  flex: 0 0 auto;
+}
+
+@media (max-width: 1023px) {
+  .services-carousel-wrap {
+    display: flex;
+    flex: 1 1 auto;
+    min-height: 0;
+    flex-direction: column;
+    margin-top: 0.65rem;
+  }
+
+  .services-carousel,
+  .services-carousel__stage,
+  .services-carousel__viewport {
+    flex: 1 1 auto;
+    min-height: 0;
+    height: 100%;
+  }
+
+  .services-carousel__track,
+  .services-carousel__slide {
+    height: 100%;
+  }
+
+  .services-story-card {
+    height: 100%;
+    max-height: 100%;
+  }
+}
+
+@media (min-width: 1024px) {
+  .services-stage {
+    display: flex;
+    flex: 1 1 auto;
+    min-height: 0;
+    flex-direction: column;
+    margin-top: 0.5rem;
+  }
+
+  .services-stage__frame {
+    flex: 1 1 auto;
+    min-height: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .services-panel-scroll {
+    flex: 1 1 auto;
+    min-height: 0;
+    height: 100%;
+  }
+}
+
 @media (max-width: 767px) {
   .section-editorial-head {
     grid-template-columns: 1fr;
@@ -49,6 +123,10 @@
   .section-editorial-head__index {
     font-size: clamp(2.15rem, 10.5vw, 3rem);
     line-height: 1;
+  }
+
+  .services-section .section-editorial-head {
+    align-items: start;
   }
 
   .services-section .section-title {
@@ -120,9 +198,13 @@
   display: block;
   width: 100%;
   height: 100%;
+  overflow: hidden;
 }
 
 .hero-modern__img {
+  display: block;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   object-position: 50% 50%;
   image-rendering: auto;

@@ -35,7 +35,6 @@ export function FeaturedProjects() {
                   </span>
                 </>
               }
-              description={featuredProjectsSection.description}
               className="featured-projects__section-header"
             />
           </div>

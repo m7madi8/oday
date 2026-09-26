@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  HERO_DESKTOP_MEDIA,
   HERO_DESKTOP_SIZES,
   HERO_MOBILE_MEDIA,
   HERO_MOBILE_SIZES,
@@ -26,40 +27,54 @@ type HeroCinematicMediaProps = {
 
 const HERO_QUALITY = 100;
 
+function heroSrcSet(props: { srcSet?: string; src?: string }) {
+  return props.srcSet || props.src || "";
+}
+
 function HeroSlidePicture({ slide, priority }: { slide: HeroSlide; priority: boolean }) {
-  const shared = {
+  const fetchPriority = (priority ? "high" : "auto") as "high" | "auto";
+  const sharedFill = {
     alt: "",
     fill: true,
     quality: HERO_QUALITY,
-    className: "hero-modern__img object-cover",
+    unoptimized: true,
     priority,
-    fetchPriority: (priority ? "high" : "auto") as "high" | "auto",
+    fetchPriority,
   };
 
-  const {
-    props: { srcSet: mobileSrcSet },
-  } = getImageProps({ ...shared, src: slide.srcMobile, sizes: HERO_MOBILE_SIZES });
+  const { props: mobileProps } = getImageProps({
+    ...sharedFill,
+    src: slide.srcMobile,
+    sizes: HERO_MOBILE_SIZES,
+  });
 
-  const {
-    props: { srcSet: tabletSrcSet },
-  } = getImageProps({ ...shared, src: slide.srcTablet, sizes: HERO_TABLET_SIZES });
+  const { props: tabletProps } = getImageProps({
+    ...sharedFill,
+    src: slide.srcTablet,
+    sizes: HERO_TABLET_SIZES,
+  });
 
   const { props: imgProps } = getImageProps({
-    ...shared,
+    ...sharedFill,
+    className: "hero-modern__img",
     src: slide.src,
     sizes: HERO_DESKTOP_SIZES,
   });
 
   return (
     <picture className="hero-modern__picture">
-      <source media={HERO_MOBILE_MEDIA} srcSet={mobileSrcSet} sizes={HERO_MOBILE_SIZES} />
-      <source media={HERO_TABLET_MEDIA} srcSet={tabletSrcSet} sizes={HERO_TABLET_SIZES} />
+      <source media={HERO_MOBILE_MEDIA} srcSet={heroSrcSet(mobileProps)} sizes={HERO_MOBILE_SIZES} />
+      <source media={HERO_TABLET_MEDIA} srcSet={heroSrcSet(tabletProps)} sizes={HERO_TABLET_SIZES} />
+      <source media={HERO_DESKTOP_MEDIA} srcSet={heroSrcSet(imgProps)} sizes={HERO_DESKTOP_SIZES} />
       <img
         {...imgProps}
         alt=""
         draggable={false}
         style={{
           ...imgProps.style,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
           objectPosition: slide.objectPosition,
         }}
       />

@@ -95,23 +95,17 @@ export function Services() {
                 </span>
               </>
             }
-            description={
-              <span className="services-section__lead">
-                Architecture, interiors, drone intelligence, and AI workflows — integrated
-                <span className="mt-1 block">under OD Architects.</span>
-              </span>
-            }
           />
         </div>
       </SectionInner>
 
       {/* Mobile / tablet carousel */}
-      <ScrollReveal dramatic delay={0.04} className="services-carousel-wrap mt-6 lg:hidden">
+      <ScrollReveal dramatic delay={0.04} className="services-carousel-wrap lg:hidden">
         <ServicesMobileCarousel />
       </ScrollReveal>
 
       {/* Desktop — full-width stage */}
-      <div className="services-stage mt-3 hidden lg:block">
+      <div className="services-stage hidden lg:flex">
         <div className={`${stripBezel} services-stage__frame`}>
           <div
             className="services-panel-scroll"
@@ -274,7 +268,7 @@ function ServiceStoryCard({
 
   return (
     <article
-      className={`services-story-card relative aspect-[9/16] h-[min(72svh,640px)] w-full shrink-0 cursor-pointer bg-transparent${
+      className={`services-story-card relative h-full w-full shrink-0 cursor-pointer bg-transparent${
         isActive ? " services-story-card--active" : ""
       }`}
       onClick={(event) => {

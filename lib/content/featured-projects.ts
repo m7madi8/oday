@@ -15,8 +15,6 @@ export const featuredProjectsSection = {
   eyebrow: "Selected Work",
   title: "Featured Projects",
   titleAccent: "Curated case studies",
-  description:
-    "A preview of exterior and interior delivery — villas, residences, and branded environments from the OD Architects archive.",
   ctaLabel: "View full gallery",
   ctaHref: "/projects",
 } as const;

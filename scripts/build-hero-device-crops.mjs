@@ -1,11 +1,11 @@
 /**
  * Portrait crops of the 4K hero stills for phones and iPads.
  *
- * Homepage hero is 100dvh with object-fit: cover. Landscape 16:9 stills
- * covered onto a portrait screen are height-limited, but next/image with
- * sizes="100vw" fetches by WIDTH — so a 3x iPhone gets a ~1200px file and
- * upscales it ~3–4×. These crops keep the native 4K height so a width-based
- * srcset still has enough vertical pixels.
+ * Homepage hero is 100dvh with object-fit: cover by HEIGHT. Landscape 21:9
+ * stills covered onto a portrait screen keep sky and ground; only the sides
+ * crop. next/image with sizes="100vw" fetches by WIDTH — so a 3x iPhone would
+ * otherwise get a ~1200px landscape file and upscale it 3–4×. These crops keep
+ * the native 4K height so a width-based srcset still has enough vertical pixels.
  */
 import { writeFileSync } from "node:fs";
 import path from "node:path";
@@ -13,7 +13,7 @@ import sharp from "sharp";
 
 const HERO_DIR = path.join(process.cwd(), "imgs", "hero");
 const JPEG = {
-  quality: 95,
+  quality: 100,
   mozjpeg: true,
   chromaSubsampling: "4:4:4",
   trellisQuantisation: true,
@@ -23,15 +23,14 @@ const JPEG = {
 
 const MASTERS = [
   {
-    src: "villa-marble-frontal-4k.jpg",
+    src: "villa-marble-frontal-ultrawide-4k.jpg",
     stem: "villa-marble-frontal",
-    focusX: 0.42,
-    /** Phones: keep the left villa wing (pergola, lattice, arch) in frame. */
-    focusXMobile: 0.34,
+    focusX: 0.5,
+    focusXMobile: 0.48,
   },
-  { src: "villa-black-marble-4k.jpg", stem: "villa-black-marble", focusX: 0.46 },
-  { src: "villa-entrance-evening-4k.jpg", stem: "villa-entrance-evening", focusX: 0.6 },
-  { src: "villa-stone-facade-4k.jpg", stem: "villa-stone-facade", focusX: 0.5 },
+  { src: "villa-black-marble-ultrawide-4k.jpg", stem: "villa-black-marble", focusX: 0.5, focusXMobile: 0.46 },
+  { src: "villa-entrance-evening-4k.jpg", stem: "villa-entrance-evening", focusX: 0.52, focusXMobile: 0.54 },
+  { src: "villa-stone-facade-ultrawide-4k.jpg", stem: "villa-stone-facade", focusX: 0.5 },
 ];
 
 /** ~iPhone 14/15/16 Pro portrait. Slightly taller than 9:16 so 100vw still has height. */
