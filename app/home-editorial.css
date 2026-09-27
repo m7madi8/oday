@@ -333,7 +333,7 @@
   max-width: 100%;
   font-family: var(--font-display);
   font-weight: 300;
-  font-size: clamp(1rem, 4.15vw + 0.2rem, 4.15rem);
+  font-size: clamp(1rem, 3.85vw + 0.2rem, 3.72rem);
   line-height: 1.08;
   letter-spacing: -0.02em;
   white-space: nowrap;
@@ -1248,7 +1248,7 @@
   }
 
   .hero-modern__headline {
-    font-size: clamp(1.36rem, 5.3vw, 4.9rem);
+    font-size: clamp(1.36rem, 4.75vw, 4.35rem);
   }
 
   .hero-modern__subline {
@@ -1284,7 +1284,7 @@
   }
 
   .hero-modern__headline {
-    font-size: clamp(1.5rem, 5.7vw, 5.4rem);
+    font-size: clamp(1.5rem, 5.15vw, 4.85rem);
   }
 
   .hero-modern__subline {
