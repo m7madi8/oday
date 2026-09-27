@@ -23,9 +23,11 @@ export const HERO_TABLET_MEDIA =
   "(orientation: portrait) and (min-width: 768px) and (max-width: 1536px)";
 /** Landscape / desktop — matches <img> fallback in HeroCinematicMedia */
 export const HERO_DESKTOP_MEDIA = "(min-width: 1280px), (orientation: landscape) and (min-width: 768px)";
+/** Next/Image — AVIF/WebP at display width (masters stay in repo for rebuilds). */
+export const HERO_IMAGE_QUALITY = 84;
 export const HERO_MOBILE_SIZES = "100vw";
 export const HERO_TABLET_SIZES = "100vw";
-export const HERO_DESKTOP_SIZES = "100vw";
+export const HERO_DESKTOP_SIZES = "(max-width: 1536px) 100vw, 1920px";
 
 /** Homepage hero copy — kept separate from data.ts to avoid heavy module init cycles. */
 export const hero = {

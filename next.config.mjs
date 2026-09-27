@@ -5,8 +5,10 @@ const nextConfig = {
     optimizePackageImports: ["lucide-react", "framer-motion"],
   },
   images: {
-    deviceSizes: [640, 750, 828, 1080, 1170, 1200, 1284, 1366, 1536, 1668, 1920, 2048, 2560, 3840, 4096],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1280, 1366, 1536, 1920, 2048, 2560],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     formats: ["image/avif", "image/webp"],
+    minimumCacheTTL: 60 * 60 * 24 * 30,
     remotePatterns: [
       {
         protocol: "https",

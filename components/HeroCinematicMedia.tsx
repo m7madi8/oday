@@ -3,6 +3,7 @@
 import {
   HERO_DESKTOP_MEDIA,
   HERO_DESKTOP_SIZES,
+  HERO_IMAGE_QUALITY,
   HERO_MOBILE_MEDIA,
   HERO_MOBILE_SIZES,
   HERO_TABLET_MEDIA,
@@ -25,19 +26,24 @@ type HeroCinematicMediaProps = {
   onSettled?: (index: number) => void;
 };
 
-const HERO_QUALITY = 100;
-
 function heroSrcSet(props: { srcSet?: string; src?: string }) {
   return props.srcSet || props.src || "";
 }
 
-function HeroSlidePicture({ slide, priority }: { slide: HeroSlide; priority: boolean }) {
+function HeroSlidePicture({
+  slide,
+  priority,
+  loading,
+}: {
+  slide: HeroSlide;
+  priority: boolean;
+  loading: "eager" | "lazy";
+}) {
   const fetchPriority = (priority ? "high" : "auto") as "high" | "auto";
   const sharedFill = {
     alt: "",
     fill: true,
-    quality: HERO_QUALITY,
-    unoptimized: true,
+    quality: HERO_IMAGE_QUALITY,
     priority,
     fetchPriority,
   };
@@ -70,6 +76,8 @@ function HeroSlidePicture({ slide, priority }: { slide: HeroSlide; priority: boo
         {...imgProps}
         alt=""
         draggable={false}
+        loading={loading}
+        decoding="async"
         style={{
           ...imgProps.style,
           width: "100%",
@@ -82,17 +90,66 @@ function HeroSlidePicture({ slide, priority }: { slide: HeroSlide; priority: boo
   );
 }
 
+function useMountedHeroSlides(slideCount: number, active: number, canRotate: boolean) {
+  const [mounted, setMounted] = useState<Set<number>>(() => new Set([0]));
+
+  useEffect(() => {
+    setMounted((prev) => {
+      const next = new Set(prev);
+      next.add(active);
+      if (canRotate && slideCount > 1) {
+        next.add((active + 1) % slideCount);
+      }
+      return next;
+    });
+  }, [active, canRotate, slideCount]);
+
+  useEffect(() => {
+    if (!canRotate || slideCount < 2) return;
+
+    const warmSecond = () => {
+      setMounted((prev) => {
+        if (prev.has(1)) return prev;
+        const next = new Set(prev);
+        next.add(1);
+        return next;
+      });
+    };
+
+    if (typeof window.requestIdleCallback === "function") {
+      const idleId = window.requestIdleCallback(warmSecond, { timeout: 4000 });
+      return () => window.cancelIdleCallback(idleId);
+    }
+
+    const timeoutId = window.setTimeout(warmSecond, 2500);
+    return () => window.clearTimeout(timeoutId);
+  }, [canRotate, slideCount]);
+
+  const mountSlide = useCallback((index: number) => {
+    setMounted((prev) => {
+      if (prev.has(index)) return prev;
+      const next = new Set(prev);
+      next.add(index);
+      return next;
+    });
+  }, []);
+
+  return { mounted, mountSlide };
+}
+
 export const HeroCinematicMedia = forwardRef<HeroCinematicMediaHandle, HeroCinematicMediaProps>(
   function HeroCinematicMedia({ slides, reduceMotion, paused = false, onSettled }, ref) {
     const [active, setActive] = useState(0);
     const canRotate = !reduceMotion && slides.length > 1;
     const settledRef = useRef(onSettled);
     settledRef.current = onSettled;
+    const { mounted: mountedSlides, mountSlide } = useMountedHeroSlides(slides.length, active, canRotate);
 
     const goToSlide = useCallback(
       (nextIndex: number) => {
         if (!canRotate) return false;
         if (nextIndex < 0 || nextIndex >= slides.length) return false;
+        mountSlide(nextIndex);
         setActive((current) => {
           if (nextIndex === current) return current;
           settledRef.current?.(nextIndex);
@@ -100,7 +157,7 @@ export const HeroCinematicMedia = forwardRef<HeroCinematicMediaHandle, HeroCinem
         });
         return true;
       },
-      [canRotate, slides.length],
+      [canRotate, mountSlide, slides.length],
     );
 
     useImperativeHandle(ref, () => ({ goToSlide }), [goToSlide]);
@@ -126,10 +183,18 @@ export const HeroCinematicMedia = forwardRef<HeroCinematicMediaHandle, HeroCinem
           {visibleSlides.map((slide, index) => (
             <div
               key={slide.alt}
-              className={`hero-modern__layer${index === active ? " is-active" : ""}`}
+              className={`hero-modern__layer${index === active ? " is-active" : ""}${
+                slide.primary ? " hero-modern__layer--lead-zoom" : ""
+              }${index === 1 ? " hero-modern__layer--zoom-from-top" : ""}`}
             >
               <div className="hero-modern__layer-inner">
-                <HeroSlidePicture slide={slide} priority={index === 0} />
+                {mountedSlides.has(index) ? (
+                  <HeroSlidePicture
+                    slide={slide}
+                    priority={index === 0}
+                    loading={index === 0 ? "eager" : "lazy"}
+                  />
+                ) : null}
               </div>
             </div>
           ))}

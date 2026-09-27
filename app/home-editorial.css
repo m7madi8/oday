@@ -212,6 +212,32 @@
   user-select: none;
 }
 
+/* First hero still — subtle zoom so the villa reads closer (cover crops edges only) */
+.hero-modern__layer--lead-zoom .hero-modern__img {
+  transform: scale(1.11);
+  transform-origin: 50% 46%;
+}
+
+@media (max-width: 767px) {
+  .hero-modern__layer--lead-zoom .hero-modern__img {
+    transform: scale(1.07);
+    transform-origin: 50% 48%;
+  }
+}
+
+/* Slide 2 — zoom in; anchor top so sky/roofline stay fixed, crop grows downward */
+.hero-modern__layer--zoom-from-top .hero-modern__img {
+  transform: scale(1.11);
+  transform-origin: 50% 0%;
+}
+
+@media (max-width: 767px) {
+  .hero-modern__layer--zoom-from-top .hero-modern__img {
+    transform: scale(1.07);
+    transform-origin: 50% 0%;
+  }
+}
+
 .hero-modern__scrim {
   position: absolute;
   inset: 0;
@@ -283,12 +309,15 @@
   text-align: start;
 }
 
+/* Beat #main-content :where(p) { font-size: var(--step-0) } so eyebrow stays under the headline */
+#main-content .hero-modern__eyebrow,
 .hero-modern__eyebrow {
   margin: 0;
   font-family: var(--font-ui);
-  font-size: 0.6875rem;
+  font-size: clamp(0.5625rem, 1.85vw, 0.6875rem);
   font-weight: 500;
-  letter-spacing: 0.2em;
+  line-height: 1.4;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.52);
 }
@@ -304,10 +333,11 @@
   max-width: 100%;
   font-family: var(--font-display);
   font-weight: 300;
-  font-size: clamp(1.85rem, 4.65vw, 4.15rem);
-  line-height: 1.05;
+  font-size: clamp(1rem, 4.15vw + 0.2rem, 4.15rem);
+  line-height: 1.08;
   letter-spacing: -0.02em;
   white-space: nowrap;
+  flex-wrap: nowrap;
   overflow: visible;
   color: #fff;
   text-shadow:
@@ -578,11 +608,6 @@
     padding-inline: clamp(1.75rem, 4.6vw, 3.25rem);
     padding-bottom: clamp(1.25rem, 3.2vh, 1.85rem);
   }
-
-  .hero-modern__headline {
-    flex-wrap: wrap;
-    white-space: normal;
-  }
 }
 
 @media (max-width: 639px) {
@@ -594,15 +619,15 @@
 
   .hero-modern__headline {
     margin-top: 0.55rem;
-    flex-wrap: wrap;
-    white-space: normal;
-    font-size: clamp(1.85rem, 8.2vw, 2.45rem);
-    gap: 0.12em 0.22em;
-    row-gap: 0.08em;
+    font-size: clamp(0.9375rem, 4.65vw + 0.12rem, 2.35rem);
+    gap: 0.22em;
+    line-height: 1.06;
   }
 
-  .hero-modern__mask {
-    overflow: visible;
+  #main-content .hero-modern__eyebrow,
+  .hero-modern__eyebrow {
+    font-size: clamp(0.5rem, 2.65vw, 0.625rem);
+    letter-spacing: 0.14em;
   }
 
   .hero-modern__headline-main {
@@ -1201,17 +1226,11 @@
   }
 
   .hero-modern__headline {
-    flex-wrap: wrap;
-    white-space: normal;
-    font-size: clamp(1.75rem, 4.6vw, 2.85rem);
+    font-size: clamp(1rem, 3.85vw + 0.25rem, 2.85rem);
   }
 
   .hero-modern__subline {
     font-size: var(--step-0);
-  }
-
-  .hero-modern__eyebrow {
-    font-size: 0.6875rem;
   }
 
   .hero-modern__stat-value {
@@ -1237,8 +1256,9 @@
     max-width: 48ch;
   }
 
+  #main-content .hero-modern__eyebrow,
   .hero-modern__eyebrow {
-    font-size: 0.75rem;
+    font-size: 0.6875rem;
   }
 
   .hero-modern__stat-value {
