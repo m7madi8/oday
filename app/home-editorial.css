@@ -2,6 +2,14 @@
    Homepage — modern editorial (copy unchanged)
    ========================================================================== */
 
+/* Below-fold home sections: skip layout/paint until near viewport */
+#services,
+#gallery,
+#contact {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 90svh;
+}
+
 .home-section-rule {
   position: relative;
   z-index: 20;
@@ -176,7 +184,7 @@
   opacity: 0;
   z-index: 0;
   visibility: visible;
-  transition: opacity 1.15s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .hero-modern__layer.is-active,
@@ -214,13 +222,13 @@
 
 /* First hero still — subtle zoom so the villa reads closer (cover crops edges only) */
 .hero-modern__layer--lead-zoom .hero-modern__img {
-  transform: scale(1.11);
+  transform: scale(1.24);
   transform-origin: 50% 46%;
 }
 
 @media (max-width: 767px) {
   .hero-modern__layer--lead-zoom .hero-modern__img {
-    transform: scale(1.07);
+    transform: scale(1.14);
     transform-origin: 50% 48%;
   }
 }
@@ -319,7 +327,7 @@
   line-height: 1.4;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.52);
+  color: rgba(255, 255, 255, 0.62);
 }
 
 .hero-modern__headline {
@@ -599,8 +607,20 @@
   background: rgba(255, 255, 255, 0.82);
 }
 
-.hero-modern__dot.is-active .hero-modern__dot-fill {
+.hero-modern__dot-fill--static {
   transform: translateY(-50%) scaleX(1);
+}
+
+.hero-modern .hero-modern__dot,
+.hero-modern .hero-modern__dot-fill {
+  transition: none !important;
+  animation: none !important;
+}
+
+.hero-modern--instant .hero-modern__tag {
+  opacity: 1;
+  animation: none;
+  transform: none;
 }
 
 @media (max-width: 1023px) and (min-width: 640px) {

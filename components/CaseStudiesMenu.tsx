@@ -1,7 +1,7 @@
 "use client";
 
 import { services } from "@/lib/content/services";
-import { exteriorProjectTypes, exteriorTypeLabel } from "@/lib/data";
+import { exteriorProjectTypes, exteriorTypeLabel } from "@/lib/content/types";
 import type { ServiceSlug } from "@/lib/content/types";
 import { ArrowUpRight, ChevronLeft, X } from "lucide-react";
 import Link from "next/link";
@@ -230,14 +230,14 @@ export function CaseStudiesMenu({ open, onClose, anchorRef }: CaseStudiesMenuPro
       <div
         className={popoverClass}
         style={popoverStyle}
-        aria-hidden={!entered}
+        {...(!entered ? { inert: true } : {})}
         onClick={(event) => event.stopPropagation()}
       >
         <aside
           id={subPanelId}
           role="region"
           aria-label="Exterior design categories"
-          aria-hidden={!exteriorOpen}
+          {...(!exteriorOpen ? { inert: true } : {})}
           style={subStyle}
           className={`case-studies-menu-sub${exteriorOpen ? " is-open" : ""}`}
           onMouseEnter={openExterior}

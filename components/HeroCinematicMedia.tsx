@@ -2,8 +2,10 @@
 
 import {
   HERO_DESKTOP_MEDIA,
+  HERO_CAROUSEL_QUALITY,
   HERO_DESKTOP_SIZES,
-  HERO_IMAGE_QUALITY,
+  HERO_LCP_DESKTOP_SIZES,
+  HERO_LCP_QUALITY,
   HERO_MOBILE_MEDIA,
   HERO_MOBILE_SIZES,
   HERO_TABLET_MEDIA,
@@ -40,10 +42,12 @@ function HeroSlidePicture({
   loading: "eager" | "lazy";
 }) {
   const fetchPriority = (priority ? "high" : "auto") as "high" | "auto";
+  const quality = priority ? HERO_LCP_QUALITY : HERO_CAROUSEL_QUALITY;
+  const desktopSizes = priority ? HERO_LCP_DESKTOP_SIZES : HERO_DESKTOP_SIZES;
   const sharedFill = {
     alt: "",
     fill: true,
-    quality: HERO_IMAGE_QUALITY,
+    quality,
     priority,
     fetchPriority,
   };
@@ -64,20 +68,20 @@ function HeroSlidePicture({
     ...sharedFill,
     className: "hero-modern__img",
     src: slide.src,
-    sizes: HERO_DESKTOP_SIZES,
+    sizes: desktopSizes,
   });
 
   return (
     <picture className="hero-modern__picture">
       <source media={HERO_MOBILE_MEDIA} srcSet={heroSrcSet(mobileProps)} sizes={HERO_MOBILE_SIZES} />
       <source media={HERO_TABLET_MEDIA} srcSet={heroSrcSet(tabletProps)} sizes={HERO_TABLET_SIZES} />
-      <source media={HERO_DESKTOP_MEDIA} srcSet={heroSrcSet(imgProps)} sizes={HERO_DESKTOP_SIZES} />
+      <source media={HERO_DESKTOP_MEDIA} srcSet={heroSrcSet(imgProps)} sizes={desktopSizes} />
       <img
         {...imgProps}
         alt=""
         draggable={false}
         loading={loading}
-        decoding="async"
+        decoding={priority ? "sync" : "async"}
         style={{
           ...imgProps.style,
           width: "100%",
@@ -117,11 +121,11 @@ function useMountedHeroSlides(slideCount: number, active: number, canRotate: boo
     };
 
     if (typeof window.requestIdleCallback === "function") {
-      const idleId = window.requestIdleCallback(warmSecond, { timeout: 4000 });
+      const idleId = window.requestIdleCallback(warmSecond, { timeout: 12000 });
       return () => window.cancelIdleCallback(idleId);
     }
 
-    const timeoutId = window.setTimeout(warmSecond, 2500);
+    const timeoutId = window.setTimeout(warmSecond, 8000);
     return () => window.clearTimeout(timeoutId);
   }, [canRotate, slideCount]);
 

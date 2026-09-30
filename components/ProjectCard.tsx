@@ -20,6 +20,7 @@ import {
 } from "@/lib/data";
 import { captureGalleryNavigation } from "@/lib/gallery-return";
 import { ArrowUpRight } from "lucide-react";
+import { SITE_IMAGE_QUALITY } from "@/lib/image-delivery";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -145,6 +146,8 @@ function MasonryCard({
             src={project.image}
             alt={project.imageAlt}
             fill
+            quality={SITE_IMAGE_QUALITY}
+            loading="lazy"
             className="project-card__img"
             sizes={
               span >= 8
@@ -212,6 +215,8 @@ function GridCard({
               src={project.image}
               alt={project.imageAlt}
               fill
+              quality={SITE_IMAGE_QUALITY}
+              loading={index < 4 ? "eager" : "lazy"}
               className="object-cover"
               sizes="(max-width: 768px) 100vw, (max-width: 1279px) 50vw, 33vw"
             />
@@ -286,7 +291,7 @@ function FeaturedCard({ project, index }: { project: Project; index: number }) {
           src={project.image}
           alt={project.imageAlt}
           fill
-          quality={mobilePerf ? 76 : 90}
+          quality={SITE_IMAGE_QUALITY}
           className="feat-card__img object-cover"
           sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 34vw"
           style={{ objectPosition: "50% 42%" }}

@@ -5,7 +5,9 @@ import type { ServiceVisualAsset, ServiceVisualSlide } from "@/lib/content/servi
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-const IMAGE_QUALITY = 92;
+import { SITE_IMAGE_QUALITY } from "@/lib/image-delivery";
+
+const IMAGE_QUALITY = SITE_IMAGE_QUALITY;
 const CROSSFADE_S = 1.65;
 const SLIDE_INTERVAL_MS = 3800;
 /**

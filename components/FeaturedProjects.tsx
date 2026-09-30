@@ -1,8 +1,6 @@
 "use client";
 
 import "@/app/featured-projects.css";
-import { ScrollReveal } from "@/components/animations/ScrollReveal";
-import { MagneticButton } from "@/components/animations/MagneticButton";
 import { FeaturedHeroProject } from "@/components/FeaturedHeroProject";
 import { ProjectCard } from "@/components/ProjectCard";
 import { SectionHeader, SectionShell } from "@/components/SectionShell";
@@ -54,19 +52,17 @@ export function FeaturedProjects() {
           </div>
         </div>
 
-        <ScrollReveal dramatic delay={0.12} className="featured-projects__foot-wrap">
+        <div className="featured-projects__foot-wrap">
           <div className="featured-projects__footer">
-            <MagneticButton className="inline-flex">
-              <Link
-                href={featuredProjectsSection.ctaHref}
-                className="btn btn--primary btn--sm featured-projects__cta"
-              >
-                <span className="featured-projects__cta-label">{featuredProjectsSection.ctaLabel}</span>
-                <ArrowUpRight className="btn__icon btn__icon--nudge featured-projects__cta-icon" aria-hidden />
-              </Link>
-            </MagneticButton>
+            <Link
+              href={featuredProjectsSection.ctaHref}
+              className="btn btn--primary btn--sm featured-projects__cta"
+            >
+              <span className="featured-projects__cta-label">{featuredProjectsSection.ctaLabel}</span>
+              <ArrowUpRight className="btn__icon btn__icon--nudge featured-projects__cta-icon" aria-hidden />
+            </Link>
           </div>
-        </ScrollReveal>
+        </div>
       </div>
     </SectionShell>
   );

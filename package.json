@@ -22,6 +22,7 @@
     "generate:projects": "npm run generate:interior && npm run generate:exterior",
     "hero:expand": "node scripts/expand-hero-images.mjs",
     "hero:heroo": "node scripts/build-heroo-hero.mjs",
+    "hero:webp": "node scripts/encode-hero-webp.mjs",
     "hero:crops": "node scripts/build-hero-device-crops.mjs"
   },
   "dependencies": {
@@ -33,6 +34,13 @@
     "react-dom": "^18",
     "sharp": "^0.33.5"
   },
+  "browserslist": [
+    "chrome >= 93",
+    "firefox >= 92",
+    "safari >= 15.4",
+    "ios_saf >= 15.4",
+    "not dead"
+  ],
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^18",

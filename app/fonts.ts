@@ -5,7 +5,7 @@ export const bodoniModa = Bodoni_Moda({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-bodoni-moda",
-  weight: ["400", "500", "600"],
+  weight: ["400", "500"],
   style: ["normal", "italic"],
 });
 
@@ -22,5 +22,6 @@ export const ibmPlexMono = IBM_Plex_Mono({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-ibm-plex-mono",
-  weight: ["300", "400", "500"],
+  weight: ["400", "500"],
+  adjustFontFallback: true,
 });

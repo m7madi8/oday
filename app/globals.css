@@ -2396,6 +2396,9 @@ body::-webkit-scrollbar {
     right: max(clamp(1.25rem, 4vw, 3.75rem), env(safe-area-inset-right, 0px));
     display: block;
     width: max-content;
+    opacity: 1;
+    pointer-events: auto;
+    animation: none;
   }
 
   .case-studies-cta-fixed--hold {
@@ -2452,12 +2455,28 @@ body::-webkit-scrollbar {
     border-color: rgba(var(--accent-gold-rgb), 0.72);
   }
 
+  .case-studies-cta-fixed .hero-cta-luxe--pinned,
+  .case-studies-cta-fixed .hero-cta-luxe--pinned::before,
+  .case-studies-cta-fixed .hero-cta-luxe--pinned::after,
+  .case-studies-cta-fixed .hero-cta-luxe--pinned .hero-cta-luxe__icon,
   .case-studies-cta-fixed .hero-cta-luxe--pinned .hero-cta-luxe__icon svg {
-    transition: transform 0.48s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: none !important;
+  }
+
+  .case-studies-cta-fixed .hero-cta-luxe--pinned:hover,
+  .case-studies-cta-fixed .hero-cta-luxe--pinned:active,
+  .case-studies-cta-fixed .hero-cta-luxe--pinned:focus-visible {
+    transform: none !important;
   }
 
   .case-studies-cta-fixed .hero-cta-luxe--pinned[aria-expanded="true"] .hero-cta-luxe__icon svg {
     transform: rotate(45deg);
+  }
+
+  .site-nav--at-hero .site-nav-menu-btn,
+  .site-nav--at-hero .site-nav-menu-btn__line,
+  .site-nav--at-hero .site-nav-search-bar {
+    transition: none !important;
   }
 
   @media (max-width: 639px) {

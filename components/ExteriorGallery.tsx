@@ -16,6 +16,7 @@ import { galleryTransition } from "@/lib/gallery-motion";
 import { captureGalleryNavigation } from "@/lib/gallery-return";
 import { AnimatePresence, motion, useReducedMotion } from "@/components/ClientMotion";
 import { ArrowLeft, ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { SITE_IMAGE_QUALITY, SITE_THUMB_QUALITY } from "@/lib/image-delivery";
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -243,6 +244,7 @@ function Stage({
                 src={project.image}
                 alt={project.imageAlt}
                 fill
+                quality={SITE_IMAGE_QUALITY}
                 className="xgl__stage-img object-cover"
                 sizes="(max-width: 767px) 100vw, 72vw"
                 priority
@@ -327,7 +329,15 @@ function Filmstrip({
                 onClick={() => onSelect(index)}
               >
                 <span className="xgl__film-thumb">
-                  <Image src={project.image} alt="" fill className="object-cover" sizes="96px" />
+                  <Image
+                    src={project.image}
+                    alt=""
+                    fill
+                    quality={SITE_THUMB_QUALITY}
+                    loading="lazy"
+                    className="object-cover"
+                    sizes="96px"
+                  />
                 </span>
                 <span className="xgl__film-caption">{project.title}</span>
               </button>

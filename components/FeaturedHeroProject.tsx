@@ -10,6 +10,7 @@ import {
   type Project,
   type ProjectGalleryImage,
 } from "@/lib/data";
+import { SITE_IMAGE_QUALITY } from "@/lib/image-delivery";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -33,7 +34,7 @@ export function FeaturedHeroProject({ project }: FeaturedHeroProjectProps) {
   const [progressKey, setProgressKey] = useState(0);
 
   useEffect(() => {
-    if (mobilePerf) return;
+    if (mobilePerf || !inView) return;
 
     let cancelled = false;
     import("@/lib/project-gallery")
@@ -46,7 +47,7 @@ export function FeaturedHeroProject({ project }: FeaturedHeroProjectProps) {
     return () => {
       cancelled = true;
     };
-  }, [mobilePerf, project]);
+  }, [inView, mobilePerf, project]);
 
   useEffect(() => {
     if (reduceMotion || mobilePerf || frames.length < 2) return;
@@ -109,7 +110,8 @@ export function FeaturedHeroProject({ project }: FeaturedHeroProjectProps) {
                     alt=""
                     fill
                     priority={index === 0}
-                    quality={mobilePerf ? 76 : 92}
+                    quality={SITE_IMAGE_QUALITY}
+                    loading={index === 0 ? "eager" : "lazy"}
                     sizes="(max-width: 1023px) 100vw, 96vw"
                     className="feat-hero__img object-cover"
                     style={{ objectPosition: "52% 36%" }}

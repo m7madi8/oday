@@ -10,6 +10,7 @@ import { type ProjectGalleryFormat, type ProjectGalleryImage } from "@/lib/data"
 import { galleryTransition } from "@/lib/gallery-motion";
 import { motion } from "@/components/ClientMotion";
 import { ChevronLeft, ChevronRight, Maximize2 } from "lucide-react";
+import { SITE_IMAGE_QUALITY } from "@/lib/image-delivery";
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 
@@ -79,6 +80,7 @@ function GalleryCard({
           alt={image.alt}
           width={width}
           height={height}
+          quality={SITE_IMAGE_QUALITY}
           className="project-gallery__img"
           sizes={`(max-width: 640px) ${maxWidth}px, ${maxWidth}px`}
           priority={index < 2}

@@ -22,15 +22,31 @@ const HomeScrollRestore = dynamic(
 
 export function DeferredClientShell() {
   const [loadDesktopFx, setLoadDesktopFx] = useState(false);
+  const [loadScrollHelpers, setLoadScrollHelpers] = useState(false);
 
   useEffect(() => {
     setLoadDesktopFx(isDesktopFinePointer() && !isMobilePerfMode());
+
+    const mountHelpers = () => setLoadScrollHelpers(true);
+    if (isMobilePerfMode()) {
+      if (typeof window.requestIdleCallback === "function") {
+        const id = window.requestIdleCallback(mountHelpers, { timeout: 3500 });
+        return () => window.cancelIdleCallback(id);
+      }
+      const t = window.setTimeout(mountHelpers, 1200);
+      return () => window.clearTimeout(t);
+    }
+    mountHelpers();
   }, []);
 
   return (
     <>
-      <SmoothHashScroll />
-      <HomeScrollRestore />
+      {loadScrollHelpers ? (
+        <>
+          <SmoothHashScroll />
+          <HomeScrollRestore />
+        </>
+      ) : null}
       {loadDesktopFx ? <OrbitScrollProgress /> : null}
     </>
   );
