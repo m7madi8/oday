@@ -4,7 +4,7 @@ import { SECTION_SCROLL_END, SECTION_SCROLL_START } from "@/lib/smooth-scroll";
 import { useEffect, useState } from "react";
 
 /** Homepage section ids in scroll order (top → bottom). */
-const HOME_SECTIONS = ["top", "services", "gallery", "contact"] as const;
+const HOME_SECTIONS = ["top", "gallery", "services", "contact"] as const;
 
 function getScrollAnchorOffset(): number {
   const stack = getComputedStyle(document.documentElement).getPropertyValue("--hero-nav-stack");

@@ -41,7 +41,6 @@ function MenuToggleIcon() {
 }
 
 function hrefToSectionId(href: string): string | null {
-  if (href === "/#gallery" || href === "#gallery") return "gallery";
   if (href === "/projects" || href.startsWith("/projects")) return null;
   if (href === "/#top" || href === "#top") return "top";
   const hash = href.includes("#") ? href.split("#")[1] : "";

@@ -48,7 +48,7 @@
   user-select: none;
 }
 
-/* Section 02 — one screen: header + panels, no overflow scroll */
+/* Section 03 — one screen: header + panels, no overflow scroll */
 #services.services-section.section-page {
   height: 100svh;
   height: 100dvh;
@@ -161,7 +161,7 @@
   min-height: inherit;
   height: 100%;
   overflow: hidden;
-  background: var(--bg-primary);
+  background: #0f0e0d;
 }
 
 .hero-modern__media {
@@ -175,6 +175,7 @@
 .hero-modern__stage {
   position: absolute;
   inset: 0;
+  background: #121110;
 }
 
 .hero-modern__layer {
@@ -184,13 +185,22 @@
   opacity: 0;
   z-index: 0;
   visibility: visible;
-  transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 0.52s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity;
 }
 
-.hero-modern__layer.is-active,
-.hero-modern__layer.is-seed {
+.hero-modern__layer.is-previous {
+  opacity: 1;
+  z-index: 1;
+}
+
+.hero-modern__layer.is-active {
   opacity: 1;
   z-index: 2;
+}
+
+.hero-modern__layer--instant {
+  transition: none !important;
 }
 
 .hero-modern__layer-inner {
@@ -672,6 +682,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .hero-modern__layer,
+  .hero-modern__layer--instant,
   .hero-modern__layer-inner,
   .hero-modern__dot-fill,
   .hero-modern__tag,

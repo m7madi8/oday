@@ -48,6 +48,8 @@ type ProjectCardProps = {
   span?: 4 | 6 | 8 | 12;
   /** Masonry / featured: stagger delay within a visible band or grid. */
   revealIndex?: number;
+  /** Featured bento cell modifier class (homepage grid). */
+  featuredBentoClass?: string;
   /** Grid only: animate this batch in on mount. */
   batchAnimate?: boolean;
 };
@@ -65,6 +67,7 @@ export function ProjectCard({
   span,
   revealIndex,
   batchAnimate = false,
+  featuredBentoClass,
 }: ProjectCardProps) {
   if (variant === "masonry") {
     return (
@@ -78,7 +81,13 @@ export function ProjectCard({
     );
   }
   if (variant === "featured") {
-    return <FeaturedCard project={project} index={index} />;
+    return (
+      <FeaturedCard
+        project={project}
+        index={index}
+        bentoClass={featuredBentoClass}
+      />
+    );
   }
   return <GridCard project={project} index={index} batchAnimate={batchAnimate} />;
 }
@@ -260,7 +269,15 @@ function GridCard({
   );
 }
 
-function FeaturedCard({ project, index }: { project: Project; index: number }) {
+function FeaturedCard({
+  project,
+  index,
+  bentoClass,
+}: {
+  project: Project;
+  index: number;
+  bentoClass?: string;
+}) {
   const reduceMotion = useReducedMotion();
   const mobilePerf = useMobilePerfMode();
   const lightMotion = reduceMotion || mobilePerf;
@@ -268,7 +285,7 @@ function FeaturedCard({ project, index }: { project: Project; index: number }) {
 
   return (
     <motion.article
-      className="feat-card"
+      className={`feat-card${bentoClass ? ` ${bentoClass}` : ""}`}
       data-section={project.serviceSlug}
       id={project.id}
       initial={lightMotion ? false : cardInViewHidden}
@@ -299,6 +316,7 @@ function FeaturedCard({ project, index }: { project: Project; index: number }) {
         />
         <div className="feat-card__shade" aria-hidden />
         <div className="feat-card__overlay">
+          <p className="feat-card__tag label-upper">{project.tag}</p>
           <h3 className="feat-card__title">{headline}</h3>
         </div>
       </Link>

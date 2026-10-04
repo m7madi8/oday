@@ -1,16 +1,14 @@
 "use client";
 
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
-import { MagneticButton } from "@/components/animations/MagneticButton";
 import { ServicePanelMedia } from "@/components/ServicePanelMedia";
 import { SectionHeader, SectionInner, SectionShell } from "@/components/SectionShell";
 import { services } from "@/lib/content/services";
 import { serviceVisualBySlug } from "@/lib/content/service-visuals";
 import { animationEasing } from "@/lib/animations";
 import { revealInView } from "@/lib/motion-viewport";
-import Link from "next/link";
 import { SafeButton } from "@/components/SafeButton";
-import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback, useRef, useState } from "react";
 import { motion, useReducedMotion } from "@/components/ClientMotion";
@@ -82,7 +80,7 @@ export function Services() {
       <SectionInner className="services-section__head">
         <div className="section-editorial-head">
           <span className="section-editorial-head__index" aria-hidden>
-            02
+            03
           </span>
           <SectionHeader
             eyebrow="Solutions"
@@ -331,29 +329,6 @@ function ServiceStoryCard({
               <p className="font-display text-sm leading-tight text-white">{service.title}</p>
             </div>
           </div>
-
-          <div className="mt-auto space-y-3 pb-1">
-            <div className="flex flex-col gap-2.5">
-              <MagneticButton className="w-full">
-                <Link
-                  href={`/request/${service.slug}`}
-                  className="btn btn--primary btn--sm w-full"
-                  onClick={(event) => event.stopPropagation()}
-                  aria-label={`Request ${service.title}`}
-                >
-                  Request
-                  <ArrowUpRight className="btn__icon btn__icon--nudge" aria-hidden />
-                </Link>
-              </MagneticButton>
-              <Link
-                href={serviceGalleryHref(service.slug)}
-                className="btn btn--ghost btn--sm w-full"
-                onClick={(event) => event.stopPropagation()}
-              >
-                View gallery
-              </Link>
-            </div>
-          </div>
         </div>
       </div>
     </article>
@@ -481,7 +456,7 @@ function ServicePanel({
           </span>
         </div>
 
-        <div className="mt-auto flex min-h-0 flex-1 items-end gap-4 pt-8">
+        <div className="mt-auto flex min-h-0 flex-1 items-end pt-8">
           <h3
             className={`shrink-0 font-display text-[clamp(0.85rem,1.4vw,1.15rem)] leading-none tracking-[0.04em] [writing-mode:vertical-rl] rotate-180 transition-colors duration-300 ${
               isActive
@@ -491,37 +466,6 @@ function ServicePanel({
           >
             {profile.verticalLabel}
           </h3>
-
-          <div className={`min-w-0 flex-1 ${isActive ? "" : "pointer-events-none"}`}>
-            {isActive ? (
-              <div className="services-panel-copy rounded-xl border border-white/10 bg-black/40 p-3 backdrop-blur-md sm:p-3.5">
-                <p className="text-base leading-relaxed text-white/90">
-                  {profile.punchline}
-                </p>
-
-                <div className="mt-4 flex flex-wrap items-center gap-3 border-t border-white/10 pt-3.5">
-                  <MagneticButton className="inline-flex">
-                    <Link
-                      href={`/request/${service.slug}`}
-                      className="btn btn--primary btn--sm"
-                      onClick={(e) => e.stopPropagation()}
-                      aria-label={`Request ${service.title}`}
-                    >
-                      Request
-                      <ArrowUpRight className="btn__icon btn__icon--nudge" aria-hidden />
-                    </Link>
-                  </MagneticButton>
-                  <Link
-                    href={galleryHref}
-                    className="btn btn--ghost btn--sm"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    Gallery
-                  </Link>
-                </div>
-              </div>
-            ) : null}
-          </div>
         </div>
       </div>
 

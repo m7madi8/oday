@@ -35,6 +35,7 @@ import {
   type ProjectServiceFilter,
 } from "@/lib/data";
 import { AnimatePresence } from "@/components/ClientMotion";
+import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Suspense, useCallback, useMemo, useState } from "react";
@@ -241,6 +242,24 @@ export function ProjectsGallery({
                       className="section-title section-title--sans mt-2"
                       delay={0.08}
                     />
+                    <RevealFade as="div" className="mt-5 flex flex-wrap gap-3" delay={0.2}>
+                      <Link
+                        href="/request/architecture-ai"
+                        className="btn btn--primary btn--sm inline-flex"
+                        data-no-glow
+                      >
+                        Request — Ai architect
+                        <ArrowUpRight className="btn__icon btn__icon--nudge" aria-hidden />
+                      </Link>
+                      <Link
+                        href="/request/architecture-drone"
+                        className="btn btn--primary btn--sm inline-flex"
+                        data-no-glow
+                      >
+                        Request — Architect Dron
+                        <ArrowUpRight className="btn__icon btn__icon--nudge" aria-hidden />
+                      </Link>
+                    </RevealFade>
                   </header>
                   <GalleryStagger
                     className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"

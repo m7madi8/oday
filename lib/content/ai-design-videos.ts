@@ -32,6 +32,6 @@ export const aiDesignGalleryCopy: ServiceGalleryCopy = {
     "Motion studies and AI-enhanced concept films — built for fast alignment, premium presentation, and design clarity.",
   badge: "AI Film",
   ctaHref: "/request/architecture-ai",
-  ctaLabel: "Request Ai architect brief",
+  ctaLabel: "Request",
   headingId: "ai-gallery-heading",
 };

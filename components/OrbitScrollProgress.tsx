@@ -7,12 +7,42 @@ import { useEffect, useRef } from "react";
 const RING_RADIUS = 18;
 const RING_LEN = 2 * Math.PI * RING_RADIUS;
 
-function scrollMax() {
+function isHomePath(pathname: string) {
+  return pathname === "/" || pathname === "";
+}
+
+function elementDocumentTop(el: HTMLElement): number {
+  return el.getBoundingClientRect().top + window.scrollY;
+}
+
+/** Max scroll Y where progress should reach 100% (homepage stops before footer). */
+function scrollMax(pathname: string) {
+  if (isHomePath(pathname)) {
+    const footer = document.getElementById("footer");
+    const contact = document.getElementById("contact");
+    const endTop = footer
+      ? elementDocumentTop(footer)
+      : contact
+        ? elementDocumentTop(contact) + contact.offsetHeight
+        : null;
+    if (endTop != null) {
+      return Math.max(1, endTop - window.innerHeight);
+    }
+  }
   return Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
 }
 
-function scrollProgress() {
-  return Math.min(1, Math.max(0, window.scrollY / scrollMax()));
+function scrollProgress(pathname: string) {
+  return Math.min(1, Math.max(0, window.scrollY / scrollMax(pathname)));
+}
+
+/** Hide the orbit only while the footer band is on screen. */
+function isFooterScrollZone(): boolean {
+  const footer = document.getElementById("footer");
+  if (!footer) return false;
+  const footerTop = elementDocumentTop(footer);
+  const viewBottom = window.scrollY + window.innerHeight;
+  return viewBottom > footerTop + 32;
 }
 
 export function OrbitScrollProgress() {
@@ -70,8 +100,21 @@ export function OrbitScrollProgress() {
     };
 
     const onOrbitScroll = () => {
-      orbit.hidden = scrollMax() <= 4;
-      orbitP = scrollProgress();
+      const pageScrollable =
+        document.documentElement.scrollHeight > window.innerHeight + 8;
+      const inFooter = isFooterScrollZone();
+      orbit.hidden = !pageScrollable;
+      orbit.classList.toggle("orbit--in-footer", inFooter);
+      if (inFooter) {
+        orbit.setAttribute("aria-hidden", "true");
+        if (orbitRaf) {
+          cancelAnimationFrame(orbitRaf);
+          orbitRaf = 0;
+        }
+        return;
+      }
+      orbit.setAttribute("aria-hidden", "false");
+      orbitP = scrollProgress(pathname);
       pulseOrbit();
       if (!orbitRaf) orbitRaf = requestAnimationFrame(drawOrbit);
     };

@@ -13,9 +13,10 @@ export const featuredProjectIds = [
 
 export const featuredProjectsSection = {
   eyebrow: "Selected Work",
-  title: "Featured Projects",
-  titleAccent: "Curated case studies",
-  ctaLabel: "View full gallery",
+  title: "Featured",
+  titleAccent: "Projects",
+  lead: "Curated villas, interiors, and delivery-ready case studies from the studio archive.",
+  ctaLabel: "Explore full gallery",
   ctaHref: "/projects",
 } as const;
 

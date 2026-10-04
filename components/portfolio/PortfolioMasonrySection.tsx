@@ -7,7 +7,9 @@ import { GalleryGoldLine, GalleryReveal } from "@/components/animations/GalleryM
 import { GALLERY_FOCUS_EVENT, readGalleryFocusId } from "@/lib/gallery-return";
 import { buildExteriorGalleryBands, buildGalleryBands } from "@/lib/portfolio-masonry-layout";
 import type { PortfolioSectionId } from "@/lib/project-card-ratio";
-import type { Project } from "@/lib/data";
+import type { Project, ServiceSlug } from "@/lib/data";
+import { ArrowUpRight } from "lucide-react";
+import Link from "next/link";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
 const INITIAL_VISIBLE_BANDS = 4;
@@ -25,6 +27,11 @@ const SECTION_COPY: Record<
     title: "Exterior Design",
     subtitle: "Villas, buildings, landscape, and facade studies across Palestine.",
   },
+};
+
+const SECTION_REQUEST_SLUG: Record<PortfolioSectionId, ServiceSlug> = {
+  interior: "interior",
+  exterior: "exterior",
 };
 
 export function PortfolioMasonrySection({
@@ -103,6 +110,16 @@ export function PortfolioMasonrySection({
           timing="enter"
         >
           {copy.subtitle}
+        </RevealFade>
+        <RevealFade as="div" className="portfolio-section__actions" delay={0.32} timing="enter">
+          <Link
+            href={`/request/${SECTION_REQUEST_SLUG[section]}`}
+            className="btn btn--primary btn--sm inline-flex"
+            data-no-glow
+          >
+            Request
+            <ArrowUpRight className="btn__icon btn__icon--nudge" aria-hidden />
+          </Link>
         </RevealFade>
         <GalleryReveal>
           <GalleryGoldLine className="portfolio-section__rule mt-6 max-w-xs" />

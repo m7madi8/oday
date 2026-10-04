@@ -28,6 +28,8 @@ type HeroCinematicMediaProps = {
   onSettled?: (index: number) => void;
 };
 
+const CROSSFADE_MS = 520;
+
 function heroSrcSet(props: { srcSet?: string; src?: string }) {
   return props.srcSet || props.src || "";
 }
@@ -94,114 +96,96 @@ function HeroSlidePicture({
   );
 }
 
-function useMountedHeroSlides(slideCount: number, active: number, canRotate: boolean) {
-  const [mounted, setMounted] = useState<Set<number>>(() => new Set([0]));
-
-  useEffect(() => {
-    setMounted((prev) => {
-      const next = new Set(prev);
-      next.add(active);
-      if (canRotate && slideCount > 1) {
-        next.add((active + 1) % slideCount);
-      }
-      return next;
-    });
-  }, [active, canRotate, slideCount]);
-
-  useEffect(() => {
-    if (!canRotate || slideCount < 2) return;
-
-    const warmSecond = () => {
-      setMounted((prev) => {
-        if (prev.has(1)) return prev;
-        const next = new Set(prev);
-        next.add(1);
-        return next;
-      });
-    };
-
-    if (typeof window.requestIdleCallback === "function") {
-      const idleId = window.requestIdleCallback(warmSecond, { timeout: 12000 });
-      return () => window.cancelIdleCallback(idleId);
-    }
-
-    const timeoutId = window.setTimeout(warmSecond, 8000);
-    return () => window.clearTimeout(timeoutId);
-  }, [canRotate, slideCount]);
-
-  const mountSlide = useCallback((index: number) => {
-    setMounted((prev) => {
-      if (prev.has(index)) return prev;
-      const next = new Set(prev);
-      next.add(index);
-      return next;
-    });
-  }, []);
-
-  return { mounted, mountSlide };
-}
-
 export const HeroCinematicMedia = forwardRef<HeroCinematicMediaHandle, HeroCinematicMediaProps>(
   function HeroCinematicMedia({ slides, reduceMotion, paused = false, onSettled }, ref) {
     const [active, setActive] = useState(0);
+    const [previous, setPrevious] = useState<number | null>(null);
+    const clearPreviousRef = useRef<number | null>(null);
     const canRotate = !reduceMotion && slides.length > 1;
     const settledRef = useRef(onSettled);
     settledRef.current = onSettled;
-    const { mounted: mountedSlides, mountSlide } = useMountedHeroSlides(slides.length, active, canRotate);
+
+    const commitSlide = useCallback(
+      (nextIndex: number) => {
+        if (nextIndex < 0 || nextIndex >= slides.length) return;
+        setActive((current) => {
+          if (nextIndex === current) return current;
+          if (clearPreviousRef.current) {
+            window.clearTimeout(clearPreviousRef.current);
+            clearPreviousRef.current = null;
+          }
+          if (reduceMotion) {
+            setPrevious(null);
+          } else {
+            setPrevious(current);
+            clearPreviousRef.current = window.setTimeout(() => {
+              setPrevious(null);
+              clearPreviousRef.current = null;
+            }, CROSSFADE_MS);
+          }
+          settledRef.current?.(nextIndex);
+          return nextIndex;
+        });
+      },
+      [reduceMotion, slides.length],
+    );
 
     const goToSlide = useCallback(
       (nextIndex: number) => {
         if (!canRotate) return false;
         if (nextIndex < 0 || nextIndex >= slides.length) return false;
-        mountSlide(nextIndex);
-        setActive((current) => {
-          if (nextIndex === current) return current;
-          settledRef.current?.(nextIndex);
-          return nextIndex;
-        });
+        commitSlide(nextIndex);
         return true;
       },
-      [canRotate, mountSlide, slides.length],
+      [canRotate, commitSlide, slides.length],
     );
 
     useImperativeHandle(ref, () => ({ goToSlide }), [goToSlide]);
+
+    useEffect(() => {
+      return () => {
+        if (clearPreviousRef.current) window.clearTimeout(clearPreviousRef.current);
+      };
+    }, []);
 
     useEffect(() => {
       if (!canRotate || paused) return;
 
       const holdMs = slides[active]?.primary ? hero.primaryIntervalMs : hero.slideIntervalMs;
       const id = window.setTimeout(() => {
-        const next = (active + 1) % slides.length;
-        setActive(next);
-        settledRef.current?.(next);
+        commitSlide((active + 1) % slides.length);
       }, holdMs);
 
       return () => window.clearTimeout(id);
-    }, [active, canRotate, paused, slides]);
+    }, [active, canRotate, commitSlide, paused, slides]);
 
-    const visibleSlides = canRotate ? slides : slides.slice(0, 1);
+    const slideCount = canRotate ? slides.length : 1;
 
     return (
       <div className="hero-modern__media" aria-hidden>
         <div className="hero-modern__stage">
-          {visibleSlides.map((slide, index) => (
-            <div
-              key={slide.alt}
-              className={`hero-modern__layer${index === active ? " is-active" : ""}${
-                slide.primary ? " hero-modern__layer--lead-zoom" : ""
-              }${index === 1 ? " hero-modern__layer--zoom-from-top" : ""}`}
-            >
-              <div className="hero-modern__layer-inner">
-                {mountedSlides.has(index) ? (
+          {slides.slice(0, slideCount).map((slide, index) => {
+            const isActive = index === active;
+            const isPrevious = index === previous;
+            return (
+              <div
+                key={slide.alt}
+                className={`hero-modern__layer${isActive ? " is-active" : ""}${
+                  isPrevious ? " is-previous" : ""
+                }${reduceMotion ? " hero-modern__layer--instant" : ""}${
+                  slide.primary ? " hero-modern__layer--lead-zoom" : ""
+                }${index === 1 ? " hero-modern__layer--zoom-from-top" : ""}`}
+              >
+                <div className="hero-modern__layer-inner">
                   <HeroSlidePicture
                     slide={slide}
                     priority={index === 0}
-                    loading={index === 0 ? "eager" : "lazy"}
+                    loading={index === 0 ? "eager" : "eager"}
                   />
-                ) : null}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
         <div className="hero-modern__scrim" />
       </div>

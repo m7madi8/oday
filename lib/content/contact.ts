@@ -43,7 +43,7 @@ export const footer = {
   ] as const,
   homepageLinks: [
     { href: "/projects", label: "Case Studies" },
-    { href: "#services", label: "Solutions" },
+    { href: "#services", label: "Work" },
     { href: "#contact", label: "Contact" },
   ],
   categoryLinks: [

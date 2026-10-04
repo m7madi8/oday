@@ -60,6 +60,10 @@
   color: var(--text-secondary);
 }
 
+.portfolio-section__actions {
+  margin-top: var(--space-sm);
+}
+
 .portfolio-masonry-rows {
   display: flex;
   flex-direction: column;

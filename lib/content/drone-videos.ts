@@ -28,7 +28,7 @@ export const droneGalleryContent = {
   ],
   badge: "Aerial Film",
   ctaHref: "/request/architecture-drone",
-  ctaLabel: "Request Architect Dron brief",
+  ctaLabel: "Request",
   headingId: "drone-gallery-heading",
 } as const;
 

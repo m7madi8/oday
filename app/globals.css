@@ -1755,6 +1755,16 @@ body::-webkit-scrollbar {
   bottom: max(1.05rem, env(safe-area-inset-bottom, 0px));
   z-index: 420;
   pointer-events: none;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+
+.orbit[hidden] {
+  display: none !important;
+}
+
+.orbit.orbit--in-footer {
+  opacity: 0;
+  visibility: hidden;
 }
 
 .orbit-field {

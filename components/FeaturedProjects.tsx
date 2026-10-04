@@ -20,7 +20,7 @@ export function FeaturedProjects() {
         <div className="featured-projects__head-wrap">
           <div className="featured-projects__head section-editorial-head featured-projects__head-editorial">
             <span className="section-editorial-head__index" aria-hidden>
-              03
+              02
             </span>
             <SectionHeader
               align="start"
