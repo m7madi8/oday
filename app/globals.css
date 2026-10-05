@@ -258,6 +258,22 @@
   transition: filter 0.5s ease;
 }
 
+.site-nav-logo__mark {
+  display: block;
+  width: 2.75rem;
+  height: auto;
+  transition: filter 0.5s ease, color 0.5s ease;
+}
+
+.site-nav-logo__mark--hero-glow {
+  filter:
+    drop-shadow(0 0 1px rgba(255, 255, 255, 0.95))
+    drop-shadow(0 0 2px rgba(255, 255, 255, 0.7))
+    drop-shadow(0 0 8px rgba(255, 255, 255, 0.42))
+    drop-shadow(0 0 18px rgba(255, 255, 255, 0.22))
+    drop-shadow(0 0 32px rgba(255, 255, 255, 0.1));
+}
+
 /* Home hero — soft white edge luminance so logo reads on dark imagery */
 .site-nav-logo__img--hero-glow {
   filter:
@@ -1572,6 +1588,11 @@
     width: auto;
   }
 
+  .site-nav .site-nav-logo__mark {
+    width: 2.75rem;
+    height: auto;
+  }
+
   .nav-mega__link {
     font-size: 0.9375rem;
   }
@@ -1605,6 +1626,11 @@
   .site-nav .site-nav-logo__img {
     height: 3.125rem;
     width: auto;
+  }
+
+  .site-nav .site-nav-logo__mark {
+    width: 2.75rem;
+    height: auto;
   }
 
   .site-nav-search-bar {
@@ -1642,6 +1668,11 @@
 
   .site-nav .site-nav-logo__img {
     height: 3.375rem;
+  }
+
+  .site-nav .site-nav-logo__mark {
+    width: 2.75rem;
+    height: auto;
   }
 
   .nav-mega__link {

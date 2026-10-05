@@ -1,18 +1,8 @@
 "use client";
 
-import {
-  HERO_DESKTOP_MEDIA,
-  HERO_CAROUSEL_QUALITY,
-  HERO_DESKTOP_SIZES,
-  HERO_LCP_DESKTOP_SIZES,
-  HERO_LCP_QUALITY,
-  HERO_MOBILE_MEDIA,
-  HERO_MOBILE_SIZES,
-  HERO_TABLET_MEDIA,
-  HERO_TABLET_SIZES,
-  hero,
-} from "@/lib/hero-content";
-import { getImageProps } from "next/image";
+import { HeroSlidePicture } from "@/components/HeroSlidePicture";
+import { hero } from "@/lib/hero-content";
+import type { ReactNode } from "react";
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from "react";
 
 export type HeroCinematicMediaHandle = {
@@ -25,85 +15,34 @@ type HeroCinematicMediaProps = {
   slides: readonly HeroSlide[];
   reduceMotion: boolean;
   paused?: boolean;
+  lcpFallback?: ReactNode;
+  onLeadSlideReady?: () => void;
   onSettled?: (index: number) => void;
 };
 
 const CROSSFADE_MS = 520;
 
-function heroSrcSet(props: { srcSet?: string; src?: string }) {
-  return props.srcSet || props.src || "";
-}
-
-function HeroSlidePicture({
-  slide,
-  priority,
-  loading,
-}: {
-  slide: HeroSlide;
-  priority: boolean;
-  loading: "eager" | "lazy";
-}) {
-  const fetchPriority = (priority ? "high" : "auto") as "high" | "auto";
-  const quality = priority ? HERO_LCP_QUALITY : HERO_CAROUSEL_QUALITY;
-  const desktopSizes = priority ? HERO_LCP_DESKTOP_SIZES : HERO_DESKTOP_SIZES;
-  const sharedFill = {
-    alt: "",
-    fill: true,
-    quality,
-    priority,
-    fetchPriority,
-  };
-
-  const { props: mobileProps } = getImageProps({
-    ...sharedFill,
-    src: slide.srcMobile,
-    sizes: HERO_MOBILE_SIZES,
-  });
-
-  const { props: tabletProps } = getImageProps({
-    ...sharedFill,
-    src: slide.srcTablet,
-    sizes: HERO_TABLET_SIZES,
-  });
-
-  const { props: imgProps } = getImageProps({
-    ...sharedFill,
-    className: "hero-modern__img",
-    src: slide.src,
-    sizes: desktopSizes,
-  });
-
-  return (
-    <picture className="hero-modern__picture">
-      <source media={HERO_MOBILE_MEDIA} srcSet={heroSrcSet(mobileProps)} sizes={HERO_MOBILE_SIZES} />
-      <source media={HERO_TABLET_MEDIA} srcSet={heroSrcSet(tabletProps)} sizes={HERO_TABLET_SIZES} />
-      <source media={HERO_DESKTOP_MEDIA} srcSet={heroSrcSet(imgProps)} sizes={desktopSizes} />
-      <img
-        {...imgProps}
-        alt=""
-        draggable={false}
-        loading={loading}
-        decoding={priority ? "sync" : "async"}
-        style={{
-          ...imgProps.style,
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          objectPosition: slide.objectPosition,
-        }}
-      />
-    </picture>
-  );
-}
-
 export const HeroCinematicMedia = forwardRef<HeroCinematicMediaHandle, HeroCinematicMediaProps>(
-  function HeroCinematicMedia({ slides, reduceMotion, paused = false, onSettled }, ref) {
+  function HeroCinematicMedia(
+    { slides, reduceMotion, paused = false, lcpFallback, onLeadSlideReady, onSettled },
+    ref,
+  ) {
     const [active, setActive] = useState(0);
     const [previous, setPrevious] = useState<number | null>(null);
+    const [leadReady, setLeadReady] = useState(false);
+    const [carouselExpanded, setCarouselExpanded] = useState(false);
     const clearPreviousRef = useRef<number | null>(null);
+    const leadReadyRef = useRef(onLeadSlideReady);
+    leadReadyRef.current = onLeadSlideReady;
     const canRotate = !reduceMotion && slides.length > 1;
     const settledRef = useRef(onSettled);
     settledRef.current = onSettled;
+
+    const markLeadReady = useCallback(() => {
+      setLeadReady(true);
+      leadReadyRef.current?.();
+      setCarouselExpanded(true);
+    }, []);
 
     const commitSlide = useCallback(
       (nextIndex: number) => {
@@ -149,6 +88,16 @@ export const HeroCinematicMedia = forwardRef<HeroCinematicMediaHandle, HeroCinem
     }, []);
 
     useEffect(() => {
+      if (leadReady) return;
+      const img = document.querySelector(
+        ".hero-modern__stage .hero-modern__layer.is-active .hero-modern__img",
+      );
+      if (img instanceof HTMLImageElement && img.complete && img.naturalWidth > 0) {
+        markLeadReady();
+      }
+    }, [leadReady, markLeadReady]);
+
+    useEffect(() => {
       if (!canRotate || paused) return;
 
       const holdMs = slides[active]?.primary ? hero.primaryIntervalMs : hero.slideIntervalMs;
@@ -159,28 +108,37 @@ export const HeroCinematicMedia = forwardRef<HeroCinematicMediaHandle, HeroCinem
       return () => window.clearTimeout(id);
     }, [active, canRotate, commitSlide, paused, slides]);
 
-    const slideCount = canRotate ? slides.length : 1;
+    const slideCount = canRotate ? (carouselExpanded ? slides.length : 1) : 1;
 
     return (
       <div className="hero-modern__media" aria-hidden>
         <div className="hero-modern__stage">
+          {lcpFallback ? (
+            <div className={`hero-modern__lcp-fallback${leadReady ? " is-hidden" : ""}`}>
+              {lcpFallback}
+            </div>
+          ) : null}
           {slides.slice(0, slideCount).map((slide, index) => {
             const isActive = index === active;
             const isPrevious = index === previous;
+            const waitingLead = Boolean(lcpFallback) && index === 0 && !leadReady;
             return (
               <div
                 key={slide.alt}
                 className={`hero-modern__layer${isActive ? " is-active" : ""}${
                   isPrevious ? " is-previous" : ""
-                }${reduceMotion ? " hero-modern__layer--instant" : ""}${
-                  slide.primary ? " hero-modern__layer--lead-zoom" : ""
-                }${index === 1 ? " hero-modern__layer--zoom-from-top" : ""}`}
+                }${waitingLead ? " is-waiting-lead" : ""}${
+                  reduceMotion ? " hero-modern__layer--instant" : ""
+                }${slide.primary ? " hero-modern__layer--lead-zoom" : ""}${
+                  index === 1 ? " hero-modern__layer--zoom-from-top" : ""
+                }`}
               >
                 <div className="hero-modern__layer-inner">
                   <HeroSlidePicture
                     slide={slide}
                     priority={index === 0}
-                    loading={index === 0 ? "eager" : "eager"}
+                    loading={index === 0 ? "eager" : "lazy"}
+                    onLoad={index === 0 ? markLeadReady : undefined}
                   />
                 </div>
               </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import { OdLogo } from "@/components/OdLogo";
 import { DesktopNav } from "@/components/navigation/DesktopNav";
 import { SiteBackButton } from "@/components/SiteBackButton";
 import dynamic from "next/dynamic";
@@ -7,12 +8,9 @@ import { useActiveSection } from "@/hooks/useActiveSection";
 import { useMobilePerfMode } from "@/hooks/useMobilePerfMode";
 import { useHoverIntent } from "@/hooks/useHoverIntent";
 import { getPrimaryNavPanels, type NavPanelId } from "@/lib/content/site-navigation";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
-
-import brandLogo from "@/imgs/oday-logo.png";
 
 const SearchOverlay = dynamic(
   () =>
@@ -239,20 +237,10 @@ export function Navigation() {
               aria-label="OD Architects home"
               onClick={handleMenuNavigate}
             >
-              <Image
-                src={brandLogo}
-                alt="OD Architects"
-                height={72}
-                width={288}
-                priority
-                className={`site-nav-logo__img h-11 w-auto ${
-                  isHome
-                    ? "max-w-[min(240px,calc(100vw-7rem))]"
-                    : "max-w-[min(200px,calc(100vw-10.5rem))] sm:max-w-[min(240px,calc(100vw-12rem))]"
-                } origin-left scale-[1.62] md:scale-[1.72] lg:scale-[1.82] ${
-                  invertLogo ? "site-nav-logo__img--inverted" : ""
-                } ${heroLogoGlow ? "site-nav-logo__img--hero-glow" : ""}`}
-                sizes="(max-width: 1024px) 200px, 280px"
+              <OdLogo
+                className={`site-nav-logo__mark w-11 ${
+                  invertLogo ? "text-white" : "text-[#1d1d1b]"
+                } ${heroLogoGlow ? "site-nav-logo__mark--hero-glow" : ""}`}
               />
             </Link>
           </div>

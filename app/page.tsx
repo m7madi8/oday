@@ -1,8 +1,7 @@
 import dynamic from "next/dynamic";
 import "@/app/home-editorial.css";
-import { Hero } from "@/components/Hero";
+import { HeroShell } from "@/components/HeroShell";
 import { HeroCarouselPrefetch } from "@/components/HeroCarouselPrefetch";
-import { HeroLcpPreload } from "@/components/HeroLcpPreload";
 
 const CaseStudiesCta = dynamic(
   () => import("@/components/CaseStudiesCta").then((m) => ({ default: m.CaseStudiesCta })),
@@ -27,11 +26,10 @@ const Contact = dynamic(() => import("@/components/Contact").then((m) => ({ defa
 export default function Home() {
   return (
     <>
-      <HeroLcpPreload />
       <HeroCarouselPrefetch />
       <CaseStudiesCta />
       <main id="main-content">
-        <Hero />
+        <HeroShell />
         <HomeSectionRule />
         <FeaturedProjects />
         <Services />

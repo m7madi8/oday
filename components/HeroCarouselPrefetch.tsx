@@ -54,14 +54,14 @@ export function HeroCarouselPrefetch() {
     };
 
     if (typeof window.requestIdleCallback === "function") {
-      const id = window.requestIdleCallback(run, { timeout: 2000 });
+      const id = window.requestIdleCallback(run, { timeout: 4500 });
       return () => {
         window.cancelIdleCallback(id);
         links.forEach((l) => l.remove());
       };
     }
 
-    const t = window.setTimeout(run, 400);
+    const t = window.setTimeout(run, 1200);
     return () => {
       window.clearTimeout(t);
       links.forEach((l) => l.remove());
