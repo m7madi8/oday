@@ -30,6 +30,7 @@ export const HeroCinematicMedia = forwardRef<HeroCinematicMediaHandle, HeroCinem
     const [active, setActive] = useState(0);
     const [previous, setPrevious] = useState<number | null>(null);
     const [leadReady, setLeadReady] = useState(false);
+    const [introDone, setIntroDone] = useState(false);
     const [carouselExpanded, setCarouselExpanded] = useState(false);
     const clearPreviousRef = useRef<number | null>(null);
     const leadReadyRef = useRef(onLeadSlideReady);
@@ -82,6 +83,16 @@ export const HeroCinematicMedia = forwardRef<HeroCinematicMediaHandle, HeroCinem
     useImperativeHandle(ref, () => ({ goToSlide }), [goToSlide]);
 
     useEffect(() => {
+      if (document.documentElement.dataset.intro === "done") {
+        setIntroDone(true);
+        return;
+      }
+      const onIntroDone = () => setIntroDone(true);
+      window.addEventListener("od:intro-done", onIntroDone, { once: true });
+      return () => window.removeEventListener("od:intro-done", onIntroDone);
+    }, []);
+
+    useEffect(() => {
       return () => {
         if (clearPreviousRef.current) window.clearTimeout(clearPreviousRef.current);
       };
@@ -97,8 +108,10 @@ export const HeroCinematicMedia = forwardRef<HeroCinematicMediaHandle, HeroCinem
       }
     }, [leadReady, markLeadReady]);
 
+    const carouselArmed = introDone && leadReady;
+
     useEffect(() => {
-      if (!canRotate || paused) return;
+      if (!canRotate || paused || !carouselArmed) return;
 
       const holdMs = slides[active]?.primary ? hero.primaryIntervalMs : hero.slideIntervalMs;
       const id = window.setTimeout(() => {
@@ -106,7 +119,7 @@ export const HeroCinematicMedia = forwardRef<HeroCinematicMediaHandle, HeroCinem
       }, holdMs);
 
       return () => window.clearTimeout(id);
-    }, [active, canRotate, commitSlide, paused, slides]);
+    }, [active, canRotate, carouselArmed, commitSlide, paused, slides]);
 
     const slideCount = canRotate ? (carouselExpanded ? slides.length : 1) : 1;
 
