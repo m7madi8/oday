@@ -178,29 +178,6 @@
   background: #121110;
 }
 
-.hero-modern__lcp-fallback {
-  position: absolute;
-  inset: 0;
-  z-index: 4;
-  pointer-events: none;
-  transition: opacity 0.35s ease, visibility 0.35s ease;
-}
-
-.hero-modern__lcp-fallback.is-hidden {
-  opacity: 0;
-  visibility: hidden;
-}
-
-.hero-modern__layer--lcp {
-  opacity: 1 !important;
-  transition: none !important;
-}
-
-.hero-modern__layer.is-waiting-lead.is-active {
-  opacity: 0;
-  z-index: 0;
-}
-
 .hero-modern__layer {
   position: absolute;
   inset: 0;

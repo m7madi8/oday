@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { bodoniModa, ibmPlexMono, plusJakartaSans } from "./fonts";
 import "./globals.css";
 import "./typography.css";
-import OdIntro from "@/components/OdIntro";
 import { DeferredClientShell } from "@/components/DeferredClientShell";
 import { HeroLcpPreload } from "@/components/HeroLcpPreload";
 import { Navigation } from "@/components/Navigation";
@@ -27,7 +26,6 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${bodoniModa.variable} ${plusJakartaSans.variable} ${ibmPlexMono.variable}`}
-      data-intro="playing"
       suppressHydrationWarning
     >
       <head>
@@ -40,7 +38,6 @@ export default function RootLayout({
         <a href="#main-content" className="skip-link">
           Skip to content
         </a>
-        <OdIntro />
         <DeferredClientShell />
         <div aria-hidden className="grain-layer pointer-events-none fixed inset-0 z-[1]" />
         <Navigation />

@@ -2,7 +2,6 @@
 
 import { HeroSlidePicture } from "@/components/HeroSlidePicture";
 import { hero } from "@/lib/hero-content";
-import type { ReactNode } from "react";
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from "react";
 
 export type HeroCinematicMediaHandle = {
@@ -15,34 +14,23 @@ type HeroCinematicMediaProps = {
   slides: readonly HeroSlide[];
   reduceMotion: boolean;
   paused?: boolean;
-  lcpFallback?: ReactNode;
-  onLeadSlideReady?: () => void;
   onSettled?: (index: number) => void;
 };
 
 const CROSSFADE_MS = 520;
 
 export const HeroCinematicMedia = forwardRef<HeroCinematicMediaHandle, HeroCinematicMediaProps>(
-  function HeroCinematicMedia(
-    { slides, reduceMotion, paused = false, lcpFallback, onLeadSlideReady, onSettled },
-    ref,
-  ) {
+  function HeroCinematicMedia({ slides, reduceMotion, paused = false, onSettled }, ref) {
     const [active, setActive] = useState(0);
     const [previous, setPrevious] = useState<number | null>(null);
     const [leadReady, setLeadReady] = useState(false);
-    const [introDone, setIntroDone] = useState(false);
-    const [carouselExpanded, setCarouselExpanded] = useState(false);
     const clearPreviousRef = useRef<number | null>(null);
-    const leadReadyRef = useRef(onLeadSlideReady);
-    leadReadyRef.current = onLeadSlideReady;
     const canRotate = !reduceMotion && slides.length > 1;
     const settledRef = useRef(onSettled);
     settledRef.current = onSettled;
 
     const markLeadReady = useCallback(() => {
       setLeadReady(true);
-      leadReadyRef.current?.();
-      setCarouselExpanded(true);
     }, []);
 
     const commitSlide = useCallback(
@@ -83,16 +71,6 @@ export const HeroCinematicMedia = forwardRef<HeroCinematicMediaHandle, HeroCinem
     useImperativeHandle(ref, () => ({ goToSlide }), [goToSlide]);
 
     useEffect(() => {
-      if (document.documentElement.dataset.intro === "done") {
-        setIntroDone(true);
-        return;
-      }
-      const onIntroDone = () => setIntroDone(true);
-      window.addEventListener("od:intro-done", onIntroDone, { once: true });
-      return () => window.removeEventListener("od:intro-done", onIntroDone);
-    }, []);
-
-    useEffect(() => {
       return () => {
         if (clearPreviousRef.current) window.clearTimeout(clearPreviousRef.current);
       };
@@ -108,10 +86,8 @@ export const HeroCinematicMedia = forwardRef<HeroCinematicMediaHandle, HeroCinem
       }
     }, [leadReady, markLeadReady]);
 
-    const carouselArmed = introDone && leadReady;
-
     useEffect(() => {
-      if (!canRotate || paused || !carouselArmed) return;
+      if (!canRotate || paused || !leadReady) return;
 
       const holdMs = slides[active]?.primary ? hero.primaryIntervalMs : hero.slideIntervalMs;
       const id = window.setTimeout(() => {
@@ -119,32 +95,24 @@ export const HeroCinematicMedia = forwardRef<HeroCinematicMediaHandle, HeroCinem
       }, holdMs);
 
       return () => window.clearTimeout(id);
-    }, [active, canRotate, carouselArmed, commitSlide, paused, slides]);
+    }, [active, canRotate, commitSlide, leadReady, paused, slides]);
 
-    const slideCount = canRotate ? (carouselExpanded ? slides.length : 1) : 1;
+    const slideCount = canRotate ? slides.length : 1;
 
     return (
       <div className="hero-modern__media" aria-hidden>
         <div className="hero-modern__stage">
-          {lcpFallback ? (
-            <div className={`hero-modern__lcp-fallback${leadReady ? " is-hidden" : ""}`}>
-              {lcpFallback}
-            </div>
-          ) : null}
           {slides.slice(0, slideCount).map((slide, index) => {
             const isActive = index === active;
             const isPrevious = index === previous;
-            const waitingLead = Boolean(lcpFallback) && index === 0 && !leadReady;
             return (
               <div
                 key={slide.alt}
                 className={`hero-modern__layer${isActive ? " is-active" : ""}${
                   isPrevious ? " is-previous" : ""
-                }${waitingLead ? " is-waiting-lead" : ""}${
-                  reduceMotion ? " hero-modern__layer--instant" : ""
-                }${slide.primary ? " hero-modern__layer--lead-zoom" : ""}${
-                  index === 1 ? " hero-modern__layer--zoom-from-top" : ""
-                }`}
+                }${reduceMotion ? " hero-modern__layer--instant" : ""}${
+                  slide.primary ? " hero-modern__layer--lead-zoom" : ""
+                }${index === 1 ? " hero-modern__layer--zoom-from-top" : ""}`}
               >
                 <div className="hero-modern__layer-inner">
                   <HeroSlidePicture

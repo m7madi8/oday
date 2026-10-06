@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 import "@/app/home-editorial.css";
-import { HeroShell } from "@/components/HeroShell";
+import { Hero } from "@/components/Hero";
 import { HeroCarouselPrefetch } from "@/components/HeroCarouselPrefetch";
 
 const CaseStudiesCta = dynamic(
@@ -29,7 +29,7 @@ export default function Home() {
       <HeroCarouselPrefetch />
       <CaseStudiesCta />
       <main id="main-content">
-        <HeroShell />
+        <Hero />
         <HomeSectionRule />
         <FeaturedProjects />
         <Services />
