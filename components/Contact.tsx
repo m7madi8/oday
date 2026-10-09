@@ -114,7 +114,7 @@ export function Contact() {
                 <Image
                   src={studioAbout.directorPortrait}
                   alt={studioAbout.directorPortraitAlt}
-                  sizes="(max-width: 768px) 18rem, 22rem"
+                  sizes="(max-width: 768px) 18rem, (max-width: 1440px) 22rem, 26rem"
                   className="contact-portrait-frame__img"
                 />
               </figure>
@@ -180,29 +180,14 @@ export function Contact() {
           </div>
 
           <div className="contact-channels-bar">
-            <div className="contact-channels-bar__pair">
-              {contact.items
-                .filter((item) => item.label !== "Location")
-                .map((item, index) => (
-                  <ContactChannelButton
-                    key={item.label}
-                    item={item}
-                    delay={baseDelay + 0.5 + index * 0.08}
-                    className={`contact-channel-slot contact-channel-slot--${item.label.toLowerCase()}`}
-                  />
-                ))}
-            </div>
-
-            {contact.items
-              .filter((item) => item.label === "Location")
-              .map((item) => (
-                <ContactChannelButton
-                  key={item.label}
-                  item={item}
-                  delay={baseDelay + 0.66}
-                  className="contact-channel-slot contact-channel-slot--location"
-                />
-              ))}
+            {contact.items.map((item, index) => (
+              <ContactChannelButton
+                key={item.label}
+                item={item}
+                delay={baseDelay + 0.5 + index * 0.08}
+                className={`contact-channel-slot contact-channel-slot--${item.label.toLowerCase()}`}
+              />
+            ))}
           </div>
 
           <footer id="footer" className="contact-section__footer">

@@ -42,29 +42,35 @@ export function HeroLcpPreload() {
     <>
       {mobilePreload ? (
         <link
+          key="hero-lcp-mobile"
           rel="preload"
           as="image"
           {...mobilePreload}
           media={HERO_MOBILE_MEDIA}
           fetchPriority="high"
+          suppressHydrationWarning
         />
       ) : null}
       {tabletPreload ? (
         <link
+          key="hero-lcp-tablet"
           rel="preload"
           as="image"
           {...tabletPreload}
           media={HERO_TABLET_MEDIA}
           fetchPriority="high"
+          suppressHydrationWarning
         />
       ) : null}
       {desktopPreload ? (
         <link
+          key="hero-lcp-desktop"
           rel="preload"
           as="image"
           {...desktopPreload}
           media={HERO_DESKTOP_MEDIA}
           fetchPriority="high"
+          suppressHydrationWarning
         />
       ) : null}
     </>

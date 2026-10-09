@@ -51,12 +51,15 @@ export const HeroCinematicMedia = forwardRef<HeroCinematicMediaHandle, HeroCinem
               clearPreviousRef.current = null;
             }, CROSSFADE_MS);
           }
-          settledRef.current?.(nextIndex);
           return nextIndex;
         });
       },
       [reduceMotion, slides.length],
     );
+
+    useEffect(() => {
+      settledRef.current?.(active);
+    }, [active]);
 
     const goToSlide = useCallback(
       (nextIndex: number) => {

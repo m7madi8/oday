@@ -1,15 +1,16 @@
 "use client";
 
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 import { submitContactForm } from "@/lib/contact-form";
 import { X } from "lucide-react";
 import { useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 const fieldClass =
-  "w-full rounded-xl border border-gold/15 bg-bg-primary/85 px-4 py-3 text-sm text-ink-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] outline-none transition-[border-color,box-shadow,background-color] placeholder:text-ink-muted focus:border-gold/45 focus:bg-bg-primary focus:ring-1 focus:ring-gold/20";
+  "w-full rounded-xl border border-gold/15 bg-[#0a0a0a] px-4 py-3 text-sm text-white shadow-none outline-none transition-[border-color,box-shadow,background-color] placeholder:text-white/40 focus:border-gold/45 focus:bg-[#0a0a0a] focus:ring-1 focus:ring-gold/20";
 
 const labelClass =
-  "mb-1.5 block font-ui text-xs font-medium uppercase tracking-[0.14em] text-ink-muted";
+  "mb-1.5 block bg-transparent font-ui text-xs font-medium uppercase tracking-[0.14em] text-white/70";
 
 type StartProjectModalProps = {
   open: boolean;
@@ -18,7 +19,11 @@ type StartProjectModalProps = {
 
 export function StartProjectModal({ open, onClose }: StartProjectModalProps) {
   const titleId = useId();
-  const closeRef = useRef<HTMLButtonElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const firstFieldRef = useRef<HTMLInputElement>(null);
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
+
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [notes, setNotes] = useState("");
@@ -32,15 +37,16 @@ export function StartProjectModal({ open, onClose }: StartProjectModalProps) {
     setMounted(true);
   }, []);
 
+  useFocusTrap(panelRef, open, { autoFocus: false });
+
   useEffect(() => {
     if (!open) return;
 
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    closeRef.current?.focus();
 
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
+      if (event.key === "Escape") onCloseRef.current();
     };
     window.addEventListener("keydown", onKey);
 
@@ -48,7 +54,23 @@ export function StartProjectModal({ open, onClose }: StartProjectModalProps) {
       document.body.style.overflow = prev;
       window.removeEventListener("keydown", onKey);
     };
-  }, [open, onClose]);
+  }, [open]);
+
+  useEffect(() => {
+    if (!open || submitted) return;
+
+    const id = window.setTimeout(() => {
+      const panel = panelRef.current;
+      if (!panel) return;
+      const active = document.activeElement;
+      if (active instanceof HTMLElement && panel.contains(active) && active !== document.body) {
+        return;
+      }
+      firstFieldRef.current?.focus();
+    }, 0);
+
+    return () => window.clearTimeout(id);
+  }, [open, submitted]);
 
   useEffect(() => {
     if (!open) {
@@ -104,13 +126,16 @@ export function StartProjectModal({ open, onClose }: StartProjectModalProps) {
         type="button"
         className="start-project-modal__backdrop"
         aria-label="Close form"
+        onMouseDown={(event) => event.preventDefault()}
         onClick={onClose}
       />
       <div
+        ref={panelRef}
         className="start-project-modal__panel"
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
+        onMouseDown={(event) => event.stopPropagation()}
       >
         <div className="start-project-modal__header">
           <div>
@@ -120,7 +145,6 @@ export function StartProjectModal({ open, onClose }: StartProjectModalProps) {
             </h2>
           </div>
           <button
-            ref={closeRef}
             type="button"
             className="start-project-modal__close"
             aria-label="Close"
@@ -158,6 +182,7 @@ export function StartProjectModal({ open, onClose }: StartProjectModalProps) {
                 Full name
               </label>
               <input
+                ref={firstFieldRef}
                 id="start-project-name"
                 className={fieldClass}
                 value={fullName}
@@ -185,7 +210,7 @@ export function StartProjectModal({ open, onClose }: StartProjectModalProps) {
             <div>
               <label className={labelClass} htmlFor="start-project-notes">
                 Notes
-                <span className="ml-1.5 font-normal normal-case tracking-normal text-ink-muted/70">
+                <span className="ml-1.5 bg-transparent font-normal normal-case tracking-normal text-white/45">
                   (optional)
                 </span>
               </label>

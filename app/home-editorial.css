@@ -257,14 +257,7 @@
 }
 
 .hero-modern__scrim {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  pointer-events: none;
-  background:
-    linear-gradient(180deg, rgba(8, 8, 8, 0.28) 0%, transparent 32%),
-    linear-gradient(105deg, rgba(10, 10, 10, 0.82) 0%, rgba(10, 10, 10, 0.55) 38%, rgba(10, 10, 10, 0.12) 62%, transparent 78%),
-    linear-gradient(0deg, rgba(10, 10, 10, 0.48) 0%, rgba(10, 10, 10, 0.22) 28%, transparent 58%);
+  display: none;
 }
 
 @keyframes hero-frame-in {
@@ -363,58 +356,51 @@
   color: rgba(255, 255, 255, 0.62);
 }
 
-.hero-modern__eyebrow--row {
-  display: inline-flex;
-  flex-wrap: nowrap;
-  align-items: baseline;
-  gap: 0.4em;
-  color: rgba(255, 255, 255, 0.92);
+.hero-modern__eyebrow-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+  width: max-content;
+  max-width: 100%;
 }
 
+#main-content .hero-modern__eyebrow--light,
 .hero-modern__eyebrow--light {
-  flex-shrink: 0;
   color: rgba(255, 255, 255, 0.92);
   letter-spacing: 0.1em;
 }
 
-.hero-modern__eyebrow-sep {
-  flex-shrink: 0;
-  color: rgba(232, 200, 116, 0.7);
-}
-
+#main-content .hero-modern__eyebrow--gold,
 .hero-modern__eyebrow--gold {
-  flex-shrink: 0;
-  color: #e8c874;
-  letter-spacing: 0.1em;
+  color: #c5a059;
+  letter-spacing: 0.2em;
 }
 
-.hero-modern__eyebrow--row + .hero-modern__copy-body {
+.hero-modern__eyebrow-stack + .hero-modern__copy-body {
   margin-top: clamp(0.55rem, 1.4vh, 0.85rem);
 }
 
+#main-content .hero-modern__headline,
 .hero-modern__headline {
   margin: 0;
   margin-top: clamp(0.65rem, 1.6vh, 1rem);
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  align-items: baseline;
-  gap: 0.28em;
   width: max-content;
   max-width: 100%;
-  font-family: var(--font-display);
-  font-weight: 400;
-  /* Scales with viewport so “A Better Life” never clips */
-  font-size: clamp(1.35rem, 4.6vw, 3.25rem);
-  line-height: 1.08;
-  letter-spacing: -0.025em;
+  font-family: var(--font-hero-serif);
+  font-weight: 500;
+  font-size: clamp(1.55rem, 4.8vw, 3.35rem);
+  line-height: 1.12;
+  letter-spacing: -0.015em;
   white-space: nowrap;
   overflow: visible;
   color: #fff;
   text-shadow:
-    0 1px 0 rgba(0, 0, 0, 0.4),
-    0 2px 12px rgba(0, 0, 0, 0.45),
-    0 14px 40px rgba(0, 0, 0, 0.5);
+    0 1px 0 rgba(0, 0, 0, 0.35),
+    0 2px 14px rgba(0, 0, 0, 0.4);
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
 }
 
 .hero-modern__mask {
@@ -423,11 +409,6 @@
   vertical-align: baseline;
   padding-bottom: 0.08em;
   padding-inline-end: 0.06em;
-}
-
-.hero-modern__headline .hero-modern__mask {
-  overflow: visible;
-  flex-shrink: 0;
 }
 
 .hero-modern__mask-inner {
@@ -439,44 +420,25 @@
   will-change: transform, opacity, filter;
 }
 
+/* Playfair Display — white upright + gold italic (exact reference match) */
+#main-content .hero-modern__headline-main,
 .hero-modern__headline-main {
-  font-size: 1em;
+  font-family: var(--font-hero-serif);
+  font-style: normal;
   font-weight: 500;
-  letter-spacing: -0.02em;
-  line-height: 1;
-  color: #ffffff;
+  color: #fff;
 }
 
+#main-content .hero-modern__headline-accent,
 .hero-modern__headline-accent {
-  margin-top: 0;
+  font-family: var(--font-hero-serif);
   font-style: italic;
-  font-weight: 600;
-  letter-spacing: -0.015em;
+  font-weight: 500;
+  letter-spacing: 0.005em;
+  color: #c5a059;
 }
 
-.hero-modern__mask.hero-modern__headline-accent {
-  padding-inline-end: 0.15em;
-  padding-bottom: 0.1em;
-}
-
-.hero-modern__headline-accent .hero-modern__mask-inner {
-  display: inline-block;
-  padding-inline-end: 0.08em;
-  background: linear-gradient(
-    92deg,
-    #fffef8 0%,
-    #f5e3b0 28%,
-    #e8c874 55%,
-    #c9a24b 82%,
-    #f0d48a 100%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  -webkit-box-decoration-break: clone;
-  box-decoration-break: clone;
-}
-
+#main-content .hero-modern__subline,
 .hero-modern__subline {
   display: flex;
   flex-direction: column;
@@ -486,10 +448,11 @@
   width: 100%;
   max-width: min(100%, 36em);
   font-family: var(--font-ui);
-  font-size: clamp(0.5rem, 0.55vw, 0.5625rem);
+  font-size: clamp(0.8125rem, 0.95vw, 0.9375rem);
   font-weight: 400;
-  line-height: 1.45;
-  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.55;
+  color: #fff;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.35);
 }
 
 .hero-modern__subline-line {
@@ -509,8 +472,8 @@
   text-transform: uppercase;
   white-space: nowrap;
   overflow: visible;
-  color: rgba(255, 255, 255, 0.55);
-  transform: scale(0.72);
+  color: #e8c874;
+  transform: scale(0.62);
   transform-origin: left center;
 }
 
@@ -747,12 +710,10 @@
 
   .hero-modern__headline {
     margin-top: 0.55rem;
-    flex-wrap: wrap;
     width: 100%;
     max-width: 100%;
-    font-size: clamp(1.55rem, 8.5vw, 2.35rem);
-    gap: 0.12em 0.22em;
-    line-height: 1.08;
+    font-size: clamp(1.45rem, 7.2vw, 2.2rem);
+    line-height: 1.15;
     white-space: normal;
   }
 
@@ -762,20 +723,16 @@
     letter-spacing: 0.08em;
   }
 
-  .hero-modern__headline-main {
-    font-size: 1em;
-    letter-spacing: -0.02em;
-  }
-
+  #main-content .hero-modern__subline,
   .hero-modern__subline {
     margin-top: 0.45rem;
-    font-size: 0.5rem;
+    font-size: 0.8125rem;
   }
 
   .hero-modern__services {
     font-size: 0.45rem;
     letter-spacing: 0.06em;
-    transform: scale(0.68);
+    transform: scale(0.58);
   }
 
   .hero-modern__slide-nav {
@@ -810,7 +767,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   Contact — locked screenshot board: 3 top + 3 channels + footer
+   Contact — full-width editorial board (portrait | bio | office)
    -------------------------------------------------------------------------- */
 .contact-section {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -822,119 +779,176 @@
 }
 
 .contact-shell {
-  --contact-rail: min(18.5rem, 100%);
-  width: min(100%, 74rem);
-  margin-inline: auto;
-  padding-inline: clamp(1.25rem, 4vw, 2.75rem);
+  --contact-portrait: minmax(16rem, 22rem);
+  --contact-office: minmax(19rem, 24rem);
+  --contact-gap: clamp(1.5rem, 3vw, 3.25rem);
+  /* Match pinned OUR PORTFOLIO right inset (globals .case-studies-cta-fixed) */
+  --contact-rail-right: max(clamp(1.25rem, 4vw, 3.75rem), env(safe-area-inset-right, 0px));
+  width: 100%;
+  max-width: none;
+  margin-inline: 0;
+  padding-inline-start: var(--section-gutter-x, clamp(1.25rem, 4vw, 2.75rem));
+  padding-inline-end: var(--contact-rail-right);
   display: flex;
   flex-direction: column;
-  gap: clamp(2.25rem, 4.5vw, 3.25rem);
+  gap: clamp(2.25rem, 4.5vw, 3.5rem);
+  box-sizing: border-box;
 }
 
-/* Top: portrait | bio | office (office flush right with Location) */
+/* Top: portrait | bio | office */
 .contact-board {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   align-items: start;
-  gap: 1.25rem;
+  gap: 1.5rem;
+  width: 100%;
+  min-width: 0;
 }
 
 .contact-section__portrait {
   margin: 0 auto;
   width: 100%;
-  max-width: 19rem;
+  max-width: 20rem;
+  min-width: 0;
+}
+
+.contact-section__bio {
+  min-width: 0;
+  margin-inline: auto;
+  max-width: 36rem;
+  text-align: center;
 }
 
 .contact-section__office {
   min-width: 0;
   width: 100%;
-  max-width: var(--contact-rail);
+  max-width: 24rem;
   margin-inline: auto;
-  margin-top: 0;
 }
 
 .contact-channels-bar {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 0.85rem;
   width: 100%;
-}
-
-.contact-channels-bar__pair {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: stretch;
-  gap: 0.75rem;
-  width: 100%;
+  min-width: 0;
 }
 
 .contact-channel-slot {
-  width: fit-content;
-  max-width: 100%;
+  width: 100%;
+  min-width: 0;
 }
 
 .contact-channel-slot .contact-channel {
-  width: fit-content;
+  width: 100%;
   max-width: 100%;
   height: 100%;
 }
 
-.contact-channel-slot--location {
-  width: fit-content;
-  margin-inline: 0;
+@media (min-width: 640px) and (max-width: 1023px) {
+  .contact-channels-bar {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.85rem;
+  }
+}
+
+@media (min-width: 900px) and (max-width: 1023px) {
+  .contact-board {
+    grid-template-columns: minmax(14rem, 18rem) minmax(0, 1fr);
+    column-gap: clamp(1.5rem, 3vw, 2.5rem);
+    align-items: center;
+  }
+
+  .contact-section__portrait {
+    margin: 0;
+    max-width: none;
+  }
+
+  .contact-section__office {
+    grid-column: 1 / -1;
+    margin-inline: 0;
+    justify-self: stretch;
+    width: 100%;
+    max-width: none;
+  }
+
+  .contact-section__office .office-card {
+    max-width: 36rem;
+  }
 }
 
 @media (min-width: 1024px) {
   .contact-shell {
-    --contact-rail: 18.5rem;
+    --contact-portrait: minmax(17rem, 22rem);
+    --contact-office: minmax(20rem, 25rem);
+    --contact-gap: clamp(1.75rem, 3.2vw, 3.5rem);
   }
 
   .contact-board {
     grid-template-columns:
-      minmax(15rem, 19rem)
+      var(--contact-portrait)
       minmax(0, 1fr)
-      var(--contact-rail);
-    column-gap: clamp(1.5rem, 2.8vw, 2.5rem);
+      var(--contact-office);
+    column-gap: var(--contact-gap);
+    align-items: center;
   }
 
   .contact-section__portrait {
-    grid-column: 1;
     margin: 0;
     max-width: none;
     align-self: start;
   }
 
   .contact-section__bio {
-    grid-column: 2;
     align-self: center;
+    margin-inline: 0;
+    max-width: 42rem;
+    text-align: left;
   }
 
   .contact-section__office {
-    grid-column: 3;
-    justify-self: end;
     margin-inline: 0;
-    margin-top: 0;
-    width: var(--contact-rail);
-    max-width: var(--contact-rail);
+    max-width: none;
+    width: 100%;
     align-self: center;
+    justify-self: end;
+  }
+
+  .contact-section__office .office-card {
+    width: 100%;
+    max-width: min(100%, 26rem);
+    margin-inline-start: auto;
+    margin-inline-end: 0;
   }
 
   .contact-channels-bar {
-    flex-direction: row;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: clamp(0.85rem, 1.5vw, 1.25rem);
     align-items: stretch;
-    justify-content: space-between;
-    gap: 1.5rem;
   }
 
-  .contact-channels-bar__pair {
-    width: auto;
-    margin-inline-start: 0;
+  .contact-channel-slot--phone {
+    justify-self: stretch;
+    max-width: none;
+  }
+}
+
+@media (min-width: 1440px) {
+  .contact-shell {
+    --contact-portrait: minmax(18rem, 24rem);
+    --contact-office: minmax(22rem, 27rem);
+    --contact-gap: clamp(2rem, 3.5vw, 4rem);
   }
 
-  /* Location alone on the right — right edge matches map card */
-  .contact-channel-slot--location {
-    margin-inline: 0 0 0 auto;
+  .contact-section__bio {
+    max-width: 46rem;
+  }
+}
+
+@media (min-width: 1920px) {
+  .contact-shell {
+    --contact-portrait: minmax(19rem, 26rem);
+    --contact-office: minmax(23rem, 28rem);
   }
 }
 
@@ -989,24 +1003,11 @@
   border-right: 1px solid;
 }
 
-.contact-section__bio {
-  margin-inline: auto;
-  max-width: 36rem;
-  text-align: center;
-}
-
-@media (min-width: 1024px) {
-  .contact-section__bio {
-    margin-inline: 0;
-    max-width: none;
-    text-align: left;
-  }
-}
-
+#main-content .contact-bio__eyebrow,
 .contact-bio__eyebrow {
   margin: 0;
   font-family: var(--font-ui);
-  font-size: 0.6875rem;
+  font-size: 0.625rem;
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -1017,28 +1018,30 @@
   margin: 0;
   margin-top: 0.7rem;
   font-family: var(--font-display);
-  font-size: clamp(2.1rem, 3.4vw, 2.95rem);
+  font-size: clamp(2.15rem, 3.6vw, 3.25rem);
   font-weight: 300;
   font-style: italic;
   letter-spacing: -0.02em;
   color: #fff;
 }
 
+#main-content .contact-bio__approach,
 .contact-bio__approach {
   margin: 1.25rem 0 0;
   font-family: var(--font-ui);
-  font-size: 0.6875rem;
+  font-size: 0.65625rem;
   font-weight: 600;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: #e8c874;
 }
 
+#main-content .contact-bio__tagline,
 .contact-bio__tagline {
   margin: 0.8rem 0 0;
-  max-width: 32rem;
+  max-width: min(42rem, 100%);
   font-family: var(--font-ui);
-  font-size: clamp(0.9rem, 1.05vw, 1rem);
+  font-size: clamp(0.9rem, 1.05vw, 1.0125rem);
   font-weight: 300;
   line-height: 1.65;
   color: rgba(255, 255, 255, 0.52);
@@ -1047,6 +1050,12 @@
 @media (min-width: 1024px) {
   .contact-bio__tagline {
     margin-inline: 0;
+  }
+}
+
+@media (min-width: 1440px) {
+  .contact-bio__tagline {
+    max-width: min(46rem, 100%);
   }
 }
 
@@ -1083,10 +1092,11 @@
   color: rgba(255, 255, 255, 0.42);
 }
 
+#main-content .office-card__title,
 .office-card__title {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(1.4rem, 2vw, 1.7rem);
+  font-size: clamp(1.05rem, 1.45vw, 1.3rem);
   font-weight: 400;
   font-style: italic;
   line-height: 1.15;
@@ -1231,8 +1241,11 @@
 
 .contact-proof__ring-box {
   position: relative;
-  width: clamp(9.5rem, 20vw, 11.25rem);
-  height: clamp(9.5rem, 20vw, 11.25rem);
+  width: clamp(9.75rem, 14vw, 12rem);
+  height: clamp(9.75rem, 14vw, 12rem);
+  filter:
+    drop-shadow(0 0 10px rgba(var(--accent-gold-rgb), 0.12))
+    drop-shadow(0 0 22px rgba(var(--accent-gold-rgb), 0.06));
 }
 
 .contact-proof__ring-svg {
@@ -1250,14 +1263,18 @@
 
 .contact-proof__ring-progress {
   fill: none;
-  stroke: #e8c874;
+  stroke: var(--accent-gold, #e8c874);
   stroke-width: 2.5;
   stroke-linecap: round;
-  filter: drop-shadow(0 0 4px rgba(201, 162, 75, 0.35));
+  filter:
+    drop-shadow(0 0 3px rgba(var(--accent-gold-rgb), 0.5))
+    drop-shadow(0 0 8px rgba(var(--accent-gold-rgb), 0.22));
 }
 
 .contact-proof__ring-box.is-animating .contact-proof__ring-progress {
-  filter: drop-shadow(0 0 6px rgba(201, 162, 75, 0.45));
+  filter:
+    drop-shadow(0 0 4px rgba(var(--accent-gold-rgb), 0.65))
+    drop-shadow(0 0 12px rgba(var(--accent-gold-rgb), 0.32));
 }
 
 .contact-proof__ring-center {
@@ -1398,15 +1415,15 @@
 }
 
 .contact-channel {
-  display: inline-flex;
-  width: fit-content;
+  display: flex;
+  width: 100%;
   max-width: 100%;
-  min-height: 4.35rem;
+  min-height: 4.5rem;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.8rem 1rem;
+  gap: 0.85rem;
+  padding: 0.9rem 1.1rem;
   border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 0.3rem;
+  border-radius: 0.35rem;
   background: rgba(18, 18, 18, 0.95);
   text-decoration: none;
   color: inherit;
@@ -1458,15 +1475,15 @@
 .contact-channel__value {
   display: block;
   font-family: var(--font-display);
-  font-size: 0.95rem;
+  font-size: clamp(0.95rem, 1.05vw, 1.1rem);
   font-weight: 400;
-  line-height: 1.25;
+  line-height: 1.3;
   color: #fff;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
 }
 
 .contact-channel__value--email {
-  white-space: nowrap;
+  overflow-wrap: anywhere;
 }
 
 .contact-section__footer {
@@ -1823,8 +1840,9 @@
     font-size: clamp(1.7rem, 3.8vw, 2.75rem);
   }
 
+  #main-content .hero-modern__subline,
   .hero-modern__subline {
-    font-size: clamp(0.5rem, 0.6vw, 0.55rem);
+    font-size: clamp(0.8125rem, 0.95vw, 0.9rem);
   }
 
   .hero-modern__stat-value {
@@ -1845,8 +1863,9 @@
     font-size: clamp(2.35rem, 2.6vw, 3.35rem);
   }
 
+  #main-content .hero-modern__subline,
   .hero-modern__subline {
-    font-size: 0.55rem;
+    font-size: 0.9375rem;
   }
 
   #main-content .hero-modern__eyebrow,
@@ -1880,8 +1899,9 @@
     font-size: clamp(2.6rem, 2.4vw, 3.5rem);
   }
 
+  #main-content .hero-modern__subline,
   .hero-modern__subline {
-    font-size: 0.5625rem;
+    font-size: 1rem;
   }
 
   .studio-close__name {

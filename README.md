@@ -8,7 +8,7 @@ Marketing website and project portfolio for OD Architects — interior and exter
 - React 18 + TypeScript
 - Tailwind CSS
 - Framer Motion + GSAP
-- [Brevo](https://www.brevo.com/) (contact and service-request email)
+- [Resend](https://resend.com/) (contact and service-request email)
 
 ## Requirements
 
@@ -46,9 +46,9 @@ Copy `.env.example` to `.env.local` and configure:
 
 | Variable | Purpose |
 | --- | --- |
-| `BREVO_API_KEY` | Brevo API key for transactional email |
-| `BREVO_SENDER_EMAIL` | Verified sender address |
-| `BREVO_SENDER_NAME` | Sender display name |
+| `RESEND_API_KEY` | Resend API key for transactional email |
+| `RESEND_FROM_EMAIL` | Verified sender on your domain (e.g. `contact@od-architects.com`) |
+| `RESEND_FROM_NAME` | Sender display name |
 | `CONTACT_EMAIL` | Inbox for form submissions |
 
 Optional (build-time hero tooling only — not used by the running site):

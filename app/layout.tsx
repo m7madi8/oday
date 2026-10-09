@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { bodoniModa, ibmPlexMono, plusJakartaSans } from "./fonts";
+import { bodoniModa, ibmPlexMono, playfairDisplay, plusJakartaSans } from "./fonts";
 import "./globals.css";
 import "./typography.css";
 import { DeferredClientShell } from "@/components/DeferredClientShell";
@@ -25,7 +25,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${bodoniModa.variable} ${plusJakartaSans.variable} ${ibmPlexMono.variable}`}
+      className={`${bodoniModa.variable} ${playfairDisplay.variable} ${plusJakartaSans.variable} ${ibmPlexMono.variable}`}
       suppressHydrationWarning
     >
       <head>

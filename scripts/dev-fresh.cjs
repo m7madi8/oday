@@ -91,11 +91,13 @@ if (clearNext) {
 /** Run `next` via Node (avoids Windows `spawn EINVAL` on `.cmd` with `shell: false`). */
 const nextCli = path.join(root, "node_modules", "next", "dist", "bin", "next");
 
+const nodeOptions = [process.env.NODE_OPTIONS, "--use-system-ca"].filter(Boolean).join(" ");
+
 const child = spawn(process.execPath, [nextCli, "dev"], {
   cwd: root,
   stdio: "inherit",
   shell: false,
-  env: { ...process.env, NEXT_DEV_DIST: "1" },
+  env: { ...process.env, NEXT_DEV_DIST: "1", NODE_OPTIONS: nodeOptions },
 });
 
 child.on("exit", (code, signal) => {

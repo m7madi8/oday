@@ -8,7 +8,7 @@ import { useReducedMotion } from "@/components/ClientMotion";
 import { heroCopy } from "@/lib/hero-copy";
 import { hero } from "@/lib/hero-content";
 import { ArrowUpRight } from "lucide-react";
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 export function Hero() {
   const reduceMotion = useReducedMotion();
@@ -18,6 +18,7 @@ export function Hero() {
   const [active, setActive] = useState(0);
   const [navPaused, setNavPaused] = useState(false);
   const [formOpen, setFormOpen] = useState(false);
+  const closeProjectForm = useCallback(() => setFormOpen(false), []);
 
   return (
     <SectionShell id="top" variant="hero" className="hero--ready hero--modern">
@@ -26,7 +27,7 @@ export function Hero() {
           ref={mediaRef}
           slides={slides}
           reduceMotion={cinematicReduce}
-          paused={navPaused}
+          paused={navPaused || formOpen}
           onSettled={(index) => {
             setActive(index);
           }}
@@ -34,21 +35,22 @@ export function Hero() {
 
         <div className="hero-modern__content">
           <div className="hero-modern__copy">
-            <p className="hero-modern__eyebrow hero-modern__eyebrow--row">
-              <span className="hero-modern__eyebrow--light">{heroCopy.headlineEyebrow}</span>
-              <span className="hero-modern__eyebrow-sep" aria-hidden>
-                ·
-              </span>
-              <span className="hero-modern__eyebrow--gold">{heroCopy.headlineEyebrowGold}</span>
-            </p>
+            <div className="hero-modern__eyebrow-stack">
+              <p className="hero-modern__eyebrow hero-modern__eyebrow--light">
+                {heroCopy.headlineEyebrow}
+              </p>
+              <p className="hero-modern__eyebrow hero-modern__eyebrow--gold">
+                {heroCopy.headlineEyebrowGold}
+              </p>
+            </div>
 
             <div className="hero-modern__copy-body">
               <h1 className="hero-modern__headline">
-                <span className="hero-modern__mask hero-modern__headline-main">
-                  <span className="hero-modern__mask-inner">{heroCopy.headlineBeforeAccent}</span>
-                </span>
-                <span className="hero-modern__mask hero-modern__headline-accent">
-                  <span className="hero-modern__mask-inner">{heroCopy.headlineAccent}</span>
+                <span className="hero-modern__headline-main">
+                  {heroCopy.headlineBeforeAccent}
+                </span>{" "}
+                <span className="hero-modern__headline-accent">
+                  {heroCopy.headlineAccent}
                 </span>
               </h1>
 
@@ -123,7 +125,7 @@ export function Hero() {
         </div>
       </div>
 
-      <StartProjectModal open={formOpen} onClose={() => setFormOpen(false)} />
+      <StartProjectModal open={formOpen} onClose={closeProjectForm} />
     </SectionShell>
   );
 }

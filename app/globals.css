@@ -24,16 +24,17 @@
   --ink-secondary: var(--text-secondary);
   --ink-muted: var(--text-muted);
   --border: rgba(255, 255, 255, 0.1);
-  /* Typography — Bodoni Moda · Plus Jakarta Sans · IBM Plex Mono */
+  /* Typography — Bodoni Moda · Playfair Display (hero) · Plus Jakarta Sans · IBM Plex Mono */
   --font-display: var(--font-bodoni-moda), "Bodoni Moda", Georgia, "Times New Roman", serif;
+  --font-hero-serif: var(--font-playfair-display), "Playfair Display", Georgia, "Times New Roman", serif;
   --font-sub: var(--font-plus-jakarta), "Plus Jakarta Sans", system-ui, sans-serif;
   --font-ui: var(--font-plus-jakarta), "Plus Jakarta Sans", system-ui, sans-serif;
   --font-mono: var(--font-ibm-plex-mono), "IBM Plex Mono", ui-monospace, monospace;
   /* Legacy aliases (map old tokens → trio) */
   --font-viga: var(--font-display);
   --font-cairo: var(--font-ui);
-  --font-hero-display: var(--font-display);
-  --font-hero-accent: var(--font-display);
+  --font-hero-display: var(--font-hero-serif);
+  --font-hero-accent: var(--font-hero-serif);
   --font-cormorant-garamond: var(--font-display);
   --font-cormorant: var(--font-display);
   --font-philosopher: var(--font-sub);
@@ -955,6 +956,9 @@
   font-size: clamp(1.35rem, 3vw, 1.85rem);
   font-weight: 400;
   color: #f2efe8;
+  -webkit-text-fill-color: #f2efe8;
+  background-clip: border-box;
+  -webkit-background-clip: border-box;
   outline: none;
 }
 
@@ -1734,6 +1738,62 @@
     outline: 1px solid var(--accent-gold);
     outline-offset: 3px;
   }
+}
+
+/* Forms — black fields, white text (no browser white chrome / autofill) */
+form label,
+.start-project-modal label {
+  background-color: transparent !important;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+form input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="hidden"]):not([type="submit"]):not([type="button"]),
+form textarea,
+form select,
+.start-project-modal input:not([type="hidden"]):not([type="submit"]):not([type="button"]),
+.start-project-modal textarea,
+.start-project-modal select {
+  background-color: #0a0a0a !important;
+  background-clip: border-box;
+  -webkit-background-clip: border-box;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+  color-scheme: dark;
+  caret-color: #fff;
+}
+
+form input::placeholder,
+form textarea::placeholder,
+.start-project-modal input::placeholder,
+.start-project-modal textarea::placeholder {
+  color: rgba(255, 255, 255, 0.4) !important;
+}
+
+form select option,
+.start-project-modal select option {
+  background-color: #0a0a0a;
+  color: #fff;
+}
+
+form input:-webkit-autofill,
+form input:-webkit-autofill:hover,
+form input:-webkit-autofill:focus,
+form textarea:-webkit-autofill,
+form textarea:-webkit-autofill:hover,
+form textarea:-webkit-autofill:focus,
+form select:-webkit-autofill,
+form select:-webkit-autofill:hover,
+form select:-webkit-autofill:focus,
+.start-project-modal input:-webkit-autofill,
+.start-project-modal input:-webkit-autofill:hover,
+.start-project-modal input:-webkit-autofill:focus,
+.start-project-modal textarea:-webkit-autofill,
+.start-project-modal textarea:-webkit-autofill:hover,
+.start-project-modal textarea:-webkit-autofill:focus {
+  -webkit-text-fill-color: #fff !important;
+  caret-color: #fff;
+  box-shadow: 0 0 0 1000px #0a0a0a inset !important;
+  transition: background-color 99999s ease-in-out 0s;
 }
 
 /* Page scrollbar replaced by the orbit progress ring */

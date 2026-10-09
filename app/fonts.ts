@@ -1,11 +1,25 @@
-import { Bodoni_Moda, IBM_Plex_Mono, Plus_Jakarta_Sans } from "next/font/google";
+import {
+  Bodoni_Moda,
+  IBM_Plex_Mono,
+  Playfair_Display,
+  Plus_Jakarta_Sans,
+} from "next/font/google";
 
-/** Editorial display — hero statements, section headlines, project titles */
+/** Editorial display — section headlines, project titles */
 export const bodoniModa = Bodoni_Moda({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-bodoni-moda",
   weight: ["400", "500"],
+  style: ["normal", "italic"],
+});
+
+/** Hero statement — matches reference “We Design For A Better Life” */
+export const playfairDisplay = Playfair_Display({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-playfair-display",
+  weight: ["400", "500", "600"],
   style: ["normal", "italic"],
 });
 

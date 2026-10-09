@@ -244,7 +244,6 @@ export function Navigation() {
                 alt="OD Architects"
                 height={72}
                 width={288}
-                priority
                 className={`site-nav-logo__img h-11 w-auto ${
                   isHome
                     ? "max-w-[min(240px,calc(100vw-7rem))]"
