@@ -2,22 +2,15 @@
 
 import { StatRing } from "@/components/StatRing";
 import { useMobilePerfMode } from "@/hooks/useMobilePerfMode";
-import { hero } from "@/lib/hero-content";
+import { about as studioAbout } from "@/lib/content/about";
 import { softInView } from "@/lib/motion-viewport";
 import { useSectionReveal } from "@/lib/section-reveal-context";
 import { useInView, useReducedMotion } from "@/components/ClientMotion";
 import { useEffect, useRef, useState } from "react";
 
-function statUnit(stat: (typeof hero.stats)[number]) {
-  if (stat.suffix === "M") return "millions";
-  return stat.label;
-}
-
-function statAriaLabel(stat: (typeof hero.stats)[number]) {
-  const unit = statUnit(stat);
-  const value = `${stat.prefix}${stat.value.toLocaleString("en-US")}`;
-  if (unit === "millions") return `${value} ${unit}`;
-  return `${value} ${unit}`;
+function statAriaLabel(stat: (typeof studioAbout.stats)[number]) {
+  const value = `${stat.prefix ?? ""}${stat.target.toLocaleString("en-US")}${stat.suffix ?? ""}`;
+  return `${value} ${stat.label}`;
 }
 
 export function StudioStats() {
@@ -56,12 +49,13 @@ export function StudioStats() {
 
   return (
     <div ref={containerRef} className="contact-proof" role="list">
-      {hero.stats.map((stat, index) => (
+      {studioAbout.stats.map((stat, index) => (
         <StatRing
           key={stat.label}
-          target={stat.value}
+          target={stat.target}
           prefix={stat.prefix}
-          unit={statUnit(stat)}
+          suffix={stat.suffix}
+          unit={stat.label}
           ariaLabel={statAriaLabel(stat)}
           play={play}
           delayMs={lightMotion ? 0 : 80 + index * 140}

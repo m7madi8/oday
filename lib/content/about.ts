@@ -10,8 +10,13 @@ export const about = {
   sectionNumber: "01",
   snapshotEyebrow: "About",
   stats: [
-    { label: "Projects", target: 500, prefix: "+", suffix: "" },
-    { label: "Value", target: 50, prefix: "+", suffix: " million" },
+    { label: "Projects", target: 240, prefix: "", suffix: "" },
+    {
+      label: "Estimated Construction Value",
+      target: 50,
+      prefix: "$",
+      suffix: "M+",
+    },
   ],
   headlinePrimary: "Built for",
   headlineAccent: "serious developers",
@@ -19,6 +24,7 @@ export const about = {
   logoSub: "ARCHITECTS",
   studioTagline:
     "Full-scope architecture, interiors, and engineering — one accountable studio from concept to site.",
+  approachSubheading: "A PERSONAL APPROACH TO ARCHITECTURE",
   strengths: [
     {
       title: "One team",
@@ -30,7 +36,7 @@ export const about = {
     },
   ] satisfies Strength[],
   directorName: "Oday Abu Doha",
-  contactEyebrow: "Architect & Founder",
+  contactEyebrow: "ARCHITECT & FOUNDER",
   directorRole: "Founder & Principal Architect",
   directorPortrait,
   directorPortraitAlt:

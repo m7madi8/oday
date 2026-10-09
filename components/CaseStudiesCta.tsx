@@ -21,18 +21,13 @@ export function CaseStudiesCta() {
         type="button"
         data-no-glow
         className="hero-cta-luxe hero-cta-luxe--pinned"
-        aria-label={`${heroCopy.ctaLabel} — ${heroCopy.ctaEyebrow}`}
+        aria-label={heroCopy.ctaEyebrow}
         aria-expanded={menuOpen}
         aria-haspopup="dialog"
         onClick={() => setMenuOpen((open) => !open)}
       >
-        <span className="flex flex-col items-start gap-0.5 pr-0.5 text-left">
-          <span className="hero-cta-luxe__eyebrow font-sub uppercase text-gold/85">
-            {heroCopy.ctaEyebrow}
-          </span>
-          <span className="hero-cta-luxe__label font-ui tracking-[0.04em] text-white/95">
-            {heroCopy.ctaLabel}
-          </span>
+        <span className="hero-cta-luxe__eyebrow font-sub uppercase text-gold/85 pr-0.5">
+          {heroCopy.ctaEyebrow}
         </span>
         <span className="hero-cta-luxe__icon" aria-hidden>
           <ArrowUpRight className="h-[22px] w-[22px] stroke-[1.75]" />

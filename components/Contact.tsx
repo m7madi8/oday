@@ -2,6 +2,7 @@
 
 import { AnimatedHeading } from "@/components/animations/AnimatedHeading";
 import { RevealFade } from "@/components/animations/RevealFade";
+import { OfficeVisitCard } from "@/components/OfficeVisitCard";
 import { about as studioAbout } from "@/lib/content/about";
 import { contact, footer } from "@/lib/content/contact";
 import { StudioStats } from "@/components/StudioStats";
@@ -19,8 +20,6 @@ const socialIcons = {
   instagram: Instagram,
 } as const;
 
-const fieldLabel =
-  "font-ui text-xs font-medium uppercase tracking-widest text-gold/70";
 const focusRing =
   "outline-none transition-colors duration-300 focus-visible:text-gold focus-visible:underline focus-visible:decoration-gold/70 focus-visible:underline-offset-4";
 
@@ -35,56 +34,51 @@ type ContactItem = (typeof contact.items)[number];
 function ContactChannelButton({
   item,
   delay,
-  variant = "default",
+  className = "",
 }: {
   item: ContactItem;
   delay: number;
-  variant?: "default" | "location";
+  className?: string;
 }) {
   const Icon = contactIcons[item.label as keyof typeof contactIcons];
+  const label = item.label.toUpperCase();
+
+  const inner = (
+    <>
+      <span className="contact-channel__icon" aria-hidden>
+        <Icon className="h-[18px] w-[18px]" strokeWidth={1.5} />
+      </span>
+      <span className="contact-channel__body">
+        <span className="contact-channel__label">{label}</span>
+        <span
+          className={`contact-channel__value${
+            item.label === "Email" ? " contact-channel__value--email" : ""
+          }`}
+        >
+          {item.value}
+        </span>
+      </span>
+    </>
+  );
 
   if (!item.href) {
     return (
-      <RevealFade as="div" delay={delay} className="min-w-0">
-        <div
-          className={`contact-channel${variant === "location" ? " contact-channel--location" : ""}`}
-        >
-          <span className="contact-channel__icon" aria-hidden>
-            <Icon className="h-[18px] w-[18px]" strokeWidth={1.5} />
-          </span>
-          <span className="contact-channel__body">
-            <span className={fieldLabel}>{item.label}</span>
-            <span className="contact-channel__value">{item.value}</span>
-          </span>
-        </div>
+      <RevealFade as="div" delay={delay} className={`min-w-0 ${className}`.trim()}>
+        <div className="contact-channel">{inner}</div>
       </RevealFade>
     );
   }
 
   return (
-    <RevealFade as="div" delay={delay} className="min-w-0">
+    <RevealFade as="div" delay={delay} className={`min-w-0 ${className}`.trim()}>
       <a
         href={item.href}
-        className={`contact-channel ${focusRing}${
-          variant === "location" ? " contact-channel--location" : ""
-        }`}
+        className={`contact-channel ${focusRing}`}
         {...(item.label === "Location"
           ? { target: "_blank", rel: "noopener noreferrer" }
           : {})}
       >
-        <span className="contact-channel__icon" aria-hidden>
-          <Icon className="h-[18px] w-[18px]" strokeWidth={1.5} />
-        </span>
-        <span className="contact-channel__body">
-          <span className={fieldLabel}>{item.label}</span>
-          <span
-            className={`contact-channel__value${
-              item.label === "Email" ? " contact-channel__value--email" : ""
-            }`}
-          >
-            {item.value}
-          </span>
-        </span>
+        {inner}
       </a>
     </RevealFade>
   );
@@ -101,7 +95,7 @@ export function Contact() {
     <section
       ref={sectionRef}
       id="contact"
-      className="contact-section relative overflow-visible border-t border-white/10 bg-[#0A0A0A] pb-8 pt-16 scroll-mt-20 md:pb-10 md:pt-24"
+      className="contact-section relative overflow-visible scroll-mt-20"
     >
       <SectionRevealContext.Provider
         value={{
@@ -109,45 +103,25 @@ export function Contact() {
           lightMotion: reduceMotion || mobilePerf,
         }}
       >
-        <div className="mx-auto w-full max-w-7xl px-6 md:px-8 lg:px-10">
-          <header className="mb-16 grid grid-cols-1 items-center gap-10 md:mb-20 md:grid-cols-[minmax(16rem,22rem)_auto_minmax(0,1fr)] md:gap-10 lg:gap-14">
-            <RevealFade as="div" delay={baseDelay} className="m-0">
-              <figure className="relative mx-auto w-full max-w-[20rem] border border-white/10 p-3 md:mx-0 md:max-w-none md:p-4">
-                <span
-                  className="pointer-events-none absolute left-0 top-0 h-5 w-5 border-l border-t border-gold/70"
-                  aria-hidden
-                />
-                <span
-                  className="pointer-events-none absolute right-0 top-0 h-5 w-5 border-r border-t border-gold/70"
-                  aria-hidden
-                />
-                <span
-                  className="pointer-events-none absolute bottom-0 left-0 h-5 w-5 border-b border-l border-gold/70"
-                  aria-hidden
-                />
-                <span
-                  className="pointer-events-none absolute bottom-0 right-0 h-5 w-5 border-b border-r border-gold/70"
-                  aria-hidden
-                />
+        <div className="contact-shell">
+          <div className="contact-board">
+            <RevealFade as="div" delay={baseDelay} className="contact-section__portrait">
+              <figure className="contact-portrait-frame">
+                <span className="contact-portrait-frame__corner contact-portrait-frame__corner--tl" aria-hidden />
+                <span className="contact-portrait-frame__corner contact-portrait-frame__corner--tr" aria-hidden />
+                <span className="contact-portrait-frame__corner contact-portrait-frame__corner--bl" aria-hidden />
+                <span className="contact-portrait-frame__corner contact-portrait-frame__corner--br" aria-hidden />
                 <Image
                   src={studioAbout.directorPortrait}
                   alt={studioAbout.directorPortraitAlt}
-                  sizes="(max-width: 768px) 20rem, 22rem"
-                  className="h-auto w-full"
+                  sizes="(max-width: 768px) 18rem, 22rem"
+                  className="contact-portrait-frame__img"
                 />
               </figure>
             </RevealFade>
 
-            <RevealFade
-              as="div"
-              delay={baseDelay + 0.06}
-              className="hidden h-36 md:block"
-            >
-              <span className="block h-full w-px bg-gold/35" aria-hidden />
-            </RevealFade>
-
-            <div className="max-w-xl text-center md:text-left">
-              <RevealFade as="p" className={fieldLabel} delay={baseDelay + 0.1}>
+            <div className="contact-section__bio">
+              <RevealFade as="p" className="contact-bio__eyebrow" delay={baseDelay + 0.08}>
                 {studioAbout.contactEyebrow}
               </RevealFade>
 
@@ -155,25 +129,20 @@ export function Contact() {
                 <AnimatedHeading
                   as="h2"
                   text={studioAbout.directorName}
-                  className="mt-4 font-display text-2xl font-light italic tracking-tight text-white md:text-4xl"
-                  delay={baseDelay + 0.18}
+                  className="contact-bio__name"
+                  delay={baseDelay + 0.14}
                   duration={0.88}
                   splitByWords
                   wordStagger={0.05}
                 />
 
-                <RevealFade
-                  as="div"
-                  delay={baseDelay + 0.28}
-                  className="contact-director__mark"
-                  aria-hidden
-                >
-                  {null}
+                <RevealFade as="div" delay={baseDelay + 0.24} aria-hidden>
+                  <span className="contact-director__mark" />
                 </RevealFade>
 
                 <RevealFade
                   as="div"
-                  delay={baseDelay + 0.34}
+                  delay={baseDelay + 0.3}
                   className="contact-director__signature-wrap"
                 >
                   <Image
@@ -188,106 +157,108 @@ export function Contact() {
 
               <RevealFade
                 as="p"
-                className="mt-5 font-ui text-xs font-medium uppercase tracking-widest text-white/55"
-                delay={baseDelay + 0.38}
+                className="contact-bio__approach"
+                delay={baseDelay + 0.36}
               >
-                {studioAbout.directorRole}
+                {studioAbout.approachSubheading}
               </RevealFade>
 
               <RevealFade
                 as="p"
-                className="mt-4 text-base font-light leading-relaxed text-white/55"
-                delay={baseDelay + 0.46}
+                className="contact-bio__tagline"
+                delay={baseDelay + 0.42}
               >
                 {studioAbout.studioTagline}
               </RevealFade>
 
               <StudioStats />
             </div>
-          </header>
 
-          <div className="contact-section__close">
-            <div className="contact-channels">
-              <div className="contact-channels__primary">
-                {contact.items
-                  .filter((item) => item.label !== "Location")
-                  .map((item, index) => (
-                    <ContactChannelButton
-                      key={item.label}
-                      item={item}
-                      delay={baseDelay + 0.58 + index * 0.12}
-                    />
-                  ))}
-              </div>
+            <div className="contact-section__office">
+              <OfficeVisitCard delay={baseDelay + 0.16} />
+            </div>
+          </div>
 
+          <div className="contact-channels-bar">
+            <div className="contact-channels-bar__pair">
               {contact.items
-                .filter((item) => item.label === "Location")
-                .map((item) => (
-                  <div key={item.label} className="contact-channels__aside">
-                    <ContactChannelButton
-                      item={item}
-                      delay={baseDelay + 0.82}
-                      variant="location"
-                    />
-                  </div>
+                .filter((item) => item.label !== "Location")
+                .map((item, index) => (
+                  <ContactChannelButton
+                    key={item.label}
+                    item={item}
+                    delay={baseDelay + 0.5 + index * 0.08}
+                    className={`contact-channel-slot contact-channel-slot--${item.label.toLowerCase()}`}
+                  />
                 ))}
             </div>
 
-            <footer id="footer" className="contact-section__footer">
-              <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
-                <nav aria-label="Footer" className="flex flex-wrap items-center gap-x-8 gap-y-3">
-                  {footer.bottomBarLinks.map((link, index) => (
-                    <RevealFade
-                      key={link.href + link.label}
-                      as="span"
-                      delay={baseDelay + 0.98 + index * 0.05}
-                      className="inline-flex"
-                    >
-                      <Link
-                        href={link.href}
-                        className={`font-ui text-xs font-normal uppercase tracking-widest text-white/55 hover:text-gold ${focusRing}`}
-                      >
-                        {link.label}
-                      </Link>
-                    </RevealFade>
-                  ))}
-                </nav>
+            {contact.items
+              .filter((item) => item.label === "Location")
+              .map((item) => (
+                <ContactChannelButton
+                  key={item.label}
+                  item={item}
+                  delay={baseDelay + 0.66}
+                  className="contact-channel-slot contact-channel-slot--location"
+                />
+              ))}
+          </div>
 
-                <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-8">
+          <footer id="footer" className="contact-section__footer">
+            <div className="contact-footer__row">
+              <nav aria-label="Footer" className="contact-footer__nav">
+                {footer.bottomBarLinks.map((link, index) => (
                   <RevealFade
-                    as="p"
-                    className="text-xs font-light text-white/40"
-                    delay={baseDelay + 1.18}
+                    key={link.href + link.label}
+                    as="span"
+                    delay={baseDelay + 0.85 + index * 0.04}
+                    className="inline-flex"
                   >
-                    {footer.copyright}
+                    <Link
+                      href={link.href}
+                      className={`contact-footer__link ${focusRing}`}
+                    >
+                      {link.label}
+                    </Link>
                   </RevealFade>
-                  <div className="flex items-center gap-3">
-                    {footer.social.map((social, index) => {
-                      const Icon = socialIcons[social.icon];
-                      return (
-                        <RevealFade
-                          key={social.label}
-                          as="span"
-                          delay={baseDelay + 1.24 + index * 0.05}
-                          className="inline-flex"
+                ))}
+              </nav>
+
+              <div className="contact-footer__meta">
+                <RevealFade
+                  as="p"
+                  className="contact-footer__copy"
+                  delay={baseDelay + 1.05}
+                >
+                  {footer.copyright}
+                </RevealFade>
+                <div className="contact-footer__social">
+                  {footer.social.map((social, index) => {
+                    const Icon = socialIcons[social.icon];
+                    return (
+                      <RevealFade
+                        key={social.label}
+                        as="span"
+                        delay={baseDelay + 1.1 + index * 0.04}
+                        className="inline-flex"
+                      >
+                        <a
+                          href={social.href}
+                          aria-label={social.label}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="contact-footer__social-btn"
                         >
-                          <a
-                            href={social.href}
-                            aria-label={social.label}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-white/70 outline-none transition-colors duration-300 hover:border-gold hover:bg-gold/10 hover:text-gold focus-visible:border-gold focus-visible:bg-gold/10 focus-visible:text-gold"
-                          >
-                            <Icon className="h-4 w-4" strokeWidth={1.5} aria-hidden />
-                          </a>
-                        </RevealFade>
-                      );
-                    })}
-                  </div>
+                          <Icon className="h-4 w-4" strokeWidth={1.5} aria-hidden />
+                        </a>
+                      </RevealFade>
+                    );
+                  })}
                 </div>
               </div>
-            </footer>
-          </div>
+            </div>
+          </footer>
         </div>
       </SectionRevealContext.Provider>
     </section>

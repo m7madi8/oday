@@ -15,11 +15,6 @@ export const contact = {
   backgroundAlt: "HOUSE OF SUN — villa courtyards and terraces at dusk, Ramallah",
   items: [
     {
-      label: "Location",
-      value: "Ramallah, Palestine",
-      href: "https://www.google.com/maps/search/?api=1&query=31.9230623,35.2090546",
-    },
-    {
       label: "Email",
       value: "abodohaoday@gmail.com",
       href: "mailto:abodohaoday@gmail.com",
@@ -28,6 +23,11 @@ export const contact = {
       label: "Phone",
       value: "+972 56-812-3413",
       href: "tel:+972568123413",
+    },
+    {
+      label: "Location",
+      value: "Ramallah, Palestine",
+      href: "https://www.google.com/maps/search/?api=1&query=31.9230623,35.2090546",
     },
   ] satisfies ContactChannel[],
 };

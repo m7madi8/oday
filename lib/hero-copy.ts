@@ -1,12 +1,16 @@
 /** Hero copy & timing — no image imports (safe for lightweight client bundles). */
 export const heroCopy = {
-  headlineEyebrow: "Architecture · Engineering · Delivery",
+  headlineEyebrow: "ODAY ABU DOHA · ARCHITECT & FOUNDER",
+  headlineEyebrowGold: "YOUR VISION · OUR DESIGN",
   headlineBeforeAccent: "We Design For",
   headlineAccent: "A Better Life",
-  headlineSubline:
-    "Engineering discipline and design authority — built to elevate assets, environments, and the lives within them.",
-  ctaEyebrow: "Case Studies",
-  ctaLabel: "View All Projects",
+  headlineSublineLines: [
+    "I'm Oday Abu Doha, founder of OD Architects. I design distinctive",
+    "architecture and refined interiors around your vision and the way you live.",
+  ],
+  servicesLine: "ARCHITECTURE · INTERIOR DESIGN · LANDSCAPE · SITE SUPERVISION",
+  projectCtaLabel: "Start Your Project",
+  ctaEyebrow: "OUR PORTFOLIO",
   ctaHref: "/#services",
   titleLine1: "Design",
   titleLine2Words: ["That", "Drives", "Value"],
@@ -15,7 +19,7 @@ export const heroCopy = {
   primaryIntervalMs: 3000,
   slideIntervalMs: 3000,
   stats: [
-    { label: "Projects", value: 500, prefix: "+", suffix: "" },
-    { label: "Value", value: 50, prefix: "+", suffix: "M" },
+    { label: "Projects", value: 240, prefix: "", suffix: "" },
+    { label: "Estimated Construction Value", value: 50, prefix: "$", suffix: "M+" },
   ],
 } as const;

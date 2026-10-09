@@ -13,6 +13,7 @@ function easeOutExpo(t: number): number {
 type StatRingProps = {
   target: number;
   prefix?: string;
+  suffix?: string;
   unit: string;
   play: boolean;
   delayMs: number;
@@ -23,6 +24,7 @@ type StatRingProps = {
 export function StatRing({
   target,
   prefix = "",
+  suffix = "",
   unit,
   play,
   delayMs,
@@ -47,7 +49,7 @@ export function StatRing({
 
     const finish = () => {
       progressEl.style.strokeDashoffset = "0";
-      countEl.textContent = target.toLocaleString("en-US");
+      countEl.textContent = `${target.toLocaleString("en-US")}${suffix}`;
     };
 
     if (instant) {
@@ -70,7 +72,8 @@ export function StatRing({
       const eased = easeOutExpo(t);
 
       progressEl.style.strokeDashoffset = String(CIRCUMFERENCE - CIRCUMFERENCE * eased);
-      countEl.textContent = Math.round(target * eased).toLocaleString("en-US");
+      const n = Math.round(target * eased);
+      countEl.textContent = suffix ? `${n}${suffix}` : n.toLocaleString("en-US");
 
       if (t < 1) {
         rafRef.current = requestAnimationFrame(frame);
@@ -86,7 +89,7 @@ export function StatRing({
       cancelAnimationFrame(rafRef.current);
       boxEl.classList.remove("is-animating");
     };
-  }, [play, delayMs, instant, target]);
+  }, [play, delayMs, instant, suffix, target]);
 
   return (
     <div className="contact-proof__stat" role="listitem" aria-label={ariaLabel}>
@@ -107,17 +110,31 @@ export function StatRing({
           />
         </svg>
         <div className="contact-proof__ring-center">
-          <div className="contact-proof__ring-value">
-            {prefix ? <span className="contact-proof__ring-prefix">{prefix}</span> : null}
-            <span ref={countRef} className="contact-proof__digits">
-              {instant ? target.toLocaleString("en-US") : "0"}
+          <div
+            className={`contact-proof__ring-value${
+              unit === "Estimated Construction Value" ? " contact-proof__ring-value--long" : ""
+            }`}
+          >
+            <span className="contact-proof__ring-amount">
+              {prefix ? <span className="contact-proof__ring-prefix">{prefix}</span> : null}
+              <span ref={countRef} className="contact-proof__digits">
+                {instant ? `${target.toLocaleString("en-US")}${suffix}` : suffix ? `0${suffix}` : "0"}
+              </span>
             </span>
             <span
               className={`contact-proof__ring-unit${
                 unit === "Projects" ? " contact-proof__ring-unit--title" : ""
-              }`}
+              }${unit === "Estimated Construction Value" ? " contact-proof__ring-unit--long" : ""}`}
             >
-              {unit}
+              {unit === "Estimated Construction Value" ? (
+                <>
+                  Estimated
+                  <br />
+                  Construction Value
+                </>
+              ) : (
+                unit
+              )}
             </span>
           </div>
         </div>
