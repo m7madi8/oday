@@ -23,7 +23,7 @@ export const HERO_DESKTOP_MEDIA = "(min-width: 1280px), (orientation: landscape)
  * - Slide 1: highest encoder quality + preload (AVIF/WebP at `sizes` width only).
  * - Slides 2–4: still sharp, loaded lazily after first paint.
  */
-export const HERO_LCP_QUALITY = 92;
+export const HERO_LCP_QUALITY = 96;
 export const HERO_CAROUSEL_QUALITY = 90;
 /** @deprecated Use HERO_LCP_QUALITY / HERO_CAROUSEL_QUALITY */
 export const HERO_IMAGE_QUALITY = HERO_CAROUSEL_QUALITY;
@@ -32,7 +32,7 @@ export const HERO_MOBILE_SIZES = "(max-width: 767px) 100vw";
 export const HERO_TABLET_SIZES = "(max-width: 1024px) 100vw, 960px";
 export const HERO_DESKTOP_SIZES = "(max-width: 1536px) 100vw, 1920px";
 /** First still only — allows crisp 4K/ultrawide without enlarging carousel payloads. */
-export const HERO_LCP_DESKTOP_SIZES = "(max-width: 1536px) 100vw, 2560px";
+export const HERO_LCP_DESKTOP_SIZES = "(max-width: 1536px) 100vw, 3840px";
 
 const heroImages = [
   {
