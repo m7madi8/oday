@@ -60,6 +60,38 @@ function getScrollOffsetFor(target: HTMLElement): number {
   return Math.max(0, globalOffset - sectionPadTop);
 }
 
+const CONTACT_CHANNELS_BREAKPOINT = "(min-width: 1024px)";
+
+/** On large viewports, land the scroll so the three contact channel buttons are in view. */
+function getScrollTopForTarget(target: HTMLElement): number {
+  const offset = getScrollOffsetFor(target);
+  const defaultTop = Math.max(
+    0,
+    target.getBoundingClientRect().top + window.scrollY - offset,
+  );
+
+  if (target.id !== "contact" || !window.matchMedia(CONTACT_CHANNELS_BREAKPOINT).matches) {
+    return defaultTop;
+  }
+
+  const channels = target.querySelector<HTMLElement>(".contact-channels-bar");
+  if (!channels) {
+    return defaultTop;
+  }
+
+  const viewport = window.innerHeight;
+  const marginBelow = 48;
+  const channelsRect = channels.getBoundingClientRect();
+  const channelsTop = channelsRect.top + window.scrollY;
+  const channelsBottom = channelsTop + channelsRect.height;
+
+  const topForChannels = channelsBottom + marginBelow - viewport;
+  const top = Math.max(defaultTop, topForChannels);
+
+  const maxScroll = Math.max(0, document.documentElement.scrollHeight - viewport);
+  return Math.min(top, maxScroll);
+}
+
 function durationForDistance(distance: number): number {
   const scaled = Math.sqrt(Math.abs(distance)) * 42;
   return Math.min(MAX_DURATION_MS, Math.max(MIN_DURATION_MS, scaled));
@@ -101,8 +133,7 @@ export function smoothScrollToElement(
   const { reduceMotion = false, delay = 0 } = options ?? {};
 
   const run = () => {
-    const offset = getScrollOffsetFor(target);
-    const top = Math.max(0, target.getBoundingClientRect().top + window.scrollY - offset);
+    const top = getScrollTopForTarget(target);
 
     if (activeFrame !== null) {
       cancelAnimationFrame(activeFrame);

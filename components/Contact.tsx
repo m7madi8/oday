@@ -149,7 +149,7 @@ export function Contact() {
                     src={studioAbout.directorSignature}
                     alt=""
                     aria-hidden
-                    sizes="(max-width: 768px) 10rem, 12rem"
+                    sizes="(max-width: 1023px) 14.5rem, 17.5rem"
                     className="contact-director__signature"
                   />
                 </RevealFade>
