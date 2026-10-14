@@ -5,7 +5,7 @@ import { softInView } from "@/lib/motion-viewport";
 import { useSectionReveal } from "@/lib/section-reveal-context";
 import { useMobilePerfMode } from "@/hooks/useMobilePerfMode";
 import { motion, useInView, useReducedMotion } from "@/components/ClientMotion";
-import { useRef, type ReactNode } from "react";
+import React, { useRef, type ReactNode, type Ref } from "react";
 
 type RevealFadeTag = "p" | "span" | "div" | "h1" | "h2" | "h3" | "h4";
 
@@ -29,24 +29,26 @@ export interface RevealFadeProps {
   timing?: "scroll" | "enter";
 }
 
-export function RevealFade({
+type RevealFadeMotionProps = RevealFadeProps & {
+  show: boolean;
+  lightMotion: boolean;
+  outerRef?: Ref<Element | null>;
+};
+
+function RevealFadeMotion({
   children,
   as = "p",
   className,
   delay = 0,
   duration = 0.82,
   y = 8,
-  timing = "scroll",
-}: RevealFadeProps) {
+  show,
+  lightMotion,
+  outerRef,
+}: RevealFadeMotionProps) {
   const reduce = useReducedMotion();
   const mobilePerf = useMobilePerfMode();
-  const sectionReveal = useSectionReveal();
-  const ref = useRef(null);
-  const inView = useInView(ref, softInView);
   const MotionTag = motionTags[as];
-  const shouldShow =
-    timing === "enter" || (sectionReveal ? sectionReveal.revealed : inView);
-  const lightMotion = sectionReveal?.lightMotion ?? mobilePerf;
 
   if (skipEntranceMotion(reduce, mobilePerf)) {
     const Tag = as;
@@ -58,15 +60,50 @@ export function RevealFade({
   const transition = { duration, delay, ease: animationEasing.smoothOut };
 
   return (
-    <MotionTag ref={ref} className={className}>
+    <MotionTag ref={outerRef as React.Ref<never>} className={className}>
       <motion.span
         style={{ display: "block" }}
         initial={hidden}
-        animate={shouldShow ? visible : hidden}
+        animate={show ? visible : hidden}
         transition={transition}
       >
         {children}
       </motion.span>
     </MotionTag>
   );
+}
+
+function RevealFadeObserved(props: RevealFadeProps) {
+  const ref = useRef(null);
+  const inView = useInView(ref, softInView);
+  const mobilePerf = useMobilePerfMode();
+
+  return <RevealFadeMotion {...props} show={inView} lightMotion={mobilePerf} outerRef={ref} />;
+}
+
+export function RevealFade(props: RevealFadeProps) {
+  const sectionReveal = useSectionReveal();
+  const mobilePerf = useMobilePerfMode();
+
+  if (props.timing === "enter") {
+    return (
+      <RevealFadeMotion
+        {...props}
+        show
+        lightMotion={sectionReveal?.lightMotion ?? mobilePerf}
+      />
+    );
+  }
+
+  if (sectionReveal) {
+    return (
+      <RevealFadeMotion
+        {...props}
+        show={sectionReveal.revealed}
+        lightMotion={sectionReveal.lightMotion ?? mobilePerf}
+      />
+    );
+  }
+
+  return <RevealFadeObserved {...props} />;
 }

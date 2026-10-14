@@ -9,7 +9,7 @@ import { softInView } from "@/lib/motion-viewport";
 import { useSectionReveal } from "@/lib/section-reveal-context";
 import { useMobilePerfMode } from "@/hooks/useMobilePerfMode";
 import { motion, useInView, useReducedMotion } from "@/components/ClientMotion";
-import { useMemo, useRef } from "react";
+import React, { useMemo, useRef, type Ref } from "react";
 
 type RevealTag = "h1" | "h2" | "h3" | "h4" | "p" | "span" | "div";
 
@@ -38,7 +38,13 @@ export interface RevealTextProps {
   timing?: "scroll" | "enter";
 }
 
-export function RevealText({
+type RevealTextMotionProps = RevealTextProps & {
+  show: boolean;
+  lightMotion: boolean;
+  outerRef?: Ref<Element | null>;
+};
+
+function RevealTextMotion({
   children,
   as = "h2",
   id,
@@ -49,22 +55,17 @@ export function RevealText({
   delay = 0,
   rotateFrom = 2,
   yFrom = "78%",
-  once = true,
-  timing = "scroll",
-}: RevealTextProps) {
+  show,
+  lightMotion,
+  outerRef,
+}: RevealTextMotionProps) {
   const reduceMotion = useReducedMotion();
   const mobilePerf = useMobilePerfMode();
-  const sectionReveal = useSectionReveal();
-  const ref = useRef(null);
-  const inView = useInView(ref, { ...softInView, once });
   const words = useMemo(
     () => children.trim().split(/\s+/).filter(Boolean),
     [children],
   );
   const MotionTag = motionTags[as];
-  const shouldShow =
-    timing === "enter" || (sectionReveal ? sectionReveal.revealed : inView);
-  const lightMotion = sectionReveal?.lightMotion ?? mobilePerf;
 
   if (skipEntranceMotion(reduceMotion, mobilePerf)) {
     const Tag = as;
@@ -112,11 +113,11 @@ export function RevealText({
 
     return (
       <div style={{ overflow: "hidden" }}>
-        <MotionTag ref={ref} id={id} className={className}>
+        <MotionTag ref={outerRef as React.Ref<never>} id={id} className={className}>
           <motion.span
             style={{ display: "inline-block" }}
             initial={hidden}
-            animate={shouldShow ? visible : hidden}
+            animate={show ? visible : hidden}
             transition={transition}
           >
             {children}
@@ -127,17 +128,23 @@ export function RevealText({
   }
 
   return (
-    <MotionTag ref={ref} id={id} className={className}>
+    <MotionTag ref={outerRef as React.Ref<never>} id={id} className={className}>
       <motion.span
         style={{ display: "inline" }}
         variants={containerVariants}
         initial="hidden"
-        animate={shouldShow ? "show" : "hidden"}
+        animate={show ? "show" : "hidden"}
       >
         {words.map((word, index) => (
           <span
             key={`${word}-${index}`}
-            style={{ overflow: "hidden", display: "inline-block", verticalAlign: "top", paddingBottom: "0.18em", paddingInlineEnd: "0.08em" }}
+            style={{
+              overflow: "hidden",
+              display: "inline-block",
+              verticalAlign: "top",
+              paddingBottom: "0.18em",
+              paddingInlineEnd: "0.08em",
+            }}
           >
             <motion.span style={{ display: "inline-block" }} variants={wordVariants}>
               {word}
@@ -148,4 +155,39 @@ export function RevealText({
       </motion.span>
     </MotionTag>
   );
+}
+
+function RevealTextObserved(props: RevealTextProps) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { ...softInView, once: props.once ?? true });
+  const mobilePerf = useMobilePerfMode();
+
+  return <RevealTextMotion {...props} show={inView} lightMotion={mobilePerf} outerRef={ref} />;
+}
+
+export function RevealText(props: RevealTextProps) {
+  const sectionReveal = useSectionReveal();
+  const mobilePerf = useMobilePerfMode();
+
+  if (props.timing === "enter") {
+    return (
+      <RevealTextMotion
+        {...props}
+        show
+        lightMotion={sectionReveal?.lightMotion ?? mobilePerf}
+      />
+    );
+  }
+
+  if (sectionReveal) {
+    return (
+      <RevealTextMotion
+        {...props}
+        show={sectionReveal.revealed}
+        lightMotion={sectionReveal.lightMotion ?? mobilePerf}
+      />
+    );
+  }
+
+  return <RevealTextObserved {...props} />;
 }

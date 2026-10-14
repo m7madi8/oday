@@ -6,7 +6,7 @@ import { softInView } from "@/lib/motion-viewport";
 import { useSectionReveal } from "@/lib/section-reveal-context";
 import { useMobilePerfMode } from "@/hooks/useMobilePerfMode";
 import { motion, useInView, useReducedMotion } from "@/components/ClientMotion";
-import { useRef, type ReactNode } from "react";
+import React, { useRef, type ReactNode, type Ref } from "react";
 
 type HeadingTag = "h1" | "h2" | "h3" | "h4";
 
@@ -34,25 +34,28 @@ type AnimatedHeadingProps = AnimatedHeadingBase &
     | { text?: never; children: ReactNode }
   );
 
-function MaskBlock({
+type MaskBlockMotionProps = AnimatedHeadingBase & {
+  children: ReactNode;
+  show: boolean;
+  lightMotion: boolean;
+  outerRef?: Ref<Element | null>;
+};
+
+function MaskBlockMotion({
   as,
   id,
   className,
-  timing,
   delay,
   duration,
   children,
-}: AnimatedHeadingBase & { children: ReactNode }) {
+  show,
+  lightMotion,
+  outerRef,
+}: MaskBlockMotionProps) {
   const reduce = useReducedMotion();
   const mobilePerf = useMobilePerfMode();
-  const sectionReveal = useSectionReveal();
-  const ref = useRef(null);
-  const inView = useInView(ref, softInView);
   const MotionTag = motionTags[as ?? "h2"];
   const transition = createMaskRevealTransition(duration ?? 0.92, delay ?? 0);
-  const shouldShow =
-    timing === "enter" || (sectionReveal ? sectionReveal.revealed : inView);
-  const lightMotion = sectionReveal?.lightMotion ?? mobilePerf;
 
   if (skipEntranceMotion(reduce, mobilePerf)) {
     const Tag = as ?? "h2";
@@ -63,12 +66,12 @@ function MaskBlock({
   const visible = lightMotion ? { opacity: 1, y: 0 } : { y: "0%", rotate: 0 };
 
   return (
-    <MotionTag ref={ref} id={id} className={className}>
+    <MotionTag ref={outerRef as React.Ref<never>} id={id} className={className}>
       <span style={{ display: "block", overflow: "hidden", paddingBottom: "0.22em", paddingInlineEnd: "0.18em" }}>
         <motion.span
           style={{ display: "block" }}
           initial={hidden}
-          animate={shouldShow ? visible : hidden}
+          animate={show ? visible : hidden}
           transition={{ ...transition, ease: animationEasing.smoothOut }}
         >
           {children}
@@ -76,6 +79,43 @@ function MaskBlock({
       </span>
     </MotionTag>
   );
+}
+
+function MaskBlockObserved(props: AnimatedHeadingBase & { children: ReactNode }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, softInView);
+  const mobilePerf = useMobilePerfMode();
+
+  return (
+    <MaskBlockMotion {...props} show={inView} lightMotion={mobilePerf} outerRef={ref} />
+  );
+}
+
+function MaskBlock(props: AnimatedHeadingBase & { children: ReactNode }) {
+  const sectionReveal = useSectionReveal();
+  const mobilePerf = useMobilePerfMode();
+
+  if (props.timing === "enter") {
+    return (
+      <MaskBlockMotion
+        {...props}
+        show
+        lightMotion={sectionReveal?.lightMotion ?? mobilePerf}
+      />
+    );
+  }
+
+  if (sectionReveal) {
+    return (
+      <MaskBlockMotion
+        {...props}
+        show={sectionReveal.revealed}
+        lightMotion={sectionReveal.lightMotion ?? mobilePerf}
+      />
+    );
+  }
+
+  return <MaskBlockObserved {...props} />;
 }
 
 export function AnimatedHeading({
