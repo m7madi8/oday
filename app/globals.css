@@ -5590,9 +5590,9 @@ body::-webkit-scrollbar {
 }
 
 .services-carousel {
-  --svc-slide: 72%;
-  --svc-gap: 0.65rem;
-  --svc-side: calc((100% - var(--svc-slide)) / 2);
+  --svc-slide: 100%;
+  --svc-gap: 0;
+  --svc-side: 0;
   overflow: visible;
   touch-action: pan-y;
 }
@@ -5679,19 +5679,6 @@ body::-webkit-scrollbar {
   font-size: var(--step-4);
 }
 
-@media (max-width: 389px) {
-  .services-carousel {
-    --svc-slide: 76%;
-    --svc-gap: 0.5rem;
-  }
-}
-
-@media (min-width: 640px) and (max-width: 1023px) {
-  .services-carousel {
-    --svc-slide: 58%;
-    --svc-gap: 0.9rem;
-  }
-}
 
 .services-story-track {
   scroll-snap-type: x proximity;
@@ -5719,8 +5706,63 @@ body::-webkit-scrollbar {
 }
 
 .services-story-card:not(.services-story-card--active) {
-  transform: scale(0.96);
-  opacity: 0.55;
+  transform: none;
+  opacity: 1;
+}
+
+/* iPad — separate story cards in carousel (wider slide, visible gap) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .services-carousel {
+    --svc-slide: 78%;
+    --svc-gap: 0.85rem;
+    --svc-side: calc((100% - var(--svc-slide)) / 2);
+  }
+
+  .services-carousel__nav {
+    height: 2.85rem;
+    width: 2.85rem;
+  }
+
+  .services-carousel__nav--prev {
+    left: 0.35rem;
+  }
+
+  .services-carousel__nav--next {
+    right: 0.35rem;
+  }
+
+  .services-story-card__frame {
+    border-radius: 1.2rem;
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.4);
+  }
+
+  .services-story-card__body {
+    padding: 1.1rem 1.15rem 1.25rem;
+  }
+
+  .services-story-card__meta {
+    margin-top: 2.5rem;
+    gap: 0.75rem;
+  }
+
+  .services-story-card__icon {
+    width: 2.65rem;
+    height: 2.65rem;
+  }
+
+  .services-story-card__icon svg {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+
+  .services-story-card__order {
+    font-size: 0.72rem;
+    letter-spacing: 0.21em;
+  }
+
+  .services-story-card__title {
+    font-size: 1.15rem;
+  }
 }
 
 .services-panel-copy {

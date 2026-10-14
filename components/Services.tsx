@@ -21,7 +21,11 @@ type ServiceProfile = {
 
 const IMAGE_SIZES_DESKTOP =
   "(max-width: 1023px) 85vw, (max-width: 1280px) 58vw, (max-width: 1536px) 54vw, 52vw";
-const IMAGE_SIZES_STORY = "(max-width: 768px) 92vw, 420px";
+const IMAGE_SIZES_STORY =
+  "(max-width: 767px) 100vw, (max-width: 1023px) 78vw, 420px";
+
+const STORY_CARD_SCRIM =
+  "linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.06) 34%, rgba(0,0,0,0.12) 58%, rgba(0,0,0,0.82) 100%)";
 
 function serviceGalleryHref(slug: (typeof services)[number]["slug"]) {
   return `/projects?service=${encodeURIComponent(slug)}`;
@@ -97,12 +101,12 @@ export function Services() {
         </div>
       </SectionInner>
 
-      {/* Mobile / tablet carousel */}
+      {/* Phone + iPad — story carousel */}
       <ScrollReveal dramatic delay={0.04} className="services-carousel-wrap lg:hidden">
         <ServicesMobileCarousel />
       </ScrollReveal>
 
-      {/* Desktop — full-width stage */}
+      {/* Desktop — cinematic panels */}
       <div className="services-stage hidden lg:flex">
         <div className={`${stripBezel} services-stage__frame`}>
           <div
@@ -254,15 +258,19 @@ function ServiceStoryCard({
   index,
   isActive,
   activeIndex,
+  priority = false,
 }: {
   service: (typeof services)[number];
   index: number;
   isActive: boolean;
   activeIndex: number;
+  priority?: boolean;
 }) {
   const visual = getServiceVisual(service.slug);
   const Icon = service.icon;
   const router = useRouter();
+  const prefetchVideo =
+    !isActive && Boolean(visual.videoSrc) && Math.abs(activeIndex - index) === 1;
 
   return (
     <article
@@ -275,13 +283,14 @@ function ServiceStoryCard({
         router.push(serviceGalleryHref(service.slug));
       }}
     >
-      <div className="relative h-full w-full overflow-hidden rounded-[1.12rem] shadow-[0_16px_40px_rgba(0,0,0,0.35)] ring-1 ring-white/[0.08]">
+      <div className="services-story-card__frame relative h-full w-full overflow-hidden rounded-[1.12rem] shadow-[0_16px_40px_rgba(0,0,0,0.35)] ring-1 ring-white/[0.08]">
         <div className="absolute inset-0">
           <ServicePanelMedia
             visual={visual}
             isPlaying={isActive}
-            prefetch={!isActive && Math.abs(activeIndex - index) === 1 && Boolean(visual.videoSrc)}
+            prefetch={prefetchVideo}
             sizes={IMAGE_SIZES_STORY}
+            priority={priority}
             imageClassName="services-panel-image object-cover brightness-[1.03] contrast-[1.02] saturate-[1.06]"
           />
         </div>
@@ -289,44 +298,43 @@ function ServiceStoryCard({
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.06) 34%, rgba(0,0,0,0.12) 58%, rgba(0,0,0,0.82) 100%)",
-          }}
+          style={{ background: STORY_CARD_SCRIM }}
         />
 
-        <div className="absolute inset-x-0 top-0 z-20 flex gap-1 p-3 pt-3.5">
+        <div className="services-story-card__ticks absolute inset-x-0 top-0 z-20 flex gap-1 p-3 pt-3.5">
           {services.map((s, idx) => (
             <div
               key={s.id}
               aria-hidden
-              className="h-[3px] flex-1 overflow-hidden rounded-full bg-white/20"
+              className="services-story-card__tick h-[3px] flex-1 overflow-hidden rounded-full bg-white/20"
             >
-                <div
-                  className="h-full rounded-full bg-white/90 transition-transform duration-300"
-                  style={{
-                    transform: `scaleX(${idx < activeIndex ? 1 : idx === activeIndex && isActive ? 1 : 0})`,
-                    transformOrigin: "left center",
-                  }}
-                />
-              </div>
-            ))}
+              <div
+                className="h-full rounded-full bg-white/90 transition-transform duration-300"
+                style={{
+                  transform: `scaleX(${idx < activeIndex ? 1 : idx === activeIndex && isActive ? 1 : 0})`,
+                  transformOrigin: "left center",
+                }}
+              />
+            </div>
+          ))}
         </div>
 
-        <div className="relative z-10 flex h-full flex-col p-4">
-          <div className="mt-8 flex items-center gap-2.5">
+        <div className="services-story-card__body relative z-10 flex h-full flex-col p-4">
+          <div className="services-story-card__meta mt-8 flex items-center gap-2.5">
             <span
-              className={`flex h-9 w-9 items-center justify-center rounded-full border bg-gold/12 text-gold ring-1 ring-black/30 transition-colors duration-300 ${
+              className={`services-story-card__icon flex h-9 w-9 items-center justify-center rounded-full border bg-gold/12 text-gold ring-1 ring-black/30 transition-colors duration-300 ${
                 isActive ? "border-gold/55" : "border-gold/35"
               }`}
             >
               <Icon className="h-4 w-4" aria-hidden />
             </span>
-            <div>
-              <p className="font-ui text-xs font-semibold uppercase tracking-[0.2em] text-gold">
+            <div className="min-w-0">
+              <p className="services-story-card__order font-ui text-xs font-semibold uppercase tracking-[0.2em] text-gold">
                 {service.orderLabel}
               </p>
-              <p className="font-display text-sm leading-tight text-white">{service.title}</p>
+              <p className="services-story-card__title font-display text-sm leading-tight text-white">
+                {service.title}
+              </p>
             </div>
           </div>
         </div>
@@ -334,7 +342,6 @@ function ServiceStoryCard({
     </article>
   );
 }
-
 
 function ServicePanel({
   service,
@@ -358,7 +365,7 @@ function ServicePanel({
     <motion.article
       className={`services-panel-card group/panel relative flex min-w-[min(100%,14rem)] shrink-0 cursor-pointer overflow-hidden sm:min-w-[min(100%,16rem)] lg:min-w-0 ${
         isActive
-          ? "services-panel-card--active z-20 flex-[3] xl:flex-[3.5] 2xl:flex-[4] shadow-[inset_0_0_0_1px_rgba(245,197,24,0.45),0_0_40px_rgba(245,197,24,0.1)]"
+          ? "services-panel-card--active z-20 flex-1 lg:flex-[3] xl:flex-[3.5] 2xl:flex-[4] shadow-[inset_0_0_0_1px_rgba(245,197,24,0.45),0_0_40px_rgba(245,197,24,0.1)]"
           : "z-0 flex-1 hover:z-10"
       }`}
       onMouseEnter={onActivate}
