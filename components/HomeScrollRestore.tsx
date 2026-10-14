@@ -83,18 +83,28 @@ export function HomeScrollRestore() {
     if (pathname !== "/") return;
 
     let frame = 0;
+    const persistScroll = () => {
+      rememberHomeScroll(lastHomeScrollRef.current);
+    };
+
     const onScroll = () => {
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(() => {
         lastHomeScrollRef.current = window.scrollY;
-        rememberHomeScroll(window.scrollY);
       });
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("pagehide", persistScroll);
+    const onVisibility = () => {
+      if (document.visibilityState === "hidden") persistScroll();
+    };
+    document.addEventListener("visibilitychange", onVisibility);
 
     return () => {
       window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("pagehide", persistScroll);
+      document.removeEventListener("visibilitychange", onVisibility);
       cancelAnimationFrame(frame);
     };
   }, [pathname]);

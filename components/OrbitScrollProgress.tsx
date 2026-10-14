@@ -15,8 +15,16 @@ function elementDocumentTop(el: HTMLElement): number {
   return el.getBoundingClientRect().top + window.scrollY;
 }
 
-/** Max scroll Y where progress should reach 100% (homepage stops before footer). */
-function scrollMax(pathname: string) {
+type OrbitScrollMetrics = {
+  scrollMax: number;
+  footerDocTop: number | null;
+  pageScrollable: boolean;
+};
+
+function measureOrbitScrollMetrics(pathname: string): OrbitScrollMetrics {
+  const pageScrollable =
+    document.documentElement.scrollHeight > window.innerHeight + 8;
+
   if (isHomePath(pathname)) {
     const footer = document.getElementById("footer");
     const contact = document.getElementById("contact");
@@ -26,23 +34,19 @@ function scrollMax(pathname: string) {
         ? elementDocumentTop(contact) + contact.offsetHeight
         : null;
     if (endTop != null) {
-      return Math.max(1, endTop - window.innerHeight);
+      return {
+        scrollMax: Math.max(1, endTop - window.innerHeight),
+        footerDocTop: footer ? elementDocumentTop(footer) : null,
+        pageScrollable,
+      };
     }
   }
-  return Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-}
 
-function scrollProgress(pathname: string) {
-  return Math.min(1, Math.max(0, window.scrollY / scrollMax(pathname)));
-}
-
-/** Hide the orbit only while the footer band is on screen. */
-function isFooterScrollZone(): boolean {
-  const footer = document.getElementById("footer");
-  if (!footer) return false;
-  const footerTop = elementDocumentTop(footer);
-  const viewBottom = window.scrollY + window.innerHeight;
-  return viewBottom > footerTop + 32;
+  return {
+    scrollMax: Math.max(1, document.documentElement.scrollHeight - window.innerHeight),
+    footerDocTop: null,
+    pageScrollable,
+  };
 }
 
 export function OrbitScrollProgress() {
@@ -73,6 +77,9 @@ export function OrbitScrollProgress() {
     let orbitNow = 0;
     let orbitRaf = 0;
     let orbitIdle = 0;
+    let scrollSyncRaf = 0;
+    let layoutSyncTimer = 0;
+    let metrics = measureOrbitScrollMetrics(pathname);
 
     const applyOrbit = () => {
       const pct = Math.round(orbitNow * 100);
@@ -99,11 +106,13 @@ export function OrbitScrollProgress() {
       orbitIdle = window.setTimeout(() => orbit.classList.remove("is-live"), 1200);
     };
 
-    const onOrbitScroll = () => {
-      const pageScrollable =
-        document.documentElement.scrollHeight > window.innerHeight + 8;
-      const inFooter = isFooterScrollZone();
-      orbit.hidden = !pageScrollable;
+    const syncOrbitFromScroll = () => {
+      scrollSyncRaf = 0;
+      const inFooter =
+        metrics.footerDocTop != null &&
+        window.scrollY + window.innerHeight > metrics.footerDocTop + 32;
+
+      orbit.hidden = !metrics.pageScrollable;
       orbit.classList.toggle("orbit--in-footer", inFooter);
       if (inFooter) {
         orbit.setAttribute("aria-hidden", "true");
@@ -114,24 +123,41 @@ export function OrbitScrollProgress() {
         return;
       }
       orbit.setAttribute("aria-hidden", "false");
-      orbitP = scrollProgress(pathname);
+      orbitP = Math.min(1, Math.max(0, window.scrollY / metrics.scrollMax));
       pulseOrbit();
       if (!orbitRaf) orbitRaf = requestAnimationFrame(drawOrbit);
     };
 
-    onOrbitScroll();
-    window.addEventListener("scroll", onOrbitScroll, { passive: true });
-    window.addEventListener("resize", onOrbitScroll);
+    const scheduleOrbitScroll = () => {
+      if (scrollSyncRaf) return;
+      scrollSyncRaf = requestAnimationFrame(syncOrbitFromScroll);
+    };
 
-    const resizeObserver = new ResizeObserver(onOrbitScroll);
+    const remeasureAndSync = () => {
+      metrics = measureOrbitScrollMetrics(pathname);
+      scheduleOrbitScroll();
+    };
+
+    const scheduleLayoutSync = () => {
+      window.clearTimeout(layoutSyncTimer);
+      layoutSyncTimer = window.setTimeout(remeasureAndSync, 180);
+    };
+
+    remeasureAndSync();
+    window.addEventListener("scroll", scheduleOrbitScroll, { passive: true });
+    window.addEventListener("resize", scheduleLayoutSync);
+
+    const resizeObserver = new ResizeObserver(scheduleLayoutSync);
     resizeObserver.observe(document.documentElement);
 
     return () => {
-      window.removeEventListener("scroll", onOrbitScroll);
-      window.removeEventListener("resize", onOrbitScroll);
+      window.removeEventListener("scroll", scheduleOrbitScroll);
+      window.removeEventListener("resize", scheduleLayoutSync);
       resizeObserver.disconnect();
       window.clearTimeout(orbitIdle);
+      window.clearTimeout(layoutSyncTimer);
       if (orbitRaf) cancelAnimationFrame(orbitRaf);
+      if (scrollSyncRaf) cancelAnimationFrame(scrollSyncRaf);
     };
   }, [pathname]);
 
