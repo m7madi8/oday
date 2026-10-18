@@ -114,7 +114,7 @@ export function Contact() {
                 <Image
                   src={studioAbout.directorPortrait}
                   alt={studioAbout.directorPortraitAlt}
-                  sizes="(max-width: 768px) 18rem, (max-width: 1440px) 22rem, 26rem"
+                  sizes="(max-width: 768px) 18rem, (max-width: 1599px) 22rem, min(28vw, 26rem)"
                   className="contact-portrait-frame__img"
                 />
               </figure>
