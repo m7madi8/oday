@@ -5,78 +5,31 @@ import { ServicePanelMedia } from "@/components/ServicePanelMedia";
 import { SectionHeader, SectionInner, SectionShell } from "@/components/SectionShell";
 import { services } from "@/lib/content/services";
 import { serviceVisualBySlug } from "@/lib/content/service-visuals";
-import { animationEasing } from "@/lib/animations";
-import { revealInView } from "@/lib/motion-viewport";
 import { SafeButton } from "@/components/SafeButton";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback, useRef, useState } from "react";
-import { motion, useReducedMotion } from "@/components/ClientMotion";
+import { useReducedMotion } from "@/components/ClientMotion";
 
-type ServiceProfile = {
-  tagline: string;
-  punchline: string;
-  verticalLabel: string;
-};
-
-const IMAGE_SIZES_DESKTOP =
-  "(max-width: 1023px) 85vw, (max-width: 1280px) 58vw, (max-width: 1536px) 54vw, 52vw";
+const IMAGE_SIZES_DESK = "(max-width: 1536px) 24vw, 520px";
 const IMAGE_SIZES_STORY =
   "(max-width: 767px) 100vw, (max-width: 1023px) 78vw, 420px";
 
 const STORY_CARD_SCRIM =
   "linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.06) 34%, rgba(0,0,0,0.12) 58%, rgba(0,0,0,0.82) 100%)";
 
+const DESK_CARD_SCRIM =
+  "linear-gradient(180deg, rgba(0,0,0,0.58) 0%, rgba(0,0,0,0.14) 24%, rgba(0,0,0,0) 46%, rgba(0,0,0,0.22) 100%)";
+
 function serviceGalleryHref(slug: (typeof services)[number]["slug"]) {
   return `/projects?service=${encodeURIComponent(slug)}`;
 }
-
-const fallbackProfile: ServiceProfile = {
-  tagline: "Oday scope",
-  punchline: "Design-led scope with clear technical control from concept to delivery.",
-  verticalLabel: "Architecture",
-};
-
-const serviceProfiles: Record<string, ServiceProfile> = {
-  "Interior Design": {
-    tagline: "Interior systems",
-    punchline:
-      "Premium interiors built for brand value, material clarity, and execution-ready detailing.",
-    verticalLabel: "Interior Design",
-  },
-  "Exterior Design": {
-    tagline: "Facade & landscape",
-    punchline:
-      "Facades, villas, residential buildings, and integrated landscape — tuned for climate, massing, and market appeal.",
-    verticalLabel: "Exterior Design",
-  },
-  "Architect Dron": {
-    tagline: "Aerial intelligence",
-    punchline:
-      "Drone-powered site data and visual reporting for faster, sharper project decisions.",
-    verticalLabel: "Architect Dron",
-  },
-  "Ai architect": {
-    tagline: "AI workflows",
-    punchline:
-      "AI-enhanced architecture workflows for speed, option exploration, and precision.",
-    verticalLabel: "Ai architect",
-  },
-};
 
 function getServiceVisual(slug: (typeof services)[number]["slug"]) {
   return serviceVisualBySlug[slug];
 }
 
-const stripBezel =
-  "rounded-[1.1rem] bg-gradient-to-br from-gold/55 via-white/25 to-gold/20 p-[2px] shadow-[0_40px_100px_rgba(0,0,0,0.65),0_0_0_1px_rgba(245, 197, 24,0.12)] lg:rounded-[1.25rem] lg:p-[3px]";
-
-const stripInner =
-  "flex h-full min-h-[inherit] w-full overflow-hidden rounded-[1.02rem] bg-transparent lg:rounded-[1.15rem]";
-
 export function Services() {
-  const [activeId, setActiveId] = useState(services[0]?.id ?? "");
-
   if (!services.length) return null;
 
   return (
@@ -106,27 +59,7 @@ export function Services() {
         <ServicesMobileCarousel />
       </ScrollReveal>
 
-      {/* Desktop — cinematic panels */}
-      <div className="services-stage hidden lg:flex">
-        <div className={`${stripBezel} services-stage__frame`}>
-          <div
-            className="services-panel-scroll"
-            onMouseLeave={() => setActiveId(services[0]?.id ?? "")}
-          >
-            <div className={`${stripInner} services-panel-track`}>
-              {services.map((service, index) => (
-                <ServicePanel
-                  key={service.id}
-                  service={service}
-                  index={index}
-                  isActive={activeId === service.id}
-                  onActivate={() => setActiveId(service.id)}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
+      <ServicesDesktopBoard />
     </SectionShell>
   );
 }
@@ -343,33 +276,53 @@ function ServiceStoryCard({
   );
 }
 
-function ServicePanel({
+function ServicesDesktopBoard() {
+  const [activeId, setActiveId] = useState<string | null>(null);
+
+  return (
+    <div className="services-desk hidden lg:grid" onMouseLeave={() => setActiveId(null)}>
+      {services.map((service, index) => (
+        <ServiceDeskCard
+          key={service.id}
+          service={service}
+          index={index}
+          isActive={activeId === service.id}
+          onActivate={() => setActiveId(service.id)}
+          onQuiet={() => setActiveId((current) => (current === service.id ? null : current))}
+        />
+      ))}
+    </div>
+  );
+}
+
+function ServiceDeskCard({
   service,
   index,
   isActive,
   onActivate,
+  onQuiet,
 }: {
   service: (typeof services)[number];
   index: number;
   isActive: boolean;
   onActivate: () => void;
+  onQuiet: () => void;
 }) {
-  const profile = serviceProfiles[service.title] ?? fallbackProfile;
   const visual = getServiceVisual(service.slug);
   const Icon = service.icon;
-  const reduceMotion = useReducedMotion();
   const router = useRouter();
   const galleryHref = serviceGalleryHref(service.slug);
 
   return (
-    <motion.article
-      className={`services-panel-card group/panel relative flex min-w-[min(100%,14rem)] shrink-0 cursor-pointer overflow-hidden sm:min-w-[min(100%,16rem)] lg:min-w-0 ${
-        isActive
-          ? "services-panel-card--active z-20 flex-1 lg:flex-[3] xl:flex-[3.5] 2xl:flex-[4] shadow-[inset_0_0_0_1px_rgba(245,197,24,0.45),0_0_40px_rgba(245,197,24,0.1)]"
-          : "z-0 flex-1 hover:z-10"
-      }`}
+    <article
+      className={`services-desk-card${isActive ? " is-active" : ""}`}
       onMouseEnter={onActivate}
       onFocus={onActivate}
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+          onQuiet();
+        }
+      }}
       onClick={(event) => {
         if ((event.target as HTMLElement).closest("a,button")) return;
         router.push(galleryHref);
@@ -381,107 +334,41 @@ function ServicePanel({
       }}
       tabIndex={0}
       aria-label={`View ${service.title} projects`}
-      initial={reduceMotion ? false : { y: 24 }}
-      whileInView={reduceMotion ? undefined : { y: 0 }}
-      viewport={revealInView}
-      transition={{
-        duration: reduceMotion ? 0 : 0.6,
-        delay: reduceMotion ? 0 : index * 0.07,
-        ease: animationEasing.cinematic,
-      }}
     >
-      <div className="absolute inset-0 overflow-hidden">
-        <ServicePanelMedia
-          visual={visual}
-          isPlaying={isActive}
-          prefetch={!isActive && Boolean(visual.videoSrc)}
-          sizes={IMAGE_SIZES_DESKTOP}
-          priority={index === 0}
-        />
-      </div>
+      <div className="services-desk-card__frame">
+        <div className="services-desk-card__media">
+          <ServicePanelMedia
+            visual={visual}
+            isPlaying={isActive}
+            sizes={IMAGE_SIZES_DESK}
+            priority={index === 0}
+            imageClassName="services-panel-image object-cover"
+          />
+        </div>
 
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(180deg, rgba(0,0,0,0.22) 0%, rgba(0,0,0,0.05) 38%, rgba(0,0,0,0.55) 100%)",
-        }}
-      />
+        <div aria-hidden className="services-desk-card__scrim" style={{ background: DESK_CARD_SCRIM }} />
 
-      <div
-        aria-hidden
-        className={`pointer-events-none absolute inset-x-0 bottom-0 transition-[height] duration-500 ${
-          isActive ? "h-[58%]" : "h-[42%]"
-        }`}
-        style={{
-          background:
-            "linear-gradient(to top, rgba(8,8,8,0.92) 0%, rgba(8,8,8,0.55) 45%, transparent 100%)",
-        }}
-      />
+        <div className="services-desk-card__ticks" aria-hidden>
+          {services.map((item, tickIndex) => (
+            <span key={item.id} className="services-desk-card__tick">
+              <span
+                className="services-desk-card__tick-fill"
+                style={{ transform: `scaleX(${tickIndex === index ? 1 : 0})` }}
+              />
+            </span>
+          ))}
+        </div>
 
-      <div
-        aria-hidden
-        className={`absolute inset-y-0 left-0 w-[3px] bg-gradient-to-b from-transparent via-gold to-transparent transition-opacity duration-300 ${
-          isActive ? "opacity-100" : "opacity-0 group-hover/panel:opacity-50"
-        }`}
-      />
-
-      <span
-        aria-hidden
-        className={`pointer-events-none absolute -right-2 top-1/2 -translate-y-1/2 select-none font-display text-[clamp(4.2rem,12vw,7.5rem)] italic leading-none transition-opacity duration-300 ${
-          isActive
-            ? "text-white/[0.07]"
-            : "text-white/[0.04] group-hover/panel:text-white/[0.06]"
-        }`}
-      >
-        {service.orderLabel}
-      </span>
-
-      <div className="relative z-10 flex h-full w-full flex-col p-4 sm:p-5 md:p-6 lg:p-7">
-        <div className="flex items-start justify-between gap-3">
-          <p
-            className={`max-w-[90%] font-ui text-xs font-semibold uppercase leading-snug tracking-[0.14em] transition-colors duration-300 ${
-              isActive ? "text-white" : "text-white/65 group-hover/panel:text-white/85"
-            }`}
-          >
-            <span className="text-gold">{service.orderLabel}</span>
-            <span className="mx-2 text-white/25">/</span>
-            <span>{service.title}</span>
-            <span className="mx-2 hidden text-white/25 lg:inline">/</span>
-            <span className="hidden text-gold/75 lg:inline">{profile.tagline}</span>
-          </p>
-
-          <span
-            className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border backdrop-blur-md transition-colors duration-300 sm:h-10 sm:w-10 ${
-              isActive
-                ? "border-gold/60 bg-gold/20 text-gold shadow-[0_0_20px_rgba(245, 197, 24,0.35)]"
-                : "border-white/15 bg-black/35 text-white/70 group-hover/panel:border-gold/35 group-hover/panel:text-gold"
-            }`}
-          >
-            <Icon className="h-4 w-4 sm:h-[18px] sm:w-[18px]" aria-hidden />
+        <div className="services-desk-card__meta">
+          <span className={`services-desk-card__icon${isActive ? " is-active" : ""}`}>
+            <Icon aria-hidden />
+          </span>
+          <span className="services-desk-card__copy">
+            <span className="services-desk-card__order">{service.orderLabel}</span>
+            <span className="services-desk-card__title">{service.title}</span>
           </span>
         </div>
-
-        <div className="mt-auto flex min-h-0 flex-1 items-end pt-8">
-          <h3
-            className={`shrink-0 font-display text-[clamp(0.85rem,1.4vw,1.15rem)] leading-none tracking-[0.04em] [writing-mode:vertical-rl] rotate-180 transition-colors duration-300 ${
-              isActive
-                ? "text-gold drop-shadow-[0_0_28px_rgba(245, 197, 24,0.45)]"
-                : "text-white/75 group-hover/panel:text-white"
-            }`}
-          >
-            {profile.verticalLabel}
-          </h3>
-        </div>
       </div>
-
-      {isActive && (
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-[2px] bg-gradient-to-r from-transparent via-gold to-transparent shadow-[0_0_16px_rgba(245, 197, 24,0.8)]"
-        />
-      )}
-    </motion.article>
+    </article>
   );
 }

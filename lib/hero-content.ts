@@ -1,14 +1,14 @@
 import type { StaticImageData } from "next/image";
-import heroPrimary from "@/imgs/hero/villa-marble-frontal-ultrawide-4k.webp";
+import heroPrimary from "@/imgs/hero/modern-mansion-at-dusk.png";
 import heroPrimaryMobile from "@/imgs/hero/villa-marble-frontal-mobile.webp";
 import heroPrimaryTablet from "@/imgs/hero/villa-marble-frontal-tablet.webp";
-import heroSlide2 from "@/imgs/hero/villa-black-marble-ultrawide-4k.webp";
+import heroSlide2 from "@/imgs/hero/modern-charcoal-stone-house-at-twilight.png";
 import heroSlide2Mobile from "@/imgs/hero/villa-black-marble-mobile.webp";
 import heroSlide2Tablet from "@/imgs/hero/villa-black-marble-tablet.webp";
-import heroSlide3 from "@/imgs/hero/villa-entrance-evening-4k.webp";
+import heroSlide3 from "@/imgs/hero/twilight-luxury-residence-with-scooter.png";
 import heroSlide3Mobile from "@/imgs/hero/villa-entrance-evening-mobile.webp";
 import heroSlide3Tablet from "@/imgs/hero/villa-entrance-evening-tablet.webp";
-import heroSlide4 from "@/imgs/hero/villa-stone-facade-ultrawide-4k.webp";
+import heroSlide4 from "@/imgs/hero/modern-villa-at-dusk.png";
 import heroSlide4Mobile from "@/imgs/hero/villa-stone-facade-mobile.webp";
 import heroSlide4Tablet from "@/imgs/hero/villa-stone-facade-tablet.webp";
 import { heroCopy } from "@/lib/hero-copy";
