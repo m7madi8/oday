@@ -417,9 +417,14 @@
   height: 100%;
   width: auto;
   max-width: none;
-  object-fit: cover;
+  object-fit: unset;
   object-position: center center;
   transform: translateX(-50%);
+}
+
+.hero-modern__layer--zoom-from-top .hero-modern__img--full-frame {
+  transform: translateX(-50%);
+  transform-origin: center center;
 }
 
 .hero-modern__layer--lead-zoom .hero-modern__img--full-frame {

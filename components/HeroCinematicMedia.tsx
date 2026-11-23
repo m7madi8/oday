@@ -115,7 +115,7 @@ export const HeroCinematicMedia = forwardRef<HeroCinematicMediaHandle, HeroCinem
                   isPrevious ? " is-previous" : ""
                 }${reduceMotion ? " hero-modern__layer--instant" : ""}${
                   slide.primary ? " hero-modern__layer--lead-zoom" : ""
-                }${index === 1 ? " hero-modern__layer--zoom-from-top" : ""}`}
+                }`}
               >
                 <div className="hero-modern__layer-inner">
                   <HeroSlidePicture
