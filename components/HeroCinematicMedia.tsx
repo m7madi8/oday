@@ -110,7 +110,7 @@ export const HeroCinematicMedia = forwardRef<HeroCinematicMediaHandle, HeroCinem
             const isPrevious = index === previous;
             return (
               <div
-                key={slide.alt}
+                key={`hero-slide-${index}`}
                 className={`hero-modern__layer${isActive ? " is-active" : ""}${
                   isPrevious ? " is-previous" : ""
                 }${reduceMotion ? " hero-modern__layer--instant" : ""}${
@@ -121,7 +121,7 @@ export const HeroCinematicMedia = forwardRef<HeroCinematicMediaHandle, HeroCinem
                   <HeroSlidePicture
                     slide={slide}
                     priority={index === 0}
-                    loading={index === 0 ? "eager" : "lazy"}
+                    loading="eager"
                     onLoad={index === 0 ? markLeadReady : undefined}
                   />
                 </div>

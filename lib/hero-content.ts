@@ -45,6 +45,9 @@ const heroImages = [
     src: heroPrimary,
     srcMobile: heroPrimaryMobile,
     srcTablet: heroPrimaryTablet,
+    publicSrc: HERO_LCP_PUBLIC_SRC,
+    intrinsicWidth: HERO_LCP_INTRINSIC_WIDTH,
+    intrinsicHeight: HERO_LCP_INTRINSIC_HEIGHT,
     alt: "Contemporary villa facade at dusk — hero exterior",
     primary: true,
     objectPosition: "50% 50%",
@@ -53,6 +56,9 @@ const heroImages = [
     src: heroSlide2,
     srcMobile: heroSlide2Mobile,
     srcTablet: heroSlide2Tablet,
+    publicSrc: "/hero/hero-slide-2.png",
+    intrinsicWidth: 1926,
+    intrinsicHeight: 817,
     alt: "Dark marble villa, three-quarter view at dusk — hero exterior",
     primary: false,
     objectPosition: "50% 50%",
@@ -61,6 +67,9 @@ const heroImages = [
     src: heroSlide3,
     srcMobile: heroSlide3Mobile,
     srcTablet: heroSlide3Tablet,
+    publicSrc: "/hero/hero-slide-3.png",
+    intrinsicWidth: 1926,
+    intrinsicHeight: 817,
     alt: "Luxury villa entrance at dusk with landscaped driveway — hero exterior",
     primary: false,
     objectPosition: "50% 50%",
@@ -69,7 +78,10 @@ const heroImages = [
     src: heroSlide4,
     srcMobile: heroSlide4Mobile,
     srcTablet: heroSlide4Tablet,
-    alt: "Contemporary stone villa facade with landscaped entrance — hero exterior",
+    publicSrc: "/hero/hero-slide-4.png",
+    intrinsicWidth: 1926,
+    intrinsicHeight: 817,
+    alt: "Twilight luxury residence with scooter at dusk — hero exterior",
     primary: false,
     objectPosition: "50% 50%",
   },
@@ -77,6 +89,9 @@ const heroImages = [
   src: StaticImageData;
   srcMobile: StaticImageData;
   srcTablet: StaticImageData;
+  publicSrc: string;
+  intrinsicWidth: number;
+  intrinsicHeight: number;
   alt: string;
   primary: boolean;
   objectPosition: string;

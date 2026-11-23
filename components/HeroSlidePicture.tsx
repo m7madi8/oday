@@ -3,9 +3,6 @@ import {
   HERO_DESKTOP_MEDIA,
   HERO_DESKTOP_SIZES,
   HERO_LCP_DESKTOP_SIZES,
-  HERO_LCP_INTRINSIC_HEIGHT,
-  HERO_LCP_INTRINSIC_WIDTH,
-  HERO_LCP_PUBLIC_SRC,
   HERO_LCP_QUALITY,
   HERO_LCP_UNOPTIMIZED,
   HERO_MOBILE_MEDIA,
@@ -22,7 +19,7 @@ function heroSrcSet(props: { srcSet?: string; src?: string }) {
   return props.srcSet || props.src || "";
 }
 
-export function HeroSlidePicture({
+function HeroPublicStill({
   slide,
   priority,
   loading,
@@ -35,25 +32,42 @@ export function HeroSlidePicture({
 }) {
   const fetchPriority = (priority ? "high" : "auto") as "high" | "auto";
 
-  if (priority && HERO_LCP_UNOPTIMIZED) {
+  return (
+    <picture className="hero-modern__picture hero-modern__picture--source">
+      <img
+        src={slide.publicSrc}
+        className="hero-modern__img hero-modern__img--full-frame"
+        width={slide.intrinsicWidth}
+        height={slide.intrinsicHeight}
+        alt=""
+        draggable={false}
+        loading={loading}
+        decoding={priority ? "sync" : "async"}
+        fetchPriority={fetchPriority}
+        onLoad={onLoad}
+      />
+    </picture>
+  );
+}
+
+export function HeroSlidePicture({
+  slide,
+  priority,
+  loading,
+  onLoad,
+}: {
+  slide: HeroSlide;
+  priority: boolean;
+  loading: "eager" | "lazy";
+  onLoad?: () => void;
+}) {
+  if (HERO_LCP_UNOPTIMIZED && slide.publicSrc) {
     return (
-      <picture className="hero-modern__picture hero-modern__picture--source">
-        <img
-          src={HERO_LCP_PUBLIC_SRC}
-          className="hero-modern__img hero-modern__img--full-frame"
-          width={HERO_LCP_INTRINSIC_WIDTH}
-          height={HERO_LCP_INTRINSIC_HEIGHT}
-          alt=""
-          draggable={false}
-          loading={loading}
-          decoding="sync"
-          fetchPriority={fetchPriority}
-          onLoad={onLoad}
-        />
-      </picture>
+      <HeroPublicStill slide={slide} priority={priority} loading={loading} onLoad={onLoad} />
     );
   }
 
+  const fetchPriority = (priority ? "high" : "auto") as "high" | "auto";
   const quality = priority ? HERO_LCP_QUALITY : HERO_CAROUSEL_QUALITY;
   const desktopSizes = priority ? HERO_LCP_DESKTOP_SIZES : HERO_DESKTOP_SIZES;
   const frameSizes = priority ? HERO_LCP_DESKTOP_SIZES : undefined;
