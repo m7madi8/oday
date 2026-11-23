@@ -5,6 +5,7 @@ import type { ServiceVisualAsset, ServiceVisualSlide } from "@/lib/content/servi
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
+import { useMobilePerfMode } from "@/hooks/useMobilePerfMode";
 import { SITE_IMAGE_QUALITY } from "@/lib/image-delivery";
 
 const IMAGE_QUALITY = SITE_IMAGE_QUALITY;
@@ -21,6 +22,7 @@ export function ServicePanelMedia({
   sizes,
   priority = false,
   imageClassName = "services-panel-image object-cover",
+  lite = false,
 }: {
   visual: ServiceVisualAsset;
   isPlaying: boolean;
@@ -29,11 +31,15 @@ export function ServicePanelMedia({
   sizes: string;
   priority?: boolean;
   imageClassName?: string;
+  /** Phones: static cover, no ken-burn / slideshow while scrolling. */
+  lite?: boolean;
 }) {
   const reduceMotion = useReducedMotion();
+  const mobilePerf = useMobilePerfMode();
+  const staticMedia = lite || mobilePerf;
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoVisible, setVideoVisible] = useState(false);
-  const hasVideo = Boolean(visual.videoSrc) && !reduceMotion;
+  const hasVideo = Boolean(visual.videoSrc) && !reduceMotion && !staticMedia;
   const shouldLoadVideo = hasVideo && (isPlaying || prefetch);
   const slides = useMemo<readonly ServiceVisualSlide[]>(
     () =>
@@ -42,7 +48,7 @@ export function ServicePanelMedia({
         : [{ src: visual.src, alt: visual.alt, objectPosition: visual.objectPosition }],
     [visual],
   );
-  const canSlideshow = slides.length > 1 && !hasVideo && !reduceMotion;
+  const canSlideshow = slides.length > 1 && !hasVideo && !reduceMotion && !staticMedia;
   const [active, setActive] = useState(0);
   const [armed, setArmed] = useState(false);
   const [progressKey, setProgressKey] = useState(0);
@@ -164,6 +170,39 @@ export function ServicePanelMedia({
 
       {visibleSlides.map((slide, index) => {
         const isActive = reduceMotion || !canSlideshow ? index === 0 : index === active;
+        const scale =
+          staticMedia || reduceMotion || !canSlideshow
+            ? 1
+            : isPlaying && isActive
+              ? 1.04
+              : 1;
+
+        if (staticMedia) {
+          return (
+            <div
+              key={slide.alt}
+              className="service-panel-media__slide"
+              style={{ zIndex: isActive ? 2 : 1, opacity: isActive ? 1 : 0 }}
+              aria-hidden={!isActive}
+            >
+              <div className="service-panel-media__ken">
+                <Image
+                  src={slide.src}
+                  alt=""
+                  fill
+                  quality={IMAGE_QUALITY}
+                  sizes={sizes}
+                  priority={priority && index === 0}
+                  loading={priority ? "eager" : "lazy"}
+                  className={`${imageClassName} service-panel-media__poster ${
+                    showPoster ? "service-panel-media__poster--visible" : ""
+                  }`}
+                  style={{ objectPosition: slide.objectPosition }}
+                />
+              </div>
+            </div>
+          );
+        }
 
         return (
           <motion.div
@@ -182,14 +221,7 @@ export function ServicePanelMedia({
             <motion.div
               className="service-panel-media__ken"
               initial={false}
-              animate={{
-                scale:
-                  reduceMotion || !canSlideshow
-                    ? 1
-                    : isPlaying && isActive
-                      ? 1.04
-                      : 1,
-              }}
+              animate={{ scale }}
               transition={{
                 duration:
                   isPlaying && isActive && canSlideshow && !reduceMotion

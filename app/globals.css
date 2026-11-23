@@ -6698,9 +6698,26 @@ body::-webkit-scrollbar {
   .hero-cta-luxe,
   .case-studies-menu-backdrop,
   .case-studies-menu-popover,
-  .services-carousel__nav-btn {
+  .services-carousel__nav-btn,
+  .services-carousel__nav {
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
+  }
+
+  .services-carousel__nav {
+    background: rgba(8, 8, 8, 0.88);
+  }
+
+  .services-story-card__frame {
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+  }
+
+  .service-panel-media__ken {
+    will-change: auto;
+  }
+
+  .services-carousel__track {
+    transition-duration: 0.38s;
   }
 
   .hero-cta-luxe {

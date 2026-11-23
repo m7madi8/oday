@@ -1,6 +1,5 @@
 "use client";
 
-import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import { ServicePanelMedia } from "@/components/ServicePanelMedia";
 import { SectionHeader, SectionInner, SectionShell } from "@/components/SectionShell";
 import { services } from "@/lib/content/services";
@@ -9,7 +8,9 @@ import { SafeButton } from "@/components/SafeButton";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback, useRef, useState } from "react";
-import { useReducedMotion } from "@/components/ClientMotion";
+import { useInView, useReducedMotion } from "@/components/ClientMotion";
+import { useMobilePerfMode } from "@/hooks/useMobilePerfMode";
+import { usePageScrollBusy } from "@/hooks/usePageScrollBusy";
 
 const IMAGE_SIZES_DESK = "(max-width: 1536px) 24vw, 520px";
 const IMAGE_SIZES_STORY =
@@ -54,10 +55,10 @@ export function Services() {
         </div>
       </SectionInner>
 
-      {/* Phone + iPad — story carousel */}
-      <ScrollReveal dramatic delay={0.04} className="services-carousel-wrap lg:hidden">
+      {/* Phone + iPad — story carousel (no scroll-reveal wrapper — lighter on touch scroll) */}
+      <div className="services-carousel-wrap lg:hidden">
         <ServicesMobileCarousel />
-      </ScrollReveal>
+      </div>
 
       <ServicesDesktopBoard />
     </SectionShell>
@@ -68,8 +69,17 @@ const SWIPE_THRESHOLD_PX = 48;
 
 function ServicesMobileCarousel() {
   const reduceMotion = useReducedMotion();
+  const mobilePerf = useMobilePerfMode();
+  const scrollBusy = usePageScrollBusy();
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const carouselInView = useInView(carouselRef, {
+    once: false,
+    amount: 0.12,
+    margin: "0px 0px -8% 0px",
+  });
   const [activeIndex, setActiveIndex] = useState(0);
   const touchStartRef = useRef<{ x: number; y: number } | null>(null);
+  const pauseHeavyMedia = mobilePerf && (scrollBusy || !carouselInView);
 
   const goTo = useCallback((index: number) => {
     setActiveIndex(Math.max(0, Math.min(services.length - 1, index)));
@@ -103,7 +113,7 @@ function ServicesMobileCarousel() {
   );
 
   return (
-    <div className="services-carousel">
+    <div ref={carouselRef} className="services-carousel">
       <div className="services-carousel__stage">
         <SafeButton
           data-no-glow
@@ -130,23 +140,36 @@ function ServicesMobileCarousel() {
               transition: reduceMotion ? "none" : undefined,
             }}
           >
-            {services.map((service, index) => (
-              <div
-                key={service.id}
-                className={`services-carousel__slide${activeIndex === index ? " is-active" : ""}`}
-                aria-hidden={activeIndex !== index}
-                onClick={() => {
-                  if (activeIndex !== index) goTo(index);
-                }}
-              >
-                <ServiceStoryCard
-                  service={service}
-                  index={index}
-                  isActive={activeIndex === index}
-                  activeIndex={activeIndex}
-                />
-              </div>
-            ))}
+            {services.map((service, index) => {
+              const isActive = activeIndex === index;
+              const shouldMount = mobilePerf
+                ? Math.abs(index - activeIndex) <= 1
+                : true;
+
+              return (
+                <div
+                  key={service.id}
+                  className={`services-carousel__slide${isActive ? " is-active" : ""}`}
+                  aria-hidden={!isActive}
+                  onClick={() => {
+                    if (!isActive) goTo(index);
+                  }}
+                >
+                  {shouldMount ? (
+                    <ServiceStoryCard
+                      service={service}
+                      index={index}
+                      isActive={isActive && !pauseHeavyMedia}
+                      activeIndex={activeIndex}
+                      liteMedia={mobilePerf}
+                      priority={index === 0}
+                    />
+                  ) : (
+                    <div className="services-story-card services-story-card--shell" aria-hidden />
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
 
@@ -192,18 +215,23 @@ function ServiceStoryCard({
   isActive,
   activeIndex,
   priority = false,
+  liteMedia = false,
 }: {
   service: (typeof services)[number];
   index: number;
   isActive: boolean;
   activeIndex: number;
   priority?: boolean;
+  liteMedia?: boolean;
 }) {
   const visual = getServiceVisual(service.slug);
   const Icon = service.icon;
   const router = useRouter();
   const prefetchVideo =
-    !isActive && Boolean(visual.videoSrc) && Math.abs(activeIndex - index) === 1;
+    !liteMedia &&
+    !isActive &&
+    Boolean(visual.videoSrc) &&
+    Math.abs(activeIndex - index) === 1;
 
   return (
     <article
@@ -224,6 +252,7 @@ function ServiceStoryCard({
             prefetch={prefetchVideo}
             sizes={IMAGE_SIZES_STORY}
             priority={priority}
+            lite={liteMedia}
             imageClassName="services-panel-image object-cover brightness-[1.03] contrast-[1.02] saturate-[1.06]"
           />
         </div>
