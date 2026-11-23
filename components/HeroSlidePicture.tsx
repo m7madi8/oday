@@ -4,6 +4,7 @@ import {
   HERO_DESKTOP_SIZES,
   HERO_LCP_DESKTOP_SIZES,
   HERO_LCP_QUALITY,
+  HERO_LCP_UNOPTIMIZED,
   HERO_MOBILE_MEDIA,
   HERO_MOBILE_SIZES,
   HERO_TABLET_MEDIA,
@@ -39,6 +40,7 @@ export function HeroSlidePicture({
     quality,
     priority,
     fetchPriority,
+    unoptimized: priority && HERO_LCP_UNOPTIMIZED,
   };
 
   const { props: mobileProps } = getImageProps({

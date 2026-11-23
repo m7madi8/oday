@@ -24,6 +24,8 @@ export const HERO_DESKTOP_MEDIA = "(min-width: 1280px), (orientation: landscape)
  * - Slides 2–4: still sharp, loaded lazily after first paint.
  */
 export const HERO_LCP_QUALITY = 100;
+/** Hero still — serve the bundled JPEG as-is (no AVIF/WebP re-encode). */
+export const HERO_LCP_UNOPTIMIZED = true;
 export const HERO_CAROUSEL_QUALITY = 90;
 /** @deprecated Use HERO_LCP_QUALITY / HERO_CAROUSEL_QUALITY */
 export const HERO_IMAGE_QUALITY = HERO_CAROUSEL_QUALITY;
@@ -31,8 +33,8 @@ export const HERO_IMAGE_QUALITY = HERO_CAROUSEL_QUALITY;
 export const HERO_MOBILE_SIZES = "(max-width: 767px) 100vw";
 export const HERO_TABLET_SIZES = "(max-width: 1024px) 100vw, 960px";
 export const HERO_DESKTOP_SIZES = "(max-width: 1536px) 100vw, 1920px";
-/** First still only — full source width, because the frame is fit by height and wider than the viewport. */
-export const HERO_LCP_DESKTOP_SIZES = "2560px";
+/** Native hero still width (1554px) — avoid requesting upscaled derivatives. */
+export const HERO_LCP_DESKTOP_SIZES = "1554px";
 
 const heroImages = [
   {
