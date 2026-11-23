@@ -3,9 +3,7 @@ import {
   HERO_LCP_DESKTOP_SIZES,
   HERO_LCP_QUALITY,
   HERO_MOBILE_MEDIA,
-  HERO_MOBILE_SIZES,
   HERO_TABLET_MEDIA,
-  HERO_TABLET_SIZES,
   hero,
 } from "@/lib/hero-content";
 import { getImageProps } from "next/image";
@@ -26,16 +24,16 @@ export function HeroLcpPreload() {
   const slide = hero.images[0];
   const shared = { alt: "", fill: true, quality: HERO_LCP_QUALITY, priority: true as const };
 
-  const mobile = getImageProps({ ...shared, src: slide.srcMobile, sizes: HERO_MOBILE_SIZES });
-  const tablet = getImageProps({ ...shared, src: slide.srcTablet, sizes: HERO_TABLET_SIZES });
+  const mobile = getImageProps({ ...shared, src: slide.srcMobile, sizes: HERO_LCP_DESKTOP_SIZES });
+  const tablet = getImageProps({ ...shared, src: slide.srcTablet, sizes: HERO_LCP_DESKTOP_SIZES });
   const desktop = getImageProps({
     ...shared,
     src: slide.src,
     sizes: HERO_LCP_DESKTOP_SIZES,
   });
 
-  const mobilePreload = preloadAttrs(mobile.props, HERO_MOBILE_SIZES);
-  const tabletPreload = preloadAttrs(tablet.props, HERO_TABLET_SIZES);
+  const mobilePreload = preloadAttrs(mobile.props, HERO_LCP_DESKTOP_SIZES);
+  const tabletPreload = preloadAttrs(tablet.props, HERO_LCP_DESKTOP_SIZES);
   const desktopPreload = preloadAttrs(desktop.props, HERO_LCP_DESKTOP_SIZES);
 
   return (

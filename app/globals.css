@@ -45,6 +45,9 @@
   /* Layout gutters + fixed nav */
   --hero-gutter: 0.5rem;
   --section-gutter-x: clamp(1.25rem, 4vw, 2.5rem);
+  /* Shared rail — Solutions and Selected Work use the same inset on every screen */
+  --home-rail: min(96vw, 1880px);
+  --home-rail-pad: clamp(0.75rem, 2vw, 2.5rem);
   --section-pad-bottom: 2rem;
   --section-max-width: 80rem;
   --hero-nav-offset: 0;
@@ -1557,6 +1560,14 @@
 @media (min-width: 1024px) {
   :root {
     --hero-gutter: 0.75rem;
+    --home-rail-pad: clamp(1rem, 2.5vw, 3rem);
+  }
+}
+
+@media (min-width: 1536px) {
+  :root {
+    --home-rail: min(96vw, 1920px);
+    --home-rail-pad: clamp(1.25rem, 3vw, 3.5rem);
   }
 }
 
@@ -5713,9 +5724,9 @@ body::-webkit-scrollbar {
 /* iPad — separate story cards in carousel (wider slide, visible gap) */
 @media (min-width: 768px) and (max-width: 1023px) {
   .services-carousel {
-    --svc-slide: 78%;
-    --svc-gap: 0.85rem;
-    --svc-side: calc((100% - var(--svc-slide)) / 2);
+    --svc-slide: 100%;
+    --svc-gap: 0;
+    --svc-side: 0;
   }
 
   .services-carousel__nav {

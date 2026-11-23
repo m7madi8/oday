@@ -65,8 +65,12 @@
   align-items: center;
 }
 
-.services-section__head {
+.services-section__head.section-inner {
   flex: 0 0 auto;
+  width: 100%;
+  max-width: var(--home-rail);
+  margin-inline: auto;
+  padding-inline: var(--home-rail-pad);
 }
 
 @media (max-width: 1023px) {
@@ -75,7 +79,12 @@
     flex: 1 1 auto;
     min-height: 0;
     flex-direction: column;
+    width: 100%;
+    max-width: var(--home-rail);
     margin-top: 0.65rem;
+    margin-inline: auto;
+    padding-inline: var(--home-rail-pad);
+    box-sizing: border-box;
   }
 
   .services-carousel,
@@ -130,9 +139,11 @@
     gap: clamp(0.75rem, 1vw, 1.15rem);
     min-height: 0;
     width: 100%;
-    margin: 0.35rem 0 0;
-    padding-inline: clamp(0.85rem, 1.6vw, 1.5rem);
+    max-width: var(--home-rail);
+    margin: 0.35rem auto 0;
+    padding-inline: var(--home-rail-pad);
     padding-bottom: 0.4rem;
+    box-sizing: border-box;
   }
 }
 
@@ -391,25 +402,26 @@
 
 .hero-modern__img {
   display: block;
-  width: 100%;
+  width: auto;
   height: 100%;
-  object-fit: cover;
-  object-position: 50% 50%;
+  max-width: none;
+  object-fit: contain;
+  object-position: center center;
   image-rendering: auto;
   pointer-events: none;
   user-select: none;
 }
 
-/* First hero still — subtle zoom so the villa reads closer (cover crops edges only) */
+/* First still fills the hero height and keeps its full sky-to-ground frame. */
 .hero-modern__layer--lead-zoom .hero-modern__img {
-  transform: scale(1.24);
-  transform-origin: 50% 46%;
+  transform: translateX(-50%);
+  transform-origin: center center;
 }
 
 @media (max-width: 767px) {
   .hero-modern__layer--lead-zoom .hero-modern__img {
-    transform: scale(1.14);
-    transform-origin: 50% 48%;
+    transform: translateX(-50%);
+    transform-origin: center center;
   }
 }
 

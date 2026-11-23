@@ -32,6 +32,7 @@ export function HeroSlidePicture({
   const fetchPriority = (priority ? "high" : "auto") as "high" | "auto";
   const quality = priority ? HERO_LCP_QUALITY : HERO_CAROUSEL_QUALITY;
   const desktopSizes = priority ? HERO_LCP_DESKTOP_SIZES : HERO_DESKTOP_SIZES;
+  const frameSizes = priority ? HERO_LCP_DESKTOP_SIZES : undefined;
   const sharedFill = {
     alt: "",
     fill: true,
@@ -43,13 +44,13 @@ export function HeroSlidePicture({
   const { props: mobileProps } = getImageProps({
     ...sharedFill,
     src: slide.srcMobile,
-    sizes: HERO_MOBILE_SIZES,
+    sizes: frameSizes ?? HERO_MOBILE_SIZES,
   });
 
   const { props: tabletProps } = getImageProps({
     ...sharedFill,
     src: slide.srcTablet,
-    sizes: HERO_TABLET_SIZES,
+    sizes: frameSizes ?? HERO_TABLET_SIZES,
   });
 
   const { props: imgProps } = getImageProps({
@@ -61,8 +62,8 @@ export function HeroSlidePicture({
 
   return (
     <picture className="hero-modern__picture">
-      <source media={HERO_MOBILE_MEDIA} srcSet={heroSrcSet(mobileProps)} sizes={HERO_MOBILE_SIZES} />
-      <source media={HERO_TABLET_MEDIA} srcSet={heroSrcSet(tabletProps)} sizes={HERO_TABLET_SIZES} />
+      <source media={HERO_MOBILE_MEDIA} srcSet={heroSrcSet(mobileProps)} sizes={frameSizes ?? HERO_MOBILE_SIZES} />
+      <source media={HERO_TABLET_MEDIA} srcSet={heroSrcSet(tabletProps)} sizes={frameSizes ?? HERO_TABLET_SIZES} />
       <source media={HERO_DESKTOP_MEDIA} srcSet={heroSrcSet(imgProps)} sizes={desktopSizes} />
       <img
         {...imgProps}
@@ -73,10 +74,16 @@ export function HeroSlidePicture({
         onLoad={onLoad}
         style={{
           ...imgProps.style,
-          width: "100%",
+          top: 0,
+          bottom: "auto",
+          left: "50%",
+          right: "auto",
+          width: "auto",
           height: "100%",
-          objectFit: "cover",
-          objectPosition: slide.objectPosition,
+          maxWidth: "none",
+          transform: "translateX(-50%)",
+          objectFit: "contain",
+          objectPosition: "center center",
         }}
       />
     </picture>

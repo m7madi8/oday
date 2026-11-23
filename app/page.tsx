@@ -1,7 +1,6 @@
 import dynamic from "next/dynamic";
 import "@/app/home-editorial.css";
 import { Hero } from "@/components/Hero";
-import { HeroCarouselPrefetch } from "@/components/HeroCarouselPrefetch";
 
 const CaseStudiesCta = dynamic(
   () => import("@/components/CaseStudiesCta").then((m) => ({ default: m.CaseStudiesCta })),
@@ -26,7 +25,6 @@ const Contact = dynamic(() => import("@/components/Contact").then((m) => ({ defa
 export default function Home() {
   return (
     <>
-      <HeroCarouselPrefetch />
       <CaseStudiesCta />
       <main id="main-content">
         <Hero />

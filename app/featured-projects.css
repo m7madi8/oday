@@ -18,9 +18,9 @@
 .featured-projects__head-wrap {
   flex-shrink: 0;
   width: 100%;
-  max-width: min(96vw, 1880px);
+  max-width: var(--home-rail);
   margin-inline: auto;
-  padding-inline: clamp(0.75rem, 2vw, 2.5rem);
+  padding-inline: var(--home-rail-pad);
   padding-bottom: clamp(0.65rem, 1.4vh, 1rem);
 }
 
@@ -74,9 +74,9 @@
 .featured-projects__foot-wrap {
   flex-shrink: 0;
   width: 100%;
-  max-width: min(96vw, 1880px);
+  max-width: var(--home-rail);
   margin-inline: auto;
-  padding-inline: clamp(0.75rem, 2vw, 2.5rem);
+  padding-inline: var(--home-rail-pad);
   padding-top: clamp(1rem, 2.2vh, 1.5rem);
 }
 
@@ -105,9 +105,9 @@
 
 .featured-work__grid-wrap {
   width: 100%;
-  max-width: min(96vw, 1880px);
+  max-width: var(--home-rail);
   margin-inline: auto;
-  padding-inline: clamp(0.75rem, 2vw, 2.5rem);
+  padding-inline: var(--home-rail-pad);
 }
 
 .featured-work__grid {
@@ -330,12 +330,6 @@
 }
 
 @media (min-width: 1024px) {
-  .featured-projects__head-wrap,
-  .featured-work__grid-wrap,
-  .featured-projects__foot-wrap {
-    padding-inline: clamp(1rem, 2.5vw, 3rem);
-  }
-
   .featured-work__grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     grid-auto-rows: auto;
@@ -353,13 +347,6 @@
 }
 
 @media (min-width: 1536px) {
-  .featured-projects__head-wrap,
-  .featured-work__grid-wrap,
-  .featured-projects__foot-wrap {
-    max-width: min(96vw, 1920px);
-    padding-inline: clamp(1.25rem, 3vw, 3.5rem);
-  }
-
   .featured-work__grid {
     gap: 0.95rem;
   }
