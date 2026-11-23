@@ -13,7 +13,7 @@ import { useCallback, useRef, useState } from "react";
 export function Hero() {
   const reduceMotion = useReducedMotion();
   const cinematicReduce = !!reduceMotion;
-  const slides = hero.images.slice(0, 1);
+  const slides = hero.images;
   const mediaRef = useRef<HeroCinematicMediaHandle>(null);
   const [active, setActive] = useState(0);
   const [navPaused, setNavPaused] = useState(false);
