@@ -26,13 +26,18 @@ export function HeroLcpPreload() {
 
   if (HERO_LCP_UNOPTIMIZED) {
     return (
-      <link
-        rel="preload"
-        as="image"
-        href={slide.publicSrc}
-        fetchPriority="high"
-        suppressHydrationWarning
-      />
+      <>
+        {hero.images.map((item, index) => (
+          <link
+            key={item.publicSrc}
+            rel="preload"
+            as="image"
+            href={item.publicSrc}
+            fetchPriority={index === 0 ? "high" : "auto"}
+            suppressHydrationWarning
+          />
+        ))}
+      </>
     );
   }
 

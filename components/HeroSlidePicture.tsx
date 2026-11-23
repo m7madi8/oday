@@ -45,6 +45,7 @@ function HeroPublicStill({
         decoding={priority ? "sync" : "async"}
         fetchPriority={fetchPriority}
         onLoad={onLoad}
+        style={{ objectPosition: slide.objectPosition }}
       />
     </picture>
   );

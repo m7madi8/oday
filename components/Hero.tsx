@@ -101,7 +101,7 @@ export function Hero() {
                   const isActive = index === active;
                   return (
                     <button
-                      key={slide.alt}
+                      key={`hero-dot-${index}`}
                       type="button"
                       role="tab"
                       data-no-glow
@@ -109,7 +109,9 @@ export function Hero() {
                       aria-label={`Show slide ${index + 1} of ${slides.length}`}
                       aria-selected={isActive}
                       onClick={() => {
-                        mediaRef.current?.goToSlide(index);
+                        if (mediaRef.current?.goToSlide(index)) {
+                          setActive(index);
+                        }
                       }}
                     >
                       <span className="hero-modern__dot-line" aria-hidden />

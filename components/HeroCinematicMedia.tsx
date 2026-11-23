@@ -80,6 +80,15 @@ export const HeroCinematicMedia = forwardRef<HeroCinematicMediaHandle, HeroCinem
     }, []);
 
     useEffect(() => {
+      for (const slide of slides) {
+        if (!slide.publicSrc) continue;
+        const img = new Image();
+        img.decoding = "async";
+        img.src = slide.publicSrc;
+      }
+    }, [slides]);
+
+    useEffect(() => {
       if (leadReady) return;
       const img = document.querySelector(
         ".hero-modern__stage .hero-modern__layer.is-active .hero-modern__img",

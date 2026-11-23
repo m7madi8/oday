@@ -8,7 +8,7 @@ import heroSlide2Tablet from "@/imgs/hero/villa-black-marble-tablet.webp";
 import heroSlide3 from "@/imgs/hero/twilight-luxury-residence-with-scooter.png";
 import heroSlide3Mobile from "@/imgs/hero/villa-entrance-evening-mobile.webp";
 import heroSlide3Tablet from "@/imgs/hero/villa-entrance-evening-tablet.webp";
-import heroSlide4 from "@/imgs/hero/twilight-luxury-residence-with-scooter.png";
+import heroSlide4 from "@/imgs/hero/modern-villa-at-dusk.png";
 import heroSlide4Mobile from "@/imgs/hero/villa-stone-facade-mobile.webp";
 import heroSlide4Tablet from "@/imgs/hero/villa-stone-facade-tablet.webp";
 import { heroCopy } from "@/lib/hero-copy";
@@ -81,7 +81,7 @@ const heroImages = [
     publicSrc: "/hero/hero-slide-4.png",
     intrinsicWidth: 1926,
     intrinsicHeight: 817,
-    alt: "Twilight luxury residence with scooter at dusk — hero exterior",
+    alt: "Modern villa facade at dusk — hero exterior",
     primary: false,
     objectPosition: "50% 50%",
   },
