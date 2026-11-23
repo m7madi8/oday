@@ -1,7 +1,7 @@
 import type { StaticImageData } from "next/image";
-import heroPrimary from "@/imgs/hero/hero-facade-full.jpeg";
-import heroPrimaryMobile from "@/imgs/hero/hero-facade-full.jpeg";
-import heroPrimaryTablet from "@/imgs/hero/hero-facade-full.jpeg";
+import heroPrimary from "@/imgs/hero/hero-lcp-primary.png";
+import heroPrimaryMobile from "@/imgs/hero/hero-lcp-primary.png";
+import heroPrimaryTablet from "@/imgs/hero/hero-lcp-primary.png";
 import heroSlide2 from "@/imgs/hero/modern-charcoal-stone-house-at-twilight.png";
 import heroSlide2Mobile from "@/imgs/hero/villa-black-marble-mobile.webp";
 import heroSlide2Tablet from "@/imgs/hero/villa-black-marble-tablet.webp";
@@ -24,7 +24,7 @@ export const HERO_DESKTOP_MEDIA = "(min-width: 1280px), (orientation: landscape)
  * - Slides 2–4: still sharp, loaded lazily after first paint.
  */
 export const HERO_LCP_QUALITY = 100;
-/** Hero still — serve the bundled JPEG as-is (no AVIF/WebP re-encode). */
+/** Hero still — serve the public PNG/JPEG as-is (no AVIF/WebP re-encode). */
 export const HERO_LCP_UNOPTIMIZED = true;
 export const HERO_CAROUSEL_QUALITY = 90;
 /** @deprecated Use HERO_LCP_QUALITY / HERO_CAROUSEL_QUALITY */
@@ -33,12 +33,12 @@ export const HERO_IMAGE_QUALITY = HERO_CAROUSEL_QUALITY;
 export const HERO_MOBILE_SIZES = "(max-width: 767px) 100vw";
 export const HERO_TABLET_SIZES = "(max-width: 1024px) 100vw, 960px";
 export const HERO_DESKTOP_SIZES = "(max-width: 1536px) 100vw, 1920px";
-/** Public hero still (byte-identical to source JPEG — no Next image pipeline). */
-export const HERO_LCP_PUBLIC_SRC = "/hero/hero-lcp.jpeg";
-export const HERO_LCP_INTRINSIC_WIDTH = 1554;
-export const HERO_LCP_INTRINSIC_HEIGHT = 666;
-/** Native hero still width (1554px) — avoid requesting upscaled derivatives. */
-export const HERO_LCP_DESKTOP_SIZES = "1554px";
+/** Public hero still (byte-identical to source file — no Next image pipeline). */
+export const HERO_LCP_PUBLIC_SRC = "/hero/hero-lcp.png";
+export const HERO_LCP_INTRINSIC_WIDTH = 1915;
+export const HERO_LCP_INTRINSIC_HEIGHT = 821;
+/** Native hero still width — avoid requesting upscaled derivatives. */
+export const HERO_LCP_DESKTOP_SIZES = "1915px";
 
 const heroImages = [
   {
