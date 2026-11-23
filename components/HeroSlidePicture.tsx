@@ -18,20 +18,6 @@ import { getImageProps } from "next/image";
 
 export type HeroSlide = (typeof hero.images)[number];
 
-const heroFrameImgStyle = {
-  top: 0,
-  bottom: "auto",
-  left: "50%",
-  right: "auto",
-  width: "auto",
-  height: "100%",
-  maxWidth: "none",
-  maxHeight: "100%",
-  transform: "translateX(-50%)",
-  objectFit: "contain",
-  objectPosition: "center center",
-} as const;
-
 function heroSrcSet(props: { srcSet?: string; src?: string }) {
   return props.srcSet || props.src || "";
 }
@@ -54,7 +40,7 @@ export function HeroSlidePicture({
       <picture className="hero-modern__picture hero-modern__picture--source">
         <img
           src={HERO_LCP_PUBLIC_SRC}
-          className="hero-modern__img"
+          className="hero-modern__img hero-modern__img--full-frame"
           width={HERO_LCP_INTRINSIC_WIDTH}
           height={HERO_LCP_INTRINSIC_HEIGHT}
           alt=""
@@ -63,7 +49,6 @@ export function HeroSlidePicture({
           decoding="sync"
           fetchPriority={fetchPriority}
           onLoad={onLoad}
-          style={heroFrameImgStyle}
         />
       </picture>
     );
@@ -112,9 +97,16 @@ export function HeroSlidePicture({
         loading={loading}
         decoding={priority ? "sync" : "async"}
         onLoad={onLoad}
+        className={`${imgProps.className ?? ""} hero-modern__img--full-frame`.trim()}
         style={{
           ...imgProps.style,
-          ...heroFrameImgStyle,
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "contain",
+          objectPosition: "center center",
+          transform: "none",
         }}
       />
     </picture>
