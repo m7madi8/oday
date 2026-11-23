@@ -100,13 +100,10 @@ export function HeroSlidePicture({
         className={`${imgProps.className ?? ""} hero-modern__img--full-frame`.trim()}
         style={{
           ...imgProps.style,
-          position: "absolute",
-          inset: 0,
-          width: "100%",
-          height: "100%",
-          objectFit: "contain",
-          objectPosition: "center center",
-          transform: "none",
+          position: undefined,
+          inset: undefined,
+          width: undefined,
+          height: undefined,
         }}
       />
     </picture>
