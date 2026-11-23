@@ -3,6 +3,7 @@ import {
   HERO_DESKTOP_MEDIA,
   HERO_LCP_DESKTOP_SIZES,
   HERO_LCP_QUALITY,
+  HERO_LCP_PUBLIC_SRC,
   HERO_LCP_UNOPTIMIZED,
   HERO_MOBILE_MEDIA,
   HERO_TABLET_MEDIA,
@@ -25,9 +26,14 @@ export function HeroLcpPreload() {
   const slide = hero.images[0];
 
   if (HERO_LCP_UNOPTIMIZED) {
-    const href = slide.src.src;
     return (
-      <link rel="preload" as="image" href={href} fetchPriority="high" suppressHydrationWarning />
+      <link
+        rel="preload"
+        as="image"
+        href={HERO_LCP_PUBLIC_SRC}
+        fetchPriority="high"
+        suppressHydrationWarning
+      />
     );
   }
 

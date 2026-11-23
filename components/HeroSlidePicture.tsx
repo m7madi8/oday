@@ -3,6 +3,9 @@ import {
   HERO_DESKTOP_MEDIA,
   HERO_DESKTOP_SIZES,
   HERO_LCP_DESKTOP_SIZES,
+  HERO_LCP_INTRINSIC_HEIGHT,
+  HERO_LCP_INTRINSIC_WIDTH,
+  HERO_LCP_PUBLIC_SRC,
   HERO_LCP_QUALITY,
   HERO_LCP_UNOPTIMIZED,
   HERO_MOBILE_MEDIA,
@@ -14,6 +17,20 @@ import {
 import { getImageProps } from "next/image";
 
 export type HeroSlide = (typeof hero.images)[number];
+
+const heroFrameImgStyle = {
+  top: 0,
+  bottom: "auto",
+  left: "50%",
+  right: "auto",
+  width: "auto",
+  height: "100%",
+  maxWidth: "none",
+  maxHeight: "100%",
+  transform: "translateX(-50%)",
+  objectFit: "contain",
+  objectPosition: "center center",
+} as const;
 
 function heroSrcSet(props: { srcSet?: string; src?: string }) {
   return props.srcSet || props.src || "";
@@ -31,6 +48,27 @@ export function HeroSlidePicture({
   onLoad?: () => void;
 }) {
   const fetchPriority = (priority ? "high" : "auto") as "high" | "auto";
+
+  if (priority && HERO_LCP_UNOPTIMIZED) {
+    return (
+      <picture className="hero-modern__picture hero-modern__picture--source">
+        <img
+          src={HERO_LCP_PUBLIC_SRC}
+          className="hero-modern__img"
+          width={HERO_LCP_INTRINSIC_WIDTH}
+          height={HERO_LCP_INTRINSIC_HEIGHT}
+          alt=""
+          draggable={false}
+          loading={loading}
+          decoding="sync"
+          fetchPriority={fetchPriority}
+          onLoad={onLoad}
+          style={heroFrameImgStyle}
+        />
+      </picture>
+    );
+  }
+
   const quality = priority ? HERO_LCP_QUALITY : HERO_CAROUSEL_QUALITY;
   const desktopSizes = priority ? HERO_LCP_DESKTOP_SIZES : HERO_DESKTOP_SIZES;
   const frameSizes = priority ? HERO_LCP_DESKTOP_SIZES : undefined;
@@ -76,16 +114,7 @@ export function HeroSlidePicture({
         onLoad={onLoad}
         style={{
           ...imgProps.style,
-          top: 0,
-          bottom: "auto",
-          left: "50%",
-          right: "auto",
-          width: "auto",
-          height: "100%",
-          maxWidth: "none",
-          transform: "translateX(-50%)",
-          objectFit: "contain",
-          objectPosition: "center center",
+          ...heroFrameImgStyle,
         }}
       />
     </picture>

@@ -33,6 +33,10 @@ export const HERO_IMAGE_QUALITY = HERO_CAROUSEL_QUALITY;
 export const HERO_MOBILE_SIZES = "(max-width: 767px) 100vw";
 export const HERO_TABLET_SIZES = "(max-width: 1024px) 100vw, 960px";
 export const HERO_DESKTOP_SIZES = "(max-width: 1536px) 100vw, 1920px";
+/** Public hero still (byte-identical to source JPEG — no Next image pipeline). */
+export const HERO_LCP_PUBLIC_SRC = "/hero/hero-lcp.jpeg";
+export const HERO_LCP_INTRINSIC_WIDTH = 1554;
+export const HERO_LCP_INTRINSIC_HEIGHT = 666;
 /** Native hero still width (1554px) — avoid requesting upscaled derivatives. */
 export const HERO_LCP_DESKTOP_SIZES = "1554px";
 
@@ -41,7 +45,7 @@ const heroImages = [
     src: heroPrimary,
     srcMobile: heroPrimaryMobile,
     srcTablet: heroPrimaryTablet,
-    alt: "Symmetrical marble villa facade at dusk — hero exterior",
+    alt: "Contemporary villa facade at dusk — hero exterior",
     primary: true,
     objectPosition: "50% 50%",
   },
@@ -82,5 +86,5 @@ export const hero = {
   ...heroCopy,
   images: heroImages,
   image: heroPrimary,
-  imageAlt: "Symmetrical marble villa facade at dusk — hero exterior",
+  imageAlt: "Contemporary villa facade at dusk — hero exterior",
 } as const;
