@@ -5,7 +5,6 @@ import type { ServiceVisualAsset, ServiceVisualSlide } from "@/lib/content/servi
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import { useMobilePerfMode } from "@/hooks/useMobilePerfMode";
 import { SITE_IMAGE_QUALITY } from "@/lib/image-delivery";
 
 const IMAGE_QUALITY = SITE_IMAGE_QUALITY;
@@ -35,8 +34,7 @@ export function ServicePanelMedia({
   lite?: boolean;
 }) {
   const reduceMotion = useReducedMotion();
-  const mobilePerf = useMobilePerfMode();
-  const staticMedia = lite || mobilePerf;
+  const staticMedia = lite;
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoVisible, setVideoVisible] = useState(false);
   const hasVideo = Boolean(visual.videoSrc) && !reduceMotion && !staticMedia;
@@ -193,7 +191,7 @@ export function ServicePanelMedia({
                   quality={IMAGE_QUALITY}
                   sizes={sizes}
                   priority={priority && index === 0}
-                  loading={priority ? "eager" : "lazy"}
+                  loading={staticMedia || priority ? "eager" : "lazy"}
                   className={`${imageClassName} service-panel-media__poster ${
                     showPoster ? "service-panel-media__poster--visible" : ""
                   }`}

@@ -8,7 +8,7 @@ import { SafeButton } from "@/components/SafeButton";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback, useRef, useState } from "react";
-import { useInView, useReducedMotion } from "@/components/ClientMotion";
+import { useReducedMotion } from "@/components/ClientMotion";
 import { useMobilePerfMode } from "@/hooks/useMobilePerfMode";
 import { usePageScrollBusy } from "@/hooks/usePageScrollBusy";
 
@@ -71,15 +71,8 @@ function ServicesMobileCarousel() {
   const reduceMotion = useReducedMotion();
   const mobilePerf = useMobilePerfMode();
   const scrollBusy = usePageScrollBusy();
-  const carouselRef = useRef<HTMLDivElement>(null);
-  const carouselInView = useInView(carouselRef, {
-    once: false,
-    amount: 0.12,
-    margin: "0px 0px -8% 0px",
-  });
   const [activeIndex, setActiveIndex] = useState(0);
   const touchStartRef = useRef<{ x: number; y: number } | null>(null);
-  const pauseHeavyMedia = mobilePerf && (scrollBusy || !carouselInView);
 
   const goTo = useCallback((index: number) => {
     setActiveIndex(Math.max(0, Math.min(services.length - 1, index)));
@@ -113,7 +106,7 @@ function ServicesMobileCarousel() {
   );
 
   return (
-    <div ref={carouselRef} className="services-carousel">
+    <div className="services-carousel">
       <div className="services-carousel__stage">
         <SafeButton
           data-no-glow
@@ -142,9 +135,6 @@ function ServicesMobileCarousel() {
           >
             {services.map((service, index) => {
               const isActive = activeIndex === index;
-              const shouldMount = mobilePerf
-                ? Math.abs(index - activeIndex) <= 1
-                : true;
 
               return (
                 <div
@@ -155,18 +145,15 @@ function ServicesMobileCarousel() {
                     if (!isActive) goTo(index);
                   }}
                 >
-                  {shouldMount ? (
-                    <ServiceStoryCard
-                      service={service}
-                      index={index}
-                      isActive={isActive && !pauseHeavyMedia}
-                      activeIndex={activeIndex}
-                      liteMedia={mobilePerf}
-                      priority={index === 0}
-                    />
-                  ) : (
-                    <div className="services-story-card services-story-card--shell" aria-hidden />
-                  )}
+                  <ServiceStoryCard
+                    service={service}
+                    index={index}
+                    isActive={isActive}
+                    activeIndex={activeIndex}
+                    liteMedia={mobilePerf}
+                    pauseSlideshow={mobilePerf && scrollBusy}
+                    priority={index === 0}
+                  />
                 </div>
               );
             })}
@@ -216,6 +203,7 @@ function ServiceStoryCard({
   activeIndex,
   priority = false,
   liteMedia = false,
+  pauseSlideshow = false,
 }: {
   service: (typeof services)[number];
   index: number;
@@ -223,6 +211,8 @@ function ServiceStoryCard({
   activeIndex: number;
   priority?: boolean;
   liteMedia?: boolean;
+  /** Pause slideshow/video only while the page is scrolling — card stays visible. */
+  pauseSlideshow?: boolean;
 }) {
   const visual = getServiceVisual(service.slug);
   const Icon = service.icon;
@@ -248,7 +238,7 @@ function ServiceStoryCard({
         <div className="absolute inset-0">
           <ServicePanelMedia
             visual={visual}
-            isPlaying={isActive}
+            isPlaying={isActive && !pauseSlideshow}
             prefetch={prefetchVideo}
             sizes={IMAGE_SIZES_STORY}
             priority={priority}
