@@ -7,7 +7,7 @@ import { serviceVisualBySlug } from "@/lib/content/service-visuals";
 import { SafeButton } from "@/components/SafeButton";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useLayoutEffect, useRef, useState } from "react";
 import { useReducedMotion } from "@/components/ClientMotion";
 import { useMobilePerfMode } from "@/hooks/useMobilePerfMode";
 import { usePageScrollBusy } from "@/hooks/usePageScrollBusy";
@@ -72,7 +72,24 @@ function ServicesMobileCarousel() {
   const mobilePerf = useMobilePerfMode();
   const scrollBusy = usePageScrollBusy();
   const [activeIndex, setActiveIndex] = useState(0);
+  const [slideStepPx, setSlideStepPx] = useState(0);
+  const viewportRef = useRef<HTMLDivElement>(null);
   const touchStartRef = useRef<{ x: number; y: number } | null>(null);
+
+  useLayoutEffect(() => {
+    const node = viewportRef.current;
+    if (!node) return;
+
+    const measure = () => {
+      const w = node.clientWidth;
+      if (w > 0) setSlideStepPx(w);
+    };
+
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(node);
+    return () => ro.disconnect();
+  }, []);
 
   const goTo = useCallback((index: number) => {
     setActiveIndex(Math.max(0, Math.min(services.length - 1, index)));
@@ -120,6 +137,7 @@ function ServicesMobileCarousel() {
         </SafeButton>
 
         <div
+          ref={viewportRef}
           className="services-carousel__viewport"
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
@@ -129,7 +147,10 @@ function ServicesMobileCarousel() {
           <div
             className="services-carousel__track"
             style={{
-              transform: `translate3d(calc(var(--svc-side) - ${activeIndex} * (var(--svc-slide) + var(--svc-gap))), 0, 0)`,
+              transform:
+                slideStepPx > 0
+                  ? `translate3d(-${activeIndex * slideStepPx}px, 0, 0)`
+                  : `translate3d(calc(-${activeIndex} * (100% / ${services.length})), 0, 0)`,
               transition: reduceMotion ? "none" : undefined,
             }}
           >
@@ -152,7 +173,7 @@ function ServicesMobileCarousel() {
                     activeIndex={activeIndex}
                     liteMedia={mobilePerf}
                     pauseSlideshow={mobilePerf && scrollBusy}
-                    priority={index === 0}
+                    priority={mobilePerf ? true : index === 0}
                   />
                 </div>
               );
