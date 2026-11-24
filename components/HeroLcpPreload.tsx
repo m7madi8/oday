@@ -5,6 +5,7 @@ import {
   HERO_LCP_QUALITY,
   HERO_LCP_UNOPTIMIZED,
   HERO_MOBILE_MEDIA,
+  HERO_IPAD_MEDIA,
   HERO_PHONE_MEDIA,
   HERO_TABLET_MEDIA,
 } from "@/lib/hero-content";
@@ -35,6 +36,15 @@ export function HeroLcpPreload() {
             as="image"
             href={item.publicSrcMobile}
             media={HERO_PHONE_MEDIA}
+            fetchPriority={index === 0 ? "high" : "auto"}
+            suppressHydrationWarning
+          />,
+          <link
+            key={`${item.publicSrc}-ipad`}
+            rel="preload"
+            as="image"
+            href={item.publicSrcTablet}
+            media={HERO_IPAD_MEDIA}
             fetchPriority={index === 0 ? "high" : "auto"}
             suppressHydrationWarning
           />,

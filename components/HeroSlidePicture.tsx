@@ -7,6 +7,7 @@ import {
   HERO_LCP_UNOPTIMIZED,
   HERO_MOBILE_MEDIA,
   HERO_MOBILE_SIZES,
+  HERO_IPAD_MEDIA,
   HERO_PHONE_MEDIA,
   HERO_TABLET_MEDIA,
   HERO_TABLET_SIZES,
@@ -36,6 +37,7 @@ function HeroPublicStill({
   return (
     <picture className="hero-modern__picture hero-modern__picture--source">
       <source media={HERO_PHONE_MEDIA} srcSet={slide.publicSrcMobile} />
+      <source media={HERO_IPAD_MEDIA} srcSet={slide.publicSrcTablet} />
       <img
         src={slide.publicSrc}
         className="hero-modern__img hero-modern__img--full-frame"

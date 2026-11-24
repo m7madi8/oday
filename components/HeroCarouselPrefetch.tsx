@@ -22,11 +22,16 @@ export function HeroCarouselPrefetch() {
     };
 
     const run = () => {
-      const phone =
-        typeof window.matchMedia === "function" &&
-        window.matchMedia("(max-width: 767px)").matches;
+      if (typeof window.matchMedia !== "function") return;
+      const phone = window.matchMedia("(max-width: 767px)").matches;
+      const ipad = window.matchMedia("(min-width: 768px) and (max-width: 1279px)").matches;
       for (const slide of hero.images) {
-        add(phone ? slide.publicSrcMobile : slide.publicSrc);
+        const href = phone
+          ? slide.publicSrcMobile
+          : ipad
+            ? slide.publicSrcTablet
+            : slide.publicSrc;
+        add(href);
       }
     };
 
