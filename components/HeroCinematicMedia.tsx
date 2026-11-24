@@ -80,11 +80,15 @@ export const HeroCinematicMedia = forwardRef<HeroCinematicMediaHandle, HeroCinem
     }, []);
 
     useEffect(() => {
+      const phone =
+        typeof window.matchMedia === "function" &&
+        window.matchMedia("(max-width: 767px)").matches;
       for (const slide of slides) {
-        if (!slide.publicSrc) continue;
+        const href = phone ? slide.publicSrcMobile : slide.publicSrc;
+        if (!href) continue;
         const img = new Image();
         img.decoding = "async";
-        img.src = slide.publicSrc;
+        img.src = href;
       }
     }, [slides]);
 

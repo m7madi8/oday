@@ -5,6 +5,7 @@ import {
   HERO_LCP_QUALITY,
   HERO_LCP_UNOPTIMIZED,
   HERO_MOBILE_MEDIA,
+  HERO_PHONE_MEDIA,
   HERO_TABLET_MEDIA,
 } from "@/lib/hero-content";
 import { getImageProps } from "next/image";
@@ -27,16 +28,26 @@ export function HeroLcpPreload() {
   if (HERO_LCP_UNOPTIMIZED) {
     return (
       <>
-        {hero.images.map((item, index) => (
+        {hero.images.flatMap((item, index) => [
           <link
-            key={item.publicSrc}
+            key={`${item.publicSrc}-phone`}
+            rel="preload"
+            as="image"
+            href={item.publicSrcMobile}
+            media={HERO_PHONE_MEDIA}
+            fetchPriority={index === 0 ? "high" : "auto"}
+            suppressHydrationWarning
+          />,
+          <link
+            key={`${item.publicSrc}-desktop`}
             rel="preload"
             as="image"
             href={item.publicSrc}
+            media={HERO_DESKTOP_MEDIA}
             fetchPriority={index === 0 ? "high" : "auto"}
             suppressHydrationWarning
-          />
-        ))}
+          />,
+        ])}
       </>
     );
   }

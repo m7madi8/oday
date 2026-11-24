@@ -14,6 +14,8 @@ import heroSlide4Tablet from "@/imgs/hero/villa-stone-facade-tablet.webp";
 import { heroCopy } from "@/lib/hero-copy";
 
 export const HERO_MOBILE_MEDIA = "(orientation: portrait) and (max-width: 767px)";
+/** Phone hero stills — public PNG (native resolution, no optimizer). */
+export const HERO_PHONE_MEDIA = "(max-width: 767px)";
 export const HERO_TABLET_MEDIA =
   "(orientation: portrait) and (min-width: 768px) and (max-width: 1536px)";
 export const HERO_DESKTOP_MEDIA = "(min-width: 1280px), (orientation: landscape) and (min-width: 768px)";
@@ -46,6 +48,9 @@ const heroImages = [
     srcMobile: heroPrimaryMobile,
     srcTablet: heroPrimaryTablet,
     publicSrc: HERO_LCP_PUBLIC_SRC,
+    publicSrcMobile: "/hero/hero-lcp-هاتف.png",
+    mobileIntrinsicWidth: 463,
+    mobileIntrinsicHeight: 821,
     intrinsicWidth: HERO_LCP_INTRINSIC_WIDTH,
     intrinsicHeight: HERO_LCP_INTRINSIC_HEIGHT,
     alt: "Contemporary villa facade at dusk — hero exterior",
@@ -57,6 +62,9 @@ const heroImages = [
     srcMobile: heroSlide2Mobile,
     srcTablet: heroSlide2Tablet,
     publicSrc: "/hero/hero-slide-2.png",
+    publicSrcMobile: "/hero/hero-slide-2-هاتف.png",
+    mobileIntrinsicWidth: 500,
+    mobileIntrinsicHeight: 817,
     intrinsicWidth: 1926,
     intrinsicHeight: 817,
     alt: "Dark marble villa, three-quarter view at dusk — hero exterior",
@@ -68,6 +76,9 @@ const heroImages = [
     srcMobile: heroSlide3Mobile,
     srcTablet: heroSlide3Tablet,
     publicSrc: "/hero/hero-slide-3.png",
+    publicSrcMobile: "/hero/hero-slide-3-هاتف.png",
+    mobileIntrinsicWidth: 483,
+    mobileIntrinsicHeight: 817,
     intrinsicWidth: 1926,
     intrinsicHeight: 817,
     alt: "Luxury villa entrance at dusk with landscaped driveway — hero exterior",
@@ -79,6 +90,9 @@ const heroImages = [
     srcMobile: heroSlide4Mobile,
     srcTablet: heroSlide4Tablet,
     publicSrc: "/hero/hero-slide-4.png",
+    publicSrcMobile: "/hero/hero-slide-4-هاتف.png",
+    mobileIntrinsicWidth: 463,
+    mobileIntrinsicHeight: 817,
     intrinsicWidth: 1926,
     intrinsicHeight: 817,
     alt: "Modern villa facade at dusk — hero exterior",
@@ -90,6 +104,9 @@ const heroImages = [
   srcMobile: StaticImageData;
   srcTablet: StaticImageData;
   publicSrc: string;
+  publicSrcMobile: string;
+  mobileIntrinsicWidth: number;
+  mobileIntrinsicHeight: number;
   intrinsicWidth: number;
   intrinsicHeight: number;
   alt: string;
